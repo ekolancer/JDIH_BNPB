@@ -147,27 +147,32 @@ class PeraturanResource extends Resource
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
                 TextColumn::make('judul')
                     ->label('JUDUL PERATURAN')
                     ->alignment(Alignment::Justify)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
                 TextColumn::make('nomor')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->label('NOMOR')
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center),
                 TextColumn::make('tahun')
                     ->label('TAHUN')
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->sortable(),
                 TextColumn::make('status')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'BERLAKU' => 'success',
@@ -178,6 +183,7 @@ class PeraturanResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->sortable(),
                 TextColumn::make('lampiran')
+                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->label('LAMPIRAN'),
