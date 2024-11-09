@@ -211,8 +211,8 @@ class PeraturanResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\Action::make('detail')
-                    ->modalHeading('Detail Peraturan')
-                    ->modalWidth('7xl')
+                        ->modalWidth('5xl')
+                        ->modalHeading('Detail Peraturan')
                         ->modalContent(fn(Peraturan $record): View => view(
                             'filament.pages.action.peraturan-view',
                             ['record' => $record]
@@ -220,7 +220,8 @@ class PeraturanResource extends Resource
                         ->modalSubmitAction(false)
                         ->color('warning')
                         ->icon('heroicon-o-eye'),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->modalHeading('Edit Data Peraturan'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
