@@ -16,6 +16,8 @@ use Filament\Forms\Components\Wizard;
 use Filament\Support\Enums\Alignment;
 use function Laravel\Prompts\textarea;
 use Filament\Forms\Components\Fieldset;
+use Illuminate\Support\Facades\Storage;
+
 
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -186,7 +188,12 @@ class PeraturanResource extends Resource
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->label('LAMPIRAN'),
+                    ->label('LAMPIRAN')
+                    ->wrap()
+                    ->formatStateUsing(fn($state) => $state
+                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'>" . basename($state) . "</a>"
+                        : 'Tidak ada lampiran')
+                    ->html(),
             ])
             ->filters([
                 // Filter berdasarkan status menggunakan Select
@@ -204,6 +211,8 @@ class PeraturanResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\Action::make('detail')
+                    ->modalHeading('Detail Peraturan')
+                    ->modalWidth('7xl')
                         ->modalContent(fn(Peraturan $record): View => view(
                             'filament.pages.action.peraturan-view',
                             ['record' => $record]
