@@ -10,17 +10,19 @@ use Filament\Tables\Table;
 use Ramsey\Uuid\Type\Integer;
 use Filament\Resources\Resource;
 
+use Illuminate\Support\HtmlString;
+use Illuminate\Contracts\View\View;
 use function Laravel\Prompts\select;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
 use Filament\Support\Enums\Alignment;
 use function Laravel\Prompts\textarea;
+
+
 use Filament\Forms\Components\Fieldset;
-use Illuminate\Support\Facades\Storage;
-
-
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
@@ -32,7 +34,6 @@ use Filament\Support\Enums\VerticalAlignment;
 use App\Filament\Resources\PeraturanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PeraturanResource\RelationManagers;
-use Illuminate\Contracts\View\View;
 
 class PeraturanResource extends Resource
 {
@@ -46,6 +47,7 @@ class PeraturanResource extends Resource
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Metadata Utama')
+                    ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
                             TextInput::make('tipeDok')
                                 ->label('Tipe Dokumen')
@@ -116,6 +118,7 @@ class PeraturanResource extends Resource
                                 ->required(),
                         ]),
                     Wizard\Step::make('Metadata Tambahan')
+                    ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
                             TextInput::make('urusanPemerintahan')
                                 ->label('Urusan Pemerintahan'),
@@ -134,9 +137,9 @@ class PeraturanResource extends Resource
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->maxSize(10240)
                                 ->required(),
-                        ]),
+                        ])
                 ])
-                    ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
+                ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
             ]);
     }
 
@@ -153,7 +156,7 @@ class PeraturanResource extends Resource
                     ->searchable(),
                 TextColumn::make('judul')
                     ->label('JUDUL PERATURAN')
-                    ->alignment(Alignment::Justify)
+                    ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disableClick() // Menonaktifkan clickable pada list table
@@ -197,16 +200,12 @@ class PeraturanResource extends Resource
             ])
             ->filters([
                 // Filter berdasarkan status menggunakan Select
-                // SelectFilter::make('status')
-                //     ->options([
-                //         'BERLAKU' => 'BERLAKU',
-                //         'TIDAK BERLAKU' => 'TIDAK BERLAKU',
-                //     ])
-                //     ->label('Status Peraturan')
-                //     ->query(function ($query, $status) {
-                //         // Menambahkan query untuk memfilter berdasarkan status
-                //         return $query->where('status', $status);
-                //     }),
+                SelectFilter::make('status')
+                    ->options([
+                        'BERLAKU' => 'BERLAKU',
+                        'TIDAK BERLAKU' => 'TIDAK BERLAKU',
+                    ])
+                    ->label('Status Peraturan'),
             ])
             ->actions([
                 ActionGroup::make([
