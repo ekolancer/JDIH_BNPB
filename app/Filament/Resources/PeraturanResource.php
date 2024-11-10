@@ -7,18 +7,20 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use App\Models\Peraturan;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
 use Ramsey\Uuid\Type\Integer;
-use Filament\Resources\Resource;
 
+use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use function Laravel\Prompts\select;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
 use Filament\Support\Enums\Alignment;
+
+
+use Illuminate\Support\Facades\Blade;
 use function Laravel\Prompts\textarea;
-
-
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -31,16 +33,20 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Enums\VerticalAlignment;
+use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\PeraturanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PeraturanResource\RelationManagers;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class PeraturanResource extends Resource
 {
     protected static ?string $model = Peraturan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $label = 'List Peraturan';
+
+    protected static ?string $navigationLabel = 'Peraturan'; // Memberikan Label Navigasi
 
     public static function form(Form $form): Form
     {
@@ -131,6 +137,7 @@ class PeraturanResource extends Resource
                                     'BERLAKU'   => 'BERLAKU',
                                     'TIDAK BERLAKU' => 'TIDAK BERLAKU',
                                 ])
+                                ->validationMessages(['required' => 'Status tidak boleh kosong !'])
                                 ->required(),
                         ]),
                     Wizard\Step::make('Metadata Tambahan')
@@ -156,6 +163,14 @@ class PeraturanResource extends Resource
                                 ->required(),
                         ])
                 ])
+                    ->submitAction(new HtmlString(Blade::render(<<<BLADE
+                                    <x-filament::button
+                                        type="submit"
+                                        size="sm"
+                                    >
+                                        Submit
+                                    </x-filament::button>
+                                BLADE)))
                     ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
             ]);
     }
@@ -169,8 +184,7 @@ class PeraturanResource extends Resource
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disableClick() // Menonaktifkan clickable pada list table
-                    ->searchable(),
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('judul')
                     ->label('JUDUL PERATURAN')
                     ->alignment(Alignment::Start)
@@ -189,8 +203,7 @@ class PeraturanResource extends Resource
                     ->label('TAHUN')
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
-                    ->verticalAlignment(VerticalAlignment::Center)
-                    ->sortable(),
+                    ->verticalAlignment(VerticalAlignment::Center),
                 TextColumn::make('status')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
@@ -202,8 +215,7 @@ class PeraturanResource extends Resource
                     })
                     ->label('STATUS')
                     ->alignment(Alignment::Center)
-                    ->verticalAlignment(VerticalAlignment::Center)
-                    ->sortable(),
+                    ->verticalAlignment(VerticalAlignment::Center),
                 TextColumn::make('lampiran')
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
