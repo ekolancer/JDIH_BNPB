@@ -44,9 +44,16 @@ class PeraturanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $label = 'List Peraturan';
+    protected static ?string $label = 'Peraturan';
 
     protected static ?string $navigationLabel = 'Peraturan'; // Memberikan Label Navigasi
+
+    protected static function getYearsOptions(): array
+    {
+        // Menghasilkan daftar tahun secara dinamis
+        $years = range(date('Y'), 2000); // Ubah rentang tahun sesuai kebutuhan
+        return array_combine($years, $years); // Membuat opsi array untuk dropdown
+    }
 
     public static function form(Form $form): Form
     {
@@ -235,6 +242,10 @@ class PeraturanResource extends Resource
                         'TIDAK BERLAKU' => 'TIDAK BERLAKU',
                     ])
                     ->label('Status Peraturan'),
+
+                    SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(static::getYearsOptions()),
             ])
             ->actions([
                 ActionGroup::make([
@@ -275,7 +286,7 @@ class PeraturanResource extends Resource
         return [
             'index' => Pages\ListPeraturans::route('/'),
             'create' => Pages\CreatePeraturan::route('/create'),
-            // 'edit' => Pages\EditPeraturan::route('/{record}/edit'),
+            'edit' => Pages\EditPeraturan::route('/{record}/edit'),
         ];
     }
 }
