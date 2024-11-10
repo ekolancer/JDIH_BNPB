@@ -34,6 +34,7 @@ use Filament\Support\Enums\VerticalAlignment;
 use App\Filament\Resources\PeraturanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PeraturanResource\RelationManagers;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class PeraturanResource extends Resource
 {
@@ -47,7 +48,7 @@ class PeraturanResource extends Resource
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Metadata Utama')
-                    ->completedIcon('heroicon-m-hand-thumb-up')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
                             TextInput::make('tipeDok')
                                 ->label('Tipe Dokumen')
@@ -56,23 +57,29 @@ class PeraturanResource extends Resource
                                 ->disabled(),
                             TextInput::make('jenisDok')
                                 ->label('Jenis Peraturan')
+                                ->validationMessages(['required' => 'Jenis dokumen tidak boleh kosong !'])
                                 ->required(),
                             TextInput::make('singkatan')
                                 ->label('Singkatan Peraturan')
+                                ->validationMessages(['required' => 'Singkatan tidak boleh kosong !'])
                                 ->required(),
                             Textarea::make('judul')
                                 ->label('Judul Peraturan')
                                 ->rows(5)
                                 ->cols(10)
+                                ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
                                 ->required(),
                             TextInput::make('teuBadan')
+                                ->validationMessages(['required' => 'T.E.U Badan tidak boleh kosong !'])
                                 ->label('T.E.U Badan')
                                 ->required(),
                             TextInput::make('nomor')
+                                ->validationMessages(['required' => 'Nomor tidak boleh kosong !'])
                                 ->label('Nomor')
                                 ->integer()
                                 ->required(),
                             TextInput::make('tahun')
+                                ->validationMessages(['required' => 'Tahun tidak boleh kosong !'])
                                 ->label('Tahun')
                                 ->Integer()
                                 ->required(),
@@ -81,33 +88,42 @@ class PeraturanResource extends Resource
                                 ->schema([
                                     DatePicker::make('tglPenetapan')
                                         ->label('Tanggal Penetapan Peraturan')
+                                        ->validationMessages(['required' => 'Tanggal Penetapan tidak boleh kosong !'])
                                         ->format('Y/m/d')
                                         ->required(),
                                     DatePicker::make('tglPengundangan')
                                         ->label('Tanggal Pengundangan Peraturan')
+                                        ->validationMessages(['required' => 'Tanggal Pengundangan dokumen tidak boleh kosong !'])
                                         ->format('Y/m/d')
                                         ->required(),
                                     TextInput::make('tempatPenetapan')
+                                        ->validationMessages(['required' => 'Tempat Penetapan tidak boleh kosong !'])
                                         ->label('Tempat Penetapan')
                                         ->required()
                                         ->columnSpan(2), // Memperbesar kolom tempatPenetapan agar mengisi ruang,
                                 ]),
                             TextInput::make('sumber')
+                                ->validationMessages(['required' => 'Sumber dokumen tidak boleh kosong !'])
                                 ->label('Sumber Peraturan')
                                 ->required(),
                             TextInput::make('subjek')
+                                ->validationMessages(['required' => 'Subjek dokumen tidak boleh kosong !'])
                                 ->label('Subjek Peraturan')
                                 ->required(),
                             TextInput::make('bidangHukum')
+                                ->validationMessages(['required' => 'Bidang Hukum tidak boleh kosong !'])
                                 ->label('Bidang Hukum')
                                 ->required(),
                             TextInput::make('bahasa')
+                                ->validationMessages(['required' => 'Bahasa tidak boleh kosong !'])
                                 ->label('Basaha')
                                 ->required(),
                             TextInput::make('lokasi')
+                                ->validationMessages(['required' => 'Lokasi tidak boleh kosong !'])
                                 ->label('Lokasi')
                                 ->required(),
                             TextInput::make('penandatangan')
+                                ->validationMessages(['required' => 'Penandatangan tidak boleh kosong !'])
                                 ->label('Penandatangan Peraturan')
                                 ->required(),
                             Select::make('status')
@@ -118,7 +134,7 @@ class PeraturanResource extends Resource
                                 ->required(),
                         ]),
                     Wizard\Step::make('Metadata Tambahan')
-                    ->completedIcon('heroicon-m-hand-thumb-up')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
                             TextInput::make('urusanPemerintahan')
                                 ->label('Urusan Pemerintahan'),
@@ -135,11 +151,12 @@ class PeraturanResource extends Resource
                                 ->visibility('public')
                                 ->preserveFilenames()
                                 ->acceptedFileTypes(['application/pdf'])
+                                ->validationMessages(['required' => 'Lampiran tidak boleh kosong !'])
                                 ->maxSize(10240)
                                 ->required(),
                         ])
                 ])
-                ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
+                    ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
             ]);
     }
 
