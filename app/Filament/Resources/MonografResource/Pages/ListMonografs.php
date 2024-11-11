@@ -16,4 +16,9 @@ class ListMonografs extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return "Data Monograf";
+    }
 }

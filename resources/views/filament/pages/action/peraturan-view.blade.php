@@ -110,4 +110,11 @@
             </div>
         </div>
     </div>
+    <!-- Section: View Dokumen PDF -->
+    <!-- <div class="mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Dokumen PDF</h2>
+        <div class="w-full h-[600px] border p-4 rounded-lg">
+            <iframe src="{{ asset('app\public\lampiran' . $record->Lampiran) }}" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div> -->
 </div>
