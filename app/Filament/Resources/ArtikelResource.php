@@ -17,7 +17,13 @@ class ArtikelResource extends Resource
 {
     protected static ?string $model = Artikel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?string $navigationGroup = 'Dokumen Hukum';
+
+    protected static ?string $label = 'Artikel';
+
+    protected static ?string $navigationLabel = 'Artikel'; // Memberikan Label Navigasi
 
     public static function form(Form $form): Form
     {

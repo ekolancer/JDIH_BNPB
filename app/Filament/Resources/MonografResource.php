@@ -17,7 +17,13 @@ class MonografResource extends Resource
 {
     protected static ?string $model = Monograf::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
+    protected static ?string $navigationGroup = 'Dokumen Hukum';
+
+    protected static ?string $label = 'Monografi';
+
+    protected static ?string $navigationLabel = 'Monografi'; // Memberikan Label Navigasi
 
     public static function form(Form $form): Form
     {

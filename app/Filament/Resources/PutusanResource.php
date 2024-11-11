@@ -17,7 +17,13 @@ class PutusanResource extends Resource
 {
     protected static ?string $model = Putusan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
+    protected static ?string $navigationGroup = 'Dokumen Hukum';
+
+    protected static ?string $label = 'Putusan';
+
+    protected static ?string $navigationLabel = 'Putusan'; // Memberikan Label Navigasi
 
     public static function form(Form $form): Form
     {

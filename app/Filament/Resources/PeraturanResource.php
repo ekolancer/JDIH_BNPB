@@ -42,7 +42,9 @@ class PeraturanResource extends Resource
 {
     protected static ?string $model = Peraturan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-scale';
+
+    protected static ?string $navigationGroup = 'Dokumen Hukum';
 
     protected static ?string $label = 'Peraturan';
 
@@ -243,7 +245,7 @@ class PeraturanResource extends Resource
                     ])
                     ->label('Status Peraturan'),
 
-                    SelectFilter::make('tahun')
+                SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(static::getYearsOptions()),
             ])
