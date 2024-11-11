@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'filament-panel': '#FF5733', // Warna kustom panel
+            },
         },
     },
     plugins: [],
