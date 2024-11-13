@@ -36,6 +36,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\PeraturanResource\Pages;
 use App\Filament\Resources\PeraturanResource\RelationManagers;
 
+
 class PeraturanResource extends Resource
 {
     protected static ?string $model = Peraturan::class;
@@ -224,13 +225,12 @@ class PeraturanResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center),
                 TextColumn::make('lampiran')
-                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->label('LAMPIRAN')
                     ->wrap()
                     ->formatStateUsing(fn($state) => $state
-                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'>" . basename($state) . "</a>"
+                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
                         : 'Tidak ada lampiran')
                     ->html(),
             ])

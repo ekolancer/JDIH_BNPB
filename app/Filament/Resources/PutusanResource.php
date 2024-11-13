@@ -190,55 +190,54 @@ class PutusanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            TextColumn::make('jenisDok')
-                ->label('JENIS PUTUSAN')
-                ->alignment(Alignment::Start)
-                ->verticalAlignment(VerticalAlignment::Center)
-                ->wrap()
-                ->disableClick(), // Menonaktifkan clickable pada list table
-            TextColumn::make('judul')
-                ->label('JUDUL PUTUSAN')
-                ->alignment(Alignment::Start)
-                ->verticalAlignment(VerticalAlignment::Center)
-                ->wrap()
-                ->disableClick() // Menonaktifkan clickable pada list table
-                ->searchable(),
-            TextColumn::make('nomor')
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center)
-                ->label('NOMOR')
-                ->disableClick() // Menonaktifkan clickable pada list table
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center),
-            TextColumn::make('tahunTerbit')
-                ->label('TAHUN')
-                ->disableClick() // Menonaktifkan clickable pada list table
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center),
-            TextColumn::make('status')
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center)
-                ->disableClick() // Menonaktifkan clickable pada list table
-                ->badge()
-                ->color(fn(string $state): string => match ($state) {
-                    'BERLAKU' => 'success',
-                    'TIDAK BERLAKU' => 'danger',
-                })
-                ->label('STATUS')
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center),
-            TextColumn::make('lampiran')
-                ->disableClick() // Menonaktifkan clickable pada list table
-                ->alignment(Alignment::Center)
-                ->verticalAlignment(VerticalAlignment::Center)
-                ->label('LAMPIRAN')
-                ->wrap()
-                ->formatStateUsing(fn($state) => $state
-                    ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'>" . basename($state) . "</a>"
-                    : 'Tidak ada lampiran')
-                ->html(),
-        ])
+            ->columns([
+                TextColumn::make('jenisDok')
+                    ->label('JENIS PUTUSAN')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+                TextColumn::make('judul')
+                    ->label('JUDUL PUTUSAN')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('nomor')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->label('NOMOR')
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center),
+                TextColumn::make('tahunTerbit')
+                    ->label('TAHUN')
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center),
+                TextColumn::make('status')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'BERLAKU' => 'success',
+                        'TIDAK BERLAKU' => 'danger',
+                    })
+                    ->label('STATUS')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center),
+                TextColumn::make('lampiran')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->label('LAMPIRAN')
+                    ->wrap()
+                    ->formatStateUsing(fn($state) => $state
+                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
+                        : 'Tidak ada lampiran')
+                    ->html(),
+            ])
             ->filters([
                 // Filter berdasarkan status menggunakan Select
                 SelectFilter::make('status')

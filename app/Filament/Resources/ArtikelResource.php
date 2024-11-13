@@ -163,14 +163,14 @@ class ArtikelResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('jenisDok')
                     ->label('JENIS Artikel')
-                    ->alignment(Alignment::Center)
+                    ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable()
                     ->disableClick(), // Menonaktifkan clickable pada list table,
                 Tables\Columns\TextColumn::make('judul')
                     ->label('Judul Artikel')
-                    ->alignment(Alignment::Center)
+                    ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable()
@@ -187,13 +187,12 @@ class ArtikelResource extends Resource
                     ->wrap()
                     ->disableClick(),
                 Tables\Columns\TextColumn::make('lampiran')
-                    ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->label('LAMPIRAN')
                     ->wrap()
                     ->formatStateUsing(fn($state) => $state
-                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'>" . basename($state) . "</a>"
+                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
                         : 'Tidak ada lampiran')
                     ->html(),
             ])
