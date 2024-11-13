@@ -12,16 +12,16 @@
                 <p class="text-sm font-semibold text-gray-800">Jenis Dokumen:</p>
                 <p class="text-gray-500">{{ $record->jenisDok }}</p>
             </div>
+            <!-- Kolom Judul memenuhi lebar penuh modal -->
+            <div class="border-2 p-4 rounded-lg col-span-1 md:col-span-2">
+                <p class="text-sm font-semibold text-gray-800">Judul:</p>
+                <p class="text-gray-500">{{ $record->judul }}</p>
+            </div>
             <div class="border-2 p-4 rounded-lg">
                 <p class="text-sm font-semibold text-gray-800">Singkatan:</p>
                 <p class="text-gray-500">{{ $record->singkatan }}</p>
             </div>
             <div class="border-2 p-4 rounded-lg">
-                <p class="text-sm font-semibold text-gray-800">Judul:</p>
-                <p class="text-gray-500">{{ $record->judul }}</p>
-            </div>
-            <!-- Kolom TEU Badan memenuhi lebar penuh modal -->
-            <div class="border-2 p-4 rounded-lg col-span-1 md:col-span-2">
                 <p class="text-sm font-semibold text-gray-800">T.E.U Badan:</p>
                 <p class="text-gray-500">{{ $record->teuBadan }}</p>
             </div>

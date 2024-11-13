@@ -43,9 +43,9 @@ class MonografResource extends Resource
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
 
-    protected static ?string $label = 'Monografi';
+    protected static ?string $label = 'Monograf';
 
-    protected static ?string $navigationLabel = 'Monografi'; // Memberikan Label Navigasi
+    protected static ?string $navigationLabel = 'Monograf'; // Memberikan Label Navigasi
 
     protected static function getYearsOptions(): array
     {
@@ -62,14 +62,14 @@ class MonografResource extends Resource
                     Wizard\Step::make('Metadata Utama')
                         ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
-                            Forms\Components\TextInput::make('tipeDok')
+                            TextInput::make('tipeDok')
                                 ->label('Tipe Dokumen')
                                 ->required()
-                                ->default('Monografi')
+                                ->default('Monograf')
                                 ->disabled(),
-                            Forms\Components\TextInput::make('jenisDok')
+                            TextInput::make('jenisDok')
                                 ->label('Jenis Monograf')
-                                ->validationMessages(['required' => 'Jenis dokumen tidak boleh kosong !'])
+                                ->validationMessages(['required' => 'Jenis Monograf tidak boleh kosong !'])
                                 ->required(),
                             Textarea::make('judul')
                                 ->label('Judul Peraturan')
@@ -130,7 +130,7 @@ class MonografResource extends Resource
                                         ->label('ISBN / ISSN')
                                         ->required(),
                                     Forms\Components\TextInput::make('cetakanEdisi')
-                                        ->validationMessages(['required' => 'Edisi Cetakan tidak boleh kosong !'])
+                                        ->validationMessages(['required' => 'Cetakan Edisi tidak boleh kosong !'])
                                         ->label('Edisi Cetakan')
                                         ->required(),
                                     Forms\Components\TextInput::make('subjek')
@@ -208,7 +208,7 @@ class MonografResource extends Resource
                     ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('cetakanEdisi')
-                    ->label('Edisi Cetakan')
+                    ->label('Cetakan Edisi')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap(),

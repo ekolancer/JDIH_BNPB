@@ -215,7 +215,7 @@ class ArtikelResource extends Resource
                         ->color('warning')
                         ->icon('heroicon-o-eye'),
                     Tables\Actions\EditAction::make()
-                        ->modalHeading('Edit Data Peraturan'),
+                        ->modalHeading('Edit Data Artikel'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()

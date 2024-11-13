@@ -30,6 +30,6 @@ class CreateArtikel extends CreateRecord
             ->title('Add successfully')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Data Peraturan berhasil ditambah.');
+            ->body('Data Artikel berhasil ditambah.');
     }
 }
