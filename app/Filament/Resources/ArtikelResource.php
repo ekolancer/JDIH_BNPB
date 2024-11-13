@@ -14,8 +14,6 @@ use Ramsey\Uuid\Type\Integer;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
-use function Laravel\Prompts\select;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
 use Filament\Support\Enums\Alignment;
 
@@ -36,7 +34,6 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Enums\VerticalAlignment;
 use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\ArtikelResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ArtikelResource extends Resource
 {

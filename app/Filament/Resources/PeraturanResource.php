@@ -20,7 +20,6 @@ use Filament\Support\Enums\Alignment;
 
 
 use Illuminate\Support\Facades\Blade;
-use function Laravel\Prompts\textarea;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -35,7 +34,6 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Enums\VerticalAlignment;
 use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\PeraturanResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PeraturanResource\RelationManagers;
 
 class PeraturanResource extends Resource
