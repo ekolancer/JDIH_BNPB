@@ -46,6 +46,11 @@ class ArtikelResource extends Resource
 
     protected static ?string $label = 'Artikel';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static ?string $navigationLabel = 'Artikel'; // Memberikan Label Navigasi
 
     protected static function getYearsOptions(): array

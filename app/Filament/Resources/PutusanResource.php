@@ -46,6 +46,11 @@ class PutusanResource extends Resource
 
     protected static ?string $label = 'Putusan';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static ?string $navigationLabel = 'Putusan'; // Memberikan Label Navigasi
 
     protected static function getYearsOptions(): array

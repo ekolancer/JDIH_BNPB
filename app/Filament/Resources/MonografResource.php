@@ -44,6 +44,11 @@ class MonografResource extends Resource
     protected static ?string $navigationGroup = 'Dokumen Hukum';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static ?string $label = 'Monograf';
 
     protected static ?string $navigationLabel = 'Monograf'; // Memberikan Label Navigasi

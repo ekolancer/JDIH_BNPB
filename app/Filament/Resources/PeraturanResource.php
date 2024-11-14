@@ -48,6 +48,11 @@ class PeraturanResource extends Resource
 
     protected static ?string $label = 'Peraturan';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static ?string $navigationLabel = 'Peraturan'; // Memberikan Label Navigasi
 
     protected static function getYearsOptions(): array
