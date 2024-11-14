@@ -82,6 +82,9 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 \Hasnayeen\Themes\ThemesPlugin::make()
-            );;
+            )
+            ->resources([
+                config('filament-logger.activity_resource')
+            ]);
     }
 }
