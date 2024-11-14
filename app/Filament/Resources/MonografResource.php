@@ -42,6 +42,7 @@ class MonografResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $label = 'Monograf';
 
@@ -185,7 +186,7 @@ class MonografResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('jenisDok')
-                    ->label('JENIS Monograf')
+                    ->label('Jenis Monograf')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()

@@ -42,6 +42,7 @@ class ArtikelResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $label = 'Artikel';
 
