@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -42,6 +43,11 @@ class UserResource extends Resource
                     ->label('Masukan Email')
                     ->validationMessages(['required' => 'Email Penggunan tidak boleh kosong !'])
                     ->required(),
+                Select::make('roles')
+                    ->label('Roles')
+                    ->relationship('roles', 'name')
+                    ->validationMessages(['required' => 'Roles harus ditentukan !'])
+                    ->required(),
                 TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
@@ -57,15 +63,25 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Nama User')
-                    ->alignment(Alignment::Start)
+                    ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('email')
                     ->label('Email User')
-                    ->alignment(Alignment::Start)
+                    ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
-                
+                TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    TextColumn::make('updated_at')
+                    ->label('Last Update')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->dateTime(),
+
             ])
             ->filters([
                 //
