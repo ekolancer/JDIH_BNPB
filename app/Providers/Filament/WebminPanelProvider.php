@@ -53,6 +53,7 @@ class WebminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -78,6 +79,9 @@ class WebminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Dokumen Hukum',
                 'User Management',
-            ]);
+            ])
+            ->plugin(
+                \Hasnayeen\Themes\ThemesPlugin::make()
+            );;
     }
 }
