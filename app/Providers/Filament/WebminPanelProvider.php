@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\Login;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -27,7 +28,7 @@ class WebminPanelProvider extends PanelProvider
             ->default()
             ->id('webmin')
             ->path('webmin')
-            ->login()
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -42,7 +43,9 @@ class WebminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->brandLogo(asset('img/logo.png'))
             ->brandName('JDIH BNPB')
+            ->brandLogoHeight('5rem')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
