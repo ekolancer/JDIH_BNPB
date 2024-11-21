@@ -9,11 +9,7 @@
             }
         }, 1);
     };
-    spinner();
-    
-    
-    // Initiate the wowjs
-    new WOW().init();
+    spinner(0);
 
 
     // Sticky Navbar
@@ -24,71 +20,114 @@
             $('.navbar').removeClass('sticky-top shadow-sm');
         }
     });
-    
-    
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
-    });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
-    });
 
 
-    // Skills
-    $('.skill').waypoint(function () {
-        $('.progress .progress-bar').each(function () {
-            $(this).css("width", $(this).attr("aria-valuenow") + '%');
-        });
-    }, {offset: '80%'});
-
-
-    // Facts counter
-    $('[data-toggle="counter-up"]').counterUp({
-        delay: 10,
-        time: 2000
-    });
-
-
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
+    // International Tour carousel
+    $(".InternationalTour-carousel").owlCarousel({
         autoplay: true,
         smartSpeed: 1000,
-        margin: 25,
-        dots: false,
+        center: false,
+        dots: true,
         loop: true,
-        nav : true,
+        margin: 25,
+        nav : false,
         navText : [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
+            '<i class="bi bi-arrow-left"></i>',
+            '<i class="bi bi-arrow-right"></i>'
         ],
+        responsiveClass: true,
         responsive: {
             0:{
                 items:1
             },
+            768:{
+                items:2
+            },
             992:{
                 items:2
+            },
+            1200:{
+                items:3
             }
         }
     });
 
 
-    // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
+    // packages carousel
+    $(".packages-carousel").owlCarousel({
+        autoplay: true,
+        smartSpeed: 1000,
+        center: false,
+        dots: false,
+        loop: true,
+        margin: 25,
+        nav : true,
+        navText : [
+            '<i class="bi bi-arrow-left"></i>',
+            '<i class="bi bi-arrow-right"></i>'
+        ],
+        responsiveClass: true,
+        responsive: {
+            0:{
+                items:1
+            },
+            768:{
+                items:2
+            },
+            992:{
+                items:2
+            },
+            1200:{
+                items:3
+            }
+        }
     });
-    $('#portfolio-flters li').on('click', function () {
-        $("#portfolio-flters li").removeClass('active');
-        $(this).addClass('active');
 
-        portfolioIsotope.isotope({filter: $(this).data('filter')});
+
+    // testimonial carousel
+    $(".testimonial-carousel").owlCarousel({
+        autoplay: true,
+        smartSpeed: 1000,
+        center: true,
+        dots: true,
+        loop: true,
+        margin: 25,
+        nav : true,
+        navText : [
+            '<i class="bi bi-arrow-left"></i>',
+            '<i class="bi bi-arrow-right"></i>'
+        ],
+        responsiveClass: true,
+        responsive: {
+            0:{
+                items:1
+            },
+            768:{
+                items:2
+            },
+            992:{
+                items:2
+            },
+            1200:{
+                items:3
+            }
+        }
     });
+
     
+   // Back to top button
+   $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+        $('.back-to-top').fadeIn('slow');
+    } else {
+        $('.back-to-top').fadeOut('slow');
+    }
+    });
+    $('.back-to-top').click(function () {
+        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        return false;
+    }); 
+    
+
 })(jQuery);
 

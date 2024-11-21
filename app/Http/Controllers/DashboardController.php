@@ -29,4 +29,5 @@ class DashboardController extends Controller
         // Mengirim data ke view
         return view('index', compact('data'));
     }
+
 }
