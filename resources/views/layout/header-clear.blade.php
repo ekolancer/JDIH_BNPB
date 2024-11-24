@@ -31,43 +31,81 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <style>
-        .navbar-custom {
-            background-color: #0052cc;
-            padding: 10px 20px;
-        }
-        .navbar-custom .navbar-brand, .navbar-custom .nav-link {
-            color: white;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-        }
-        .search-bar input {
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-            border-right: none;
-        }
-        .search-bar button {
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-            background-color: #ffcc00;
-            border: none;
-        }
-        .search-bar button i {
-            color: white;
-        }
-        .btn-group-custom {
-            margin-top: 10px;
-        }
-    </style>
-</head>
+
+    <head>
+        <style>
+            .navbar-custom {
+                background-color: #0052cc;
+                padding: 10px 20px;
+            }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: white;
+            }
+
+            .search-bar {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-bar input {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                border-right: none;
+            }
+
+            .search-bar button {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background-color: #ffcc00;
+                border: none;
+            }
+
+            .search-bar button i {
+                color: white;
+            }
+
+            .btn-group-custom {
+                margin-top: 10px;
+            }
+
+            /* Prevent navbar from overlapping the hero section */
+            .hero-section {
+                padding-top: 120px;
+                /* Adjust to the height of the navbar */
+                background-color: #f8f9fa;
+            }
+
+            /* Styling for Breadcrumb */
+            .breadcrumb {
+                background-color: transparent;
+                margin-top: 20px;
+                /* Give space from the navbar/hero */
+            }
+
+            .breadcrumb-item+.breadcrumb-item::before {
+                content: "›";
+                /* Use custom separator for the breadcrumb */
+            }
+
+            .breadcrumb-item a {
+                color: #0052cc;
+                /* Link color */
+                text-decoration: none;
+            }
+
+            .breadcrumb-item a:hover {
+                text-decoration: underline;
+                /* Hover effect */
+            }
+        </style>
+    </head>
 
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -78,68 +116,55 @@
     <div class="container-fluid position-relative p-0">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-            <a href="#" class="navbar-brand d-flex p-0">
-                <img src="img/jdihn.png" alt="Logo">
-                <img src="img/bnpb.png" alt="Logo">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img src="img/jdihn.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="img/bnpb.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <div class="d-flex flex-column">
+                    <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
+                    <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->
+                </div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="/" class="nav-item nav-link active">Home</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</a>
                         <div class="dropdown-menu m-0">
-                            <a href="destination.html" class="dropdown-item">Sekilah Sejarah</a>
-                            <a href="tour.html" class="dropdown-item">Dasar Hukum</a>
-                            <a href="booking.html" class="dropdown-item">Visi Misi</a>
-                            <a href="gallery.html" class="dropdown-item">Struktur Organisasi</a>
+                            <a href="#" class="dropdown-item">Sekilah Sejarah</a>
+                            <a href="#" class="dropdown-item">Dasar Hukum</a>
+                            <a href="#" class="dropdown-item">Visi Misi</a>
+                            <a href="#" class="dropdown-item">Struktur Organisasi</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jenis Dokumen</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('peraturan.index')}}" class="dropdown-item">Peraturan</a>
-                            <a href="tour.html" class="dropdown-item">Monografi</a>
-                            <a href="booking.html" class="dropdown-item">Artikel</a>
-                            <a href="gallery.html" class="dropdown-item">Putusan</a>
+                            <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
+                            <a href="#" class="dropdown-item">Monografi</a>
+                            <a href="#" class="dropdown-item">Artikel</a>
+                            <a href="#" class="dropdown-item">Putusan</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
                         <div class="dropdown-menu m-0">
-                            <a href="destination.html" class="dropdown-item">Berita</a>
-                            <a href="tour.html" class="dropdown-item">Infografis</a>
+                            <a href="#" class="dropdown-item">Berita</a>
+                            <a href="#" class="dropdown-item">Infografis</a>
                         </div>
                     </div>
                 </div>
             </div>
         </nav>
-    </div>
-    <!-- Navbar & Hero End -->
+        <!-- Navbar End -->
 
-    <nav class="navbar navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Dokumen Hukum / Peraturan</a>
-            <form class="d-flex search-bar">
-                <input class="form-control me-2" type="search" placeholder="Ketik kata kunci pencarian" aria-label="Search">
-                <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-    </nav>
-    <div class="container-fluid">
-        <div class="row mt-3">
-            <div class="col-md-6 d-flex justify-content-start">
-                <button class="btn btn-outline-secondary me-2"><i class="fas fa-filter"></i> Pencarian Lanjutan</button>
-                <button class="btn btn-outline-secondary"><i class="fas fa-microphone"></i> Pencarian menggunakan Suara</button>
+        <!-- Hero Image Start -->
+        <div class="hero-image-container" style="background-image: url('img/headerhero.jpg'); background-size: cover; background-position: center; height: 20vh; position: relative;">
+            <div class="container h-100 d-flex justify-content-center align-items-center">
+                <div class="row w-100"></div>
             </div>
-            <div class="col-md-6 d-flex justify-content-end align-items-center">
-                <span class="me-2">Terdapat 4.552 data</span>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary"><i class="fas fa-th"></i></button>
-                    <button type="button" class="btn btn-outline-secondary"><i class="fas fa-th-list"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
+        <!-- Hero Image End -->
+
+</body>

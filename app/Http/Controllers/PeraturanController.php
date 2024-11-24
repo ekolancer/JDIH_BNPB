@@ -10,59 +10,46 @@ class PeraturanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dokumen = Peraturan::paginate(12);
+        // Ambil input pencarian dari form
+        $judul = $request->input('judul');
+        $tipeDok = $request->input('tipeDok');
+        $nomor = $request->input('nomor');
+        $tahun = $request->input('tahun');
+        $status = $request->input('status');
 
-        // Kirim data ke view tanpa diubah ke array
-        return view('peraturan.list', compact('dokumen'));
-    }
+        // Query builder untuk pencarian
+        $query = Peraturan::query();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Filter berdasarkan input
+        if ($judul) {
+            $query->where('judul', 'LIKE', '%' . $judul . '%');
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($tipeDok) {
+            $query->where('tipeDok', $tipeDok);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if ($nomor) {
+            $query->where('nomor', 'LIKE', '%' . $nomor . '%');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if ($tahun) {
+            $query->whereYear('created_at', $tahun);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        if ($status) {
+            $query->where('status', strtoupper($status));
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Ambil data hasil pencarian atau seluruh data jika filter kosong
+        $dokumen = $query->paginate(10);
+
+        // Ambil daftar tipeDok unik dari tabel peraturan
+        $tipeDokOptions = Peraturan::select('tipeDok')->distinct()->pluck('tipeDok');
+
+        // Kirim data ke view
+        return view('peraturan.list', compact('dokumen', 'tipeDokOptions'));
     }
 }
