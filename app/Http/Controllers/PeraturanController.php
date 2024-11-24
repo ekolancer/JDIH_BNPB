@@ -52,4 +52,23 @@ class PeraturanController extends Controller
         // Kirim data ke view
         return view('peraturan.list', compact('dokumen', 'tipeDokOptions'));
     }
+
+    public function show($judul)
+    {
+        // Mengambil data peraturan berdasarkan judul
+        $peraturan = Peraturan::where('judul', $judul)->firstOrFail();
+
+        // Tentukan path file lampiran
+        $fileLampiranPath = storage_path('app/public/' . $peraturan->lampiran);
+
+        // Cek apakah file ada, kemudian hitung ukuran file
+        $fileSize = file_exists($fileLampiranPath) ? filesize($fileLampiranPath) : 0;
+
+        // Mengkonversi ukuran file menjadi KB atau MB untuk tampilan
+        $fileSizeInKb = $fileSize / 1024; // Ukuran dalam KB
+        $fileSizeInMb = $fileSizeInKb / 1024; // Ukuran dalam MB
+
+
+        return view('peraturan.detail', compact('peraturan', 'fileSizeInKb', 'fileSizeInMb'));
+    }
 }

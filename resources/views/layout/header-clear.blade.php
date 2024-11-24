@@ -20,17 +20,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/lightbox/css/lightbox.min.css" rel="stylesheet') }}">
 
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <head>
         <style>
@@ -117,8 +117,8 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand d-flex align-items-center">
-                <img src="img/jdihn.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <img src="img/bnpb.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/bnpb.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <div class="d-flex flex-column">
                     <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
                     <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->
@@ -161,10 +161,10 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Start -->
-        <div class="hero-image-container" style="background-image: url('img/headerhero.jpg'); background-size: cover; background-position: center; height: 20vh; position: relative;">
-            <div class="container h-100 d-flex justify-content-center align-items-center">
-                <div class="row w-100"></div>
-            </div>
+        <div class="hero-image-container"></div>
+        <div class="container h-100 d-flex justify-content-center align-items-center">
+            <div class="row w-100"></div>
+        </div>
         <!-- Hero Image End -->
 
 </body>

@@ -20,15 +20,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <style>
         .advanced-filters {
             display: none;
@@ -72,8 +72,8 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand d-flex align-items-center">
-                <img src="img/jdihn.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <img src="img/bnpb.png" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/bnpb.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <div class="d-flex flex-column">
                     <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
                     <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->

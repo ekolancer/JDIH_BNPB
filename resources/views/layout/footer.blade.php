@@ -5,9 +5,9 @@
                     <!-- Kolom pertama: Logo dan paragraf -->
                     <div class="col-md-6 col-lg-6 col-xl-3 d-flex flex-column">
                         <div class="logo-container d-flex justify-content-start mb-4">
-                            <img src="img/jdihn.png" alt="logo_jdihn"
+                            <img src="{{ asset('img/jdihn.png') }}" alt="logo_jdihn"
                                 style="height: 80px; width: 80px; margin-right: 15px;">
-                            <img src="img/bnpb.png" alt="logo_bnpb" style="height: 80px; width: 80px;">
+                            <img src="{{ asset('img/bnpb.png') }}" alt="logo_bnpb" style="height: 80px; width: 80px;">
                         </div>
                         <div class="content-container mt-auto">
                             <p class="mb-4" style="text-align: justify; color: #E0E0E0;">
@@ -101,14 +101,14 @@
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/waypoints/waypoints.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="lib/lightbox/js/lightbox.min.js"></script>
+        <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+        <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>
 
 
         <!-- Template Javascript -->
-        <script src="js/main.js"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
         <script src="https://static.elfsight.com/platform/platform.js" async></script>
 
         <script>

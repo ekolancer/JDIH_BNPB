@@ -454,6 +454,15 @@
     }
 }
 
+.hero-image-container {
+    background-image: url('/img/headerhero.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 20vh;
+    position: relative;
+}
+
+
 
 /*** Carousel Hero Header End ***/
 
@@ -469,8 +478,9 @@
 }
 
 .bg-breadcrumb .breadcrumb-item a {
-    color: var(--bs-secondary) !important;
+    color: var(--bs-white) !important;
 }
+
 
 /*** Single Page Hero Header End ***/
 
