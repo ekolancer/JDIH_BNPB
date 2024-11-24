@@ -75,7 +75,7 @@
                         </a>
                     </div>
                     <div class="col-12">
-                        <a href="{{ route('peraturan.index') }}" class="text-decoration-none">
+                        <a href="{{ route('monograf.index') }}" class="text-decoration-none">
                             <div
                                 class="service-content-inner d-flex align-items-center  bg-white border border-primary rounded p-4 pe-0">
                                 <div class="service-content text-end">

@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="container mt-2" style="padding: 50px;">
-    <!-- Title "Daftar Peraturan" in the center -->
-    <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Peraturan</h2>
+    <!-- Title "Daftar monograf" in the center -->
+    <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Monograf</h2>
 
     <div class="row">
         <!-- Kolom Filter -->
@@ -12,7 +12,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Filter</h5>
-                    <form method="GET" action="{{ route('peraturan.index') }}">
+                    <form method="GET" action="{{ route('monograf.index') }}">
                         <!-- Judul -->
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
@@ -33,30 +33,26 @@
 
                         <!-- Nomor -->
                         <div class="mb-3">
-                            <label for="nomor" class="form-label">Nomor</label>
-                            <input type="text" id="nomor" name="nomor" class="form-control" placeholder="Masukkan nomor">
+                            <label for="nomorPanggil" class="form-label">Nomor Panggil</label>
+                            <input type="text" id="nomorPanggil" name="nomorPanggil" class="form-control" placeholder="Masukkan nomor panggil">
                         </div>
 
                         <!-- Tahun -->
                         <div class="mb-3">
-                            <label for="tahun" class="form-label">Tahun</label>
-                            <input type="number" id="tahun" name="tahun" class="form-control" placeholder="Masukkan tahun">
+                            <label for="tahunTerbit" class="form-label">Tahun Terbit</label>
+                            <input type="number" id="tahunTerbit" name="tahunTerbit" class="form-control" placeholder="Masukkan tahun terbit">
                         </div>
 
-                        <!-- Status -->
+                        <!-- Penerbit -->
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select id="status" name="status" class="form-select">
-                                <option value="">Pilih Status</option>
-                                <option value="Berlaku">Berlaku</option>
-                                <option value="Tidak Berlaku">Tidak Berlaku</option>
-                            </select>
+                            <label for="penerbit" class="form-label">Penerbit</label>
+                            <input type="text" id="penerbit" name="penerbit" class="form-control" placeholder="Masukkan nama penerbit">
                         </div>
 
                         <!-- Tombol Filter -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">Cari</button>
-                            <a href="{{ route('peraturan.index') }}" class="btn btn-warning">Reset</a>
+                            <a href="{{ route('monograf.index') }}" class="btn btn-warning">Reset</a>
                         </div>
                     </form>
                 </div>
@@ -66,7 +62,7 @@
         <!-- Kolom Daftar Dokumen -->
         <div class="col-md-8">
             <div class="row">
-                @forelse ($dokumen as $peraturan)
+                @forelse ($dokumen as $monograf)
                 <div class="col-12 mb-3">
                     <!-- Card Dokumen -->
                     <div class="card shadow-lg border-0 zoom-card">
@@ -80,15 +76,15 @@
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
-                                        {{ $peraturan->tipeDok }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
+                                        {{ $monograf->tipeDok }}
                                     </h5>
                                     <p class="card-text mb-3 text-muted">
-                                        {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}
+                                        {{ $monograf->judul ?? 'Tidak ada deskripsi.' }}
                                     </p>
                                 </div>
                                 <!-- Status -->
-                                <div class="badge {{ $peraturan->status === 'BERLAKU' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $peraturan->status }}
+                                <div class="badge {{ $monograf->status === 'BERLAKU' ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $monograf->status }}
                                 </div>
                             </div>
 
@@ -97,13 +93,13 @@
                                 <div>
                                     <small class="text-muted">
                                         <i class="far fa-calendar-alt me-1"></i>
-                                        Dibuat pada: {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                        Dibuat pada: {{ \Carbon\Carbon::parse($monograf->created_at)->format('d F Y') }}
                                     </small>
                                 </div>
 
                                 <!-- Tombol aksi -->
                                 <div class="d-flex">
-                                    <a href="{{ route('peraturan.show', $peraturan->judul) }}" class="btn btn-primary btn-sm me-2">
+                                    <a href="{{ route('monograf.show', $monograf->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
                                     <a href="#" class="btn btn-secondary btn-sm">
@@ -117,7 +113,7 @@
                 @empty
                 <div class="col-12">
                     <div class="alert alert-warning text-center">
-                        Tidak ada data peraturan ditemukan.
+                        Tidak ada data monograf$monograf ditemukan.
                     </div>
                 </div>
                 @endforelse

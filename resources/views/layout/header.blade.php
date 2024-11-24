@@ -98,7 +98,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jenis Dokumen</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
-                            <a href="#" class="dropdown-item">Monografi</a>
+                            <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
                             <a href="#" class="dropdown-item">Artikel</a>
                             <a href="#" class="dropdown-item">Putusan</a>
                         </div>

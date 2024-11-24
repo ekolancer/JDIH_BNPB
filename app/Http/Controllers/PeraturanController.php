@@ -36,7 +36,7 @@ class PeraturanController extends Controller
         }
 
         if ($tahun) {
-            $query->whereYear('created_at', $tahun);
+            $query->whereYear('tahun', $tahun);
         }
 
         if ($status) {
