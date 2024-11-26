@@ -2,6 +2,28 @@
 
 @section('content')
 
+<style>
+    /* Gaya untuk gambar dengan rounded edges dan shadow */
+    .rounded-shadow {
+        border-radius: 10px;
+        /* Membuat sudut membulat */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        /* Menambahkan shadow */
+        object-fit: cover;
+        /* Memastikan gambar terlihat proporsional */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* Animasi hover */
+    }
+
+    /* Efek hover untuk gambar */
+    .rounded-shadow:hover {
+        transform: scale(1.05);
+        /* Membesarkan gambar sedikit */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        /* Shadow lebih dalam saat hover */
+    }
+</style>
+
 <div class="container mt-2" style="padding: 50px;">
     <!-- Title "Daftar monograf" in the center -->
     <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Monograf</h2>
@@ -20,9 +42,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="tipeDok" class="form-label">Tipe Dokumen</label>
+                            <label for="tipeDok" class="form-label">Jenis Monograf</label>
                             <select id="tipeDok" name="tipeDok" class="form-select">
-                                <option value="">Pilih Tipe Dokumen</option>
+                                <option value="">Pilih Jenis Monograf</option>
                                 @foreach($tipeDokOptions as $option)
                                 <option value="{{ $option }}" {{ request('tipeDok') == $option ? 'selected' : '' }}>
                                     {{ $option }}
@@ -33,8 +55,8 @@
 
                         <!-- Nomor -->
                         <div class="mb-3">
-                            <label for="nomorPanggil" class="form-label">Nomor Panggil</label>
-                            <input type="text" id="nomorPanggil" name="nomorPanggil" class="form-control" placeholder="Masukkan nomor panggil">
+                            <label for="isbn" class="form-label">ISBN / ISSN</label>
+                            <input type="text" id="isbn" name="isbn" class="form-control" placeholder="Masukkan nomor isbn">
                         </div>
 
                         <!-- Tahun -->
@@ -60,7 +82,7 @@
         </div>
 
         <!-- Kolom Daftar Dokumen -->
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="row">
                 @forelse ($dokumen as $monograf)
                 <div class="col-12 mb-3">
@@ -71,20 +93,22 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
                                 <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px"><!-- Icon file -->
+                                    <img
+                                        src="{{ asset('storage/' . $monograf->lampiran) }}"
+                                        alt="Gambar Lampiran"
+                                        class="rounded-shadow"
+                                        height="240px"
+                                        width="200px" />
+                                    <!-- Icon file -->
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
-                                        {{ $monograf->tipeDok }}
+                                        {{ $monograf->judul }}
                                     </h5>
                                     <p class="card-text mb-3 text-muted">
                                         {{ $monograf->judul ?? 'Tidak ada deskripsi.' }}
                                     </p>
-                                </div>
-                                <!-- Status -->
-                                <div class="badge {{ $monograf->status === 'BERLAKU' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $monograf->status }}
                                 </div>
                             </div>
 

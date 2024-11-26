@@ -1,5 +1,5 @@
 <!-- Footer Start -->
-<div class="container-fluid footer py-5">
+<div class="container-fluid footer">
             <div class="container py-5">
                 <div class="row g-5">
                     <!-- Kolom pertama: Logo dan paragraf -->
@@ -67,7 +67,7 @@
         <!-- Footer End -->
 
         <!-- Copyright Start -->
-        <div class="container-fluid copyright text-body py-2" style="background-color: #1a1a1a;">
+        <div class="container-fluid copyright text-body" style="background-color: #1a1a1a;">
             <div class="container text-center">
                 <div class="row g-2 align-items-center">
                     <!-- Kolom 1: Hak Cipta -->

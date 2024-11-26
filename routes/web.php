@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ArtikelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MonografController;
 use App\Http\Controllers\PeraturanController;
+use App\Http\Controllers\PutusanController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -16,9 +18,9 @@ Route::get('/monograf', [MonografController::class, 'index'])->name('monograf.in
 Route::get('/monograf/{judul}', [MonografController::class, 'show'])->name('monograf.show');
 
 //Route Artikel
-Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
-Route::get('/peraturan/{judul}', [PeraturanController::class, 'show'])->name('peraturan.show');
+Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
+Route::get('/artikel/{judul}', [ArtikelController::class, 'show'])->name('artikel.show');
 
 //Route Putusan
-Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
-Route::get('/peraturan/{judul}', [PeraturanController::class, 'show'])->name('peraturan.show');
+Route::get('/putusan', [PutusanController::class, 'index'])->name('putusan.index');
+Route::get('/putusan/{judul}', [PutusanController::class, 'show'])->name('putusan.show');

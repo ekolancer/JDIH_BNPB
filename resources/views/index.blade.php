@@ -123,7 +123,7 @@
                         </a>
                     </div>
                     <div class="col-12">
-                        <a href="{{ route('peraturan.index') }}" class="text-decoration-none">
+                        <a href="{{ route('putusan.index') }}" class="text-decoration-none">
                             <div
                                 class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
                                 <div class="service-icon p-4">
@@ -263,6 +263,7 @@
             </div>
         </div>
     </div>
+</div>
     <!-- Explore Tour Start -->
 
     <!-- Packages Start -->

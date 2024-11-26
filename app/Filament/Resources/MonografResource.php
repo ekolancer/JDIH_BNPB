@@ -168,7 +168,7 @@ class MonografResource extends Resource
                                 ->directory('lampiran')
                                 ->visibility('public')
                                 ->preserveFilenames()
-                                ->acceptedFileTypes(['application/pdf'])
+                                ->image()
                                 ->validationMessages(['required' => 'Lampiran tidak boleh kosong !'])
                                 ->maxSize(10240)
                                 ->required(),
@@ -229,7 +229,7 @@ class MonografResource extends Resource
                     ->label('LAMPIRAN')
                     ->wrap()
                     ->formatStateUsing(fn($state) => $state
-                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
+                        ? "<a href='" . Storage::url('' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
                         : 'Tidak ada lampiran')
                     ->html(),
             ])

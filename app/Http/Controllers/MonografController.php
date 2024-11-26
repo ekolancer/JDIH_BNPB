@@ -12,7 +12,7 @@ class MonografController extends Controller
         // Ambil input pencarian dari form
         $judul = $request->input('judul');
         $tipeDok = $request->input('tipeDok');
-        $nomorPanggil = $request->input('nomorPanggil');
+        $isbn = $request->input('isbn');
         $tahunTerbit = $request->input('tahunTerbit');
         $penerbit = $request->input('penerbit');
 
@@ -28,8 +28,8 @@ class MonografController extends Controller
             $query->where('tipeDok', $tipeDok);
         }
 
-        if ($nomorPanggil) {
-            $query->where('nomorPanggil', 'LIKE', '%' . $nomorPanggil . '%');
+        if ($isbn) {
+            $query->where('isbn', 'LIKE', '%' . $isbn . '%');
         }
 
         if ($tahunTerbit) {

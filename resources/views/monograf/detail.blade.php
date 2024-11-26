@@ -89,6 +89,7 @@
         text-align: center;
         padding: 10px;
         margin: 20px auto;
+        margin-top: 0;
     }
 
     .card-status .header {
@@ -173,12 +174,20 @@
                             <th class="table-primary">Keterangan</th>
                         </tr>
                         <tr>
+                            <th>Judul Monografi</th>
+                            <td>{{ $monograf->jenisDok }}</td>
+                        </tr>
+                        <tr>
                             <th>Judul</th>
                             <td>{{ $monograf->judul }}</td>
                         </tr>
                         <tr>
                             <th>Tahun Terbit</th>
                             <td>{{ $monograf->tahunTerbit }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cetakan / Edisi</th>
+                            <td>{{ $monograf->cetakanEdisi }}</td>
                         </tr>
                         <tr>
                             <th>Tempat Terbit</th>
@@ -189,10 +198,6 @@
                             <td>{{ $monograf->penerbit }}</td>
                         </tr>
                         <tr>
-                            <th>Nomor Induk Buku</th>
-                            <td>{{ $monograf->nomorIndukBuku }}</td>
-                        </tr>
-                        <tr>
                             <th>Deskripsi Fisik</th>
                             <td>{{ $monograf->deskripsiFisik }}</td>
                         </tr>
@@ -201,32 +206,32 @@
                             <td>{{ $monograf->bidangHukum }}</td>
                         </tr>
                         <tr>
-                            <th>Nomor Panggil</th>
-                            <td>{{ $monograf->noPanggil }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cetakan / Edisi</th>
-                            <td>{{ $monograf->cetakanEdisi }}</td>
-                        </tr>
-                        <tr>
-                            <th>Subjek</th>
-                            <td>{{ $monograf->subjek }}</td>
-                        </tr>
-                        <tr>
                             <th>ISBN / ISSN</th>
                             <td>{{ $monograf->isbn }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nomor Panggil</th>
+                            <td>{{ $monograf->nomorPanggil }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nomor Induk Buku</th>
+                            <td>{{ $monograf->nomorIndukBuku }}</td>
                         </tr>
                         <tr>
                             <th>Bahasa</th>
                             <td>{{ $monograf->bahasa }}</td>
                         </tr>
                         <tr>
-                            <th>Lokasi</th>
+                            <th>Lokasi Buku</th>
                             <td>{{ $monograf->lokasi }}</td>
                         </tr>
                         <tr>
                             <th>Tajuk Entri Utama (T.E.U)</th>
                             <td>{{ $monograf->teuBadan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Subjek</th>
+                            <td>{{ $monograf->subjek }}</td>
                         </tr>
                         <tr>
                     </tbody>
@@ -245,46 +250,21 @@
                 <div class="content">{{ $monograf->jenisDok }}</div>
             </div>
 
-            <!-- File Lampiran -->
+            <!-- File Cover Buku -->
             <div class="file-card">
-                <h5>File monograf</h5>
+                <h5>Cover Buku</h5>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center align-items-center">
+                    <!-- Menampilkan Gambar -->
                     <a href="{{ asset('storage/' . $monograf->lampiran) }}" target="_blank">
-                        {{ basename($monograf->lampiran) }}
-                    </a>
-                    <a href="{{ asset('storage/' . $monograf->lampiran) }}" target="_blank">
-                        @if($fileSizeInKb < 1000)
-                            <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
-                            @else
-                            <span>{{ number_format($fileSizeInMb, 2) }} MB</span>
-                            @endif
-                            <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="file-card">
-                <h5>File Abstrak</h5>
-                <!-- Garis Pemisah di dalam file-card -->
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ asset('storage/' . $monograf->lampiran) }}" target="_blank">
-                        {{ basename($monograf->lampiran) }}
-                    </a>
-                    <a href="{{ asset('storage/' . $monograf->lampiran) }}" target="_blank">
-                        @if($fileSizeInKb < 1000)
-                            <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
-                            @else
-                            <span>{{ number_format($fileSizeInMb, 2) }} MB</span>
-                            @endif
-                            <i class="fas fa-download"></i>
+                        <img src="{{ asset('storage/' . $monograf->lampiran) }}"
+                            alt="Cover Buku"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
