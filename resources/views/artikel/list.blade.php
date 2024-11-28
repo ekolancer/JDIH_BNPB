@@ -19,24 +19,6 @@
                             <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul">
                         </div>
 
-                        <div class="mb-3">
-                            <label for="tipeDok" class="form-label">Tipe Dokumen</label>
-                            <select id="tipeDok" name="tipeDok" class="form-select">
-                                <option value="">Pilih Tipe Dokumen</option>
-                                @foreach($tipeDokOptions as $option)
-                                <option value="{{ $option }}" {{ request('tipeDok') == $option ? 'selected' : '' }}>
-                                    {{ $option }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Nomor -->
-                        <div class="mb-3">
-                            <label for="nomorPanggil" class="form-label">Nomor Panggil</label>
-                            <input type="text" id="nomorPanggil" name="nomorPanggil" class="form-control" placeholder="Masukkan nomor panggil">
-                        </div>
-
                         <!-- Tahun -->
                         <div class="mb-3">
                             <label for="tahunTerbit" class="form-label">Tahun Terbit</label>
@@ -47,6 +29,12 @@
                         <div class="mb-3">
                             <label for="penerbit" class="form-label">Penerbit</label>
                             <input type="text" id="penerbit" name="penerbit" class="form-control" placeholder="Masukkan nama penerbit">
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="mb-3">
+                            <label for="lokasi" class="form-label">Lokasi</label>
+                            <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="Lokasi">
                         </div>
 
                         <!-- Tombol Filter -->
@@ -71,20 +59,17 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
                                 <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px"><!-- Icon file -->
+                                    <img src="/img/iconartikel.png" alt="" height="50px" width="50px"><!-- Icon file -->
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
-                                        {{ $artikel->tipeDok }}
+                                        {{ $artikel->judul }}
                                     </h5>
                                     <p class="card-text mb-3 text-muted">
-                                        {{ $artikel->judul ?? 'Tidak ada deskripsi.' }}
+                                        <span class="text-muted">Oleh :</span>
+                                        <strong>{{ $artikel->penerbit ?? 'Tidak ada deskripsi.' }}</strong>
                                     </p>
-                                </div>
-                                <!-- Status -->
-                                <div class="badge {{ $artikel->status === 'BERLAKU' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $artikel->status }}
                                 </div>
                             </div>
 
@@ -102,7 +87,7 @@
                                     <a href="{{ route('artikel.show', $artikel->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href="#" class="btn btn-secondary btn-sm">
+                                    <a href=""{{ asset('storage/' . $artikel->lampiran) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

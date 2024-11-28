@@ -69,7 +69,7 @@
         <!-- Copyright Start -->
         <div class="container-fluid copyright text-body" style="background-color: #1a1a1a;">
             <div class="container text-center">
-                <div class="row g-2 align-items-center">
+                <div class="row g-2 align-items-center mt-0 mb-1">
                     <!-- Kolom 1: Hak Cipta -->
                     <div class="col-12">
                         <p class="mb-0 text-white">

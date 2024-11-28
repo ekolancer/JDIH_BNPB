@@ -177,56 +177,44 @@
                             <td>{{ $artikel->judul }}</td>
                         </tr>
                         <tr>
-                            <th>Tahun Terbit</th>
-                            <td>{{ $artikel->tahunTerbit }}</td>
-                        </tr>
-                        <tr>
                             <th>Tempat Terbit</th>
                             <td>{{ $artikel->tempatPenetapan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tahun Terbit</th>
+                            <td>{{ $artikel->tahunTerbit }}</td>
                         </tr>
                         <tr>
                             <th>Penerbit</th>
                             <td>{{ $artikel->penerbit }}</td>
                         </tr>
                         <tr>
-                            <th>Nomor Induk Buku</th>
-                            <td>{{ $artikel->nomorIndukBuku }}</td>
+                            <th>Bahasa</th>
+                            <td>{{ $artikel->bahasa }}</td>
                         </tr>
                         <tr>
-                            <th>Deskripsi Fisik</th>
-                            <td>{{ $artikel->deskripsiFisik }}</td>
+                            <th>Sumber</th>
+                            <td>{{ $artikel->sumber }}</td>
                         </tr>
                         <tr>
                             <th>Bidang Hukum</th>
                             <td>{{ $artikel->bidangHukum }}</td>
                         </tr>
                         <tr>
-                            <th>Nomor Panggil</th>
-                            <td>{{ $artikel->noPanggil }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cetakan / Edisi</th>
-                            <td>{{ $artikel->cetakanEdisi }}</td>
-                        </tr>
-                        <tr>
-                            <th>Subjek</th>
-                            <td>{{ $artikel->subjek }}</td>
-                        </tr>
-                        <tr>
-                            <th>ISBN / ISSN</th>
-                            <td>{{ $artikel->isbn }}</td>
+                            <th>Lokasi</th>
+                            <td>{{ $artikel->lokasi }}</td>
                         </tr>
                         <tr>
                             <th>Bahasa</th>
                             <td>{{ $artikel->bahasa }}</td>
                         </tr>
                         <tr>
-                            <th>Lokasi</th>
-                            <td>{{ $artikel->lokasi }}</td>
-                        </tr>
-                        <tr>
                             <th>Tajuk Entri Utama (T.E.U)</th>
                             <td>{{ $artikel->teuBadan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Subjek</th>
+                            <td>{{ $artikel->subjek }}</td>
                         </tr>
                         <tr>
                     </tbody>
@@ -239,34 +227,10 @@
 
         <!-- File Container -->
         <div class="col-md-3">
-            <!-- Jenis Dokumen -->
-            <div class="card-status">
-                <div class="header">JENIS DOKUMEN</div>
-                <div class="content">{{ $artikel->jenisDok }}</div>
-            </div>
-
+            
             <!-- File Lampiran -->
             <div class="file-card">
                 <h5>File artikel</h5>
-                <!-- Garis Pemisah di dalam file-card -->
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ asset('storage/' . $artikel->lampiran) }}" target="_blank">
-                        {{ basename($artikel->lampiran) }}
-                    </a>
-                    <a href="{{ asset('storage/' . $artikel->lampiran) }}" target="_blank">
-                        @if($fileSizeInKb < 1000)
-                            <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
-                            @else
-                            <span>{{ number_format($fileSizeInMb, 2) }} MB</span>
-                            @endif
-                            <i class="fas fa-download"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="file-card">
-                <h5>File Abstrak</h5>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">

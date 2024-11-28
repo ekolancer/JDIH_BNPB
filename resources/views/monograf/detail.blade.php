@@ -246,7 +246,7 @@
         <div class="col-md-3">
             <!-- Jenis Dokumen -->
             <div class="card-status">
-                <div class="header">JENIS DOKUMEN</div>
+                <div class="header">JENIS MONOGRAFI</div>
                 <div class="content">{{ $monograf->jenisDok }}</div>
             </div>
 

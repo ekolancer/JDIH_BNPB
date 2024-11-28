@@ -19,18 +19,6 @@
                             <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul">
                         </div>
 
-                        <div class="mb-3">
-                            <label for="tipeDok" class="form-label">Tipe Dokumen</label>
-                            <select id="tipeDok" name="tipeDok" class="form-select">
-                                <option value="">Pilih Tipe Dokumen</option>
-                                @foreach($tipeDokOptions as $option)
-                                <option value="{{ $option }}" {{ request('tipeDok') == $option ? 'selected' : '' }}>
-                                    {{ $option }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-
                         <!-- Nomor -->
                         <div class="mb-3">
                             <label for="nomor" class="form-label">Nomor</label>
@@ -43,13 +31,29 @@
                             <input type="number" id="tahun" name="tahun" class="form-control" placeholder="Masukkan tahun">
                         </div>
 
-                        <!-- Status -->
+                        <!-- Pengadilan / Penerbit -->
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select id="status" name="status" class="form-select">
-                                <option value="">Pilih Status</option>
-                                <option value="Berlaku">Berlaku</option>
-                                <option value="Tidak Berlaku">Tidak Berlaku</option>
+                            <label for="penerbit" class="form-label">Pengadilan</label>
+                            <select id="penerbit" name="penerbit" class="form-select">
+                                <option value="">Pilih Pengadilan</option>
+                                @foreach($penerbitOptions as $option)
+                                <option value="{{ $option }}" {{ request('penerbit') == $option ? 'selected' : '' }}>
+                                    {{ $option }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Bidang Hukum -->
+                        <div class="mb-3">
+                            <label for="bidangHukum" class="form-label">Bidang Hukum</label>
+                            <select id="bidangHukum" name="bidangHukum" class="form-select">
+                                <option value="">Pilih Bidang Hukum</option>
+                                @foreach($penerbitOptions as $option)
+                                <option value="{{ $option }}" {{ request('bidangHukum') == $option ? 'selected' : '' }}>
+                                    {{ $option }}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -80,7 +84,7 @@
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
-                                        {{ $putusan->tipeDok }} Nomor {{ $putusan->nomor }} Tahun {{ $putusan->tahun }}
+                                        Putusan {{ $putusan->penerbit }} Nomor {{ $putusan->nomor }}
                                     </h5>
                                     <p class="card-text mb-3 text-muted">
                                         {{ $putusan->judul ?? 'Tidak ada deskripsi.' }}
@@ -106,7 +110,7 @@
                                     <a href="{{ route('putusan.show', $putusan->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href="#" class="btn btn-secondary btn-sm">
+                                    <a href=""{{ asset('storage/' . $putusan->lampiran) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

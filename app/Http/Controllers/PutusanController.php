@@ -44,10 +44,13 @@ class PutusanController extends Controller
         $dokumen = $query->paginate(10);
 
         // Ambil daftar tipeDok unik dari tabel putusan
-        $tipeDokOptions = Putusan::select('tipeDok')->distinct()->pluck('tipeDok');
+        $penerbitOptions = Putusan::select('penerbit')->distinct()->pluck('penerbit');
+
+        // Ambil daftar tipeDok unik dari tabel putusan
+        $bidangHukumOptions = Putusan::select('bidangHukum')->distinct()->pluck('bidangHukum');
 
         // Kirim data ke view
-        return view('putusan.list', compact('dokumen', 'tipeDokOptions'));
+        return view('putusan.list', compact('dokumen', 'penerbitOptions', 'bidangHukumOptions'));
     }
 
     public function show($judul)
