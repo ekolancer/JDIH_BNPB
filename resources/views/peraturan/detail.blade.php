@@ -5,8 +5,6 @@
 <style>
     body {
         background-color: #f8f9fa;
-        padding-top: 20px;
-        padding-bottom: 40px;
         /* Memberikan jarak dengan footer */
     }
 

@@ -7595,6 +7595,10 @@ fieldset:disabled .btn {
     margin-top: 20px;
 }
 
+.hero-items-center {
+    align-items: center !important;
+}
+
 .align-items-baseline {
     align-items: baseline !important
 }

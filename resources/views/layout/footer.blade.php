@@ -69,23 +69,24 @@
         <!-- Copyright Start -->
         <div class="container-fluid copyright text-body" style="background-color: #1a1a1a;">
             <div class="container text-center">
-                <div class="row g-2 align-items-center mt-0 mb-1">
+                <div class="row g-2 align-items-center mt-0 mb-1" style="font-size: smaller;">
                     <!-- Kolom 1: Hak Cipta -->
                     <div class="col-12">
                         <p class="mb-0 text-white">
                             <i class="fas fa-copyright me-2"></i>
-                            <a class="text-white fw-bold" href="#">Badan Nasional Penanggulangan Bencana</a>, All rights
-                            reserved.
+                            <a class="text-white fw-bold" href="/">Badan Nasional Penanggulangan Bencana</a>, All rights
+                            reserved. Designed By
+                            <a class="text-primary fw-bold" href="https://htmlcodex.com" target="_blank">HTML Codex</a>
                         </p>
                     </div>
 
                     <!-- Kolom 2: Desain oleh -->
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <p class="mb-0 text-white">
                             Designed By
                             <a class="text-primary fw-bold" href="https://htmlcodex.com" target="_blank">HTML Codex</a>
                         </p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

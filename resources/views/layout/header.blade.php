@@ -71,7 +71,7 @@
     <div class="container-fluid position-relative p-0">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-            <a href="/" class="navbar-brand d-flex align-items-center">
+            <a href="/" class="navbar-brand d-flex hero-items-center">
                 <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <img src="{{ asset('img/bnpb.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <div class="d-flex flex-column">
@@ -117,7 +117,7 @@
 
         <!-- Hero Image Start -->
         <div class="hero-image-container" style="background-image: url('img/headerhero.jpg'); background-size: cover; background-position: center; height: 70vh; position: relative;">
-            <div class="container h-100 d-flex justify-content-center align-items-center">
+            <div class="container h-100 d-flex justify-content-center hero-items-center">
                 <div class="row w-100">
                     <div class="col-12 text-center">
                         <!-- Search Form -->
