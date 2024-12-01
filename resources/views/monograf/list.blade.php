@@ -93,13 +93,23 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
                                 <div class="align-items-center pb-3 mt-0 me-2">
+                                    @if($monograf->lampiran)
+                                    <!-- Jika ada file lampiran -->
                                     <img
                                         src="{{ asset('storage/' . $monograf->lampiran) }}"
                                         alt="Gambar Lampiran"
                                         class="rounded-shadow"
                                         height="240px"
                                         width="200px" />
-                                    <!-- Icon file -->
+                                    @else
+                                    <!-- Jika tidak ada file lampiran, tampilkan gambar default -->
+                                    <img
+                                        src="{{ asset('img/noimage.png') }}"
+                                        alt="Ikon Default"
+                                        class="rounded-shadow"
+                                        height="240px"
+                                        width="200px" />
+                                    @endif
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
@@ -126,7 +136,7 @@
                                     <a href="{{ route('monograf.show', $monograf->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href=""{{ asset('storage/' . $monograf->lampiran) }}" class="btn btn-secondary btn-sm">
+                                    <a href="" {{ asset('storage/' . $monograf->lampiran) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

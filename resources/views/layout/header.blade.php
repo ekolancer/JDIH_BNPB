@@ -29,30 +29,6 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <style>
-        .advanced-filters {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            /* Transisi untuk efek opacity */
-            border: 2px solid rgba(128, 128, 128, 0.4);
-            /* Border abu-abu transparan */
-            border-radius: 5px;
-            /* Sudut border yang membulat */
-            padding: 15px;
-            /* Padding di dalam border */
-            margin-top: 10px;
-            /* Jarak atas dari elemen sebelumnya */
-            background-color: white;
-            /* Warna latar belakang putih */
-        }
-
-        .advanced-filters.show {
-            display: block;
-            opacity: 1;
-            /* Menampilkan dengan opacity */
-        }
-    </style>
 
 </head>
 
@@ -61,9 +37,7 @@
     <!-- Spinner Start -->
     <div id="spinner"
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
+        <div class="loader"></div>
     </div>
     <!-- Spinner End -->
 
@@ -99,8 +73,8 @@
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
                             <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
-                            <a href="#" class="dropdown-item">Artikel</a>
-                            <a href="#" class="dropdown-item">Putusan</a>
+                            <a href="{{ route('artikel.index') }}" class="dropdown-item">Artikel</a>
+                            <a href="{{ route('putusan.index') }}" class="dropdown-item">Putusan</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -116,7 +90,7 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Start -->
-        <div class="hero-image-container" style="background-image: url('img/headerhero.jpg'); background-size: cover; background-position: center; height: 70vh; position: relative;">
+        <div class="hero-image-container" style="background-image: url('img/headerhero.webP'); background-size: cover; background-position: center; height: 70vh; position: relative;">
             <div class="container h-100 d-flex justify-content-center hero-items-center">
                 <div class="row w-100">
                     <div class="col-12 text-center">
@@ -169,7 +143,7 @@
                 filters.style.display = 'block'; // Set display block before adding class
                 setTimeout(() => {
                     filters.classList.add('show');
-                }, 100); // Delay singkat untuk memicu transisi
+                }, 200); // Delay singkat untuk memicu transisi
             }
         });
     </script>

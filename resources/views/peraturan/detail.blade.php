@@ -112,7 +112,7 @@
 
     /* ******Breadcrumb****** */
     .file-title-section {
-        background-color: #818181;
+        background-color: #0d6efd;
         padding: 2px 0;
         text-align: center;
         margin-bottom: 30px;

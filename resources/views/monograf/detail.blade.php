@@ -5,8 +5,6 @@
 <style>
     body {
         background-color: #f8f9fa;
-        padding-top: 20px;
-        padding-bottom: 40px;
         /* Memberikan jarak dengan footer */
     }
 
@@ -115,7 +113,7 @@
 
     /* ******Breadcrumb****** */
     .file-title-section {
-        background-color: #818181;
+        background-color: #0d6efd;
         padding: 2px 0;
         text-align: center;
         margin-bottom: 30px;

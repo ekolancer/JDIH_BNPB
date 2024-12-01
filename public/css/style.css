@@ -30,6 +30,34 @@
     z-index: 99;
 }
 
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 40px;
+    color: #514b82;
+    border: 2px solid;
+    position: relative;
+    overflow: hidden;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    width: 14px;
+    top: 0;
+    bottom: 0;
+    left: -20px;
+    border-radius: inherit;
+    background: currentColor;
+    box-shadow: -10px 0 12px 3px currentColor;
+    clip-path: polygon(0 5%, 100% 0,100% 100%,0 95%,-30px 50%);
+    animation: l14 1s infinite linear;
+  }
+  @keyframes l14 {
+    100% {left: calc(100% + 20px)}
+  }
+
 /*** Button Start ***/
 .btn {
     font-weight: 600;
@@ -133,6 +161,29 @@
     border: 1px solid var(--bs-primary) !important;
 }
 
+/*** Filter Tabs ***/
+.advanced-filters {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    /* Transisi untuk efek opacity */
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    /* Border abu-abu transparan */
+    border-radius: 5px;
+    /* Sudut border yang membulat */
+    padding: 15px;
+    /* Padding di dalam border */
+    margin-top: 10px;
+    /* Jarak atas dari elemen sebelumnya */
+    background-color: white;
+    /* Warna latar belakang putih */
+}
+
+.advanced-filters.show {
+    display: block;
+    opacity: 1;
+    /* Menampilkan dengan opacity */
+}
 
 /*** Topbar Start ***/
 .fixed-top .container {
@@ -457,7 +508,7 @@
 }
 
 .hero-image-container {
-    background-image: url('/img/headerhero.jpg');
+    background-image: url('/img/headerhero.webP');
     background-size: cover;
     background-position: center;
     height: 20vh;
@@ -1295,7 +1346,7 @@
 /*** Footer Start ***/
 .footer {
     position: relative; /* Pastikan posisi footer diatur ke relative */
-    background: url(../img/header.jpg);
+    background: url(../img/footer.webp);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover; /* Supaya gambar memenuhi area footer */

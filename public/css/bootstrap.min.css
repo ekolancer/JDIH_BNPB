@@ -6808,7 +6808,7 @@ fieldset:disabled .btn {
     border: .25em solid currentColor;
     border-right-color: rgba(0, 0, 0, 0);
     border-radius: 50%;
-    animation: .75s linear infinite spinner-border
+    animation: .35s linear infinite spinner-border
 }
 
 .spinner-border-sm {
@@ -6836,7 +6836,7 @@ fieldset:disabled .btn {
     background-color: currentColor;
     border-radius: 50%;
     opacity: 0;
-    animation: .75s linear infinite spinner-grow
+    animation: .35s linear infinite spinner-grow
 }
 
 .spinner-grow-sm {
@@ -6848,7 +6848,7 @@ fieldset:disabled .btn {
 
     .spinner-border,
     .spinner-grow {
-        animation-duration: 1.5s
+        animation-duration: 1s
     }
 }
 

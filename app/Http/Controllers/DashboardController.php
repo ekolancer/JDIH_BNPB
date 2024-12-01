@@ -23,11 +23,11 @@ class DashboardController extends Controller
             'putusan' => Putusan::count(),
         ];
 
-        // Debugging untuk memastikan data dikirim
-        // dd($data);
+        // Mengambil data terbaru dari tabel peraturan
+        $peraturan = Peraturan::orderBy('created_at', 'desc')->take(6)->get();
 
-        // Mengirim data ke view
-        return view('index', compact('data'));
+        // Mengirimkan data ke view
+        return view('index', compact('data', 'peraturan'));
     }
 
 }
