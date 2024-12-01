@@ -84,6 +84,9 @@ class ArtikelResource extends Resource
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
                                 ->required(),
+                            Forms\Components\TextInput::make('slug')
+                                ->disabled()
+                                ->helperText('Slug dihasilkan otomatis berdasarkan judul'),
                             Forms\Components\TextInput::make('teuBadan')
                                 ->required()
                                 ->validationMessages(['required' => 'T.E.U Badan tidak boleh kosong !'])
@@ -181,6 +184,13 @@ class ArtikelResource extends Resource
                     ->wrap()
                     ->searchable()
                     ->disableClick(), // Menonaktifkan clickable pada list table,
+                TextColumn::make('slug')
+                    ->label('SLUG')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tahunTerbit')
                     ->label('Tahun Terbit')
                     ->alignment(Alignment::Center)

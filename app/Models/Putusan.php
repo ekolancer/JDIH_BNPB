@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,5 +31,17 @@ class Putusan extends Model
         'lampiran',
         'penandatangan',
         'dokumenTerkait',
+        'slug',
     ];
+
+    /**
+     * Konfigurasi slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('judul') // Sumber slug, misalnya dari kolom 'judul'
+            ->saveSlugsTo('slug')       // Target kolom untuk slug
+            ->doNotGenerateSlugsOnUpdate(); // Pilihan jika slug tidak boleh berubah saat data diperbarui
+    }
 }

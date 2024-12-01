@@ -106,7 +106,9 @@
                                     <a href="{{ route('peraturan.show', $peraturan->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href=""{{ asset('storage/' . $peraturan->lampiran) }}" class="btn btn-secondary btn-sm">
+                                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}"
+                                        class="btn btn-secondary btn-sm"
+                                        download="{{ $peraturan->slug }}">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

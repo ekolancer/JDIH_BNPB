@@ -83,6 +83,9 @@ class MonografResource extends Resource
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
                                 ->required(),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->helperText('Slug dihasilkan otomatis berdasarkan judul'),
                             TextInput::make('teuBadan')
                                 ->validationMessages(['required' => 'T.E.U Badan tidak boleh kosong !'])
                                 ->label('T.E.U Badan')
@@ -202,6 +205,13 @@ class MonografResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable(),
+                TextColumn::make('slug')
+                    ->label('SLUG')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
                 TextColumn::make('tahunTerbit')
                     ->label('Tahun Terbit')
                     ->alignment(Alignment::Center)
@@ -213,20 +223,20 @@ class MonografResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('cetakanEdisi')
+                TextColumn::make('cetakanEdisi')
                     ->label('Cetakan Edisi')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap(),
-                Tables\Columns\TextColumn::make('isbn')
+                TextColumn::make('isbn')
                     ->label('ISBN / ISSN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap(),
-                Tables\Columns\TextColumn::make('lampiran')
+                TextColumn::make('lampiran')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->label('LAMPIRAN')
+                    ->label('Cover Buku')
                     ->wrap()
                     ->formatStateUsing(fn($state) => $state
                         ? "<a href='" . Storage::url('' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
@@ -238,7 +248,7 @@ class MonografResource extends Resource
                     ->label('Tahun')
                     ->options(static::getYearsOptions()),
             ])
-            
+
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\Action::make('detail')

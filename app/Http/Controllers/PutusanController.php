@@ -53,10 +53,10 @@ class PutusanController extends Controller
         return view('putusan.list', compact('dokumen', 'penerbitOptions', 'bidangHukumOptions'));
     }
 
-    public function show($judul)
+    public function show($slug)
     {
         // Mengambil data putusan berdasarkan judul
-        $putusan = Putusan::where('judul', $judul)->firstOrFail();
+        $putusan = Putusan::where('judul', $slug)->firstOrFail();
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $putusan->lampiran);

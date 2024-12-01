@@ -53,10 +53,10 @@ class PeraturanController extends Controller
         return view('peraturan.list', compact('dokumen', 'tipeDokOptions'));
     }
 
-    public function show($judul)
+    public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $peraturan = Peraturan::where('judul', $judul)->firstOrFail();
+        $peraturan = Peraturan::where('judul', $slug)->firstOrFail();
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $peraturan->lampiran);

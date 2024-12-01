@@ -50,10 +50,10 @@ class MonografController extends Controller
         return view('monograf.list', compact('dokumen', 'tipeDokOptions'));
     }
 
-    public function show($judul)
+    public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $monograf = Monograf::where('judul', $judul)->firstOrFail();
+        $monograf = Monograf::where('judul', $slug)->firstOrFail();
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $monograf->lampiran);

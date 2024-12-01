@@ -89,6 +89,9 @@ class PeraturanResource extends Resource
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
                                 ->required(),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->helperText('Slug dihasilkan otomatis berdasarkan judul'),
                             TextInput::make('teuBadan')
                                 ->validationMessages(['required' => 'T.E.U Badan tidak boleh kosong !'])
                                 ->label('T.E.U Badan')
@@ -201,6 +204,13 @@ class PeraturanResource extends Resource
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('judul')
                     ->label('JUDUL PERATURAN')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('slug')
+                    ->label('SLUG')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()

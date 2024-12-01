@@ -50,10 +50,10 @@ class ArtikelController extends Controller
         return view('artikel.list', compact('dokumen', 'tipeDokOptions'));
     }
 
-    public function show($judul)
+    public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $artikel = Artikel::where('judul', $judul)->firstOrFail();
+        $artikel = Artikel::where('judul', $slug)->firstOrFail();
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $artikel->lampiran);
