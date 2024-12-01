@@ -171,7 +171,7 @@ class PeraturanResource extends Resource
                         ->schema([
                             FileUpload::make('lampiran')
                                 ->disk('public')
-                                ->directory('lampiran')
+                                ->directory('lampiran/peraturan')
                                 ->visibility('public')
                                 ->preserveFilenames()
                                 ->acceptedFileTypes(['application/pdf'])

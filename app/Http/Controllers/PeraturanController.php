@@ -78,7 +78,7 @@ class PeraturanController extends Controller
     public function download($lampiran)
     {
         // Lokasi file di folder public storage
-        $filePath = 'lampiran/' . $lampiran;
+        $filePath = 'lampiran/peraturan/' . $lampiran;
         
 
         // Cek apakah file ada di storage

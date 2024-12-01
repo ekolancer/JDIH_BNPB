@@ -164,11 +164,11 @@ class MonografResource extends Resource
                                         ->required(),
                                 ])
                         ]),
-                    Wizard\Step::make('Lampiran')
+                    Wizard\Step::make('Cover Buku')
                         ->schema([
                             FileUpload::make('lampiran')
                                 ->disk('public')
-                                ->directory('lampiran')
+                                ->directory('lampiran/monograf')
                                 ->visibility('public')
                                 ->preserveFilenames()
                                 ->image()

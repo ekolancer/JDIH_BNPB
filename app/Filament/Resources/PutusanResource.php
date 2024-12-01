@@ -175,7 +175,7 @@ class PutusanResource extends Resource
                         ->schema([
                             FileUpload::make('lampiran')
                                 ->disk('public')
-                                ->directory('lampiran')
+                                ->directory('lampiran/putusan')
                                 ->visibility('public')
                                 ->preserveFilenames()
                                 ->acceptedFileTypes(['application/pdf'])

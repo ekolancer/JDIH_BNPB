@@ -12,7 +12,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 //Route Peraturan
 Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
 Route::get('/peraturan/{slug}/detail', [PeraturanController::class, 'show'])->name('peraturan.show');
-Route::get('/storage/{lampiran}', [PeraturanController::class, 'download'])->name('peraturan.download');
+Route::get('/storage/{slug}', [PeraturanController::class, 'download'])->name('peraturan.download');
 
 //Route Monograf
 Route::get('/monograf', [MonografController::class, 'index'])->name('monograf.index');
