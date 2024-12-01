@@ -75,7 +75,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
                                 <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px"><!-- Icon file -->
+                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
@@ -91,24 +91,31 @@
                                     {{ $peraturan->status }}
                                 </div>
                             </div>
-
-                            <!-- Informasi tambahan -->
-                            <div class="d-flex justify-content-between align-items-center">
+                        </div>
+                        <!-- Footer -->
+                        <div class="card-footer bg-light border-top">
+                            <div class="d-flex justify-content-between hero-items-center">
+                                <!-- Informasi tambahan -->
                                 <div>
+                                    <small class="text-muted me-3">
+                                        <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
+                                        {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                    </small>
+                                    <small class="text-muted me-3">
+                                        <i class="far fa-eye me-1" style="font-weight: bold;"></i>
+                                        {{ $peraturan->view_count }}x Tayang
+                                    </small>
                                     <small class="text-muted">
-                                        <i class="far fa-calendar-alt me-1"></i>
-                                        Dibuat pada: {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                        <i class="far fa-download me-1" style="font-weight: bold;"></i>
+                                        {{ $peraturan->download_count }}x Unduhan
                                     </small>
                                 </div>
-
                                 <!-- Tombol aksi -->
                                 <div class="d-flex">
-                                    <a href="{{ route('peraturan.show', $peraturan->judul) }}" class="btn btn-primary btn-sm me-2">
+                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}"
-                                        class="btn btn-secondary btn-sm"
-                                        download="{{ $peraturan->slug }}">
+                                    <a href="{{ route('peraturan.download', $peraturan->lampiran) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

@@ -53,7 +53,10 @@ class ArtikelController extends Controller
     public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $artikel = Artikel::where('judul', $slug)->firstOrFail();
+        $artikel = Artikel::where('slug', $slug)->firstOrFail();
+
+        // Tingkatkan view count
+        $artikel->increment('view_count');
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $artikel->lampiran);

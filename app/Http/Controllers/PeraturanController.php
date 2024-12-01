@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peraturan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PeraturanController extends Controller
 {
@@ -56,7 +57,10 @@ class PeraturanController extends Controller
     public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $peraturan = Peraturan::where('judul', $slug)->firstOrFail();
+        $peraturan = Peraturan::where('slug', $slug)->firstOrFail();
+
+        // Tingkatkan view count
+        $peraturan->increment('view_count');
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $peraturan->lampiran);
@@ -68,7 +72,26 @@ class PeraturanController extends Controller
         $fileSizeInKb = $fileSize / 1024; // Ukuran dalam KB
         $fileSizeInMb = $fileSizeInKb / 1024; // Ukuran dalam MB
 
-
         return view('peraturan.detail', compact('peraturan', 'fileSizeInKb', 'fileSizeInMb'));
+    }
+
+    public function download($lampiran)
+    {
+        // Lokasi file di folder public storage
+        $filePath = 'lampiran/' . $lampiran;
+        
+
+        // Cek apakah file ada di storage
+        if (Storage::exists('public/' . $filePath)) {
+            // Tingkatkan download count
+            $peraturan = Peraturan::where('lampiran', $lampiran)->firstOrFail();
+            $peraturan->increment('download_count');
+
+            // Download file dari storage
+            return response()->download(storage_path('app/public/' . $filePath));
+        }
+
+        // Jika file tidak ditemukan
+        return redirect()->back()->with('error', 'File tidak ditemukan.');
     }
 }

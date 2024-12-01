@@ -53,7 +53,10 @@ class MonografController extends Controller
     public function show($slug)
     {
         // Mengambil data peraturan berdasarkan judul
-        $monograf = Monograf::where('judul', $slug)->firstOrFail();
+        $monograf = Monograf::where('slug', $slug)->firstOrFail();
+
+        // Tingkatkan view count
+        $monograf->increment('view_count');
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $monograf->lampiran);

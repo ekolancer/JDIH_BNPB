@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Putusan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PutusanController extends Controller
 {
@@ -56,7 +57,10 @@ class PutusanController extends Controller
     public function show($slug)
     {
         // Mengambil data putusan berdasarkan judul
-        $putusan = Putusan::where('judul', $slug)->firstOrFail();
+        $putusan = Putusan::where('slug', $slug)->firstOrFail();
+
+        // Tingkatkan view count
+        $putusan->increment('view_count');
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $putusan->lampiran);
@@ -70,5 +74,24 @@ class PutusanController extends Controller
 
 
         return view('putusan.detail', compact('putusan', 'fileSizeInKb', 'fileSizeInMb'));
+    }
+
+    public function download($lampiran)
+    {
+        // Lokasi file di folder public storage
+        $filePath = 'lampiran/' . $lampiran;
+
+        // Cek apakah file ada di storage
+        if (Storage::exists('public/' . $filePath)) {
+            // Tingkatkan download count
+            $putusan = Putusan::where('lampiran', $lampiran)->firstOrFail();
+            $putusan->increment('download_count');
+
+            // Download file dari storage
+            return response()->download(storage_path('app/public/' . $filePath));
+        }
+
+        // Jika file tidak ditemukan
+        return redirect()->back()->with('error', 'File tidak ditemukan.');
     }
 }

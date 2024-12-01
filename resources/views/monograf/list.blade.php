@@ -68,45 +68,51 @@
                     <div class="card shadow-lg border-0 zoom-card">
                         <div class="card-body">
                             <!-- Header -->
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
                                 <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-2">
+                                <div class="me-4">
                                     @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
                                     <!-- Jika file lampiran ada di server -->
                                     <img
                                         src="{{ asset('storage/' . $monograf->lampiran) }}"
                                         alt="Gambar Lampiran"
                                         class="rounded-shadow"
-                                        height="240px"
-                                        width="200px" />
+                                        height="200px"
+                                        width="160px" />
                                     @else
                                     <!-- Jika file tidak ada, tampilkan gambar default -->
                                     <img
                                         src="{{ asset('img/noimage.png') }}"
                                         alt="Ikon Default"
                                         class="rounded-shadow"
-                                        height="240px"
-                                        width="200px" />
+                                        height="200px"
+                                        width="160px" />
                                     @endif
                                 </div>
 
                                 <!-- Kolom Tipe Dokumen dan Judul -->
-                                <div class="d-flex flex-column w-100">
-                                    <h5 class="card-title text-primary fw-bold mb-0">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h5 class="card-title text-primary fw-bold mb-2">
                                         {{ $monograf->judul }}
                                     </h5>
-                                    <p class="card-text mb-3 text-muted">
-                                        {{ $monograf->judul ?? 'Tidak ada deskripsi.' }}
+                                    <p class="card-text text-muted mb-0">
+                                        {{ $monograf->deskripsi ?? 'Tidak ada deskripsi.' }}
                                     </p>
                                 </div>
                             </div>
-
-                            <!-- Informasi tambahan -->
-                            <div class="d-flex justify-content-between align-items-center">
+                        </div>
+                        <!-- Footer -->
+                        <div class="card-footer bg-light border-top">
+                            <div class="d-flex justify-content-between hero-items-center">
+                                <!-- Informasi Tanggal -->
                                 <div>
+                                    <small class="text-muted me-3">
+                                        <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
+                                        {{ \Carbon\Carbon::parse($monograf->created_at)->format('d F Y') }}
+                                    </small>
                                     <small class="text-muted">
-                                        <i class="far fa-calendar-alt me-1"></i>
-                                        Dibuat pada: {{ \Carbon\Carbon::parse($monograf->created_at)->format('d F Y') }}
+                                        <i class="far fa-eye me-1" style="font-weight: bold;"></i>
+                                        {{ $monograf->view_count }}x Tayang
                                     </small>
                                 </div>
 
@@ -115,13 +121,17 @@
                                     <a href="{{ route('monograf.show', $monograf->judul) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href="" {{ asset('storage/' . $monograf->lampiran) }}" class="btn btn-secondary btn-sm">
+                                    @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
+                                    <a href="{{ asset('storage/' . $monograf->lampiran) }}" class="btn btn-secondary btn-sm" download="{{ $monograf->judul }}">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
                 @empty
                 <div class="col-12">

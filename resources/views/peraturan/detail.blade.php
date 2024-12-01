@@ -26,8 +26,8 @@
                     <h2>Detail Peraturan</h2>
                     <div class="d-flex">
                         <span class="me-3"><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($peraturan->created_at)->translatedFormat('d F Y') }}</span>
-                        <span class="me-3"><i class="fas fa-eye"></i> 12321 dilihat</span>
-                        <span class="me-3"><i class="fas fa-download"></i> 2912 diunduh</span>
+                        <span class="me-3"><i class="fas fa-eye"></i> {{ $peraturan->view_count }}x dilihat</span>
+                        <span class="me-3"><i class="fas fa-download"></i> {{ $peraturan->download_count }}x diunduh</span>
                     </div>
                 </div>
                 <hr>
@@ -130,7 +130,7 @@
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">
+                    <a href="{{ route('peraturan.download', $peraturan->lampiran) }}" target="_blank">
                         {{ basename($peraturan->lampiran) }}
                     </a>
                     <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">

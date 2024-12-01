@@ -94,7 +94,7 @@
         @foreach ($peraturan as $item)
         <div class="col">
             <!-- Card yang menjadi hyperlink -->
-            <a href="{{ route('peraturan.show', $item->judul) }}" class="card-link">
+            <a href="{{ route('peraturan.show', $item->slug) }}" class="card-link">
                 <div class="card h-100 shadow-lg hover-zoom">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->jenisDok }}</h5>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
-                        <small><i class="fas fa-eye"></i> 10x dilihat</small>
+                        {{ $item->view_count }}x dilihat
                     </div>
                 </div>
             </a>
