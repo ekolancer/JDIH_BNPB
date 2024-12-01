@@ -2,28 +2,6 @@
 
 @section('content')
 
-<style>
-    /* Gaya untuk gambar dengan rounded edges dan shadow */
-    .rounded-shadow {
-        border-radius: 10px;
-        /* Membuat sudut membulat */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        /* Menambahkan shadow */
-        object-fit: cover;
-        /* Memastikan gambar terlihat proporsional */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        /* Animasi hover */
-    }
-
-    /* Efek hover untuk gambar */
-    .rounded-shadow:hover {
-        transform: scale(1.05);
-        /* Membesarkan gambar sedikit */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        /* Shadow lebih dalam saat hover */
-    }
-</style>
-
 <div class="container mt-2" style="padding: 50px;">
     <!-- Title "Daftar monograf" in the center -->
     <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Monograf</h2>
@@ -93,8 +71,8 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
                                 <div class="align-items-center pb-3 mt-0 me-2">
-                                    @if($monograf->lampiran)
-                                    <!-- Jika ada file lampiran -->
+                                    @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
+                                    <!-- Jika file lampiran ada di server -->
                                     <img
                                         src="{{ asset('storage/' . $monograf->lampiran) }}"
                                         alt="Gambar Lampiran"
@@ -102,7 +80,7 @@
                                         height="240px"
                                         width="200px" />
                                     @else
-                                    <!-- Jika tidak ada file lampiran, tampilkan gambar default -->
+                                    <!-- Jika file tidak ada, tampilkan gambar default -->
                                     <img
                                         src="{{ asset('img/noimage.png') }}"
                                         alt="Ikon Default"
@@ -111,6 +89,7 @@
                                         width="200px" />
                                     @endif
                                 </div>
+
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
