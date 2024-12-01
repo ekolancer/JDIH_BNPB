@@ -258,7 +258,7 @@
 
             <!-- File Lampiran -->
             <div class="file-card">
-                <h5>File Peraturan</h5>
+                <h5>FILE LAMPIRAN</h5>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
@@ -277,7 +277,7 @@
             </div>
 
             <div class="file-card">
-                <h5>File Abstrak</h5>
+                <h5>FILE ABSTRAK</h5>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">

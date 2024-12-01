@@ -238,7 +238,7 @@
 
             <!-- File Lampiran -->
             <div class="file-card">
-                <h5>File PUTUSAN</h5>
+                <h5>FILE LAMPIRAN</h5>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
