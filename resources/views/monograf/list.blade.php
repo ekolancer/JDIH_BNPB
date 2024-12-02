@@ -118,7 +118,7 @@
 
                                 <!-- Tombol aksi -->
                                 <div class="d-flex">
-                                    <a href="{{ route('monograf.show', $monograf->judul) }}" class="btn btn-primary btn-sm me-2">
+                                    <a href="{{ route('monograf.show', $monograf->slug) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
                                     @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
