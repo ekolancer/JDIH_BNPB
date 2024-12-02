@@ -98,7 +98,6 @@
                             <th>Subjek</th>
                             <td>{{ $monograf->subjek }}</td>
                         </tr>
-                        <tr>
                     </tbody>
                 </table>
 
@@ -121,19 +120,17 @@
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-center align-items-center">
-                    @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
-                    <!-- Jika file lampiran ada di server -->
-                    <a href="{{ asset('storage/' . $monograf->lampiran) }}" target="_blank">
-                        <img src="{{ asset('storage/' . $monograf->lampiran) }}"
-                            alt="Cover Buku"
-                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                    </a>
-                    @else
-                    <!-- Jika file tidak ada, tampilkan gambar default -->
-                    <img src="{{ asset('img/noimage.png') }}"
-                        alt="Gambar Tidak Tersedia"
+                    @php
+                    // Cek apakah file lampiran ada di folder public
+                    $fileExists = $monograf->lampiran && file_exists(public_path('storage/' . $monograf->lampiran));
+                    // Tentukan URL gambar yang ditampilkan
+                    $imagePath = $fileExists
+                    ? asset('storage/' . $monograf->lampiran)
+                    : asset('img/noimage.png');
+                    @endphp
+                    <img src="{{ $imagePath }}"
+                        alt="Cover Buku"
                         style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                    @endif
                 </div>
             </div>
         </div>

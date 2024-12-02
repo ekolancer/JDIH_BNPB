@@ -71,24 +71,24 @@
                             <div class="d-flex">
                                 <!-- Kolom Ikon File -->
                                 <div class="me-4">
-                                    @if($monograf->lampiran && Storage::exists('public/' . $monograf->lampiran))
-                                    <!-- Jika file lampiran ada di server -->
-                                    <img
-                                        src="{{ asset('storage/' . $monograf->lampiran) }}"
-                                        alt="Gambar Lampiran"
-                                        class="rounded-shadow"
-                                        height="200px"
-                                        width="160px" />
+                                    @if($monograf->lampiran && file_exists(public_path('storage/' . $monograf->lampiran)))
+                                        <!-- Jika file lampiran ada di server -->
+                                        <img
+                                            src="{{ asset('storage/' . $monograf->lampiran) }}"
+                                            alt="Gambar Lampiran"
+                                            class="rounded-shadow"
+                                            height="200px"
+                                            width="160px" />
                                     @else
-                                    <!-- Jika file tidak ada, tampilkan gambar default -->
-                                    <img
-                                        src="{{ asset('img/noimage.png') }}"
-                                        alt="Ikon Default"
-                                        class="rounded-shadow"
-                                        height="200px"
-                                        width="160px" />
+                                        <!-- Jika file tidak ada, tampilkan gambar default -->
+                                        <img
+                                            src="{{ asset('img/noimage.png') }}"
+                                            alt="Ikon Default"
+                                            class="rounded-shadow"
+                                            height="200px"
+                                            width="160px" />
                                     @endif
-                                </div>
+                                </div>                                                           
 
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column justify-content-center">
