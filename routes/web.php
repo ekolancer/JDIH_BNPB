@@ -8,11 +8,13 @@ use App\Http\Controllers\PeraturanController;
 use App\Http\Controllers\PutusanController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/storage/{slug}', [DashboardController::class, 'download'])->name('file.download');
+Route::get('/search/list', [DashboardController::class, 'search'])->name('dashboard.search');
 
 //Route Peraturan
 Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
 Route::get('/peraturan/{slug}/detail', [PeraturanController::class, 'show'])->name('peraturan.show');
-Route::get('/storage/{slug}', [PeraturanController::class, 'download'])->name('peraturan.download');
+// Route::get('/storage/{slug}', [PeraturanController::class, 'download'])->name('peraturan.download');
 
 //Route Monograf
 Route::get('/monograf', [MonografController::class, 'index'])->name('monograf.index');

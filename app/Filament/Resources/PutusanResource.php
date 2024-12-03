@@ -244,6 +244,16 @@ class PutusanResource extends Resource
                     ->label('STATUS')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center),
+                TextColumn::make('view_count')
+                    ->label('DILIHAT')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+                TextColumn::make('download_count')
+                    ->label('DIUNDUH')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('lampiran')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)

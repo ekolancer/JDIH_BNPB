@@ -33,6 +33,7 @@ class Peraturan extends Model
         'penandatangan',
         'peraturanTerkait',
         'slug',
+        'download_count',
     ];
 
     public function getSlugOptions(): SlugOptions

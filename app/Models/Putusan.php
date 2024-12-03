@@ -32,6 +32,7 @@ class Putusan extends Model
         'penandatangan',
         'dokumenTerkait',
         'slug',
+        'download_count',
     ];
 
     /**

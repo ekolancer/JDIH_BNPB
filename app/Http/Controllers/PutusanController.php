@@ -75,23 +75,4 @@ class PutusanController extends Controller
 
         return view('putusan.detail', compact('putusan', 'fileSizeInKb', 'fileSizeInMb'));
     }
-
-    public function download($lampiran)
-    {
-        // Lokasi file di folder public storage
-        $filePath = 'lampiran/' . $lampiran;
-
-        // Cek apakah file ada di storage
-        if (Storage::exists('public/' . $filePath)) {
-            // Tingkatkan download count
-            $putusan = Putusan::where('lampiran', $lampiran)->firstOrFail();
-            $putusan->increment('download_count');
-
-            // Download file dari storage
-            return response()->download(storage_path('app/public/' . $filePath));
-        }
-
-        // Jika file tidak ditemukan
-        return redirect()->back()->with('error', 'File tidak ditemukan.');
-    }
 }

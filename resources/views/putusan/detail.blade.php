@@ -28,6 +28,7 @@
                     <div class="d-flex">
                         <span class="me-3"><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($putusan->created_at)->translatedFormat('d F Y') }}</span>
                         <span class="me-3"><i class="fas fa-eye"></i> {{ $putusan->view_count }}x dilihat </span>
+                        <span class="me-3"><i class="fas fa-download"></i> {{ $putusan->download_count }}x diunduh</span>
                     </div>
                 </div>
                 <hr>
@@ -110,7 +111,7 @@
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ asset('storage/' . $putusan->lampiran) }}" target="_blank">
+                    <a href="{{ route('file.download', $putusan->lampiran) }}" target="_blank">
                         {{ basename($putusan->lampiran) }}
                     </a>
                     <a href="{{ asset('storage/' . $putusan->lampiran) }}" target="_blank">

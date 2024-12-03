@@ -233,6 +233,11 @@ class MonografResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap(),
+                TextColumn::make('view_count')
+                    ->label('DILIHAT')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('lampiran')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)

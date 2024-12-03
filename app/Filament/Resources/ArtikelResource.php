@@ -202,15 +202,11 @@ class ArtikelResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disableClick(),
-                Tables\Columns\TextColumn::make('lampiran')
+                TextColumn::make('view_count')
+                    ->label('DILIHAT')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->label('LAMPIRAN')
-                    ->wrap()
-                    ->formatStateUsing(fn($state) => $state
-                        ? "<a href='" . Storage::url('/' . $state) . "' target='_blank' class='text-blue-500 underline'> File Lampiran </a>"
-                        : 'Tidak ada lampiran')
-                    ->html(),
+                    ->disableClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
                 SelectFilter::make('tahunTerbit')

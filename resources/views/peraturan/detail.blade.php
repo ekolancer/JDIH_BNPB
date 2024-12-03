@@ -130,7 +130,7 @@
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ route('peraturan.download', $peraturan->lampiran) }}" target="_blank">
+                    <a href="{{ route('file.download', $peraturan->lampiran) }}" target="_blank">
                         {{ basename($peraturan->lampiran) }}
                     </a>
                     <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">

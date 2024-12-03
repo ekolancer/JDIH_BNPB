@@ -95,35 +95,70 @@
                 <div class="row w-100">
                     <div class="col-12 text-center">
                         <!-- Search Form -->
-                        <div class="input-group mb-3 w-75 mx-auto">
-                            <input type="text" class="form-control" placeholder="Masukan kata kunci pencarian" aria-label="Search" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-warning" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
-                        </div>
-                        <!-- Optional Advanced Search Button -->
-                        <button class="btn btn-outline-secondary" type="button" id="advanced-search-toggle"><i class="fas fa-filter"></i> Advanced Search</button>
-                        <!-- Advanced Filters (Hidden by Default) -->
-                        <div class="advanced-filters mt-3" style="display: none;">
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="documentType" class="form-label">Tipe Dokumen</label>
-                                    <select class="form-select" id="documentType">
-                                        <option selected>Pilih Tipe Dokumen</option>
-                                        <option value="1">Type 1</option>
-                                        <option value="2">Type 2</option>
-                                        <option value="3">Type 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="documentNumber" class="form-label">Nomor</label>
-                                    <input type="text" class="form-control" id="documentNumber" placeholder="Nomor">
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="documentYear" class="form-label">Tahun</label>
-                                    <input type="text" class="form-control" id="documentYear" placeholder="Tahun">
-                                </div>
+                        <form method="GET" action="{{ route('dashboard.search') }}">
+                            <div class="input-group mb-3 w-75 mx-auto">
+                                <input type="text"
+                                    class="form-control"
+                                    placeholder="Masukan kata kunci pencarian"
+                                    aria-label="Search"
+                                    aria-describedby="button-addon2"
+                                    name="q"
+                                    value="{{ request('q') }}">
+                                <button class="btn btn-outline-warning" type="submit" id="button-addon2">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
-                            <button class="btn btn-primary" type="button">Apply Filters</button>
-                        </div>
+
+                            <!-- Optional Advanced Search Button -->
+                            <button class="btn btn-outline-secondary" type="button" id="advanced-search-toggle">
+                                <i class="fas fa-filter"></i> Advanced Search
+                            </button>
+
+                            <!-- Advanced Filters (Hidden by Default) -->
+                            <div class="advanced-filters mt-3" style="display: none;">
+                                <div class="row">
+                                    <!-- Tipe Dokumen -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="documentType" class="form-label">Jenis Dokumen</label>
+                                        <select class="form-select" id="documentType" name="tipe_dokumen">
+                                            <option value="">Pilih Tipe Dokumen</option>
+                                            @foreach($tipeDokumen as $tipe)
+                                            <option value="{{ $tipe }}" {{ request('tipe_dokumen') == $tipe ? 'selected' : '' }}>
+                                                {{ $tipe }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Bentuk Dokumen -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="documentForm" class="form-label">Bentuk Dokumen</label>
+                                        <select class="form-select" id="documentForm" name="bentuk_dokumen">
+                                            <option value="">Bentuk Dokumen</option>
+                                            @foreach($bentukDokumen as $bentuk)
+                                            <option value="{{ $bentuk }}" {{ request('bentuk_dokumen') == $bentuk ? 'selected' : '' }}>
+                                                {{ $bentuk }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Tahun -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="documentYear" class="form-label">Tahun</label>
+                                        <input type="text"
+                                            class="form-control"
+                                            id="documentYear"
+                                            name="tahun"
+                                            placeholder="Tahun"
+                                            value="{{ request('tahun') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button class="btn btn-primary" type="submit">Apply Filters</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

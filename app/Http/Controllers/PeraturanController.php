@@ -74,24 +74,4 @@ class PeraturanController extends Controller
 
         return view('peraturan.detail', compact('peraturan', 'fileSizeInKb', 'fileSizeInMb'));
     }
-
-    public function download($lampiran)
-    {
-        // Lokasi file di folder public storage
-        $filePath = 'lampiran/peraturan/' . $lampiran;
-        
-
-        // Cek apakah file ada di storage
-        if (Storage::exists('public/' . $filePath)) {
-            // Tingkatkan download count
-            $peraturan = Peraturan::where('lampiran', $lampiran)->firstOrFail();
-            $peraturan->increment('download_count');
-
-            // Download file dari storage
-            return response()->download(storage_path('app/public/' . $filePath));
-        }
-
-        // Jika file tidak ditemukan
-        return redirect()->back()->with('error', 'File tidak ditemukan.');
-    }
 }

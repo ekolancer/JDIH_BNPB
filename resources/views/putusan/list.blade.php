@@ -119,7 +119,7 @@
                                     <a href="{{ route('putusan.show', $putusan->slug) }}" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
-                                    <a href="{{ asset('storage/' . $putusan->lampiran) }}" class="btn btn-secondary btn-sm">
+                                    <a href="{{ route('file.download', $putusan->lampiran) }}" class="btn btn-secondary btn-sm">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </a>
                                 </div>

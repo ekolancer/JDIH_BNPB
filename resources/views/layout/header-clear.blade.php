@@ -91,7 +91,7 @@
             }
 
             .breadcrumb-item a {
-                color: #0052cc;
+                color: white;
                 /* Link color */
                 text-decoration: none;
             }
