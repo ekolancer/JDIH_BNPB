@@ -4,20 +4,21 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\Artikel;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Filament\Actions\Action;
-use PhpParser\Node\Stmt\Label;
 use Ramsey\Uuid\Type\Integer;
 
+use PhpParser\Node\Stmt\Label;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Wizard;
+
+
 use Filament\Support\Enums\Alignment;
-
-
 use Illuminate\Support\Facades\Blade;
 use function Laravel\Prompts\textarea;
 use Filament\Forms\Components\Fieldset;
@@ -32,8 +33,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Enums\VerticalAlignment;
-use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\ArtikelResource\Pages;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ArtikelResource extends Resource
 {
@@ -68,36 +69,41 @@ class ArtikelResource extends Resource
                     Wizard\Step::make('Metadata Utama')
                         ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema([
-                            Forms\Components\TextInput::make('tipeDok')
+                            TextInput::make('tipeDok')
                                 ->required()
                                 ->label('Tipe Dokumen')
                                 ->default('Artikel Hukum')
                                 ->disabled(),
-                            Forms\Components\TextInput::make('jenisDok')
+                            TextInput::make('jenisDok')
                                 ->required()
                                 ->label('Jenis Artikel')
                                 ->validationMessages(['required' => 'Jenis artikel tidak boleh kosong !'])
                                 ->maxLength(255),
-                            Forms\Components\Textarea::make('judul')
+                            Textarea::make('judul')
                                 ->label('Judul Peraturan')
                                 ->rows(5)
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
-                                ->required(),
-                            Forms\Components\TextInput::make('slug')
+                                ->required()
+                                ->reactive() // Real-time reactivity
+                                ->afterStateUpdated(
+                                    fn($state, callable $set) =>
+                                    $set('slug', Str::slug($state)) // Generate slug dari judul
+                                ),
+                            TextInput::make('slug')
                                 ->disabled()
                                 ->helperText('Slug dihasilkan otomatis berdasarkan judul'),
-                            Forms\Components\TextInput::make('teuBadan')
+                            TextInput::make('teuBadan')
                                 ->required()
                                 ->validationMessages(['required' => 'T.E.U Badan tidak boleh kosong !'])
                                 ->label('T.E.U Badan')
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make('penerbit')
+                            TextInput::make('penerbit')
                                 ->required()
                                 ->validationMessages(['required' => 'Penerbit tidak boleh kosong !'])
                                 ->label('Penerbit')
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make('tahunTerbit')
+                            TextInput::make('tahunTerbit')
                                 ->required()
                                 ->validationMessages(['required' => 'Tahun terbit tidak boleh kosong !'])
                                 ->label('Tahun')
@@ -170,14 +176,14 @@ class ArtikelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jenisDok')
+                TextColumn::make('jenisDok')
                     ->label('JENIS Artikel')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable()
                     ->disableClick(), // Menonaktifkan clickable pada list table,
-                Tables\Columns\TextColumn::make('judul')
+                TextColumn::make('judul')
                     ->label('Judul Artikel')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
@@ -191,12 +197,12 @@ class ArtikelResource extends Resource
                     ->wrap()
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tahunTerbit')
+                TextColumn::make('tahunTerbit')
                     ->label('Tahun Terbit')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(),
-                Tables\Columns\TextColumn::make('penerbit')
+                TextColumn::make('penerbit')
                     ->label('Penerbit')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)

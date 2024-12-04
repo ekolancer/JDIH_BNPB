@@ -4,20 +4,21 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\Monograf;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Filament\Actions\Action;
-use PhpParser\Node\Stmt\Label;
 use Ramsey\Uuid\Type\Integer;
 
+use PhpParser\Node\Stmt\Label;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Wizard;
+
+
 use Filament\Support\Enums\Alignment;
-
-
 use Illuminate\Support\Facades\Blade;
 use function Laravel\Prompts\textarea;
 use Filament\Forms\Components\Fieldset;
@@ -82,7 +83,12 @@ class MonografResource extends Resource
                                 ->rows(5)
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
-                                ->required(),
+                                ->required()
+                                ->reactive() // Real-time reactivity
+                                ->afterStateUpdated(
+                                    fn($state, callable $set) =>
+                                    $set('slug', Str::slug($state)) // Generate slug dari judul
+                                ),
                             TextInput::make('slug')
                                 ->disabled()
                                 ->helperText('Slug dihasilkan otomatis berdasarkan judul'),

@@ -4,21 +4,22 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\Putusan;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Filament\Actions\Action;
-use Ramsey\Uuid\Type\Integer;
 
+use Ramsey\Uuid\Type\Integer;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use function Laravel\Prompts\select;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
+
+
 use Filament\Support\Enums\Alignment;
-
-
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
@@ -32,8 +33,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Enums\VerticalAlignment;
-use Symfony\Contracts\Service\Attribute\Required;
 use App\Filament\Resources\PutusanResource\Pages;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class PutusanResource extends Resource
 {
@@ -86,7 +87,12 @@ class PutusanResource extends Resource
                                 ->rows(5)
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
-                                ->required(),
+                                ->required()
+                                ->reactive() // Real-time reactivity
+                                ->afterStateUpdated(
+                                    fn($state, callable $set) =>
+                                    $set('slug', Str::slug($state)) // Generate slug dari judul
+                                ),
                             TextInput::make('slug')
                                 ->disabled()
                                 ->helperText('Slug dihasilkan otomatis berdasarkan judul'),

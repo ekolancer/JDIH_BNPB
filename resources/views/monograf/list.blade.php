@@ -136,7 +136,7 @@
                 @empty
                 <div class="col-12">
                     <div class="alert alert-warning text-center">
-                        Tidak ada data monograf$monograf ditemukan.
+                        Tidak ada data monografi ditemukan.
                     </div>
                 </div>
                 @endforelse
