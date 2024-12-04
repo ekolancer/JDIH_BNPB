@@ -101,7 +101,7 @@ class PeraturanResource extends Resource
                                 ->label('Nomor')
                                 ->integer()
                                 ->required(),
-                            TextInput::make('tahun')
+                            TextInput::make('tahunTerbit')
                                 ->validationMessages(['required' => 'Tahun tidak boleh kosong !'])
                                 ->label('Tahun')
                                 ->Integer()
@@ -216,7 +216,7 @@ class PeraturanResource extends Resource
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center),
-                TextColumn::make('tahun')
+                TextColumn::make('tahunTerbit')
                     ->label('TAHUN')
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->alignment(Alignment::Center)

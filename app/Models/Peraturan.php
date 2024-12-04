@@ -17,7 +17,7 @@ class Peraturan extends Model
         'judul',
         'teuBadan',
         'nomor',
-        'tahun',
+        'tahunTerbit',
         'tempatPenetapan',
         'tglPenetapan',
         'tglPengundangan',

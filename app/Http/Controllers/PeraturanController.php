@@ -17,7 +17,7 @@ class PeraturanController extends Controller
         $judul = $request->input('judul');
         $tipeDok = $request->input('tipeDok');
         $nomor = $request->input('nomor');
-        $tahun = $request->input('tahun');
+        $tahunTerbit = $request->input('tahun');
         $status = $request->input('status');
 
         // Query builder untuk pencarian
@@ -36,8 +36,8 @@ class PeraturanController extends Controller
             $query->where('nomor', 'LIKE', '%' . $nomor . '%');
         }
 
-        if ($tahun) {
-            $query->whereYear('tahun', $tahun);
+        if ($tahunTerbit) {
+            $query->whereYear('tahun', $tahunTerbit);
         }
 
         if ($status) {

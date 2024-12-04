@@ -38,7 +38,7 @@
             </div>
             <div class="border-2 p-4 rounded-lg">
                 <p class="text-sm font-semibold text-gray-800">Tahun:</p>
-                <p class="text-gray-500">{{ $record->tahun }}</p>
+                <p class="text-gray-500">{{ $record->tahunTerbit }}</p>
             </div>
             <div class="border-2 p-4 rounded-lg">
                 <p class="text-sm font-semibold text-gray-800">Tanggal Penetapan:</p>

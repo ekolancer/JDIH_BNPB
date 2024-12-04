@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ url('/peraturan') }}">Peraturan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $peraturan->jenisDok }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</li>
             </ol>
         </nav>
     </div>
@@ -53,6 +53,10 @@
                         <tr>
                             <th>Tempat Penetapan</th>
                             <td>{{ $peraturan->tempatPenetapan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tahun Terbit</th>
+                            <td>{{ $peraturan->tahunTerbit }}</td>
                         </tr>
                         <tr>
                             <th>Tanggal Penetapan</th>
