@@ -82,6 +82,7 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Dokumen Hukum',
+                'Informasi Hukum',
                 'User Management',
             ])
             ->plugin(
