@@ -27,9 +27,8 @@ class Berita extends Model
     protected $casts = [
         'tag' => 'array',
         'tanggal_publikasi' => 'datetime',
+        'status' => 'boolean',
     ];
-
-    protected $appends = ['status'];
 
 
     protected static function boot()
@@ -41,18 +40,5 @@ class Berita extends Model
                 $artikel->slug = Str::slug($artikel->judul);
             }
         });
-    }
-
-    // Accessor untuk membaca status sebagai boolean
-    // // Accessor: Mengonversi ENUM ke boolean
-    // public function getStatusBooleanAttribute(): bool
-    // {
-    //     return $this->status === 'Publikasi'; // Publikasi → true, Draft → false
-    // }
-
-    // Mutator: Menyimpan boolean sebagai ENUM
-    public function setStatusBooleanAttribute(bool $value): void
-    {
-        $this->attributes['status'] = $value ? 'Publikasi' : 'Draft'; // true → Publikasi, false → Draft
     }
 }

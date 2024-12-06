@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artikel;
+use App\Models\Berita;
 use App\Models\Putusan;
 use App\Models\Monograf;
 use App\Models\Peraturan;
@@ -28,6 +29,7 @@ class DashboardController extends Controller
 
         // Mengambil data terbaru dari tabel peraturan
         $peraturan = Peraturan::orderBy('created_at', 'desc')->take(6)->get();
+        $berita = Berita::where('status', 1)->orderBy('created_at', 'desc')->get();
 
         // Ambil nilai unik tipeDok dan jenisDok dari keempat tabel
         $tipeDokumen = collect()
@@ -47,7 +49,7 @@ class DashboardController extends Controller
             ->values();
 
         // Mengirimkan data ke view
-        return view('index', compact('data', 'peraturan', 'tipeDokumen', 'bentukDokumen'));
+        return view('index', compact('data', 'peraturan', 'berita', 'tipeDokumen', 'bentukDokumen'));
     }
 
     public function download($lampiran)
@@ -83,64 +85,6 @@ class DashboardController extends Controller
         // Unduh file
         return Storage::download($lampiran, basename($lampiran));
     }
-
-    // public function search(Request $request)
-    // {
-    //     $query = $request->input('q'); // Kata kunci pencarian
-    //     $tipeDokumen = $request->input('tipe_dokumen'); // Filter tipe dokumen
-    //     $bentukDokumen = $request->input('bentuk_dokumen'); // Filter bentuk dokumen
-    //     $tahun = $request->input('tahun'); // Filter tahun
-
-    //     // Hasil pencarian (dikumpulkan dari semua tabel)
-    //     $results = collect();
-
-    //     // Pencarian di tabel Peraturan
-    //     if (!$tipeDokumen || $tipeDokumen === 'peraturan') {
-    //         $results = $results->merge(
-    //             Peraturan::where(function ($q) use ($query, $bentukDokumen, $tahun) {
-    //                 if ($query) $q->where('judul', 'LIKE', "%{$query}%");
-    //                 if ($bentukDokumen) $q->where('jenisDok', $bentukDokumen);
-    //                 if ($tahun) $q->where('tahun', $tahun);
-    //             })->get()
-    //         );
-    //     }
-
-    //     // Pencarian di tabel Monograf
-    //     if (!$tipeDokumen || $tipeDokumen === 'monograf') {
-    //         $results = $results->merge(
-    //             Monograf::where(function ($q) use ($query, $bentukDokumen, $tahun) {
-    //                 if ($query) $q->where('judul', 'LIKE', "%{$query}%");
-    //                 if ($bentukDokumen) $q->where('jenisDok', $bentukDokumen);
-    //                 if ($tahun) $q->where('tahun', $tahun);
-    //             })->get()
-    //         );
-    //     }
-
-    //     // Pencarian di tabel Artikel
-    //     if (!$tipeDokumen || $tipeDokumen === 'artikel') {
-    //         $results = $results->merge(
-    //             Artikel::where(function ($q) use ($query, $bentukDokumen, $tahun) {
-    //                 if ($query) $q->where('judul', 'LIKE', "%{$query}%");
-    //                 if ($bentukDokumen) $q->where('jenisDok', $bentukDokumen);
-    //                 if ($tahun) $q->where('tahun', $tahun);
-    //             })->get()
-    //         );
-    //     }
-
-    //     // Pencarian di tabel Putusan
-    //     if (!$tipeDokumen || $tipeDokumen === 'putusan') {
-    //         $results = $results->merge(
-    //             Putusan::where(function ($q) use ($query, $bentukDokumen, $tahun) {
-    //                 if ($query) $q->where('judul', 'LIKE', "%{$query}%");
-    //                 if ($bentukDokumen) $q->where('jenisDok', $bentukDokumen);
-    //                 if ($tahun) $q->where('tahun', $tahun);
-    //             })->get()
-    //         );
-    //     }
-
-    //     // Kirim hasil pencarian ke view
-    //     return view('search.results', compact('results'));
-    // }
 
     // Search dengan Validasi dan Pagination
     public function search(Request $request)

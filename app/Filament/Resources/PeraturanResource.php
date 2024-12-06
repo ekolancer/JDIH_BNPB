@@ -187,14 +187,16 @@ class PeraturanResource extends Resource
                         ])
                 ])
                     ->submitAction(new HtmlString(Blade::render(<<<BLADE
-                                    <x-filament::button
-                                        type="submit"
-                                        size="sm"
-                                    >
-                                        Submit
-                                    </x-filament::button>
-                                BLADE)))
-                    ->columnSpan(2) // Menggunakan dua kolom untuk lebih besar
+                <x-filament::button
+                    type="submit"
+                    size="sm"
+                    wire:loading.attr="disabled"
+                >
+                    <span wire:loading.remove>Submit</span>
+                    <x-filament::loading-indicator wire:loading class="h-5 w-5" />
+                </x-filament::button>
+            BLADE)))
+                    ->columnSpan(3) // Menggunakan dua kolom untuk lebih besar
             ]);
     }
 

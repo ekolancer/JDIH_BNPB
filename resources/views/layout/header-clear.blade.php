@@ -144,7 +144,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
                         <div class="dropdown-menu m-0">
-                            <a href="#" class="dropdown-item">Berita</a>
+                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
                             <a href="#" class="dropdown-item">Infografis</a>
                         </div>
                     </div>

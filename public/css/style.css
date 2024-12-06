@@ -641,6 +641,25 @@
     z-index: 1;
 }
 
+.packages .packages-item .packages-img img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .packages .packages-item .packages-img img {
+        height: 150px; /* Sesuaikan tinggi untuk perangkat yang lebih kecil */
+    }
+}
+
+@media (max-width: 576px) {
+    .packages .packages-item .packages-img img {
+        height: 100px; /* Sesuaikan lebih kecil untuk layar smartphone */
+    }
+}
+
 .packages .packages-item .packages-img .packages-info {
     background: rgba(0, 0, 0, .3);
 }
@@ -695,7 +714,7 @@
 
 .packages .packages-item .packages-img .packages-price {
     position: absolute;
-    width: 100px;
+    /* width: 100px; */
     top: 0;
     left: 50%;
     transform: translateX(-50%);

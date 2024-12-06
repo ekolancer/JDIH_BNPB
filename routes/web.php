@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\BeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MonografController;
@@ -28,3 +29,7 @@ Route::get('/artikel/{slug}/detail', [ArtikelController::class, 'show'])->name('
 Route::get('/putusan', [PutusanController::class, 'index'])->name('putusan.index');
 Route::get('/putusan/{slug}/detail', [PutusanController::class, 'show'])->name('putusan.show');
 // Route::get('/storage/{lampiran}', [PutusanController::class, 'download'])->name('putusan.download');
+
+//Route Berita
+Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/{slug}/detail', [BeritaController::class, 'show'])->name('berita.show');

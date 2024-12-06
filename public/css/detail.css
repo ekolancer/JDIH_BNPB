@@ -148,3 +148,66 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     /* Shadow lebih dalam saat hover */
 }
+
+/* Style Detail Berita */
+.article-title {
+    color: #0056b3;
+    font-size: 24px;
+    font-weight: bold;
+}
+.article-meta {
+    color: #666;
+    font-size: 14px;
+    justify-content: space-between;
+}
+.article-meta i {
+    margin-right: 5px;
+}
+.article-image {
+    margin: 20px 0;
+}
+.article-caption {
+    font-size: 12px;
+    color: #666;
+}
+.article-content {
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
+    text-align: justify;
+}
+
+/* Style Berita Terpopuler */
+.popular-item {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5; /* Background abu-abu */
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.popular-item img {
+    width: 50px; /* Ukuran gambar di sebelah kiri */
+    height: 50px;
+    object-fit: cover; /* Memastikan gambar proporsional */
+    margin-right: 15px; /* Spasi antara gambar dan judul */
+}
+
+.popular-item .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.popular-item .content h6 {
+    margin: 0;
+    font-size: 16px; /* Ukuran judul */
+    font-weight: bold;
+}
+
+.popular-item .content p {
+    margin: 0;
+    font-size: 12px;
+    color: #888; /* Tanggal dengan warna abu-abu */
+}

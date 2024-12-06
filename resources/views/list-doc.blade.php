@@ -61,11 +61,6 @@
                         <div class="card-body">
                             <!-- Header -->
                             <div class="d-flex justify-content-between align-items-center">
-                                <!-- Kolom Ikon File -->
-                                <!-- <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
-                                </div> -->
-                                <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
                                         {{ $result->tipeDok }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
@@ -74,10 +69,6 @@
                                         {{ $result->judul ?? 'Tidak ada deskripsi.' }}
                                     </p>
                                 </div>
-                                <!-- Status -->
-                                <!-- <div class="badge {{ $result->status === 'BERLAKU' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $result->status }}
-                                </div> -->
                             </div>
                         </div>
                         <!-- Footer -->
