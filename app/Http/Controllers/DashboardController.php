@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use App\Models\Berita;
+use App\Models\Infografis;
 use App\Models\Putusan;
 use App\Models\Monograf;
 use App\Models\Peraturan;
@@ -30,6 +31,21 @@ class DashboardController extends Controller
         // Mengambil data terbaru dari tabel peraturan
         $peraturan = Peraturan::orderBy('created_at', 'desc')->take(6)->get();
         $berita = Berita::where('status', 1)->orderBy('created_at', 'desc')->get();
+        $infografis = Infografis::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->take(6) // Ambil 6 data untuk ditampilkan
+            ->get()
+            ->map(function ($item) {
+                // Pastikan 'gambar' adalah string sebelum mencoba decode
+                if (is_string($item->gambar)) {
+                    $gambarArray = json_decode($item->gambar, true);
+                    $item->gambar = $gambarArray[0] ?? null; // Ambil gambar pertama jika ada
+                } else {
+                    $item->gambar = null; // Default jika bukan string
+                }
+                return $item;
+            });
+
 
         // Ambil nilai unik tipeDok dan jenisDok dari keempat tabel
         $tipeDokumen = collect()
@@ -49,7 +65,7 @@ class DashboardController extends Controller
             ->values();
 
         // Mengirimkan data ke view
-        return view('index', compact('data', 'peraturan', 'berita', 'tipeDokumen', 'bentukDokumen'));
+        return view('index', compact('data', 'peraturan', 'berita', 'infografis', 'tipeDokumen', 'bentukDokumen'));
     }
 
     public function download($lampiran)

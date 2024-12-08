@@ -4,6 +4,7 @@ use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InfografisController;
 use App\Http\Controllers\MonografController;
 use App\Http\Controllers\PeraturanController;
 use App\Http\Controllers\PutusanController;
@@ -33,3 +34,7 @@ Route::get('/putusan/{slug}/detail', [PutusanController::class, 'show'])->name('
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}/detail', [BeritaController::class, 'show'])->name('berita.show');
+
+//Route Infografis
+Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
+Route::get('/infografis/{slug}/detail', [InfografisController::class, 'show'])->name('infografis.show');

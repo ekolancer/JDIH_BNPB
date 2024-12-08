@@ -43,13 +43,14 @@ class BeritaResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $label = 'Berita';
+    
+    protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
-    protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
 
 
     public static function form(Form $form): Form
@@ -66,7 +67,6 @@ class BeritaResource extends Resource
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
                                 ->required()
-                                ->reactive() // Real-time reactivity
                                 ->afterStateUpdated(
                                     fn($state, callable $set) =>
                                     $set('slug', Str::slug($state)) // Generate slug dari judul

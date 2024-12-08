@@ -4,7 +4,7 @@
 
 <div class="container mt-2" style="padding: 50px;">
     <!-- Title "Daftar monograf" in the center -->
-    <h2 class="text-center w-100" style="padding-bottom: 50px">Berita</h2>
+    <h2 class="text-center w-100" style="padding-bottom: 50px">List Berita</h2>
 
     <div class="row">
         <!-- Berita Terpopuler -->
