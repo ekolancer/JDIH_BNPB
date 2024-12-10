@@ -43,8 +43,7 @@ class WebminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            ->brandLogo(asset('img/bnpb.png'))
-            ->brandLogo(asset('img/jdihn.png'))
+            ->brandLogo(asset('img/update_logo.png'))
             ->brandName('JDIH BNPB')
             ->brandLogoHeight('5rem')
             ->middleware([

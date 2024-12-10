@@ -94,6 +94,9 @@
             <div class="container h-100 d-flex justify-content-center hero-items-center">
                 <div class="row w-100">
                     <div class="col-12 text-center">
+                        <p style="font-weight: bold;font-size: -webkit-xxx-large;color: azure;">
+                            <h1>Cari Dokumen Hukum disini.</h1>
+                        </p>
                         <!-- Search Form -->
                         <form method="GET" action="{{ route('dashboard.search') }}">
                             <div class="input-group mb-3 w-75 mx-auto">
