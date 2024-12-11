@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Artikel;
 use App\Models\Berita;
-use App\Models\Infografis;
+use App\Models\Artikel;
 use App\Models\Putusan;
+use App\Models\Visitor;
 use App\Models\Monograf;
 use App\Models\Peraturan;
+use App\Models\Infografis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -64,8 +65,34 @@ class DashboardController extends Controller
             ->unique()
             ->values();
 
+        // Hitung jumlah pengunjung hari ini
+        $todayVisitors = Visitor::whereDate('visited_at', now()->toDateString())->count();
+
+        // Hitung jumlah pengunjung kemarin
+        $yesterdayVisitors = Visitor::whereDate('visited_at', now()->subDay()->toDateString())->count();
+
+        // Hitung jumlah pengunjung bulan ini
+        $thisMonthVisitors = Visitor::whereMonth('visited_at', now()->month)
+            ->whereYear('visited_at', now()->year)
+            ->count();
+
+        // Hitung jumlah pengunjung tahun ini
+        $thisYearVisitors = Visitor::whereYear('visited_at', now()->year)->count();
+
+
         // Mengirimkan data ke view
-        return view('index', compact('data', 'peraturan', 'berita', 'infografis', 'tipeDokumen', 'bentukDokumen'));
+        return view('index', compact(
+            'data',
+            'peraturan', 
+            'berita',
+            'infografis',
+            'tipeDokumen',
+            'bentukDokumen',
+            'todayVisitors',
+            'yesterdayVisitors',
+            'thisMonthVisitors',
+            'thisYearVisitors'
+        ));
     }
 
     public function download($lampiran)

@@ -46,6 +46,10 @@
                             <li><a href="https://bnpb.go.id">Website BNPB</a></li>
                             <li><a href="https://jdihn.go.id/">Portal JDIH Nasional</a></li>
                             <li><a href="http://bphn.jdihn.go.id/">Portal BPHN</a></li>
+                            <li><a href="http://bphn.jdihn.go.id/">{{ $todayVisitors }}</a></li>
+                            <li><a href="http://bphn.jdihn.go.id/">{{ $yesterdayVisitors }}</a></li>
+                            <li><a href="http://bphn.jdihn.go.id/">{{ $thisMonthVisitors }}</a></li>
+                            <li><a href="http://bphn.jdihn.go.id/">{{ $thisYearVisitors }}</a></li>
                         </ul>
                     </div>
                 </div>

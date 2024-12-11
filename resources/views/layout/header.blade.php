@@ -95,7 +95,7 @@
                 <div class="row w-100">
                     <div class="col-12 text-center">
                         <p style="font-weight: bold;">
-                        <h1 style="font: size 60px; color:azure;">Cari Dokumen hukum disini.</h1>
+                        <h1 style="font: size 60px; color:white;">Cari Dokumen hukum disini.</h1>
                         </p>
                         <!-- Search Form -->
                         <form method="GET" action="{{ route('dashboard.search') }}">
