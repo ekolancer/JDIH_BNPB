@@ -110,10 +110,6 @@
         @endforeach
     </div>
 
-    <div class="text-center my-4">
-        <a href="{{ route('peraturan.index') }}" class="btn btn-primary">Lihat Selengkapnya</a>
-    </div>
-
     <!-- Peraturan Terupdate -->
     <hr class="my-4">
     <h2>Peraturan Terpopuler</h2>
@@ -164,7 +160,7 @@
         </div>
     </div>
     <div class="text-center my-4">
-        <button class="btn btn-primary">Lihat Selengkapnya</button>
+        <a href="{{ route('peraturan.index') }}" class="btn btn-primary">Lihat Selengkapnya</a>
     </div>
 </div>
 <!-- Peraturan Terupdate dan Terpopuler End -->

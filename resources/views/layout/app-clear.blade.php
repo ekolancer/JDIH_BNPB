@@ -4,4 +4,4 @@
         @yield('content')
         <!-- End Content -->
 
-@include('layout.footer-clear')
+@include('layout.footer')
