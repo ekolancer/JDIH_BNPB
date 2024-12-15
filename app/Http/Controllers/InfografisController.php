@@ -12,17 +12,7 @@ class InfografisController extends Controller
         // Ambil data infografis dengan paginasi dan olah data gambar
         $infografis = Infografis::where('status', 1)
             ->latest()
-            ->paginate(10) // Atur jumlah data per halaman
-            ->through(function ($item) {
-                // Decode JSON `gambar`
-                if (is_string($item->gambar) && is_array(json_decode($item->gambar, true))) {
-                    $gambarArray = json_decode($item->gambar, true);
-                    $item->gambar = $gambarArray[0] ?? null; // Ambil gambar pertama
-                } else {
-                    $item->gambar = null; // Jika tidak valid, default null
-                }
-                return $item;
-            });
+            ->paginate(10); // Atur jumlah data per halaman
 
         return view('infografis.list', compact('infografis'));
     }

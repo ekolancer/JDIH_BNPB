@@ -94,7 +94,6 @@ class InfografisResource extends Resource
                                 ->visibility('public')
                                 ->preserveFilenames()
                                 ->image()
-                                ->multiple()
                                 ->validationMessages(['required' => 'Lampiran tidak boleh kosong !'])
                                 ->maxSize(10240)
                                 ->required(),

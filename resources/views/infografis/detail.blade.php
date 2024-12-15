@@ -1,7 +1,6 @@
 @extends('layout.app-clear')
 
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
@@ -21,37 +20,15 @@
                     </div>
                 </div>
 
-                <!-- Carousel -->
+                <!-- Gambar -->
                 <div class="card-body p-5">
-                    @php
-                    // Periksa jika gambar berupa array atau JSON, dan decode jika perlu
-                    $images = is_array($infografis->gambar) ? $infografis->gambar : json_decode($infografis->gambar, true);
-                    @endphp
-
-                    @if (count($images) > 0)
-                    <div id="carouselInfografis" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            @foreach ($images as $key => $image)
-                            <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                <img
-                                    src="{{ asset('storage/' . $image) }}"
-                                    class="d-block w-100"
-                                    alt="Gambar Infografis {{ $key + 1 }}">
-                            </div>
-                            @endforeach
-                        </div>
-                        <!-- Tombol navigasi carousel -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselInfografis" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselInfografis" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+                    @if (!empty($infografis->gambar) && file_exists(public_path('storage/' . $infografis->gambar)))
+                        <img
+                            src="{{ asset('storage/' . $infografis->gambar) }}"
+                            class="img-fluid rounded shadow"
+                            alt="Gambar Infografis">
                     @else
-                    <p>Tidak ada gambar untuk ditampilkan.</p>
+                        <p class="text-center text-muted">Tidak ada gambar untuk ditampilkan.</p>
                     @endif
                 </div>
 
@@ -65,12 +42,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    const carousel = new bootstrap.Carousel('#infografisCarousel', {
-        interval: 5000, // Waktu pergantian otomatis (ms)
-        ride: 'carousel'
-    });
-</script>
 
 @endsection

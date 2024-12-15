@@ -11,6 +11,17 @@
         flex: 1 1 auto;
     }
 
+    .card-img-top {
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .card h6 {
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
     .main-container {
         background-color: #f2f2f2;
         padding: 20px;
@@ -43,7 +54,6 @@
     <div class="container">
         <div class="mx-auto text-center mb-3" style="max-width: 900px;">
             <h5 class="section-title px-3">Jumlah Dokumen</h5>
-            <!-- <h1 class="mb-0">Jumlah Dokumen</h1> -->
         </div>
         <div class="row gy-4">
             <!-- Item Peraturan -->
@@ -88,82 +98,117 @@
 <!-- /Stats Section -->
 
 <!-- Peraturan Terbaru -->
-<div class="container mt-4 main-container">
-    <h2>Peraturan Terbaru</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach ($peraturan as $item)
-        <div class="col">
-            <!-- Card yang menjadi hyperlink -->
-            <a href="{{ route('peraturan.show', $item->slug) }}" class="card-link">
-                <div class="card h-100 shadow-lg hover-zoom">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $item->jenisDok }}</h5>
-                        <p class="card-text">{{ $item->judul }}</p>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">Highlight Peraturan</h4>
+        <a href="{{ route('peraturan.index') }}" class="text-primary text-decoration-none">Lihat Semua Peraturan</a>
+    </div>
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#brs"><i class="fas fa-sync-alt me-2"></i>Terkini</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabel"><i class="far fa-star me-1"></i>Populer</button>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <!-- Tab Terkini -->
+        <div class="tab-pane fade show active" id="brs">
+            <div class="row g-3">
+                @foreach ($peraturanTerbaru as $peraturan)
+                <div class="col-md-6 col-lg-3">
+                    <!-- Card Dokumen -->
+                    <div class="card shadow-lg border-0 zoom-card">
+                        <div class="card-body">
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Kolom Ikon File -->
+                                <div class="align-items-center pb-3 mt-0 me-2">
+                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
+                                </div>
+                                <!-- Kolom Tipe Dokumen dan Judul -->
+                                <div class="d-flex flex-column w-100">
+                                    <div class="card-title text-primary fw-bold mb-0">
+                                        <small>{{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</small>
+                                    </div>
+                                    <p class="card-text mb-3 text-muted" style="font-size: small;">
+                                        <small>{{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Footer -->
+                        <div class="card-footer bg-light border-top">
+                            <div class="d-flex justify-content-between hero-items-center">
+                                <!-- Informasi tambahan -->
+                                <div>
+                                    <small class="text-muted me-3">
+                                        <i class="far fa-calendar-alt me-1"></i>
+                                        {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                    </small>
+                                </div>
+                                <!-- Tombol aksi -->
+                                <div class="d-flex">
+                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
+                                        <i class="fas fa-eye me-1"></i>Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between">
-                        <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
-                        {{ $item->view_count }}x dilihat
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Tab Populer -->
+        <div class="tab-pane fade" id="tabel">
+            <div class="row g-3">
+                @foreach ($peraturanPopuler as $peraturan)
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow-lg border-0 zoom-card">
+                        <div class="card-body">
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Kolom Ikon File -->
+                                <div class="align-items-center pb-3 mt-0 me-2">
+                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
+                                </div>
+                                <!-- Kolom Tipe Dokumen dan Judul -->
+                                <div class="d-flex flex-column w-100">
+                                    <div class="card-title text-primary fw-bold mb-0">
+                                        <small>{{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</small>
+                                    </div>
+                                    <p class="card-text mb-3 text-muted" style="font-size: small;">
+                                        <small>{{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Footer -->
+                        <div class="card-footer bg-light border-top">
+                            <div class="d-flex justify-content-between hero-items-center">
+                                <!-- Informasi tambahan -->
+                                <div>
+                                    <small class="text-muted me-3">
+                                        <i class="far fa-calendar-alt me-1"></i>
+                                        {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                    </small>
+                                </div>
+                                <!-- Tombol aksi -->
+                                <div class="d-flex">
+                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
+                                        <i class="fas fa-eye me-1"></i>Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </a>
-        </div>
-        @endforeach
-    </div>
-
-    <!-- Peraturan Terupdate -->
-    <hr class="my-4">
-    <h2>Peraturan Terpopuler</h2>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div></div>
-        <select class="form-select w-auto">
-            <option selected>Sebulan terakhir</option>
-            <option value="1">Seminggu terakhir</option>
-            <option value="2">Hari ini</option>
-        </select>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">UU 7 TAHUN 2021</h5>
-                    <p class="card-text">Harmonisasi Peraturan Perpajakan</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <small><i class="fas fa-calendar-alt"></i> 29 Oktober 2021</small>
-                    <small><i class="fas fa-eye"></i> 111.4 rb x dilihat</small>
-                </div>
+                @endforeach
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">PMK 81 TAHUN 2024</h5>
-                    <p class="card-text">Ketentuan Perpajakan dalam Rangka Pelaksanaan Sistem Inti Administrasi Perpajakan</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <small><i class="fas fa-calendar-alt"></i> 14 Oktober 2024</small>
-                    <small><i class="fas fa-eye"></i> 38 x dilihat</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">PMK 39 TAHUN 2024</h5>
-                    <p class="card-text">Standar Biaya Masukan Tahun Anggaran 2025</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <small><i class="fas fa-calendar-alt"></i> 31 Mei 2024</small>
-                    <small><i class="fas fa-eye"></i> 2.1 rb x dilihat</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="text-center my-4">
-        <a href="{{ route('peraturan.index') }}" class="btn btn-primary">Lihat Selengkapnya</a>
     </div>
 </div>
-<!-- Peraturan Terupdate dan Terpopuler End -->
 
 <!-- Infografis Berita -->
 <div class="container-fluid ExploreTour py-5">
@@ -171,33 +216,27 @@
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
             <h5 class="section-title px-3">Infografis Hukum</h5>
         </div>
-        <div class="tab-class text-center">
-            <div id="NationalTab-1" class="tab-pane fade show p-0 active">
-                <div class="row g-4">
-                    @foreach($infografis as $item)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="national-item">
-                            <!-- Menampilkan gambar infografis pertama -->
-                            @if(is_string($item->gambar))
-                            <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
-                            @else
-                            <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
-                            @endif
-                            <div class="national-content">
-                                <div class="national-info">
-                                    <!-- Menampilkan judul infografis -->
-                                    <h5 class="text-white text-uppercase mb-2">{{ $item->judul }}</h5>
-                                    <a href="{{ route('infografis.show', $item->slug) }}" class="btn-hover text-white">Selengkapnya <i class="fa fa-arrow-right ms-2"></i></a>
-                                </div>
-                            </div>
-                            <div class="national-plus-icon">
-                                <a href="{{ route('infografis.show', $item->slug) }}" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
+        <div class="owl-carousel owl-theme">
+            @foreach($infografis as $item)
+            <div class="card infografis-card border-0 shadow">
+                <div class="infografis-img-container position-relative">
+                    <!-- Menampilkan gambar infografis -->
+                    @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
+                    <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded infografis-img" alt="Image">
+                    @else
+                    <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded infografis-img" alt="No Image">
+                    @endif
+                </div>
+                <div class="card-body text-center">
+                    <!-- Menampilkan judul infografis -->
+                    <h6 class="text-primary text-uppercase mb-1">
+                        <a href="{{ route('infografis.show', $item->slug) }}" class="fs-6 fw-lighter">
+                            {{ Str::limit(strip_tags($item->judul), 40) }}
+                        </a>
+                    </h6>
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -241,15 +280,43 @@
         </div>
     </div>
 </div>
-
 <!-- Berita Hukum  End -->
 
 <!-- Garis Pemisah -->
-<div class="separator-line my-0">
-    <hr style="border: 0; height: 1px; background: rgba(0, 0, 0, 0.1);">
+<div class="container-fluid booking py-5">
+    <h2 class="text-white text-center text-uppercase mb-5">Statistik Pengunjung</h2>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="p-4 bg-light rounded shadow text-center">
+                    <h4 class="text-primary">Tahun Ini</h4>
+                    <h2 class="mb-0">{{ $thisYearVisitors }}</h2>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="p-4 bg-light rounded shadow text-center">
+                    <h4 class="text-primary">Bulan Ini</h4>
+                    <h2 class="mb-0">{{ $thisMonthVisitors }}</h2>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="p-4 bg-light rounded shadow text-center">
+                    <h4 class="text-primary">Kemarin</h4>
+                    <h2 class="mb-0">{{ $yesterdayVisitors }}</h2>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="p-4 bg-light rounded shadow text-center">
+                    <h4 class="text-primary">Hari Ini</h4>
+                    <h2 class="mb-0">{{ $todayVisitors }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- About Start -->
+
+<!-- Survey Start -->
 <div class="container-fluid about py-5">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
@@ -260,7 +327,7 @@
                 </div>
             </div>
             <div class="col-lg-7"
-                style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(img/about-img-1.png);">
+                style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8));">
                 <h5 class="section-about-title pe-3">survey</h5>
                 <h1 class="mb-4">Penilaian Kepuasan Layanan</h1>
                 <p class="mb-4">Hasil Survey Kepuasan Layanan Jaringan Dokumentasi dan Informasi Hukum.
@@ -302,6 +369,6 @@
         </div>
     </div>
 </div>
-<!-- About End -->
+<!-- Survey End -->
 
 @endsection

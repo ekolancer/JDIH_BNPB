@@ -30,22 +30,13 @@ class DashboardController extends Controller
         ];
 
         // Mengambil data terbaru dari tabel peraturan
-        $peraturan = Peraturan::orderBy('created_at', 'desc')->take(6)->get();
+        $peraturanTerbaru = Peraturan::orderBy('created_at', 'desc')->take(4)->get();
+        $peraturanPopuler = Peraturan::orderBy('view_count', 'desc')->take(8)->get();
         $berita = Berita::where('status', 1)->orderBy('created_at', 'desc')->get();
         $infografis = Infografis::where('status', 1)
             ->orderBy('created_at', 'desc')
             ->take(6) // Ambil 6 data untuk ditampilkan
-            ->get()
-            ->map(function ($item) {
-                // Pastikan 'gambar' adalah string sebelum mencoba decode
-                if (is_string($item->gambar)) {
-                    $gambarArray = json_decode($item->gambar, true);
-                    $item->gambar = $gambarArray[0] ?? null; // Ambil gambar pertama jika ada
-                } else {
-                    $item->gambar = null; // Default jika bukan string
-                }
-                return $item;
-            });
+            ->get();
 
 
         // Ambil nilai unik tipeDok dan jenisDok dari keempat tabel
@@ -83,7 +74,8 @@ class DashboardController extends Controller
         // Mengirimkan data ke view
         return view('index', compact(
             'data',
-            'peraturan', 
+            'peraturanTerbaru', 
+            'peraturanPopuler', 
             'berita',
             'infografis',
             'tipeDokumen',

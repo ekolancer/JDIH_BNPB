@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Infografis extends Model
@@ -21,7 +22,6 @@ class Infografis extends Model
     ];
 
     protected $casts = [
-        'gambar' => 'array',
         'tag' => 'array',
         'status' => 'boolean',
     ];
@@ -35,5 +35,11 @@ class Infografis extends Model
                 $artikel->slug = Str::slug($artikel->judul);
             }
         });
+
+        // static::deleting(function ($infografis) {
+        //     if ($infografis->gambar && Storage::exists($infografis->gambar)) {
+        //         Storage::delete($infografis->gambar);
+        //     }
+        // });
     }
 }

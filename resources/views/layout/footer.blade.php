@@ -46,10 +46,6 @@
                             <li><a href="https://bnpb.go.id">Website BNPB</a></li>
                             <li><a href="https://jdihn.go.id/">Portal JDIH Nasional</a></li>
                             <li><a href="http://bphn.jdihn.go.id/">Portal BPHN</a></li>
-                            <li><a href="http://bphn.jdihn.go.id/">{{ $todayVisitors }}</a></li>
-                            <li><a href="http://bphn.jdihn.go.id/">{{ $yesterdayVisitors }}</a></li>
-                            <li><a href="http://bphn.jdihn.go.id/">{{ $thisMonthVisitors }}</a></li>
-                            <li><a href="http://bphn.jdihn.go.id/">{{ $thisYearVisitors }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -61,7 +57,7 @@
                         </div>
                         <div class="footer-text mb-25">
                             <ul style="color: dimgrey;">
-                                <li><i class="fas fa-location-dot me-2"></i>Graha BNPB - Jl. Pramuka Kav.38 Jakarta Timur 13120</li>
+                                <li><i class="fas fa-home me-2"></i>Graha BNPB - Jl. Pramuka Kav.38 Jakarta Timur 13120</li>
                                 <li><i class="fas fa-phone-alt me-2"></i> 021-29827793</li>
                                 <li><i class="fas fa-fax me-2"></i> 021-21281200</li>
                                 <li><i class="fas fa-envelope me-2"></i> persuratan@bnpb.go.id</li>
@@ -207,6 +203,40 @@
                 }
             }
         }
+    });
+</script>
+
+<!-- Script untuk Autoslider -->
+<script>
+    $(document).ready(function () {
+    $(".owl-carousel").owlCarousel({
+        loop: true, // Untuk looping infinite
+        margin: 10, // Jarak antar card
+        nav: false, // Tombol navigasi
+        dots: true, // Tampilkan pagination dots
+        autoplay: true, // Aktifkan autoplay
+        autoplayTimeout: 3500, // Kecepatan 5 detik
+        autoplayHoverPause: true, // Pause saat hover
+        slideTransition: 'ease-in-out', // Transisi yang halus
+        responsive: {
+            0: {
+                items: 1 // Tampilan 1 card di layar kecil
+            },
+            768: {
+                items: 2 // Tampilan 3 card di layar medium
+            },
+            1200: {
+                items: 4 // Tampilan maksimal 6 card di layar besar
+            }
+        }
+    });
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const row = document.querySelector('.row.g-4');
+        console.log(row); // Periksa apakah elemen ditemukan
     });
 </script>
 </body>
