@@ -1,7 +1,7 @@
 <!-- Footer Start -->
 <footer class="footer-section">
     <div class="container">
-        <div class="footer-content pt-5 pb-5">
+        <div class="footer-content pt-3 pb-3">
             <div class="row">
                 <!-- Kolom 1 -->
                 <div class="col-xl-4 col-lg-4 mb-50">
@@ -60,7 +60,7 @@
                                 <li><i class="fas fa-home me-2"></i>Graha BNPB - Jl. Pramuka Kav.38 Jakarta Timur 13120</li>
                                 <li><i class="fas fa-phone-alt me-2"></i> 021-29827793</li>
                                 <li><i class="fas fa-fax me-2"></i> 021-21281200</li>
-                                <li><i class="fas fa-envelope me-2"></i> persuratan@bnpb.go.id</li>
+                                <li><i class="fas fa-envelope me-2"></i> jdih@bnpb.go.id</li>
                             </ul>
                         </div>
                         <div class="footer-widget-heading pt-4">

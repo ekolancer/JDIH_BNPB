@@ -55,7 +55,7 @@
         <div class="mx-auto text-center mb-3" style="max-width: 900px;">
             <h5 class="section-title px-3">Jumlah Dokumen</h5>
         </div>
-        <div class="row gy-4">
+        <div class="row gy-4" style="color: black;">
             <!-- Item Peraturan -->
             <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
                 <i class="fa fa-balance-scale text-primary"></i>
@@ -218,7 +218,7 @@
         </div>
         <div class="owl-carousel owl-theme">
             @foreach($infografis as $item)
-            <div class="card infografis-card border-0 shadow">
+            <div class="card infografis-card border-0">
                 <div class="infografis-img-container position-relative">
                     <!-- Menampilkan gambar infografis -->
                     @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
@@ -226,14 +226,6 @@
                     @else
                     <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded infografis-img" alt="No Image">
                     @endif
-                </div>
-                <div class="card-body text-center">
-                    <!-- Menampilkan judul infografis -->
-                    <h6 class="text-primary text-uppercase mb-1">
-                        <a href="{{ route('infografis.show', $item->slug) }}" class="fs-6 fw-lighter">
-                            {{ Str::limit(strip_tags($item->judul), 40) }}
-                        </a>
-                    </h6>
                 </div>
             </div>
             @endforeach
@@ -283,38 +275,25 @@
 <!-- Berita Hukum  End -->
 
 <!-- Garis Pemisah -->
-<div class="container-fluid booking py-5">
-    <h2 class="text-white text-center text-uppercase mb-5">Statistik Pengunjung</h2>
+<div class="container-fluid booking py-5 bg-dark">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="p-4 bg-light rounded shadow text-center">
-                    <h4 class="text-primary">Tahun Ini</h4>
-                    <h2 class="mb-0">{{ $thisYearVisitors }}</h2>
-                </div>
+        <div class="row text-center">
+            <h3 class="text-white text-center text-uppercase text-decoration-underline mb-5">Statistik Pengunjung</h3>
+            <div class="col-lg-4 col-md-6 text-uppercase">
+                <h1 class="mb-2 text-white">{{ $thisYearVisitors }}</h1>
+                <h6 class="text-white">Total Pengunjung</h6>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="p-4 bg-light rounded shadow text-center">
-                    <h4 class="text-primary">Bulan Ini</h4>
-                    <h2 class="mb-0">{{ $thisMonthVisitors }}</h2>
-                </div>
+            <div class="col-lg-4 col-md-6 text-uppercase">
+                <h1 class="mb-2 text-white">{{ $yesterdayVisitors }}</h1>
+                <h6 class="text-white">Pengunjung Kemarin</h6>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="p-4 bg-light rounded shadow text-center">
-                    <h4 class="text-primary">Kemarin</h4>
-                    <h2 class="mb-0">{{ $yesterdayVisitors }}</h2>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="p-4 bg-light rounded shadow text-center">
-                    <h4 class="text-primary">Hari Ini</h4>
-                    <h2 class="mb-0">{{ $todayVisitors }}</h2>
-                </div>
+            <div class="col-lg-4 col-md-6 text-uppercase">
+                <h1 class="mb-2 text-white">{{ $todayVisitors }}</h1>
+                <h6 class="text-white">Pengunjung Hari Ini</h6>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Survey Start -->
 <div class="container-fluid about py-5">
@@ -326,49 +305,39 @@
                     <img src="img/survey.webP" class="img-fluid w-100 h-100" alt="">
                 </div>
             </div>
-            <div class="col-lg-7"
-                style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8));">
-                <h5 class="section-about-title pe-3">survey</h5>
+            <div class="col-lg-7">
+                <h5 class="section-about-title pe-3">Survey</h5>
                 <h1 class="mb-4">Penilaian Kepuasan Layanan</h1>
                 <p class="mb-4">Hasil Survey Kepuasan Layanan Jaringan Dokumentasi dan Informasi Hukum.
                     Masukan anda sangat bermanfaat untuk kemajuan unit kami agar terus memperbaiki dan
                     meningkatkan kualitas pelayanan bagi masyarakat.</p>
                 <div class="row gy-2 gx-4 mb-4">
-                    <!-- Letak Chart dan Grafik Survey -->
-                    <div class="row">
-                        <!-- Bagian Penilaian Rata-Rata -->
-                        <!-- Bagian Doughnut Chart -->
-                        <div class="col-lg-4 text-center position-relative">
-                            <canvas id="averageRatingChart" style="max-width: 250px;"></canvas>
-                            <!-- Bagian Teks di Tengah -->
-                            <div id="ratingDetails"
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                <h3 style="margin: 0; font-size: 2rem; color: #13357B;">4.9</h3>
-                                <!-- Rata-rata nilai -->
-                                <p style="margin: 0; font-size: 0.9rem; color: #555;">774 Penilaian</p>
-                                <!-- Jumlah pemberi survei -->
+                    <div class="col-md-4 col-sm-6 mx-auto text-center position-relative">
+                        <div class="circle-container">
+                            <canvas id="averageRatingChart"></canvas>
+                            <div class="rating-details">
+                                <h3>4.9</h3>
+                                <p>774 Penilaian</p>
                                 <div>
-                                    <!-- Ikon Bintang -->
-                                    <span style="color: #FFC107; font-size: 1.5rem;">&#9733;</span>
-                                    <span style="color: #FFC107; font-size: 1.5rem;">&#9733;</span>
-                                    <span style="color: #FFC107; font-size: 1.5rem;">&#9733;</span>
-                                    <span style="color: #FFC107; font-size: 1.5rem;">&#9733;</span>
-                                    <span style="color: #E0E0E0; font-size: 1.5rem;">&#9733;</span>
+                                    <span>&#9733;</span>
+                                    <span>&#9733;</span>
+                                    <span>&#9733;</span>
+                                    <span>&#9733;</span>
+                                    <span>&#9734;</span>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Grafik Batang Horizontal -->
-                        <div class="col-lg-6">
-                            <canvas id="ratingDistributionChart" style="max-width: 500px;"></canvas>
-                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="ratingDistributionChart"></canvas>
                     </div>
                 </div>
-                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Ikuti Survey</a>
+                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2 ms-5" href="#">Ikuti Survey</a>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Survey End -->
 
 @endsection
