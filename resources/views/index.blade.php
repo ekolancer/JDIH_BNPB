@@ -2,94 +2,44 @@
 
 @section('content')
 
-<style>
-    .card {
-        height: 100%;
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-    }
-
-    .card-img-top {
-        height: 150px;
-        object-fit: cover;
-    }
-
-    .card h6 {
-        font-size: 0.9rem;
-        font-weight: 500;
-        line-height: 1.4;
-    }
-
-    .main-container {
-        background-color: #f2f2f2;
-        padding: 20px;
-        border-radius: 8px;
-        width: 100%;
-    }
-
-    /* Efek zoom dan shadow untuk card */
-    .hover-zoom {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .hover-zoom:hover {
-        transform: scale(1.05);
-        /* Zoom efek */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        /* Shadow efek */
-    }
-
-    .card-link {
-        text-decoration: none;
-        /* Menghilangkan garis bawah pada link */
-        color: inherit;
-        /* Menjaga warna teks agar tetap sama */
-    }
-</style>
-
 <!-- Stats Section -->
 <section id="stats" class="stats section light-background py-5">
     <div class="container">
-        <div class="mx-auto text-center mb-3" style="max-width: 900px;">
-            <h5 class="section-title px-3">Jumlah Dokumen</h5>
+        <div class="mx-auto text-center mb-4" style="max-width: 800px;">
+            <p class="text-muted">Produk Hukum</p>
+            <h2 class="counters-title fw-bold">Berdasarkan Kategori.</h2>
         </div>
-        <div class="row gy-4" style="color: black;">
-            <!-- Item Peraturan -->
-            <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                <i class="fa fa-balance-scale text-primary"></i>
-                <div class="stats-item">
-                    <span data-purecounter-start="0" data-purecounter-end="{{ $data['peraturan'] }}" data-purecounter-duration="1"
-                        class="purecounter"></span>
-                    <p>Peraturan</p>
+        <div class="row gy-4 text-center">
+            <!-- Peraturan -->
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-item bg-gradient-primary shadow-sm">
+                    <i class="fa fa-balance-scale mb-3"></i>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['peraturan'] }}" data-purecounter-duration="1"></h3>
+                    <p class="feature-title">Peraturan Perundang-Undangan</p>
                 </div>
             </div>
-            <!-- Item Monografi -->
-            <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                <i class="fa fa-book-open text-primary"></i>
-                <div class="stats-item">
-                    <span data-purecounter-start="0" data-purecounter-end="{{ $data['monografi'] }}" data-purecounter-duration="1"
-                        class="purecounter"></span>
-                    <p>Monografi</p>
+            <!-- Monografi Hukum -->
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-item bg-gradient-secondary shadow-sm">
+                    <i class="fa fa-book-open mb-3"></i>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['monografi'] }}" data-purecounter-duration="1"></h3>
+                    <p class="feature-title">Monografi Hukum</p>
                 </div>
             </div>
-            <!-- Item Artikel -->
-            <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                <i class="fa fa-newspaper text-primary"></i>
-                <div class="stats-item">
-                    <span data-purecounter-start="0" data-purecounter-end="{{ $data['artikel'] }}" data-purecounter-duration="1"
-                        class="purecounter"></span>
-                    <p>Artikel</p>
+            <!-- Artikel Hukum -->
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-item bg-gradient-tertiary shadow-sm">
+                    <i class="fa fa-newspaper mb-3"></i>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['artikel'] }}" data-purecounter-duration="1"></h3>
+                    <p class="feature-title">Artikel Hukum</p>
                 </div>
             </div>
-            <!-- Item Putusan -->
-            <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
-                <i class="fa fa-gavel text-primary"></i>
-                <div class="stats-item">
-                    <span data-purecounter-start="0" data-purecounter-end="{{ $data['putusan'] }}" data-purecounter-duration="1"
-                        class="purecounter"></span>
-                    <p>Putusan</p>
+            <!-- Putusan Hukum -->
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-item bg-gradient-quaternary shadow-sm">
+                    <i class="fa fa-gavel mb-3"></i>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['putusan'] }}" data-purecounter-duration="1"></h3>
+                    <p class="feature-title">Putusan Hukum</p>
                 </div>
             </div>
         </div>
@@ -211,7 +161,7 @@
 </div>
 
 <!-- Infografis Berita -->
-<div class="container-fluid ExploreTour py-5">
+<div class="container-fluid ExploreTour pt-5 pb-1">
     <div class="container py-5">
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
             <h5 class="section-title px-3">Infografis Hukum</h5>
@@ -240,7 +190,7 @@
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
             <h5 class="section-title px-3">Berita Terbaru</h5>
         </div>
-        <div class="packages-carousel owl-carousel">
+        <div class="packages-carousel owl-carousel shadow-lg">
             @foreach($berita as $item)
             <div class="packages-item">
                 <div class="packages-img">
@@ -275,25 +225,61 @@
 <!-- Berita Hukum  End -->
 
 <!-- Garis Pemisah -->
-<div class="container-fluid booking py-5 bg-dark">
+<div class="container-fluid booking py-5">
     <div class="container">
-        <div class="row text-center">
-            <h3 class="text-white text-center text-uppercase text-decoration-underline mb-5">Statistik Pengunjung</h3>
-            <div class="col-lg-4 col-md-6 text-uppercase">
-                <h1 class="mb-2 text-white">{{ $thisYearVisitors }}</h1>
-                <h6 class="text-white">Total Pengunjung</h6>
-            </div>
-            <div class="col-lg-4 col-md-6 text-uppercase">
-                <h1 class="mb-2 text-white">{{ $yesterdayVisitors }}</h1>
-                <h6 class="text-white">Pengunjung Kemarin</h6>
-            </div>
-            <div class="col-lg-4 col-md-6 text-uppercase">
-                <h1 class="mb-2 text-white">{{ $todayVisitors }}</h1>
-                <h6 class="text-white">Pengunjung Hari Ini</h6>
+        <h2 class="counters-title pt-5">Statistik Pengunjung</h2>
+        <div class="counters">
+            <div class="row justify-content-center align-items-center">
+                <!-- Statistik -->
+                <div class="col-md-8">
+                    <div class="row gy-4">
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="counter-item">
+                                <i class="fas fa-calendar-day"></i>
+                                <div>
+                                    <h3>{{ $todayVisitors }}</h3>
+                                    <p class="counter-title">Pengunjung Hari ini</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="counter-item">
+                                <i class="fas fa-calendar-minus"></i>
+                                <div>
+                                    <h3>{{ $yesterdayVisitors }}</h3>
+                                    <p class="counter-title">Pengunjung Kemarin</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="counter-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <h3>{{ $thisMonthVisitors }}</h3>
+                                    <p class="counter-title">Pengunjung Bulan ini</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="counter-item">
+                                <i class="fas fa-chart-line"></i>
+                                <div>
+                                    <h3>{{ $thisYearVisitors }}</h3>
+                                    <p class="counter-title">Pengunjung Tahun ini</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chart -->
+                <div class="col-md-4 text-center">
+                    <img alt="Statistic Chart" src="{{ asset('img/statistik-doc.png') }}" class="img-fluid">
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Survey Start -->
 <div class="container-fluid about py-5">
@@ -302,7 +288,7 @@
             <div class="col-lg-5">
                 <div class="h-100"
                     style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
-                    <img src="img/survey.webP" class="img-fluid w-100 h-100" alt="">
+                    <img src="{{ asset('img/survey.webP') }}" class="img-fluid w-100 h-100" alt="">
                 </div>
             </div>
             <div class="col-lg-7">

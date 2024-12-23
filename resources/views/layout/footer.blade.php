@@ -208,29 +208,38 @@
 
 <!-- Script untuk Autoslider -->
 <script>
-    $(document).ready(function () {
-    $(".owl-carousel").owlCarousel({
-        loop: true, // Untuk looping infinite
-        margin: 10, // Jarak antar card
-        nav: false, // Tombol navigasi
-        dots: true, // Tampilkan pagination dots
-        autoplay: true, // Aktifkan autoplay
-        autoplayTimeout: 3500, // Kecepatan 5 detik
-        autoplayHoverPause: true, // Pause saat hover
-        slideTransition: 'ease-in-out', // Transisi yang halus
-        responsive: {
-            0: {
-                items: 1 // Tampilan 1 card di layar kecil
-            },
-            768: {
-                items: 2 // Tampilan 3 card di layar medium
-            },
-            1200: {
-                items: 4 // Tampilan maksimal 6 card di layar besar
+    $(document).ready(function() {
+        $(".owl-carousel").owlCarousel({
+            loop: true, // Untuk looping infinite
+            margin: 10, // Jarak antar card
+            nav: false, // Tombol navigasi
+            dots: true, // Tampilkan pagination dots
+            autoplay: true, // Aktifkan autoplay
+            autoplayTimeout: 3500, // Kecepatan 5 detik
+            autoplayHoverPause: true, // Pause saat hover
+            slideTransition: 'ease-in-out', // Transisi yang halus
+            responsive: {
+                0: {
+                    items: 1 // Tampilan 1 card di layar kecil
+                },
+                768: {
+                    items: 2 // Tampilan 3 card di layar medium
+                },
+                1200: {
+                    items: 4 // Tampilan maksimal 6 card di layar besar
+                }
             }
-        }
+        });
     });
-});
+</script>
+
+<!-- AOS Library -->
+<script>
+    AOS.init({
+        duration: 1000, // Durasi animasi
+        easing: 'ease-in-out',
+        once: true // Hanya satu kali saat pertama kali muncul
+    });
 </script>
 
 <script>

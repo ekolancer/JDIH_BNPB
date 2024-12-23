@@ -446,7 +446,7 @@
 
 }
 
-/* Untuk memberi tampilan yang lebih bersih dan proporsional */
+/* Search Widget Start */
 .search-container {
     display: flex;
     justify-content: center;
@@ -533,52 +533,149 @@
 
 /*** Single Page Hero Header End ***/
 
-/* **Section Status** */
-/*--------------------------------------------------------------
-# Stats Section
---------------------------------------------------------------*/
-.stats i {
-    background-color: var(--surface-color);
-    color: var(--accent-color);
-    box-shadow: 0px 2px 25px rgba(0, 0, 0, 0.1);
-    width: 54px;
-    height: 54px;
-    font-size: 24px;
-    border-radius: 50px;
-    border: 2px solid var(--background-color);
-    display: inline-flex;
+/* Feature Box Statistik Dokumen Start */
+/* Container Section */
+.stats {
+    background-color: #f9f9f9;
+    padding: 50px 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.text-muted {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Feature Items */
+.feature-item {
+    border-radius: 12px;
+    padding: 25px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .stats .stats-item {
-    background-color: white;
-    margin-top: -27px;
-    padding: 30px 30px 25px 30px;
-    width: 100%;
-    position: relative;
-    text-align: center;
-    box-shadow: 0px 2px 35px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    z-index: 0;
-  }
-  
-  .stats .stats-item span {
-    font-size: 36px;
-    display: block;
-    font-weight: 700;
-    color: color-mix(in srgb, var(--default-color), transparent 20%);
-  }
-  
-  .stats .stats-item p {
-    padding: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.feature-title {
+    font-size: 1.1rem;
     margin: 0;
-    font-family: var(--heading-font);
-    font-size: 16px;
-  }
-/* **Section Status End** */
+}
+
+/* Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff, #6496e8);
+}
+
+.bg-gradient-secondary {
+    background: linear-gradient(135deg, #28a745, #7ed68a);
+}
+
+.bg-gradient-tertiary {
+    background: linear-gradient(135deg, #ffc107, #ffda7b);
+}
+
+.bg-gradient-quaternary {
+    background: linear-gradient(135deg, #dc3545, #f07585);
+}
+
+/* Hover Effect */
+.feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .feature-item {
+        padding: 20px;
+    }
+
+    .feature-item i {
+        font-size: 2.5rem;
+    }
+
+    .feature-item h3 {
+        font-size: 1.5rem;
+    }
+
+    .feature-title {
+        font-size: 1rem;
+    }
+}
+/* Feature Box Statistik Dokumen End */
+
+/*** Highlight Dokumen Peraturan Start ***/
+
+.card-body {
+    flex: 1 1 auto;
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+}
+
+.card h6 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.main-container {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+/* Efek zoom dan shadow untuk card */
+.hover-zoom {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-zoom:hover {
+    transform: scale(1.05);
+    /* Zoom efek */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Shadow efek */
+}
+
+.card {
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+/* Efek hover zoom */
+.zoom-card:hover {
+    transform: scale(1.05); /* Memperbesar kartu sedikit */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Menambahkan shadow lebih besar saat hover */
+}
+
+.card-link {
+    text-decoration: none;
+    /* Menghilangkan garis bawah pada link */
+    color: inherit;
+    /* Menjaga warna teks agar tetap sama */
+}
+
+/*** Highlight Dokumen Peraturan End ***/
 
 /*** About Start ***/
 .about .container .section-about-title {
@@ -600,31 +697,6 @@
 }
 
 /*** About End ***/
-
-
-/*** Services Start ***/
-.service .service-content-inner {
-    transition: 0.5s;
-}
-
-.service .service-content-inner:hover {
-    position: relative;
-    background: var(--bs-primary) !important;
-}
-
-.service .service-content-inner .service-content h5,
-.service .service-content-inner .service-content p,
-.service .service-content-inner .service-icon i {
-    transition: 0.5s;
-}
-
-.service .service-content-inner:hover .service-content h5,
-.service .service-content-inner:hover .service-content p,
-.service .service-content-inner:hover .service-icon i {
-    color: var(--bs-white) !important;
-}
-
-/*** Service End ***/
 
 
 /*** Packages Start ***/
@@ -883,45 +955,89 @@
 /*** Gallery End ***/
 
 /*** Tour Booking Start ***/
-.booking {
-    background: linear-gradient(rgba(19, 53, 123, .8), rgba(19, 53, 123, .8)), url(../img/bg-statistik.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-
+.counters .counter-item {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-
-.booking .container .section-booking-title {
-    position: relative;
-    display: inline-block;
-    text-transform: uppercase;
-    color: var(--bs-white);
+.counters .counter-item:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #c3cfe2, #f5f7fa);
 }
 
-.booking .container .section-booking-title::before {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    margin-right: -50px;
-    border: 1px solid var(--bs-white) !important;
+.counters .counter-item i {
+    font-size: 3rem;
+    color: var(--bs-primary);
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
 }
 
-.booking .container form .btn.btn-primary {
-    box-shadow: inset 0 0 0 0 var(--bs-primary);
+.counters .counter-item div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.booking .container form .btn.btn-primary:hover {
-    box-shadow: inset 800px 0 0 0 var(--bs-light) !important;
-    color: var(--bs-primary) !important;
+.counters .counter-item h3 {
+    margin: 0;
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
 }
 
+.counters .counter-item p {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+}
 
+.counters .counter-title {
+        font-size: 1rem;
+        color: #666;
+    }
 
+    .counters-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        color: #333;
+        font-weight: 700;
+        position: relative;
+    }
+
+    .counters-title::after {
+        content: '';
+        width: 100px;
+        height: 4px;
+        background: var(--bs-primary);
+        display: block;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+
+@media (max-width: 768px) {
+    .counter-item {
+        padding: 15px;
+    }
+
+    .counter-item i {
+        font-size: 2.5rem;
+    }
+
+    .counter-item h3 {
+        font-size: 1.5rem;
+    }
+
+    .counter-item p {
+        font-size: 0.9rem;
+    }
+}
 /*** Tour Booking end ***/
 
 /*** Travel Guide Start ***/
@@ -1298,19 +1414,6 @@ ul {
 }
 
 /*** copyright end ***/
-
-/* **Style List View** */
-/* Menambahkan shadow lebih terlihat pada kartu */
-.card {
-    transition: all 0.3s ease;
-}
-
-/* Efek hover zoom */
-.zoom-card:hover {
-    transform: scale(1.05); /* Memperbesar kartu sedikit */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Menambahkan shadow lebih besar saat hover */
-}
-
 
 /* Survey Style */
 .circle-container {
