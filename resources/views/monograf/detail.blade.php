@@ -26,8 +26,7 @@
                     <h2>Detail Monograf</h2>
                     <div class="d-flex">
                         <span class="me-3"><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($monograf->created_at)->translatedFormat('d F Y') }}</span>
-                        <span class="me-3"><i class="fas fa-eye"></i> 12321 dilihat</span>
-                        <span class="me-3"><i class="fas fa-download"></i> 2912 diunduh</span>
+                        <span class="me-3"><i class="fas fa-eye"></i> {{ $monograf->view_count }}x dilihat</span>
                     </div>
                 </div>
                 <hr>

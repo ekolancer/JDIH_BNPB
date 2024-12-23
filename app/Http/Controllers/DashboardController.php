@@ -193,4 +193,19 @@ class DashboardController extends Controller
 
         return view('list-doc', compact('paginatedResults'));
     }
+
+    public function about()
+    {
+        return view('overview.about');
+    }
+
+    public function visiMisi()
+    {
+        return view('overview.visiMisi');
+    }
+
+    public function struktur()
+    {
+        return view('overview.struktur');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Berita extends Model
@@ -35,9 +36,16 @@ class Berita extends Model
     {
         parent::boot();
 
-        static::creating(function ($artikel) {
-            if (empty($artikel->slug)) {
-                $artikel->slug = Str::slug($artikel->judul);
+        static::creating(function ($berita) {
+            if (empty($berita->slug)) {
+                $berita->slug = Str::slug($berita->judul);
+            }
+        });
+
+        static::deleted(function ($berita) {
+            // Menghapus file lampiran setelah data dihapus
+            if ($berita->lampiran && Storage::exists('public/' . $berita->lampiran)) {
+                Storage::delete('public/' . $berita->lampiran);
             }
         });
     }

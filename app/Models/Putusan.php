@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Putusan extends Model
@@ -36,17 +37,6 @@ class Putusan extends Model
         'download_count',
     ];
 
-    /**
-     * Konfigurasi slug.
-     */
-    // public function getSlugOptions(): SlugOptions
-    // {
-    //     return SlugOptions::create()
-    //         ->generateSlugsFrom('judul') // Sumber slug, misalnya dari kolom 'judul'
-    //         ->saveSlugsTo('slug')       // Target kolom untuk slug
-    //         ->doNotGenerateSlugsOnUpdate(); // Pilihan jika slug tidak boleh berubah saat data diperbarui
-    // }
-
     protected static function boot()
     {
         parent::boot();
@@ -54,6 +44,13 @@ class Putusan extends Model
         static::creating(function ($putusan) {
             if (empty($putusan->slug)) {
                 $putusan->slug = Str::slug($putusan->judul);
+            }
+        });
+
+        static::deleted(function ($putusan) {
+            // Menghapus file lampiran setelah data dihapus
+            if ($putusan->lampiran && Storage::exists('public/' . $putusan->lampiran)) {
+                Storage::delete('public/' . $putusan->lampiran);
             }
         });
     }

@@ -30,16 +30,17 @@ class Infografis extends Model
     {
         parent::boot();
 
-        static::creating(function ($artikel) {
-            if (empty($artikel->slug)) {
-                $artikel->slug = Str::slug($artikel->judul);
+        static::creating(function ($infografis) {
+            if (empty($infografis->slug)) {
+                $infografis->slug = Str::slug($infografis->judul);
             }
         });
 
-        // static::deleting(function ($infografis) {
-        //     if ($infografis->gambar && Storage::exists($infografis->gambar)) {
-        //         Storage::delete($infografis->gambar);
-        //     }
-        // });
+        static::deleted(function ($infografis) {
+            // Menghapus file lampiran setelah data dihapus
+            if ($infografis->lampiran && Storage::exists('public/lampiran/infografis/' . $infografis->lampiran)) {
+                Storage::delete('public/lampiran/infografis/' . $infografis->lampiran);
+            }
+        });
     }
 }

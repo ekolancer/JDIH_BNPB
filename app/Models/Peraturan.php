@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Peraturan extends Model
@@ -52,6 +53,13 @@ class Peraturan extends Model
         static::creating(function ($peraturan) {
             if (empty($peraturan->slug)) {
                 $peraturan->slug = Str::slug($peraturan->judul);
+            }
+        });
+
+        static::deleted(function ($peraturan) {
+            // Menghapus file lampiran setelah data dihapus
+            if ($peraturan->lampiran && Storage::exists('public/' . $peraturan->lampiran)) {
+                Storage::delete('public/' . $peraturan->lampiran);
             }
         });
     }

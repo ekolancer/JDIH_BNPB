@@ -12,6 +12,9 @@ use App\Http\Controllers\PutusanController;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/storage/{slug}', [DashboardController::class, 'download'])->name('file.download');
 Route::get('/search/list', [DashboardController::class, 'search'])->name('dashboard.search');
+Route::get('/about', [DashboardController::class, 'about'])->name('about');
+Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMisi');
+Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
 
 //Route Peraturan
 Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');

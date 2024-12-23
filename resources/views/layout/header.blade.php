@@ -60,21 +60,20 @@
                 <div class="navbar-nav ms-auto py-0">
                     <a href="/" class="nav-item nav-link active">Home</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="#" class="dropdown-item">Sekilah Sejarah</a>
-                            <a href="#" class="dropdown-item">Dasar Hukum</a>
-                            <a href="#" class="dropdown-item">Visi Misi</a>
-                            <a href="#" class="dropdown-item">Struktur Organisasi</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jenis Dokumen</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
                             <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
                             <a href="{{ route('artikel.index') }}" class="dropdown-item">Artikel</a>
                             <a href="{{ route('putusan.index') }}" class="dropdown-item">Putusan</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{{ route('about') }}" class="dropdown-item">Tentang Kami</a>
+                            <a href="{{ route('visiMisi') }}" class="dropdown-item">Visi Misi</a>
+                            <a href="{{ route('struktur') }}" class="dropdown-item">Struktur Organisasi Biro Hukum</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

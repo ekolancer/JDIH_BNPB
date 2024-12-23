@@ -3,8 +3,6 @@
 @section('content')
 
 <div class="container mt-2" style="padding: 50px;">
-    <!-- Title "Daftar Artikel" in the center -->
-    <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Artikel</h2>
 
     <div class="row">
         <!-- Kolom Filter -->
@@ -13,31 +11,22 @@
                 <div class="card-body">
                     <h5 class="card-title">Filter</h5>
                     <form method="GET" action="{{ route('artikel.index') }}">
-                        <!-- Judul -->
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
                             <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul">
                         </div>
-
-                        <!-- Tahun -->
                         <div class="mb-3">
                             <label for="tahunTerbit" class="form-label">Tahun Terbit</label>
                             <input type="number" id="tahunTerbit" name="tahunTerbit" class="form-control" placeholder="Masukkan tahun terbit">
                         </div>
-
-                        <!-- Penerbit -->
                         <div class="mb-3">
                             <label for="penerbit" class="form-label">Penerbit</label>
                             <input type="text" id="penerbit" name="penerbit" class="form-control" placeholder="Masukkan nama penerbit">
                         </div>
-
-                        <!-- Lokasi -->
                         <div class="mb-3">
                             <label for="lokasi" class="form-label">Lokasi</label>
                             <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="Lokasi">
                         </div>
-
-                        <!-- Tombol Filter -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">Cari</button>
                             <a href="{{ route('artikel.index') }}" class="btn btn-warning">Reset</a>

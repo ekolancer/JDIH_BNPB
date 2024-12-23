@@ -3,8 +3,6 @@
 @section('content')
 
 <div class="container mt-2" style="padding: 50px;">
-    <!-- Title "Daftar Putusan" in the center -->
-    <h2 class="text-center w-100" style="padding-bottom: 50px">Dokumen Hukum / Putusan</h2>
 
     <div class="row">
         <!-- Kolom Filter -->
