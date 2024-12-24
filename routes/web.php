@@ -41,3 +41,7 @@ Route::get('/berita/{slug}/detail', [BeritaController::class, 'show'])->name('be
 //Route Infografis
 Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
 Route::get('/infografis/{slug}/detail', [InfografisController::class, 'show'])->name('infografis.show');
+
+Route::fallback(function () {
+    return response()->view('404', [], 404);
+});
