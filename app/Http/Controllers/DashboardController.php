@@ -125,9 +125,9 @@ class DashboardController extends Controller
     public function search(Request $request)
     {
         $validated = $request->validate([
-            'q' => 'nullable|string|max:255',
-            'tipe_dokumen' => 'nullable|string|max:255',
-            'bentuk_dokumen' => 'nullable|string|max:255',
+            'q' => 'nullable|string|max:100',
+            'tipe_dokumen' => 'nullable|string|max:100',
+            'bentuk_dokumen' => 'nullable|string|max:100',
             'tahun' => 'nullable|integer',
         ]);
 
@@ -145,7 +145,7 @@ class DashboardController extends Controller
                 ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
                 ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
                 ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahun', $tahun))
+                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
                 ->get()
         );
 
@@ -155,7 +155,7 @@ class DashboardController extends Controller
                 ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
                 ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
                 ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahun', $tahun))
+                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
                 ->get()
         );
 
@@ -165,7 +165,7 @@ class DashboardController extends Controller
                 ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
                 ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
                 ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahun', $tahun))
+                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
                 ->get()
         );
 
@@ -175,7 +175,7 @@ class DashboardController extends Controller
                 ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
                 ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
                 ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahun', $tahun))
+                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
                 ->get()
         );
 

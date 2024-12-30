@@ -111,7 +111,7 @@
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand d-flex hero-items-center">
                 <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <img src="{{ asset('img/bnpb.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/BNPB.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <div class="d-flex flex-column">
                     <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
                     <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->
@@ -153,7 +153,7 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Section -->
-        <div class="hero-image position-relative text-center text-white d-flex align-items justify-content-center">
+        <div class="hero-image text-center text-white">
             <div class="overlay position-absolute w-100 h-100"></div>
             <div class="container py-5">
                 <h1 class="title-bread display-4 fw-bold">PROFILE JDIH BNPB</h1>

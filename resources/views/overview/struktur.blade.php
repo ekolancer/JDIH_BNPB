@@ -8,10 +8,6 @@
         font-family: 'Arial', sans-serif;
     }
 
-    .container {
-        margin-top: 50px;
-    }
-
     .card-header {
         background-color: #007bff;
         color: white;
@@ -26,9 +22,9 @@
 <body>
 
     <div class="container">
-        <h1 class="text-center mb-4">Struktur Organisasi</h1>
+        <h1 class="text-center mt-5 mb-4">Struktur Organisasi</h1>
 
-        <div class="card">
+        <div class="card mb-5">
             <div class="card-header">
                 <h3>Biro Hukum, Organisasi dan Kerja Sama</h3>
             </div>

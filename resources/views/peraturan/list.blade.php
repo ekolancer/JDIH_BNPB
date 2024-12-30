@@ -72,13 +72,13 @@
                             <!-- Header -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
+                                <div class="align-items-center pb-3 mt-0 me-3">
+                                    <img src="/img/icon/iconPeraturan.png" alt="" height="60px" width="55px">
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">
                                     <h5 class="card-title text-primary fw-bold mb-0">
-                                        {{ $peraturan->tipeDok }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
+                                        {{ $peraturan->jenisDok }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
                                     </h5>
                                     <p class="card-text mb-3 text-muted">
                                         {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}

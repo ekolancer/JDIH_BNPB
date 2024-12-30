@@ -504,16 +504,11 @@
 }
 
 .hero-image {
-    background-image: url('/img/headerhero.webP');
-    background-size: cover;
+    background-image: url('https://jdih.bnpb.go.id/img/headerhero.webp');
+    /* background-size: cover; */
     background-position: center;
-    height: 40vh;
+    height: 35vh;
     position: relative;
-}
-
-.hero-image .overlay {
-    background-color: rgba(0, 0, 0, 0.5); /* Overlay gelap */
-    z-index: 1;
 }
 
 .hero-image .container {

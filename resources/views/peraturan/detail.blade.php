@@ -1,21 +1,6 @@
 @extends('layout.app-clear')
 
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-<!-- Section Judul File dan Breadcrumb -->
-<section class="file-title-section">
-    <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ url('/peraturan') }}">Peraturan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $peraturan->jenisDok }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</li>
-            </ol>
-        </nav>
-    </div>
-</section>
 
 <div class="container">
     <div class="row">

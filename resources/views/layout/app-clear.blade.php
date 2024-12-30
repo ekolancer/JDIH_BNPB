@@ -1,4 +1,4 @@
-@include('Layout.header-clear')
+@include('layout.header-clear')
 
         <!-- Main Content -->
         @yield('content')

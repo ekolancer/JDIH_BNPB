@@ -1,4 +1,4 @@
-@include('Layout.header')
+@include('layout.header')
 
         <!-- Main Content -->
         @yield('content')

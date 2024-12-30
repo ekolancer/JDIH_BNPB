@@ -182,7 +182,7 @@ class PeraturanResource extends Resource
                                 ->preserveFilenames()
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->validationMessages(['required' => 'Lampiran tidak boleh kosong !'])
-                                ->maxSize(10240)
+                                ->maxSize(25600)
                                 ->required(),
                         ])
                 ])

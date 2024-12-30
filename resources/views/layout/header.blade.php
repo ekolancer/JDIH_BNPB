@@ -47,7 +47,7 @@
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
             <a href="/" class="navbar-brand d-flex hero-items-center">
                 <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <img src="{{ asset('img/bnpb.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
+                <img src="{{ asset('img/BNPB.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
                 <div class="d-flex flex-column">
                     <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
                     <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->
@@ -89,7 +89,7 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Start -->
-        <div class="hero-image-container" style="background-image: url('img/headerhero.webP'); background-size: cover; background-position: center; height: 70vh; position: relative;">
+        <div class="hero-image-container" style="background-image: url('img/headerhero.webp'); background-size: cover; background-position: center; height: 70vh; position: relative;">
             <div class="container h-100 d-flex justify-content-center hero-items-center">
                 <div class="row w-100">
                     <div class="col-12 text-center">

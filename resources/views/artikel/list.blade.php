@@ -47,8 +47,8 @@
                             <!-- Header -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/iconartikel.png" alt="" height="50px" width="50px">
+                                <div class="align-items-center pb-3 mt-0 me-3">
+                                    <img src="/img/icon/iconArtikel.png" alt="" height="60px" width="55px">
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
                                 <div class="d-flex flex-column w-100">

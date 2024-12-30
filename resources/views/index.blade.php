@@ -288,7 +288,7 @@
             <div class="col-lg-5">
                 <div class="h-100"
                     style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
-                    <img src="{{ asset('img/survey.webP') }}" class="img-fluid w-100 h-100" alt="">
+                    <img src="{{ asset('img/survey.webp') }}" class="img-fluid w-100 h-100" alt="">
                 </div>
             </div>
             <div class="col-lg-7">
