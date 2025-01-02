@@ -6,8 +6,7 @@
     <!-- Title "Daftar monograf" in the center -->
     <h2 class="text-center w-100" style="padding-bottom: 50px">List Berita</h2>
 
-    <div class="row">
-        <!-- Berita Terpopuler -->
+    <div class="row align-items-start">
         <!-- Berita Terpopuler -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
@@ -111,7 +110,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $berita->links('pagination::bootstrap-5') }}
+                {{ $berita->links('pagination::simple-modern') }}
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@
     <div class="container">
         <!-- Kolom List Infografis -->
         <div class="col-md-12">
-            <div class="row">
+            <div class="row align-items-start">
                 @forelse ($infografis as $item)
                 <div class="col-md-3 mb-4"> <!-- 3 berarti 4 kolom dalam 1 baris -->
                     <!-- Card Dokumen -->
@@ -67,7 +67,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $infografis->links('pagination::bootstrap-5') }}
+                {{ $infografis->links('pagination::simple-modern') }}
             </div>
         </div>
     </div>

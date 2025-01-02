@@ -4,7 +4,7 @@
 
 <div class="container mt-2" style="padding: 50px;">
 
-    <div class="row">
+    <div class="row align-items-start">
         <!-- Kolom Filter -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
@@ -20,7 +20,7 @@
                         <div class="mb-3">
                             <label for="tipeDok" class="form-label">Tipe Dokumen</label>
                             <select id="tipeDok" name="tipeDok" class="form-select">
-                                <option value="">Pilih Tipe Dokumen</option>
+                                <option value="">Pilih Jenis Dokumen</option>
                                 @foreach($tipeDokOptions as $option)
                                 <option value="{{ $option }}" {{ request('tipeDok') == $option ? 'selected' : '' }}>
                                     {{ $option }}
@@ -72,7 +72,7 @@
                             <!-- Header -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-3">
+                                <div class="align-items-start pb-3 mt-0 me-3">
                                     <img src="/img/icon/iconPeraturan.png" alt="" height="60px" width="55px">
                                 </div>
                                 <!-- Kolom Tipe Dokumen dan Judul -->
@@ -132,7 +132,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $dokumen->links('pagination::bootstrap-5') }}
+                {{ $dokumen->links('pagination::simple-modern') }}
             </div>
         </div>
     </div>

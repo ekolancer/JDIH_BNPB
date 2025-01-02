@@ -10,7 +10,7 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
                 <li class="breadcrumb-item"><a href="{{ url('/putusan') }}">Putusan</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ $putusan->singkatan }} Nomor {{ $putusan->nomor }} Tahun {{ $putusan->tahun }}</li>
             </ol>

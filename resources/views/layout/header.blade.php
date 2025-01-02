@@ -58,9 +58,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="/" class="nav-item nav-link active">Home</a>
+                    <a href="/" class="nav-item nav-link active">Beranda</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jenis Dokumen</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dokumen Hukum</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
                             <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Publikasi</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
                             <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
@@ -123,7 +123,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="documentType" class="form-label">Jenis Dokumen</label>
                                         <select class="form-select" id="documentType" name="tipe_dokumen">
-                                            <option value="">Pilih Tipe Dokumen</option>
+                                            <option value="">Pilih Jenis Dokumen</option>
                                             @foreach($tipeDokumen as $tipe)
                                             <option value="{{ $tipe }}" {{ request('tipe_dokumen') == $tipe ? 'selected' : '' }}>
                                                 {{ $tipe }}

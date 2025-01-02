@@ -4,7 +4,7 @@
 
 <div class="container mt-2" style="padding: 50px;">
 
-    <div class="row">
+    <div class="row align-items-start">
         <!-- Kolom Filter -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
@@ -96,7 +96,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $dokumen->links('pagination::bootstrap-5') }}
+                {{ $dokumen->links('pagination::simple-modern') }}
             </div>
         </div>
     </div>

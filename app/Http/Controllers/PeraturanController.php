@@ -45,7 +45,8 @@ class PeraturanController extends Controller
         }
 
         // Ambil data hasil pencarian atau seluruh data jika filter kosong
-        $dokumen = $query->paginate(10);
+        $dokumen = $query->orderBy('created_at', 'desc')->paginate(10);
+
 
         // Ambil daftar tipeDok unik dari tabel peraturan
         $tipeDokOptions = Peraturan::select('tipeDok')->distinct()->pluck('tipeDok');

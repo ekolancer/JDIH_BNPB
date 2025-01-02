@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container mt-3">
     <div class="row">
         <!-- Detail Container -->
         <div class="col-md-8">
@@ -138,9 +138,7 @@
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">
-                        {{ basename($peraturan->lampiran) }}
-                    </a>
+                    Tidak Tersedia
                     <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">
                         @if($fileSizeInKb < 1000)
                             <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
