@@ -301,15 +301,11 @@
                     <div class="col-md-4 col-sm-6 mx-auto text-center position-relative">
                         <div class="circle-container">
                             <canvas id="averageRatingChart"></canvas>
-                            <div class="rating-details">
-                                <h3>4.9</h3>
-                                <p>774 Penilaian</p>
-                                <div>
-                                    <span>&#9733;</span>
-                                    <span>&#9733;</span>
-                                    <span>&#9733;</span>
-                                    <span>&#9733;</span>
-                                    <span>&#9734;</span>
+                            <div class="rating-details text-center">
+                                <h3 id="averageRating">0.0</h3>
+                                <p id="totalRatings">0 Penilaian</p>
+                                <div id="starRating">
+                                    <!-- Bintang akan di-generate menggunakan JavaScript -->
                                 </div>
                             </div>
                         </div>
@@ -318,12 +314,49 @@
                         <canvas id="ratingDistributionChart"></canvas>
                     </div>
                 </div>
-                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2 ms-5" href="#">Ikuti Survey</a>
+                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2 ms-5" href="#" data-bs-toggle="modal" data-bs-target="#surveyModal">
+                    Berikan Penilaian
+                </a>
             </div>
         </div>
     </div>
 </div>
-
 <!-- Survey End -->
+
+<!-- Modal -->
+<div class="modal fade" id="surveyModal" tabindex="-1" aria-labelledby="surveyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="surveyModalLabel">Survey Kepuasan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="surveyForm" method="POST" action="{{ route('survey.store') }}" onsubmit="submitSurveyForm(event)">
+                @csrf
+                <div class="modal-body text-center">
+                    <img src="{{ asset('img/rating.png') }}" alt="Survey Icon" class="mb-3" style="width: 100px;">
+                    <p>Terima kasih telah mengikuti survey kepuasan layanan kami.</p>
+
+                    <!-- Rating Bintang -->
+                    <div class="mb-3">
+                        <label for="rate" class="form-label">Berikan Penilaian Anda</label>
+                        <div class="rate" id="rate">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div>
+                        <input type="hidden" name="rating" id="rateInput" value="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection

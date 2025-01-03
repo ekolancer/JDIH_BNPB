@@ -43,6 +43,15 @@ Route::get('/berita/{slug}/detail', [BeritaController::class, 'show'])->name('be
 Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
 Route::get('/infografis/{slug}/detail', [InfografisController::class, 'show'])->name('infografis.show');
 
+// Route Rating Website
+Route::post('/', [DashboardController::class, 'store'])->name('survey.store');
+
+// API endpoint Rating
+Route::get('/api/rating', [DashboardController::class, 'getRatingDistribution'])->name('rating.distribution');
+Route::get('/api/rating-average', [DashboardController::class, 'getAverageRating'])->name('rating.average');
+Route::get('/api/rating-summary', [DashboardController::class, 'getRatingSummary'])->name('rating.summary');
+
+// Route 404 Page
 Route::fallback(function () {
     return response()->view('404', [], 404);
 });

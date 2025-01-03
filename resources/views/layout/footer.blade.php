@@ -127,82 +127,175 @@
 
 <!-- Script untuk Doughnut Chart -->
 <script>
-    const averageRatingCtx = document.getElementById('averageRatingChart').getContext('2d');
-    new Chart(averageRatingCtx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: [4.9, 5 - 4.9], // Nilai rata-rata dan sisa skala 5
-                backgroundColor: ['#13357B', '#E0E0E0'], // Warna grafik
-                borderWidth: 0 // Tidak ada border
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '75%', // Membuat lingkaran bagian tengah lebih besar
-            plugins: {
-                legend: {
-                    display: false
-                } // Menyembunyikan legend default
-            },
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elemen Canvas
+        const averageRatingCtx = document.getElementById('averageRatingChart').getContext('2d');
+
+        // Fetch data dari API
+        fetch('/api/rating-average')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const averageRating = data.average; // Rata-rata dari API
+                const remaining = 5 - averageRating; // Sisa dari skala 5
+
+                // Inisialisasi Chart.js
+                new Chart(averageRatingCtx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [averageRating, remaining], // Data dinamis
+                            backgroundColor: ['#13357B', '#E0E0E0'], // Warna grafik
+                            borderWidth: 0 // Tidak ada border
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '75%', // Membuat lingkaran bagian tengah lebih besar
+                        plugins: {
+                            legend: {
+                                display: false // Menyembunyikan legend
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        // Menampilkan nilai rata-rata atau sisa
+                                        return context.raw === averageRating ?
+                                            `Rata-rata: ${averageRating}` :
+                                            `Sisa: ${remaining.toFixed(1)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching average rating:', error);
+            });
     });
 </script>
 
 <!-- Script untuk Grafik Batang Horizontal -->
 <script>
-    const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
-    new Chart(ratingDistributionCtx, {
-        type: 'bar',
-        data: {
-            labels: ['5', '4', '3', '2', '1'], // Label nilai
-            datasets: [{
-                label: 'Jumlah Penilaian',
-                data: [700, 50, 20, 3, 1], // Data jumlah penilaian untuk masing-masing rating
-                backgroundColor: [
-                    '#13357B', // Warna untuk 5
-                    '#0056B3', // Warna untuk 4
-                    '#007BFF', // Warna untuk 3
-                    '#6EB5FF', // Warna untuk 2
-                    '#B3D9FF' // Warna untuk 1
-                ],
-                borderRadius: 5, // Membuat sudut batang lebih halus
-                barThickness: 15 // Ketebalan batang
-            }]
-        },
-        options: {
-            indexAxis: 'y', // Membuat grafik horizontal
-            responsive: true,
-            maintainAspectRatio: false, // Supaya tinggi/ukuran lebih fleksibel
-            plugins: {
-                legend: {
-                    display: false // Menyembunyikan legenda
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.raw + ' Penilaian'; // Menampilkan jumlah penilaian pada tooltip
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
+
+        // Fetch data dari API
+        fetch('/api/rating')
+            .then(response => response.json())
+            .then(data => {
+                // Data rating dari server
+                const ratingData = [data[5], data[4], data[3], data[2], data[1]];
+
+                // Inisialisasi Chart.js
+                new Chart(ratingDistributionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['5', '4', '3', '2', '1'], // Label nilai
+                        datasets: [{
+                            label: 'Jumlah Penilaian',
+                            data: ratingData, // Data dinamis
+                            backgroundColor: [
+                                '#13357B', // Warna untuk 5
+                                '#0056B3', // Warna untuk 4
+                                '#007BFF', // Warna untuk 3
+                                '#6EB5FF', // Warna untuk 2
+                                '#B3D9FF' // Warna untuk 1
+                            ],
+                            borderRadius: 1,
+                            barThickness: 25
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y', // Membuat grafik horizontal
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true // Menyembunyikan legenda
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.raw + ' Penilaian';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1 // Skala angka pada sumbu X
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            }
                         }
                     }
+                });
+            })
+            .catch(error => console.error('Error fetching rating data:', error));
+    });
+</script>
+
+<!-- Fetch API summary rating -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch data dari API
+        fetch('/api/rating-summary')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
                 }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true, // Mulai dari 0 di sumbu X
-                    ticks: {
-                        stepSize: 100 // Skala angka pada sumbu X
-                    },
-                    grid: {
-                        drawOnChartArea: false // Menyembunyikan garis grid vertikal
-                    }
-                },
-                y: {
-                    grid: {
-                        drawOnChartArea: false // Menyembunyikan garis grid horizontal
-                    }
+                return response.json();
+            })
+            .then(data => {
+                const averageRating = data.average;
+                const totalRatings = data.total;
+
+                // Update nilai rata-rata dan jumlah penilaian
+                document.getElementById('averageRating').textContent = averageRating;
+                document.getElementById('totalRatings').textContent = `${totalRatings} Penilaian`;
+
+                // Update bintang
+                const starContainer = document.getElementById('starRating');
+                starContainer.innerHTML = ''; // Kosongkan kontainer bintang sebelumnya
+
+                // Menampilkan bintang penuh, setengah, dan kosong
+                const fullStars = Math.floor(averageRating); // Bintang penuh
+                const halfStar = averageRating % 1 >= 0.5 ? 1 : 0; // Bintang setengah
+                const emptyStars = 5 - fullStars - halfStar; // Bintang kosong
+
+                // Tambahkan bintang penuh
+                for (let i = 0; i < fullStars; i++) {
+                    starContainer.innerHTML += '<span>&#9733;</span>'; // Bintang penuh
                 }
-            }
-        }
+
+                // Tambahkan bintang setengah (jika ada)
+                if (halfStar) {
+                    starContainer.innerHTML += '<span>&#9734;</span>'; // Bintang setengah
+                }
+
+                // Tambahkan bintang kosong
+                for (let i = 0; i < emptyStars; i++) {
+                    starContainer.innerHTML += '<span>&#9734;</span>'; // Bintang kosong
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching rating summary:', error);
+            });
     });
 </script>
 
@@ -244,11 +337,110 @@
             prevEl: ".swiper-button-prev",
         },
         breakpoints: {
-            576: { slidesPerView: 2 },
-            768: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 }
+            576: {
+                slidesPerView: 2
+            },
+            768: {
+                slidesPerView: 3
+            },
+            1200: {
+                slidesPerView: 4
+            }
         },
     });
+</script>
+
+<!-- Survey Penilaian Website -->
+<script>
+    // Select all stars
+    const stars = document.querySelectorAll('.star');
+    const rateInput = document.getElementById('rateInput');
+
+    // Handle star click (final selection)
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const value = star.getAttribute('data-value');
+
+            // Set selected stars based on clicked value
+            stars.forEach(s => {
+                s.classList.remove('selected');
+                if (s.getAttribute('data-value') <= value) {
+                    s.classList.add('selected');
+                }
+            });
+
+            // Set the value of hidden input
+            rateInput.value = value;
+        });
+
+        // Handle hover effect (highlight the stars)
+        star.addEventListener('mouseover', () => {
+            const value = star.getAttribute('data-value');
+
+            stars.forEach(s => {
+                s.classList.remove('hover');
+                if (s.getAttribute('data-value') <= value) {
+                    s.classList.add('hover');
+                }
+            });
+        });
+
+        // Reset hover effect when mouse leaves the stars
+        star.addEventListener('mouseleave', () => {
+            stars.forEach(s => {
+                s.classList.remove('hover');
+            });
+        });
+    });
+</script>
+
+<!-- Sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function submitSurveyForm(event) {
+        event.preventDefault(); // Mencegah form submit secara default
+
+        const form = document.getElementById('surveyForm');
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Tampilkan SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Redirect setelah pengguna menutup SweetAlert
+                        window.location.href = data.redirect_url;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Terjadi kesalahan, silakan coba lagi.'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Terjadi kesalahan pada server.'
+                });
+            });
+    }
 </script>
 
 

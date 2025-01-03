@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Survey;
 use App\Models\Artikel;
 use App\Models\Putusan;
 use App\Models\Visitor;
@@ -10,6 +11,7 @@ use App\Models\Monograf;
 use App\Models\Peraturan;
 use App\Models\Infografis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -74,8 +76,8 @@ class DashboardController extends Controller
         // Mengirimkan data ke view
         return view('index', compact(
             'data',
-            'peraturanTerbaru', 
-            'peraturanPopuler', 
+            'peraturanTerbaru',
+            'peraturanPopuler',
             'berita',
             'infografis',
             'tipeDokumen',
@@ -194,6 +196,63 @@ class DashboardController extends Controller
         return view('list-doc', compact('paginatedResults'));
     }
 
+    // Function Simpan Rating
+    public function store(Request $request)
+    {
+        // Validasi data
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        // Simpan data ke database
+        Survey::create($validated);
+
+        // Kembalikan respon JSON
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Terima kasih atas penilaian Anda!',
+            'redirect_url' => route('survey.store'), // Atau URL lain untuk redirect
+        ]);
+    }
+
+    public function getRatingDistribution()
+    {
+        $ratings = Survey::select('rating', DB::raw('COUNT(*) as count'))
+            ->groupBy('rating')
+            ->orderByDesc('rating')
+            ->pluck('count', 'rating'); // Menghasilkan array dengan key=rating, value=count
+
+        // Pastikan nilai yang tidak ada diberi 0
+        $ratingDistribution = [
+            5 => $ratings->get(5, 0),
+            4 => $ratings->get(4, 0),
+            3 => $ratings->get(3, 0),
+            2 => $ratings->get(2, 0),
+            1 => $ratings->get(1, 0),
+        ];
+
+        return response()->json($ratingDistribution);
+    }
+
+    public function getAverageRating()
+    {
+        $averageRating = Survey::average('rating'); // Menghitung rata-rata kolom 'rating'
+        return response()->json(['average' => round($averageRating, 1)]); // Membulatkan ke 1 desimal
+    }
+
+    public function getRatingSummary()
+    {
+        $averageRating = Survey::average('rating'); // Menghitung rata-rata rating
+        $totalRatings = Survey::count(); // Menghitung jumlah total penilaian
+
+        return response()->json([
+            'average' => round($averageRating, 1), // Membulatkan rata-rata ke 1 desimal
+            'total' => $totalRatings
+        ]);
+    }
+
+
+    // Function Webview Perihal
     public function about()
     {
         return view('overview.about');
