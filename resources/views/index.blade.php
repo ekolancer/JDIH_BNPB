@@ -49,108 +49,111 @@
 
 <!-- Peraturan Terbaru -->
 <div class="container my-5">
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold">Highlight Peraturan</h4>
-        <a href="{{ route('peraturan.index') }}" class="text-primary text-decoration-none">Lihat Semua Peraturan</a>
+        <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
+        <a href="{{ route('peraturan.index') }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
     </div>
-    <ul class="nav nav-tabs mb-4">
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs border-0 mb-4">
         <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#brs"><i class="fas fa-sync-alt me-2"></i>Terkini</button>
+            <button class="nav-link active rounded-top" data-bs-toggle="tab" data-bs-target="#brs">
+                <i class="fas fa-sync-alt me-2"></i>Terkini
+            </button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabel"><i class="far fa-star me-1"></i>Populer</button>
+            <button class="nav-link rounded-top" data-bs-toggle="tab" data-bs-target="#tabel">
+                <i class="far fa-star me-1"></i>Populer
+            </button>
         </li>
     </ul>
+
+    <!-- Tab Content -->
     <div class="tab-content">
         <!-- Tab Terkini -->
         <div class="tab-pane fade show active" id="brs">
-            <div class="row g-3">
+            <div class="row g-4">
                 @foreach ($peraturanTerbaru as $peraturan)
                 <div class="col-md-6 col-lg-3">
-                    <!-- Card Dokumen -->
-                    <div class="card shadow-lg border-0 zoom-card">
-                        <div class="card-body">
-                            <!-- Header -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
-                                </div>
-                                <!-- Kolom Tipe Dokumen dan Judul -->
-                                <div class="d-flex flex-column w-100">
-                                    <div class="card-title text-primary fw-bold mb-0">
-                                        <small>{{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</small>
-                                    </div>
-                                    <p class="card-text mb-3 text-muted" style="font-size: small;">
-                                        <small>{{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}</small>
-                                    </p>
-                                </div>
+                    <div class="card shadow-sm border-0 h-100">
+                        <!-- Header Card -->
+                        <div class="card-header bg-primary d-flex align-items">
+                            <!-- Kolom Icon -->
+                            <div class="col-auto me-2">
+                                <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
+                            </div>
+                            <!-- Kolom Jenis Peraturan -->
+                            <div class="col text-start">
+                                <h6 class="text-light fw-bold mb-0">
+                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
+                                </h6>
                             </div>
                         </div>
-                        <!-- Footer -->
-                        <div class="card-footer bg-light border-top">
-                            <div class="d-flex justify-content-between hero-items-center">
-                                <!-- Informasi tambahan -->
-                                <div>
-                                    <small class="text-muted me-3">
-                                        <i class="far fa-calendar-alt me-1"></i>
-                                        {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
-                                    </small>
-                                </div>
-                                <!-- Tombol aksi -->
-                                <div class="d-flex">
-                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
-                                        <i class="fas fa-eye me-1"></i>Detail
-                                    </a>
-                                </div>
-                            </div>
+
+                        <!-- Body Card -->
+                        <div class="card-body">
+                            <p class="text-muted small text-center">
+                                {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}
+                            </p>
+                        </div>
+
+                        <!-- Footer Card -->
+                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center">
+                            <!-- Informasi tambahan -->
+                            <small class="text-muted">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                            </small>
+                            <!-- Tombol aksi -->
+                            <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>Detail
+                            </a>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
         </div>
+
         <!-- Tab Populer -->
         <div class="tab-pane fade" id="tabel">
-            <div class="row g-3">
+            <div class="row g-4">
                 @foreach ($peraturanPopuler as $peraturan)
                 <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-lg border-0 zoom-card">
-                        <div class="card-body">
-                            <!-- Header -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <!-- Kolom Ikon File -->
-                                <div class="align-items-center pb-3 mt-0 me-2">
-                                    <img src="/img/icondoc.png" alt="" height="50px" width="50px">
-                                </div>
-                                <!-- Kolom Tipe Dokumen dan Judul -->
-                                <div class="d-flex flex-column w-100">
-                                    <div class="card-title text-primary fw-bold mb-0">
-                                        <small>{{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}</small>
-                                    </div>
-                                    <p class="card-text mb-3 text-muted" style="font-size: small;">
-                                        <small>{{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}</small>
-                                    </p>
-                                </div>
+                    <div class="card shadow-sm border-0 h-100">
+                        <!-- Header Card -->
+                        <div class="card-header bg-primary d-flex align-items">
+                            <!-- Kolom Icon -->
+                            <div class="col-auto me-2">
+                                <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
+                            </div>
+                            <!-- Kolom Jenis Peraturan -->
+                            <div class="col text-start">
+                                <h6 class="text-light fw-bold mb-0">
+                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
+                                </h6>
                             </div>
                         </div>
-                        <!-- Footer -->
-                        <div class="card-footer bg-light border-top">
-                            <div class="d-flex justify-content-between hero-items-center">
-                                <!-- Informasi tambahan -->
-                                <div>
-                                    <small class="text-muted me-3">
-                                        <i class="far fa-calendar-alt me-1"></i>
-                                        {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
-                                    </small>
-                                </div>
-                                <!-- Tombol aksi -->
-                                <div class="d-flex">
-                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
-                                        <i class="fas fa-eye me-1"></i>Detail
-                                    </a>
-                                </div>
-                            </div>
+
+                        <!-- Body Card -->
+                        <div class="card-body">
+                            <p class="text-muted small text-center">
+                                {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}
+                            </p>
+                        </div>
+
+                        <!-- Footer Card -->
+                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center">
+                            <!-- Informasi tambahan -->
+                            <small class="text-muted">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                            </small>
+                            <!-- Tombol aksi -->
+                            <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>Detail
+                            </a>
                         </div>
                     </div>
                 </div>

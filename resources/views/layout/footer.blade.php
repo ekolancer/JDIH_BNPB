@@ -183,23 +183,32 @@
 <!-- Script untuk Grafik Batang Horizontal -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
-
         // Fetch data dari API
         fetch('/api/rating')
-            .then(response => response.json())
-            .then(data => {
-                // Data rating dari server
-                const ratingData = [data[5], data[4], data[3], data[2], data[1]];
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(ratingData => {
+                const ratingLabels = [
+                    '★★★★★', // Label untuk rating 5
+                    '★★★★', // Label untuk rating 4
+                    '★★★', // Label untuk rating 3
+                    '★★', // Label untuk rating 2
+                    '★' // Label untuk rating 1
+                ];
 
-                // Inisialisasi Chart.js
+                // Membuat grafik Chart.js
+                const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
                 new Chart(ratingDistributionCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['5', '4', '3', '2', '1'], // Label nilai
+                        labels: ratingLabels, // Label berupa bintang
                         datasets: [{
                             label: 'Jumlah Penilaian',
-                            data: ratingData, // Data dinamis
+                            data: ratingData, // Data dari API
                             backgroundColor: [
                                 '#13357B', // Warna untuk 5
                                 '#0056B3', // Warna untuk 4
@@ -217,12 +226,12 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: true // Menyembunyikan legenda
+                                display: false // Menyembunyikan legenda
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        return context.raw + ' Penilaian';
+                                        return context.raw + ' Penilaian'; // Tampilkan jumlah penilaian di tooltip
                                     }
                                 }
                             }
@@ -246,7 +255,9 @@
                     }
                 });
             })
-            .catch(error => console.error('Error fetching rating data:', error));
+            .catch(error => {
+                console.error('Error fetching rating distribution:', error);
+            });
     });
 </script>
 

@@ -217,21 +217,17 @@ class DashboardController extends Controller
 
     public function getRatingDistribution()
     {
-        $ratings = Survey::select('rating', DB::raw('COUNT(*) as count'))
+        $ratingCounts = Survey::selectRaw('rating, COUNT(*) as count')
             ->groupBy('rating')
-            ->orderByDesc('rating')
-            ->pluck('count', 'rating'); // Menghasilkan array dengan key=rating, value=count
+            ->pluck('count', 'rating');
 
-        // Pastikan nilai yang tidak ada diberi 0
-        $ratingDistribution = [
-            5 => $ratings->get(5, 0),
-            4 => $ratings->get(4, 0),
-            3 => $ratings->get(3, 0),
-            2 => $ratings->get(2, 0),
-            1 => $ratings->get(1, 0),
-        ];
+        // Pastikan semua nilai rating (1-5) ada, isi 0 jika tidak ditemukan
+        $data = [];
+        for ($i = 5; $i >= 1; $i--) {
+            $data[] = $ratingCounts[$i] ?? 0;
+        }
 
-        return response()->json($ratingDistribution);
+        return response()->json($data);
     }
 
     public function getAverageRating()
