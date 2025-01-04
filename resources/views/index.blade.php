@@ -78,14 +78,14 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex align-items">
+                        <div class="card-header bg-primary d-flex hero-items-center p-3">
                             <!-- Kolom Icon -->
-                            <div class="col-auto me-2">
+                            <!-- <div class="col-auto me-2">
                                 <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
-                            </div>
+                            </div> -->
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0">
+                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
                                     {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
                                 </h6>
                             </div>
@@ -93,13 +93,13 @@
 
                         <!-- Body Card -->
                         <div class="card-body">
-                            <p class="text-muted small text-center">
-                                {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}
+                            <p class="text-muted small text-justify" style="text-align: justify;">
+                                {{ Str::limit(strip_tags($peraturan->judul), 100, '...') ?? 'Tidak ada deskripsi.' }}
                             </p>
                         </div>
 
                         <!-- Footer Card -->
-                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center">
+                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center p-2">
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>
@@ -123,14 +123,14 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex align-items">
+                        <div class="card-header bg-primary d-flex hero-items-center p-3">
                             <!-- Kolom Icon -->
-                            <div class="col-auto me-2">
+                            <!-- <div class="col-auto me-2">
                                 <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
-                            </div>
+                            </div> -->
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0">
+                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
                                     {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
                                 </h6>
                             </div>
@@ -138,13 +138,13 @@
 
                         <!-- Body Card -->
                         <div class="card-body">
-                            <p class="text-muted small text-center">
-                                {{ $peraturan->judul ?? 'Tidak ada deskripsi.' }}
+                            <p class="text-muted small text-justify" style="text-align: justify;">
+                                {{ Str::limit(strip_tags($peraturan->judul), 100, '...') ?? 'Tidak ada deskripsi.' }}
                             </p>
                         </div>
 
                         <!-- Footer Card -->
-                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center">
+                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center p-2">
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>

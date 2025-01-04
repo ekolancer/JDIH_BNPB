@@ -1473,11 +1473,6 @@ ul {
     font-size: 1.5rem;
 }
 
-.rating-details span:last-child {
-    color: #E0E0E0;
-    /* Warna bintang kosong */
-}
-
 /* Modal css rating */
 .rate {
     display: flex;

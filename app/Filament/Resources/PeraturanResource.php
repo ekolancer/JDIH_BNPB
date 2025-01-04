@@ -89,12 +89,7 @@ class PeraturanResource extends Resource
                                 ->rows(5)
                                 ->cols(10)
                                 ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
-                                ->required()
-                                ->reactive() // Real-time reactivity
-                                ->afterStateUpdated(
-                                    fn($state, callable $set) =>
-                                    $set('slug', Str::slug($state)) // Generate slug dari judul
-                                ),
+                                ->required(),
                             TextInput::make('slug')
                                 ->disabled()
                                 ->helperText('Slug dihasilkan otomatis berdasarkan judul'),

@@ -38,28 +38,35 @@ class Peraturan extends Model
         'download_count',
     ];
 
-    // public function getSlugOptions(): SlugOptions
-    // {
-    //     return SlugOptions::create()
-    //         ->generateSlugsFrom('judul') // Sumber slug, misalnya dari kolom 'judul'
-    //         ->saveSlugsTo('slug')       // Target kolom untuk slug
-    //         ->doNotGenerateSlugsOnUpdate(); // Pilihan jika slug tidak boleh berubah saat data diperbarui
-    // }
-
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($peraturan) {
             if (empty($peraturan->slug)) {
-                $peraturan->slug = Str::slug($peraturan->judul);
+                $peraturan->slug = Str::slug("{$peraturan->singkatan}-nomor-{$peraturan->nomor}-tahun-{$peraturan->tahunTerbit}");
+            }
+        });
+
+        static::updating(function ($peraturan) {
+            // Update slug jika ada perubahan pada 'singkatan', 'nomor', atau 'tahunTerbit'
+            if ($peraturan->isDirty(['singkatan', 'nomor', 'tahunTerbit'])) {
+                $peraturan->slug = Str::slug("{$peraturan->singkatan}-nomor-{$peraturan->nomor}-tahun-{$peraturan->tahunTerbit}");
+            }
+
+            // Hapus file lampiran lama jika kolom 'lampiran' diperbarui
+            if ($peraturan->isDirty('lampiran')) {
+                $oldLampiran = $peraturan->getOriginal('lampiran'); // Ambil nilai lama lampiran
+                if ($oldLampiran && Storage::disk('public')->exists($oldLampiran)) {
+                    Storage::disk('public')->delete($oldLampiran);
+                }
             }
         });
 
         static::deleted(function ($peraturan) {
             // Menghapus file lampiran setelah data dihapus
-            if ($peraturan->lampiran && Storage::exists('public/' . $peraturan->lampiran)) {
-                Storage::delete('public/' . $peraturan->lampiran);
+            if ($peraturan->lampiran && Storage::disk('public')->exists($peraturan->lampiran)) {
+                Storage::disk('public')->delete($peraturan->lampiran);
             }
         });
     }
