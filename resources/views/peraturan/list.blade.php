@@ -6,7 +6,7 @@
 
     <div class="row align-items-start">
         <!-- Kolom Filter -->
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-3" data-aos="fade-right" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Filter</h5>
@@ -65,7 +65,7 @@
         <div class="col-md-8">
             <div class="row">
                 @forelse ($dokumen as $peraturan)
-                <div class="col-12 mb-3">
+                <div class="col-12 mb-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="1000">
                     <!-- Card Dokumen -->
                     <div class="card shadow-lg border-0 zoom-card">
                         <div class="card-body">

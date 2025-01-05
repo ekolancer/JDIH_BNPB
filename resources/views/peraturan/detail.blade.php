@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="container mt-3">
-    <div class="row">
+<div class="container mt-5">
+    <div class="row align-items-start">
         <!-- Detail Container -->
         <div class="col-md-8">
             <div class="container-detail shadow-lg">
@@ -100,53 +100,68 @@
             <!-- Jenis Dokumen -->
             <div class="card-status">
                 <div class="header">JENIS DOKUMEN</div>
-                <div class="content">{{ $peraturan->jenisDok }}</div>
+                <!-- Garis Pemisah di dalam file-card -->
+                <hr>
+                <div class="content text-uppercase">{{ $peraturan->jenisDok }}</div>
             </div>
             <!-- Singaktan Jenis -->
             <div class="card-status">
                 <div class="header">SINGKATAN</div>
-                <div class="content">{{ $peraturan->singkatan }}</div>
+                <!-- Garis Pemisah di dalam file-card -->
+                <hr>
+                <div class="content text-uppercase">{{ $peraturan->singkatan }}</div>
             </div>
             <!-- Status -->
             <div class="card-status">
                 <div class="header">STATUS</div>
-                <div class="content">{{ $peraturan->status }}</div>
+                <!-- Garis Pemisah di dalam file-card -->
+                <hr>
+                <div class="{{ $peraturan->status === 'TIDAK BERLAKU' ? 'content-negatif' : 'content' }}">
+                    {{ $peraturan->status }}
+                </div>
             </div>
-
             <!-- File Lampiran -->
             <div class="file-card">
-                <h5>FILE LAMPIRAN</h5>
+                <div class="header">FILE LAMPIRAN</div>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ route('file.download', $peraturan->lampiran) }}" target="_blank">
-                        {{ basename($peraturan->lampiran) }}
+                    <!-- Tombol Download -->
+                    <a href="{{ route('file.download', $peraturan->lampiran) }}" target="_blank" class="btn btn-primary text-white text-uppercase">
+                        Download
                     </a>
-                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">
+
+                    <!-- Informasi Ukuran File -->
+                    <div class="text-decoration-none">
                         @if($fileSizeInKb < 1000)
                             <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
                             @else
                             <span>{{ number_format($fileSizeInMb, 2) }} MB</span>
                             @endif
                             <i class="fas fa-download"></i>
-                    </a>
+                    </div>
                 </div>
             </div>
 
             <div class="file-card">
-                <h5>FILE ABSTRAK</h5>
+                <div class="header">FILE ABSTRAK</div>
                 <!-- Garis Pemisah di dalam file-card -->
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
-                    Tidak Tersedia
-                    <a href="{{ asset('storage/' . $peraturan->lampiran) }}" target="_blank">
+                    <!-- Tombol Download -->
+                    <a href="{{ route('file.download', $peraturan->lampiran) }}" target="_blank" class="btn btn-primary text-white text-uppercase">
+                        Download
+                    </a>
+
+                    <!-- Informasi Ukuran File -->
+                    <div class="text-decoration-none">
                         @if($fileSizeInKb < 1000)
                             <span>{{ number_format($fileSizeInKb, 2) }} KB</span>
                             @else
                             <span>{{ number_format($fileSizeInMb, 2) }} MB</span>
                             @endif
                             <i class="fas fa-download"></i>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>

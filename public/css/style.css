@@ -936,6 +936,126 @@
 
 /*** Explore Tour End ***/
 
+/* Swiper Carousel Infografis Start */
+.swiper-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Membuat ruang untuk tombol navigasi di atas slider */
+.swiper-navigation {
+    position: absolute;
+    top: -40px;
+    /* Posisi di atas slider */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+/* Styling untuk tombol navigasi */
+.swiper-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Membuat ruang untuk tombol navigasi di atas slider */
+.swiper-navigation {
+    position: absolute;
+    top: -40px;
+    /* Posisi di atas slider */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+/* Styling untuk tombol navigasi */
+.swiper-button-prev,
+.swiper-button-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparan */
+    color: white;
+    font-size: 18px;
+    /* Ukuran font ikon */
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    z-index: 20;
+    /* Pastikan tombol di atas slider */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Warna lebih gelap saat hover */
+}
+
+/* Menyembunyikan ikon di dalam tombol */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 20px;
+    content: '\f104';
+    /* Font Awesome left arrow */
+}
+
+/* Menambahkan simbol ke tombol next */
+.swiper-button-next::after {
+    content: '\f105';
+    /* Font Awesome right arrow */
+}
+
+/* Menambahkan jarak antar slide */
+.swiper-slide {
+    width: 25%;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .swiper-slide {
+        width: 50%;
+        /* 2 items per row on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .swiper-slide {
+        width: 100%;
+        /* 1 item per row on small screens */
+    }
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .swiper-slide {
+        width: 33.33%;
+        /* 3 slide per baris */
+    }
+}
+
+@media (max-width: 768px) {
+    .swiper-slide {
+        width: 50%;
+        /* 2 slide per baris */
+    }
+}
+
+@media (max-width: 576px) {
+    .swiper-slide {
+        width: 100%;
+        /* 1 slide per baris */
+    }
+}
+
+/* Swiper Carousel Infografis End */
+
 /*** Tour Booking Start ***/
 .counters .counter-item {
     display: flex;

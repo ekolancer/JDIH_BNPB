@@ -6,12 +6,12 @@
 <section id="stats" class="stats section light-background py-5">
     <div class="container">
         <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-            <p class="text-muted">Produk Hukum</p>
-            <h2 class="counters-title fw-bold">Berdasarkan Kategori.</h2>
+            <p class="text-muted" data-aos="zoom-in" data-aos-duration="800">Produk Hukum</p>
+            <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berdasarkan Kategori.</h2>
         </div>
         <div class="row gy-4 text-center">
             <!-- Peraturan -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-primary shadow-sm">
                     <i class="fa fa-balance-scale mb-3"></i>
                     <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['peraturan'] }}" data-purecounter-duration="1"></h3>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <!-- Monografi Hukum -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-secondary shadow-sm">
                     <i class="fa fa-book-open mb-3"></i>
                     <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['monografi'] }}" data-purecounter-duration="1"></h3>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <!-- Artikel Hukum -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-tertiary shadow-sm">
                     <i class="fa fa-newspaper mb-3"></i>
                     <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['artikel'] }}" data-purecounter-duration="1"></h3>
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <!-- Putusan Hukum -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-quaternary shadow-sm">
                     <i class="fa fa-gavel mb-3"></i>
                     <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['putusan'] }}" data-purecounter-duration="1"></h3>
@@ -48,7 +48,7 @@
 <!-- /Stats Section -->
 
 <!-- Peraturan Terbaru -->
-<div class="container my-5">
+<div class="container my-5" data-aos="fade-up" data-aos-offset="300" data-aos-duration="2000">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
@@ -79,10 +79,6 @@
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
                         <div class="card-header bg-primary d-flex hero-items-center p-3">
-                            <!-- Kolom Icon -->
-                            <!-- <div class="col-auto me-2">
-                                <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
-                            </div> -->
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
                                 <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
@@ -124,10 +120,6 @@
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
                         <div class="card-header bg-primary d-flex hero-items-center p-3">
-                            <!-- Kolom Icon -->
-                            <!-- <div class="col-auto me-2">
-                                <img src="/img/icondoc.png" alt="Icon Dokumen" height="40" width="40">
-                            </div> -->
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
                                 <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
@@ -164,72 +156,85 @@
 </div>
 
 <!-- Infografis Berita -->
-<div class="container-fluid ExploreTour pt-5 pb-1">
-    <div class="container py-5">
-        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-            <h5 class="section-title px-3">Infografis Hukum</h5>
-        </div>
-        <div class="owl-carousel owl-theme">
-            @foreach($infografis as $item)
-            <div class="card infografis-card border-0">
-                <div class="infografis-img-container position-relative">
-                    <!-- Menampilkan gambar infografis -->
-                    @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
-                    <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded infografis-img" alt="Image">
-                    @else
-                    <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded infografis-img" alt="No Image">
-                    @endif
+<section id="stats" class="stats section light-background py-5">
+    <div class="container-fluid pt-5 pb-1">
+        <div class="container">
+            <div class="mx-auto text-center mb-4" style="max-width: 800px;">
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="800">Publikasi</p>
+                <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Infografis.</h2>
+            </div>
+            <!-- Swiper Container -->
+            <div class="swiper-container position-relative">
+                <!-- Navigation Arrows Above -->
+                <div class="swiper-navigation">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+                <div class="swiper-wrapper" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+                    @foreach($infografis as $item)
+                    <div class="swiper-slide">
+                        <div class="card border-0">
+                            <div class="position-relative">
+                                @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
+                                <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
+                                @else
+                                <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
-            @endforeach
         </div>
     </div>
-</div>
-<!-- Infografis Hukum End -->
+    <!-- Infografis Hukum End -->
 
-<!-- Berita Hukum Start-->
-<div class="container-fluid packages py-5">
-    <div class="container py-5">
-        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-            <h5 class="section-title px-3">Berita Terbaru</h5>
-        </div>
-        <div class="packages-carousel owl-carousel shadow-lg">
-            @foreach($berita as $item)
-            <div class="packages-item">
-                <div class="packages-img">
-                    <img src="{{ asset('storage/'.$item->gambar) }}" class="img-fluid w-100 rounded-top" alt="Image">
-                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute"
-                        style="width: 100%; bottom: 0; left: 0; z-index: 5;">
-                        <small class="flex-fill text-center border-end py-2">{{ Str::limit(strip_tags($item->judul), 50) }}</small>
-                    </div>
-                    <div class="packages-price py-2 px-4">{{ $item->kategori }}</div>
-                </div>
-                <div class="packages-content bg-light">
-                    <div class="p-4 pb-0">
-                        <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
-                    </div>
-                    <div class="p-4 pb-4 pt-4">
-                        <small class="text-uppercase">{{ Str::limit(strip_tags($item->konten), 100) }}</small>
-                    </div>
-                    <div class="row bg-primary rounded-bottom mx-0">
-                        <div class="col-6 text-start px-0">
-                            <a href="{{ route('berita.show', $item->slug) }}" class="btn-hover btn text-white py-2 px-4">Read More</a>
-                        </div>
-                        <div class="col-6 text-end px-0">
-                            <a href="#" class="btn-hover btn text-white py-2 px-4"><i class="fas fa-eye me-2"></i> {{ $item->view_count }} dilihat</a>
-                        </div>
-                    </div>
-                </div>
+    <!-- Berita Hukum Start-->
+    <div class="container-fluid packages pt-5">
+        <div class="container">
+            <div class="mx-auto text-center mb-4" style="max-width: 800px;">
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="800">Publikasi</p>
+                <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita.</h2>
             </div>
-            @endforeach
+            <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+                @foreach($berita as $item)
+                <div class="packages-item">
+                    <div class="packages-img">
+                        <img src="{{ asset('storage/'.$item->gambar) }}" class="img-fluid w-100 rounded-top" alt="Image">
+                        <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute"
+                            style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                            <small class="flex-fill text-center border-end py-2">{{ Str::limit(strip_tags($item->judul), 50) }}</small>
+                        </div>
+                        <div class="packages-price py-2 px-4">{{ $item->kategori }}</div>
+                    </div>
+                    <div class="packages-content bg-light">
+                        <div class="p-4 pb-0">
+                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
+                        </div>
+                        <div class="p-4 pb-4 pt-4">
+                            <small class="text-uppercase">{{ Str::limit(strip_tags($item->konten), 100) }}</small>
+                        </div>
+                        <div class="row bg-primary rounded-bottom mx-0">
+                            <div class="col-6 text-start px-0">
+                                <a href="{{ route('berita.show', $item->slug) }}" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                            </div>
+                            <div class="col-6 text-end px-0">
+                                <a href="#" class="btn-hover btn text-white py-2 px-4"><i class="fas fa-eye me-2"></i> {{ $item->view_count }} dilihat</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
-</div>
+</section>
 <!-- Berita Hukum  End -->
 
 <!-- Garis Pemisah -->
 <div class="container-fluid booking py-5">
-    <div class="container">
+    <div class="container" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="1000">
         <h2 class="counters-title pt-5">Statistik Pengunjung</h2>
         <div class="counters">
             <div class="row justify-content-center align-items-center">
@@ -286,7 +291,7 @@
 
 <!-- Survey Start -->
 <div class="container-fluid about py-5">
-    <div class="container py-5">
+    <div class="container pb-5" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="1000">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
                 <div class="h-100"

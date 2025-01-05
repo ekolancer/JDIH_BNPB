@@ -107,6 +107,7 @@
 <!-- Template Javascript -->
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="https://static.elfsight.com/platform/platform.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 
 <script>
     document.getElementById('filterButton').addEventListener('click', function() {
@@ -339,25 +340,34 @@
 
 <!-- Swiper Initialization -->
 <script>
-    const swiper = new Swiper(".mySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        breakpoints: {
-            576: {
-                slidesPerView: 2
+    document.addEventListener('DOMContentLoaded', function() {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
             },
-            768: {
-                slidesPerView: 3
-            },
-            1200: {
-                slidesPerView: 4
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 15
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 20
+                },
+                1200: {
+                    slidesPerView: 4,
+                    spaceBetween: 20
+                },
             }
-        },
+        });
     });
 </script>
 
@@ -458,18 +468,11 @@
 <!-- AOS Library -->
 <script>
     AOS.init({
-        duration: 1000, // Durasi animasi
-        easing: 'ease-in-out',
-        once: true // Hanya satu kali saat pertama kali muncul
+        // ... your other initialisation options here ...
+        once: true,
     });
 </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const row = document.querySelector('.row.g-4');
-        console.log(row); // Periksa apakah elemen ditemukan
-    });
-</script>
 </body>
 
 </html>
