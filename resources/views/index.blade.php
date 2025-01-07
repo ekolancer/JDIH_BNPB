@@ -75,7 +75,7 @@
         <div class="tab-pane fade show active" id="brs">
             <div class="row g-4">
                 @foreach ($peraturanTerbaru as $peraturan)
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
                         <div class="card-header bg-primary d-flex hero-items-center p-3">
@@ -116,7 +116,7 @@
         <div class="tab-pane fade" id="tabel">
             <div class="row g-4">
                 @foreach ($peraturanPopuler as $peraturan)
-                <div class="col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
                         <div class="card-header bg-primary d-flex hero-items-center p-3">
@@ -160,17 +160,17 @@
     <div class="container-fluid pt-5 pb-1">
         <div class="container">
             <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="800">Publikasi</p>
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Publikasi</p>
                 <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Infografis.</h2>
             </div>
             <!-- Swiper Container -->
-            <div class="swiper-container position-relative">
+            <div class="swiper-container position-relative" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
                 <!-- Navigation Arrows Above -->
                 <div class="swiper-navigation">
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                 </div>
-                <div class="swiper-wrapper" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+                <div class="swiper-wrapper">
                     @foreach($infografis as $item)
                     <div class="swiper-slide">
                         <div class="card border-0">
@@ -194,10 +194,10 @@
     <div class="container-fluid packages pt-5">
         <div class="container">
             <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="800">Publikasi</p>
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Publikasi</p>
                 <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita.</h2>
             </div>
-            <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
                 @foreach($berita as $item)
                 <div class="packages-item">
                     <div class="packages-img">
@@ -234,7 +234,7 @@
 
 <!-- Garis Pemisah -->
 <div class="container-fluid booking py-5">
-    <div class="container" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="1000">
+    <div class="container" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="800">
         <h2 class="counters-title pt-5">Statistik Pengunjung</h2>
         <div class="counters">
             <div class="row justify-content-center align-items-center">
@@ -291,7 +291,7 @@
 
 <!-- Survey Start -->
 <div class="container-fluid about py-5">
-    <div class="container pb-5" data-aos="zoom-in" data-aos-offset="400" data-aos-duration="1000">
+    <div class="container pb-5" data-aos="fade-up" data-aos-offset="300" data-aos-duration="800">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
                 <div class="h-100"
