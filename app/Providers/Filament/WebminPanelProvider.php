@@ -30,7 +30,10 @@ class WebminPanelProvider extends PanelProvider
             ->path('webmin')
             ->login(Login::class)
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => '#e40615',
+                'gray' => '#ada3a0',
+                'primary' => '#044c9b',
+                'success' => '#ef8307',
             ])
             ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
