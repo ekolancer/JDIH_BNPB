@@ -107,7 +107,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $dokumen->links('pagination::simple-modern') }}
+                {{ $paginatedResults->links('pagination::simple-modern') }}
             </div>
         </div>
     </div>
