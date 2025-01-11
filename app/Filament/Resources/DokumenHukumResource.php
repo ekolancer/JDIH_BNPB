@@ -10,9 +10,7 @@ use Filament\Tables\Table;
 use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Tabs;
-use function Laravel\Prompts\select;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Tabs\Tab;
@@ -22,8 +20,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Support\Enums\IconPosition;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
 use App\Filament\Resources\DokumenHukumResource\RelationManagers;
@@ -76,7 +72,7 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages([
                                                 'required' => 'Tipe Dokumen harus diisi',
                                             ])
-                                            ->helperText('Pilih tipe dokumen yang sesuai')
+                                            ->helperText('Pilih tipe dokumen yang sesuai sebelum mengisi metadata')
                                             ->reactive()
                                             ->required(),
                                         TextInput::make('jenisDok')
@@ -100,8 +96,8 @@ class DokumenHukumResource extends Resource
                                             ->required(),
                                         Select::make('status')
                                             ->options([
-                                                'berlaku'   => 'BERLAKU',
-                                                'tidak berlaku' => 'TIDAK BERLAKU',
+                                                'BERLAKU'   => 'Berlaku',
+                                                'TIDAK BERLAKU' => 'Tidak Berlaku',
                                             ])
                                             ->validationMessages(['required' => 'Status tidak boleh kosong !'])
                                             ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan') // Hanya terlihat jika tipeDok adalah Peraturan
@@ -121,22 +117,21 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages(['required' => 'Tahun tidak boleh kosong !'])
                                             ->label('Tahun')
                                             ->integer()
-                                            ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
-                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                                            ->required(),
                                         Fieldset::make('Tanggal dan Tempat Terbit')
                                             ->schema([
                                                 DatePicker::make('tglPenetapan')
                                                     ->label('Tanggal Penetapan Peraturan')
                                                     ->validationMessages(['required' => 'Tanggal Penetapan tidak boleh kosong !'])
                                                     ->format('Y/m/d')
-                                                    ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
-                                                    ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                                                    ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan') // Hanya terlihat jika tipeDok adalah Peraturan
+                                                    ->required(fn(Get $get): bool => $get('tipeDok') === 'Peraturan'), // Wajib diisi jika tipeDok adalah Peraturan  
                                                 DatePicker::make('tglPengundangan')
                                                     ->label('Tanggal Pengundangan Peraturan')
                                                     ->validationMessages(['required' => 'Tanggal Pengundangan dokumen tidak boleh kosong !'])
                                                     ->format('Y/m/d')
-                                                    ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
-                                                    ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                                                    ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan') // Hanya terlihat jika tipeDok adalah Peraturan
+                                                    ->required(fn(Get $get): bool => $get('tipeDok') === 'Peraturan'), // Wajib diisi jika tipeDok adalah Peraturan  
                                                 DatePicker::make('tglDiBacakan')
                                                     ->label('Tanggal Dibacakan')
                                                     ->validationMessages(['required' => 'Tanggal Dibacakan tidak boleh kosong !'])
@@ -162,14 +157,14 @@ class DokumenHukumResource extends Resource
                                         TextInput::make('cetakanEdisi')
                                             ->label('Cetakan Edisi')
                                             ->validationMessages(['required' => 'Penerbit tidak boleh kosong !'])
-                                            ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan']))
-                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan'])),
+                                            ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
+                                            ->required(fn(Get $get): bool => $get('tipeDok') === 'Monografi'), // Wajib diisi jika tipeDok adalah Monografi
                                         TextInput::make('nomorPanggil')
                                             ->label('Nomor Panggil')
                                             ->validationMessages(['required' => 'Penerbit tidak boleh kosong !'])
                                             ->integer()
-                                            ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan']))
-                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan'])),
+                                            ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
+                                            ->required(fn(Get $get): bool => $get('tipeDok') === 'Monografi'), // Wajib diisi jika tipeDok adalah Monografi
                                         TextInput::make('issnIsbn')
                                             ->label('ISSN / ISBN')
                                             ->validationMessages(['required' => 'ISSN / ISBN tidak boleh kosong !'])
@@ -182,12 +177,11 @@ class DokumenHukumResource extends Resource
                                         TextInput::make('sumber')
                                             ->label('Sumber')
                                             ->validationMessages(['required' => 'Sumber tidak boleh kosong !'])
-                                            ->hidden(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
-                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan']))
-                                            ->required(),
+                                            ->hidden(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya tersembunyi jika tipeDok adalah Monografi
+                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Artikel', 'Putusan'])),
                                         TextInput::make('bahasa')
                                             ->validationMessages(['required' => 'Bahasa tidak boleh kosong !'])
-                                            ->label('Basaha')
+                                            ->label('Bahasa')
                                             ->required(),
                                         TextInput::make('lokasi')
                                             ->validationMessages(['required' => 'Lokasi tidak boleh kosong !'])

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('singkatan')->default('-'); // Untuk peraturan dan putusan
             $table->string('tempat'); // untuk seluruh dokumen.
             $table->string('penerbit')->default('-'); // untuk monografi dan artikel.
-            $table->date('tglPenetapan')->nullable(); // Untuk peraturan dan putusan
+            $table->date('tglPenetapan')->nullable(); // Untuk peraturan
             $table->date('tglPengundangan')->nullable(); // Untuk peraturan dan putusan
             $table->date('tglDiBacakan')->nullable(); // Untuk putusan
             $table->integer('nomorPanggil')->nullable(); // Untuk monografi
