@@ -8,6 +8,7 @@ use App\Http\Controllers\InfografisController;
 use App\Http\Controllers\MonografController;
 use App\Http\Controllers\PeraturanController;
 use App\Http\Controllers\PutusanController;
+use App\Models\DokumenHukum;
 use League\Csv\Query\Row;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -50,6 +51,29 @@ Route::post('/', [DashboardController::class, 'store'])->name('survey.store');
 Route::get('/api/rating', [DashboardController::class, 'getRatingDistribution'])->name('rating.distribution');
 Route::get('/api/rating-average', [DashboardController::class, 'getAverageRating'])->name('rating.average');
 Route::get('/api/rating-summary', [DashboardController::class, 'getRatingSummary'])->name('rating.summary');
+
+Route::get('/check-data', function () {
+    try {
+        // Ambil semua data dari model
+        $data = DokumenHukum::all();
+
+        // Jika data kosong
+        if ($data->isEmpty()) {
+            return response()->json([
+                'message' => 'Tidak ada data ditemukan.',
+            ], 200);
+        }
+
+        // Tampilkan data sebagai HTML sederhana
+        return response()->make('<pre>' . print_r($data->toArray(), true) . '</pre>');
+    } catch (\Exception $e) {
+        // Jika terjadi error
+        return response()->json([
+            'error' => 'Terjadi masalah saat memuat data.',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
 
 // Route 404 Page
 Route::fallback(function () {

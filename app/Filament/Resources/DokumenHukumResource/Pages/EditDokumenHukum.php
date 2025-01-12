@@ -32,9 +32,4 @@ class EditDokumenHukum extends EditRecord
             ->iconColor('success')
             ->body('Data Peraturan berhasil diupdate.');
     }
-
-    protected function getFormActions(): array
-    {
-        return [$this->getCancelFormAction(),]; // Menghilangkan semua tombol aksi termasuk "Create"
-    }
 }

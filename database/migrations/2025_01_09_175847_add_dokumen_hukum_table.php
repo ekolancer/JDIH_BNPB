@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dokumen_hukums', function (Blueprint $table) {
             $table->id();
-            $table->string('tipeDok'); // 'peraturan', 'monografi', 'artikel', 'putusan'.
+            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan']); // 'peraturan', 'monografi', 'artikel', 'putusan'.
             $table->string('jenisDok'); // 'peraturan', 'monografi', 'artikel', 'putusan'.
             $table->text('judul'); // untuk seluruh dokumen.
             $table->string('slug')->unique(); // Kolom slug untuk URL-friendly
@@ -31,13 +31,13 @@ return new class extends Migration
             $table->string('deskripsiFisik')->default('-'); // Untuk monografi
             $table->text('subjek');  // untuk seluruh dokumen.
             $table->string('sumber')->default('-'); // Untuk peraturan dan putusan
-            $table->string('isbnIssn')->default('-'); // Untuk monografi
+            $table->string('isbn')->default('-'); // Untuk monografi
             $table->enum('status', ['BERLAKU', 'TIDAK BERLAKU'])->nullable(); // Untuk peraturan
             $table->string('bahasa'); // untuk seluruh dokumen.
             $table->string('lokasi'); // untuk seluruh dokumen.
             $table->string('bidangHukum'); // untuk seluruh dokumen.
             $table->string('lampiran')->default('-'); // Untuk file peraturan dan putusan
-            $table->string('abstrak')->default('-'); // Untuk peraturan
+            $table->string('abstrak')->nullable(); // Untuk peraturan
             $table->integer('nomorIndukBuku')->nullable(); // Untuk monografi
             $table->string('penandatangan')->default('-'); // untuk seluruh dokumen.
             $table->unsignedBigInteger('view_count')->default(0);

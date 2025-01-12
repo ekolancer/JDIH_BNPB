@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DokumenHukum extends Model
@@ -29,7 +31,7 @@ class DokumenHukum extends Model
         'deskripsiFisik',
         'subjek',
         'sumber',
-        'issnIsbn',
+        'isbn',
         'status',
         'bahasa',
         'lokasi',
@@ -41,15 +43,13 @@ class DokumenHukum extends Model
         'download_count',
     ];
 
+
     protected static function boot()
     {
         parent::boot();
 
         // Event `creating` untuk membuat id dan slug dinamis
         static::creating(function ($dokumenHukum) {
-            
-            // Generate ID
-            $dokumenHukum->id = self::generateDynamicId($dokumenHukum->tipedok);
 
             // Generate slug jika belum ada            
             if (empty($dokumenHukum->slug)) {
@@ -58,44 +58,46 @@ class DokumenHukum extends Model
         });
 
         static::updating(function ($dokumenHukum) {
-            // Update slug jika ada perubahan pada 'singkatan', 'nomor', atau 'tahun'
-            if ($dokumenHukum->isDirty(['singkatan', 'nomor', 'tahun'])) {
-                $dokumenHukum->slug = Str::slug("{$dokumenHukum->singkatan}-nomor-{$dokumenHukum->nomor}-tahun-{$dokumenHukum->tahun}");
+            // Daftar kolom yang memengaruhi slug
+            $slugColumns = ['singkatan', 'nomor', 'tahun', 'judul', 'tipeDok'];
+
+            foreach ($slugColumns as $column) {
+                if ($dokumenHukum->isDirty($column)) {
+                    // Jika salah satu kolom berubah, generate slug baru
+                    $dokumenHukum->slug = $dokumenHukum->generateSlug();
+                    break;
+                }
+            }
+
+            // Hapus file lampiran lama jika kolom 'lampiran' diperbarui
+            if ($dokumenHukum->isDirty('lampiran')) {
+                $oldLampiran = $dokumenHukum->getOriginal('lampiran'); // Ambil nilai lama lampiran
+                if ($oldLampiran && Storage::disk('public')->exists($oldLampiran)) {
+                    Storage::disk('public')->delete($oldLampiran);
+                }
+            }
+
+            // Hapus file abstrak lama jika kolom 'abstrak' diperbarui
+            if ($dokumenHukum->isDirty('abstrak')) {
+                $oldAbstrak = $dokumenHukum->getOriginal('abstrak'); // Ambil nilai lama abstrak
+                if ($oldAbstrak && Storage::disk('public')->exists($oldAbstrak)) {
+                    Storage::disk('public')->delete($oldAbstrak);
+                }
             }
         });
-    }
 
-    /**
-     * Fungsi untuk generate ID dinamis berdasarkan tipeDok
-     */
-    private static function generateDynamicId($tipeDok)
-    {
-        // Mapping tipeDok ke kode singkat
-        $mapping = [
-            'Peraturan' => 'PUU',
-            'Monografi' => 'MNG',
-            'Artikel'   => 'ART',
-            'Putusan'   => 'PTS',
-        ];
+        // Event `deleted` untuk menghapus file terkait setelah data dihapus
+        static::deleted(function ($dokumenHukum) {
+            // Menghapus file lampiran jika ada
+            if ($dokumenHukum->lampiran && Storage::disk('public')->exists($dokumenHukum->lampiran)) {
+                Storage::disk('public')->delete($dokumenHukum->lampiran);
+            }
 
-        // Dapatkan kode berdasarkan tipeDok
-        $kode = $mapping[$tipeDok] ?? null;
-
-        if (!$kode) {
-            throw new \Exception('Kode tidak ditemukan untuk tipeDok: ' . $tipeDok);
-        }
-
-        // Cari ID terakhir berdasarkan tipeDok
-        $lastDokumen = self::where('tipedok', $tipeDok)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        // Tentukan nomor urut baru
-        $lastId = $lastDokumen ? intval(substr($lastDokumen->id, strlen($kode) + 1)) : 0;
-        $newId = $lastId + 1;
-
-        // Format ID baru
-        return $kode . '-' . str_pad($newId, 3, '0', STR_PAD_LEFT);
+            // Menghapus file abstrak jika ada
+            if ($dokumenHukum->abstrak && Storage::disk('public')->exists($dokumenHukum->abstrak)) {
+                Storage::disk('public')->delete($dokumenHukum->abstrak);
+            }
+        });
     }
 
     /**
@@ -107,16 +109,12 @@ class DokumenHukum extends Model
     {
         switch ($this->tipeDok) {
             case 'Putusan':
-            case 'Peraturan Perundang-Undangan':
+            case 'Peraturan':
                 return Str::slug("{$this->singkatan}-nomor-{$this->nomor}-tahun-{$this->tahun}");
-
-            case 'Monografi':
-            case 'Artikel':
-                return Str::slug($this->judul);
 
             default:
                 // Untuk tipe dokumen yang tidak dikenali, return slug dari judul atau nilai default lainnya
-                return Str::slug($this->judul ?? 'dokumen-tanpa-judul');
+                return Str::slug($this->judul);
         }
     }
 }

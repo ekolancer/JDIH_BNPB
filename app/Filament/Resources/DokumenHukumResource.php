@@ -9,17 +9,28 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
+use Tables\Actions\DeleteAction;
+use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Tabs;
+use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Select;
+
+use Filament\Support\Enums\Alignment;
+use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
+use Filament\Support\Enums\FontWeight;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
-
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Support\Enums\VerticalAlignment;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
 use App\Filament\Resources\DokumenHukumResource\RelationManagers;
@@ -53,7 +64,7 @@ class DokumenHukumResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make('Section Document')
                     ->schema([
                         Tabs::make('Input Dokumen')
                             ->tabs([
@@ -165,7 +176,7 @@ class DokumenHukumResource extends Resource
                                             ->integer()
                                             ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
                                             ->required(fn(Get $get): bool => $get('tipeDok') === 'Monografi'), // Wajib diisi jika tipeDok adalah Monografi
-                                        TextInput::make('issnIsbn')
+                                        TextInput::make('isbn')
                                             ->label('ISSN / ISBN')
                                             ->validationMessages(['required' => 'ISSN / ISBN tidak boleh kosong !'])
                                             ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
@@ -232,7 +243,7 @@ class DokumenHukumResource extends Resource
                                             ->maxSize(25600),
                                     ]),
                             ])
-                            ->columns(1), // Memastikan full-width untuk Tabs
+                            ->columns(2), // Memastikan full-width untuk Tabs
                     ])
                     ->columns(1), // Memastikan full-width untuk Section
             ]);
@@ -243,13 +254,75 @@ class DokumenHukumResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('jenisDok')
+                    ->label('JENIS DOKUMEN')
+                    ->description(fn (DokumenHukum $record): string => $record->judul)
+                    ->weight(FontWeight::Bold)
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+                TextColumn::make('nomor')
+                    ->label('NOMOR')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('tahun')
+                    ->label('TAHUN')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('isbn')
+                    ->label('ISBN')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('penerbit')
+                    ->label('PENERBIT')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->label('STATUS')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'BERLAKU' => 'info',
+                        'TIDAK BERLAKU' => 'danger',
+                    })
+                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\Action::make('detail')
+                        ->modalWidth('5xl')
+                        ->modalHeading('Detail Peraturan')
+                        ->modalContent(fn(DokumenHukum $record): View => view(
+                            'filament.pages.action.dokumen-view',
+                            ['record' => $record]
+                        ))
+                        ->modalSubmitAction(false)
+                        ->color('warning')
+                        ->icon('heroicon-o-eye'),
+                    Tables\Actions\EditAction::make()
+                        ->modalHeading('Edit Data Peraturan'),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -6,6 +6,7 @@ use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\DokumenHukumResource;
+use Filament\Actions\Action;
 
 class CreateDokumenHukum extends CreateRecord
 {
@@ -16,11 +17,6 @@ class CreateDokumenHukum extends CreateRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index'); // Mengarahkan ke halaman list setelah create
-    }
-
-    protected function getFormActions(): array
-    {
-        return [$this->getCancelFormAction(),]; // Menghilangkan semua tombol aksi termasuk "Create"
     }
 
     protected function getCreatedNotification(): ?Notification
