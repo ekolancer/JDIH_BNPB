@@ -28,8 +28,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\VerticalAlignment;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
@@ -42,7 +44,12 @@ class DokumenHukumResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+
     protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'list-dokumen';
+
+    protected static ?string $breadcrumb = 'Dokumen';
 
     protected static ?string $label = 'Dokumen';
 
@@ -274,6 +281,7 @@ class DokumenHukumResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick() // Menonaktifkan clickable pada list table
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('isbn')
                     ->label('ISBN')
@@ -281,6 +289,7 @@ class DokumenHukumResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disableClick() // Menonaktifkan clickable pada list table
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('penerbit')
                     ->label('PENERBIT')
@@ -299,24 +308,34 @@ class DokumenHukumResource extends Resource
                         'BERLAKU' => 'info',
                         'TIDAK BERLAKU' => 'danger',
                     })
-                    ->disableClick() // Menonaktifkan clickable pada list table
-                    ->searchable(),
+                    ->disableClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        'BERLAKU' => 'Berlaku',
+                        'TIDAK BERLAKU' => 'Tidak Berlaku',
+                    ]),
+                SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(static::getYearsOptions())
+                    ->multiple(),
             ])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\Action::make('detail')
+                        ->label('Detail Peraturan')
+                        ->icon('heroicon-o-eye')
+                        ->color('warning')
+                        ->slideover() // Menggunakan slideover
                         ->modalWidth('5xl')
-                        ->modalHeading('Detail Peraturan')
+                        ->modalHeading(fn(DokumenHukum $record): string => "Detail Dokumen : {$record->jenisDok}") // Menggunakan data 'judul'
+                        ->modalDescription(fn(DokumenHukum $record): string => "{$record->judul}")
                         ->modalContent(fn(DokumenHukum $record): View => view(
                             'filament.pages.action.dokumen-view',
                             ['record' => $record]
                         ))
-                        ->modalSubmitAction(false)
-                        ->color('warning')
-                        ->icon('heroicon-o-eye'),
+                        ->modalSubmitAction(false), // Menonaktifkan tombol submit
                     Tables\Actions\EditAction::make()
                         ->modalHeading('Edit Data Peraturan'),
                     Tables\Actions\DeleteAction::make(),
@@ -331,9 +350,10 @@ class DokumenHukumResource extends Resource
             ])
             ->groups([
                 Tables\Grouping\Group::make('jenisDok')
-                ->label('Jenis Dokumen')
-                ->collapsible(),
-            ]);
+                    ->label('Jenis Dokumen')
+                    ->collapsible(),
+            ])
+            ->searchPlaceholder('Nomor/Tahun/ISBN/Penerbit');
     }
 
     public static function getRelations(): array

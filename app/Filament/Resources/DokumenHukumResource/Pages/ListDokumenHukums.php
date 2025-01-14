@@ -16,25 +16,32 @@ class ListDokumenHukums extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add Document'),
         ];
     }
 
     public function getTitle(): string
     {
-        return "Data Peraturan";
+        return "Dokumen Hukum";
     }
 
     public function getTabs(): array
     {
         return [
             'ALL' => Tab::make('All'),
-            'Berlaku' => Tab::make('BERLAKU')
-                ->badge(DokumenHukum::query()->where('status', 'Berlaku')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'Berlaku')),
-            'Tidak Berlaku' => Tab::make('TIDAK BERLAKU')
-                ->badge(DokumenHukum::query()->where('status', 'Tidak Berlaku')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'Tidak Berlaku')),
+            'Peraturan' => Tab::make('Peraturan')
+                ->badge(DokumenHukum::query()->where('tipeDok', 'Peraturan')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Peraturan')),
+            'Monografi' => Tab::make('Monografi')
+                ->badge(DokumenHukum::query()->where('tipeDok', 'Monografi')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Monografi')),
+            'Artikel' => Tab::make('Artikel')
+                ->badge(DokumenHukum::query()->where('tipeDok', 'Artikel')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Artikel')),
+            'Putusan' => Tab::make('Putusan')
+                ->badge(DokumenHukum::query()->where('tipeDok', 'Putusan')->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Putusan')),
         ];
     }
 }
