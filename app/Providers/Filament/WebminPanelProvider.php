@@ -2,15 +2,16 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Auth\Login;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use App\Filament\Auth\Login;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use DiogoGPinto\AuthUIEnhancer\AuthUIEnhancerPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
@@ -81,6 +82,13 @@ class WebminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+                AuthUIEnhancerPlugin::make()
+                    ->showEmptyPanelOnMobile(false)
+                    ->formPanelPosition('right')
+                    ->formPanelWidth('30%')
+                    ->emptyPanelBackgroundImageOpacity('80%')
+                    ->formPanelBackgroundColor(Color::hex('#d5d2d2'))
+                    ->emptyPanelBackgroundImageUrl(asset('img/gBNPB.webp')),
             ])
             ->navigationGroups([
                 'Dokumen Hukum',

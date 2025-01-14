@@ -8,9 +8,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Pages\Auth\Login as AuthLogin;
 use Illuminate\Validation\ValidationException;
 use Filament\Http\Responses\Auth\LoginResponse;
+use DiogoGPinto\AuthUIEnhancer\Pages\Auth\Concerns\HasCustomLayout;
 
 class Login extends AuthLogin
 {
+    use HasCustomLayout;
     // public function mount(): void
     // {
     //     parent::mount();
