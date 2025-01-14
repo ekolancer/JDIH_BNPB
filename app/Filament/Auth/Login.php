@@ -9,6 +9,7 @@ use Filament\Pages\Auth\Login as AuthLogin;
 use Illuminate\Validation\ValidationException;
 use Filament\Http\Responses\Auth\LoginResponse;
 use DiogoGPinto\AuthUIEnhancer\Pages\Auth\Concerns\HasCustomLayout;
+use Afatmustafa\FilamentTurnstile\Forms\Components\Turnstile;
 
 class Login extends AuthLogin
 {
@@ -34,6 +35,10 @@ class Login extends AuthLogin
                 $this->getLoginFormComponent(), 
                 $this->getPasswordFormComponent(),
                 $this->getRememberFormComponent(),
+                Turnstile::make('turnstile')
+                    ->theme('light')
+                    ->size('normal')
+                    ->language('en-US'),
             ])
             ->statePath('data');
     }
