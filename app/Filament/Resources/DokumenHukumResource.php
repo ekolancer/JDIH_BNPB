@@ -256,7 +256,7 @@ class DokumenHukumResource extends Resource
             ->columns([
                 TextColumn::make('jenisDok')
                     ->label('JENIS DOKUMEN')
-                    ->description(fn (DokumenHukum $record): string => $record->judul)
+                    ->description(fn(DokumenHukum $record): string => $record->judul)
                     ->weight(FontWeight::Bold)
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
@@ -295,7 +295,7 @@ class DokumenHukumResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'BERLAKU' => 'info',
                         'TIDAK BERLAKU' => 'danger',
                     })
@@ -328,6 +328,11 @@ class DokumenHukumResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('jenisDok')
+                ->label('Jenis Dokumen')
+                ->collapsible(),
             ]);
     }
 
