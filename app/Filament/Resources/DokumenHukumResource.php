@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Imports\DokumenHukumImporter;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
@@ -13,8 +14,9 @@ use Tables\Actions\DeleteAction;
 use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Contracts\View\View;
-use Filament\Forms\Components\Select;
+use Filament\Tables\Actions\ImportAction;
 
+use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
@@ -324,7 +326,7 @@ class DokumenHukumResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\Action::make('detail')
-                        ->label('Detail Peraturan')
+                        ->label('Detail')
                         ->icon('heroicon-o-eye')
                         ->color('warning')
                         ->slideover() // Menggunakan slideover
@@ -337,7 +339,7 @@ class DokumenHukumResource extends Resource
                         ))
                         ->modalSubmitAction(false), // Menonaktifkan tombol submit
                     Tables\Actions\EditAction::make()
-                        ->modalHeading('Edit Data Peraturan'),
+                        ->modalHeading('Edit Data'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
@@ -347,6 +349,10 @@ class DokumenHukumResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(DokumenHukumImporter::class),
             ])
             ->groups([
                 Tables\Grouping\Group::make('jenisDok')
