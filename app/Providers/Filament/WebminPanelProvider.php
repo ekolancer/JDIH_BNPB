@@ -31,10 +31,12 @@ class WebminPanelProvider extends PanelProvider
             ->path('webmin')
             ->login(Login::class)
             ->colors([
-                'danger' => '#e40615',
-                'gray' => '#ada3a0',
-                'primary' => '#044c9b',
-                'success' => '#ef8307',
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' =>Color::hex('#496edc'),
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
             ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -49,7 +51,7 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->brandLogo(asset('img/update_logo.png'))
             ->brandName('JDIH BNPB')
-            ->brandLogoHeight('5rem')
+            ->brandLogoHeight('3rem')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -60,7 +62,6 @@ class WebminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -95,9 +96,6 @@ class WebminPanelProvider extends PanelProvider
                 'Informasi Hukum',
                 'User Management',
             ])
-            ->plugin(
-                \Hasnayeen\Themes\ThemesPlugin::make()
-            )
             ->resources([
                 config('filament-logger.activity_resource')
             ]);
