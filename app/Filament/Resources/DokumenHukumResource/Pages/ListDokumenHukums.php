@@ -3,23 +3,20 @@
 namespace App\Filament\Resources\DokumenHukumResource\Pages;
 
 use Filament\Actions;
-use Filament\Resources\Components\Tab;
-use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\DokumenHukumResource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\DokumenHukum;
+use Filament\Actions\Action;
+use App\Imports\DokumenHukumsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Resources\Components\Tab;
+use Filament\Forms\Components\FileUpload;
+use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\DokumenHukumResource;
+use Filament\Notifications\Notification;
 
 class ListDokumenHukums extends ListRecords
 {
     protected static string $resource = DokumenHukumResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make()
-                ->label('Add Document'),
-        ];
-    }
 
     public function getTitle(): string
     {
