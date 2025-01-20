@@ -49,7 +49,7 @@ class WebminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            ->brandLogo(asset('img/update_logo.png'))
+            ->brandLogo(asset('img/logo_jdih.png'))
             ->brandName('JDIH BNPB')
             ->brandLogoHeight('3rem')
             ->middleware([
@@ -98,6 +98,10 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->resources([
                 config('filament-logger.activity_resource')
-            ]);
+            ])
+            ->renderHook(
+                'panels::footer',
+                fn () => view('filament.pages.action.footer')
+            );
     }
 }

@@ -10,8 +10,26 @@
         @apply text-white;
     }
 
-    .fi-sidebar-item-active:active {
-        @apply text-black !important;
+    .fi-sidebar-item>a:hover {
+        @apply bg-cyan-500;
+        @apply text-white;
+    }
+
+    .fi-sidebar-item-active>a {
+        @apply bg-indigo-400;
+
+        &>svg,
+        span {
+            @apply text-indigo-100;
+        }
+
+        &:hover {
+            @apply bg-indigo-400;
+        }
+    }
+
+    .fi-badge {
+        @apply bg-orange-300;
     }
 }
 
@@ -19,7 +37,7 @@
 
     .fi-main,
     .fi-layout {
-        @apply bg-slate-50 dark:bg-slate-900;
+        background-color: #f8f9fc;
     }
 
     .fi-sidebar {

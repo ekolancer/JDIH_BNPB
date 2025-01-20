@@ -335,7 +335,7 @@ class DokumenHukumResource extends Resource
                         ->color('warning')
                         ->slideover() // Menggunakan slideover
                         ->modalWidth('5xl')
-                        ->modalHeading(fn(DokumenHukum $record): string => "Detail Dokumen : {$record->jenisDok}") // Menggunakan data 'judul'
+                        ->modalHeading(fn(DokumenHukum $record): string => "{$record->jenisDok}") // Menggunakan data 'judul'
                         ->modalDescription(fn(DokumenHukum $record): string => "{$record->judul}")
                         ->modalContent(fn(DokumenHukum $record): View => view(
                             'filament.pages.action.dokumen-view',
