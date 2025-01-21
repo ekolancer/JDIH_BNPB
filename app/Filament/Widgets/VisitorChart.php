@@ -16,17 +16,90 @@ class VisitorChart extends ChartWidget
 
     protected int | string | array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Pengunjung Website';
+    protected static ?string $heading = 'Traffic Overview';
+
+    public ?string $filter = 'week';
+
+    protected function getFilters(): ?array
+    {
+        return [
+            'today' => 'Today',
+            'week' => 'Last week',
+            'month' => 'Last month',
+            'year' => 'This year',
+        ];
+    }
 
     protected function getData(): array
     {
+        $activeFilter = $this->filter; // Filter yang dipilih
+
+        // Tentukan rentang tanggal berdasarkan filter yang dipilih
+        switch ($activeFilter) {
+            case 'today':
+                $startDate = now()->startOfDay();
+                $endDate = now()->endOfDay();
+                break;
+            case 'week':
+                $startDate = now()->startOfWeek();
+                $endDate = now()->endOfWeek();
+                break;
+            case 'month':
+                $startDate = now()->startOfMonth();
+                $endDate = now()->endOfMonth();
+                break;
+            case 'year':
+                $startDate = now()->startOfYear(); // Rentang waktu mulai dari awal tahun
+                $endDate = now()->endOfMonth(); // Rentang waktu hingga bulan sekarang
+                break;
+            default:
+                $startDate = now()->startOfDay();
+                $endDate = now()->endOfDay();
+        }
+
         $data = Trend::model(Visitor::class)
             ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
-            )
-            ->perMonth()
-            ->count();
+                start: $startDate, // Menggunakan rentang tanggal yang ditentukan oleh filter
+                end: $endDate, // Menggunakan rentang tanggal yang ditentukan oleh filter
+            );
+
+            if ($activeFilter == 'year') {
+                // Jika filter adalah 'year', gunakan perMonth()
+                $data = $data->perMonth()->count();
+            } else {
+                // Defaultnya adalah perDay
+                $data = $data->perDay()->count();
+            }
+
+        // Menyesuaikan label berdasarkan filter
+        $labels = [];
+
+        switch ($activeFilter) {
+            case 'week':
+                // Untuk filter "week", tampilkan 7 hari dalam minggu
+                $labels = collect(range(0, 6))->map(function ($dayOffset) use ($startDate) {
+                    return $startDate->copy()->addDays($dayOffset)->format('l'); // Format hari (Senin, Selasa, dll.)
+                });
+                break;
+
+            case 'month':
+                // Untuk filter "month", tampilkan setiap hari dalam bulan
+                $labels = collect(range(1, $startDate->daysInMonth))->map(function ($day) use ($startDate) {
+                    return $startDate->copy()->day($day)->format('d'); // Format hari (01, 02, dll.)
+                });
+                break;
+
+            case 'year':
+                // Untuk filter "year", tampilkan bulan dalam tahun
+                $labels = collect(range(1, now()->month))->map(function ($month) {
+                    return \Carbon\Carbon::create()->month($month)->format('F'); // Format nama bulan hanya sampai bulan sekarang
+                });
+                break;
+
+            default:
+                // Untuk filter "today" atau default lainnya, tampilkan hanya satu hari
+                $labels = [$startDate->format('l')]; // Format hari (Senin, dll.)
+        }
 
         return [
             'datasets' => [
@@ -37,7 +110,7 @@ class VisitorChart extends ChartWidget
                     'borderColor' => '#9BD0F5',
                 ],
             ],
-            'labels' => $data->map(fn(TrendValue $value) => \Carbon\Carbon::parse($value->date)->format('F')), // Ubah string menjadi Carbon
+            'labels' => $labels, // Menampilkan label sesuai dengan filter
         ];
     }
 
@@ -64,6 +137,6 @@ JS);
 
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 }

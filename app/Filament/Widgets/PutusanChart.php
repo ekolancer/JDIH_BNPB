@@ -50,5 +50,5 @@ class PutusanChart extends ChartWidget
         ];
     }
 
-    protected static ?string $maxHeight = '300px';
+    protected static ?string $maxHeight = '200px';
 }
