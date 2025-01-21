@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Observers\DokumenHukumObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
+#[ObservedBy([DokumenHukumObserver::class])]
 class DokumenHukum extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable =   [
         'tipeDok',

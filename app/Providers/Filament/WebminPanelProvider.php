@@ -38,6 +38,8 @@ class WebminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
+            ->darkMode(false)
+            ->databaseNotifications()
             ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -95,6 +97,7 @@ class WebminPanelProvider extends PanelProvider
                 'Dokumen Hukum',
                 'Informasi Hukum',
                 'User Management',
+                'Features',
             ])
             ->resources([
                 config('filament-logger.activity_resource')

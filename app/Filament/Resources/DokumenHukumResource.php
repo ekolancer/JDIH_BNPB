@@ -135,12 +135,16 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages(['required' => 'Nomor tidak boleh kosong !'])
                                             ->label('Nomor')
                                             ->integer()
+                                            ->minValue(1)
+                                            ->maxValue(1000)
                                             ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
                                             ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
                                         TextInput::make('tahun')
                                             ->validationMessages(['required' => 'Tahun tidak boleh kosong !'])
                                             ->label('Tahun')
                                             ->integer()
+                                            ->minValue(1990)
+                                            ->maxValue(2030)
                                             ->required(),
                                         Fieldset::make('Tanggal dan Tempat Terbit')
                                             ->schema([

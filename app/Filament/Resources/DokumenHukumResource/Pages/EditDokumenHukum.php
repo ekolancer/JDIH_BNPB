@@ -30,6 +30,6 @@ class EditDokumenHukum extends EditRecord
             ->title('Edit successfully')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Data Peraturan berhasil diupdate.');
+            ->body('Data berhasil diupdate.');
     }
 }
