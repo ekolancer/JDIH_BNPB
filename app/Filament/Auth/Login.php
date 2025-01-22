@@ -10,23 +10,12 @@ use Illuminate\Validation\ValidationException;
 use Filament\Http\Responses\Auth\LoginResponse;
 use DiogoGPinto\AuthUIEnhancer\Pages\Auth\Concerns\HasCustomLayout;
 use Afatmustafa\FilamentTurnstile\Forms\Components\Turnstile;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Log;
 
 class Login extends AuthLogin
 {
     use HasCustomLayout;
-    // public function mount(): void
-    // {
-    //     parent::mount();
-
-    //     if (app()->environment('local')) {
-    //         $this->form->fill([
-    //             'password'      =>  '123',
-    //             'remember'      =>  true,
-    //         ]);
-    //     }
-
-        
-    // }
 
     public function form(Form $form): Form
     {
@@ -66,11 +55,27 @@ class Login extends AuthLogin
 
     public function authenticate(): ?LoginResponse
     {
-        try {
-            return parent::authenticate();
-        } catch (ValidationException) {
+        $username = $this->data['login'];
+        $ip = request()->ip();
+        $key = "login_attempts:{$username}:{$ip}";
+    
+        // Check rate limiter
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
             throw ValidationException::withMessages([
-                'data.login' => __('filament-panels::pages/auth/login.messages.failed'),
+                'data.login' => "Terlalu banyak percobaan gagal. Silakan coba lagi dalam " . ceil($seconds / 60) . " menit.",
+            ]);
+        }
+    
+        try {
+            $response = parent::authenticate();
+            RateLimiter::clear($key); // Reset on success
+            return $response;
+        } catch (ValidationException) {
+            RateLimiter::hit($key, 300); // 5 minutes lockout
+            Log::warning('Login gagal', ['username' => $username, 'ip' => $ip, 'time' => now()]);
+            throw ValidationException::withMessages([
+                'data.login' => 'Login gagal. Periksa username atau password Anda.',
             ]);
         }
     }

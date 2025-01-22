@@ -25,6 +25,7 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     protected static ?string $navigationGroup = 'User Management';
+
     protected static ?int $navigationSort = 2;
 
     protected static ?string $label = 'User';
@@ -53,7 +54,20 @@ class UserResource extends Resource
                     ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
                     ->dehydrated(fn(?string $state): bool => filled($state))
                     ->required(fn(string $operation): bool => $operation === 'create')
-                    ->validationMessages(['required' => 'Password tidak boleh kosong !']),
+                    ->rules([
+                        'required',
+                        'string',
+                        'min:8', // Minimal 8 karakter
+                        'regex:/[A-Z]/', // Harus ada huruf besar
+                        'regex:/[a-z]/', // Harus ada huruf kecil
+                        'regex:/[0-9]/', // Harus ada angka
+                        'regex:/[\W_]/', // Harus ada simbol (non-alphanumeric)
+                    ])
+                    ->validationMessages([
+                        'required' => 'Password tidak boleh kosong!',
+                        'min' => 'Password harus memiliki minimal :min karakter.',
+                        'regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan simbol.',
+                    ]),
             ]);
     }
 
@@ -76,7 +90,7 @@ class UserResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
-                    TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Last Update')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
