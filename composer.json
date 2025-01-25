@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^3.8",
+        "shuvroroy/filament-spatie-laravel-health": "^2.3",
         "spatie/laravel-sluggable": "^3.6",
         "z3d0x/filament-logger": "^0.7.2"
     },

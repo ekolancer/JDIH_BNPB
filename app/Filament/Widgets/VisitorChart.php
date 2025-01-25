@@ -14,7 +14,10 @@ class VisitorChart extends ChartWidget
 
     protected static bool $isLazy = true;
 
-    protected int | string | array $columnSpan = 'full';
+    // protected int | string | array $columnSpan = [
+    //     'sm' => 2,  // Mengambil 2 kolom pada layar kecil
+    //     'lg' => 2,  // Mengambil 4 kolom pada layar besar
+    // ];
 
     protected static ?string $heading = 'Traffic Overview';
 
@@ -104,7 +107,7 @@ class VisitorChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah',
+                    'label' => 'Pengunjung',
                     'data' => $data->map(fn(TrendValue $value) => (int) $value->aggregate), // Pastikan bilangan bulat
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',
@@ -124,7 +127,7 @@ class VisitorChart extends ChartWidget
                     callback: (value) => {
                         // Periksa apakah nilai adalah bilangan bulat
                         if (Number.isInteger(value)) {
-                            return value + ' x'; // Tambahkan simbol 'x' setelah nilai
+                            return value;
                         }
                         return ''; // Abaikan nilai desimal
                     },
@@ -137,6 +140,6 @@ JS);
 
     protected function getType(): string
     {
-        return 'bar';
+        return 'line';
     }
 }

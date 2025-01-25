@@ -8,6 +8,7 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use App\Filament\Auth\Login;
 use Filament\Support\Colors\Color;
+use App\Filament\Pages\HealthCheckResults;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -20,6 +21,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -34,7 +36,7 @@ class WebminPanelProvider extends PanelProvider
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
-                'primary' =>Color::hex('#496edc'),
+                'primary' => Color::hex('#496edc'),
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
@@ -92,6 +94,9 @@ class WebminPanelProvider extends PanelProvider
                     ->emptyPanelBackgroundImageOpacity('80%')
                     ->formPanelBackgroundColor(Color::hex('#d5d2d2'))
                     ->emptyPanelBackgroundImageUrl(asset('img/gBNPB.webp')),
+                FilamentSpatieLaravelHealthPlugin::make()
+                    ->usingPage(HealthCheckResults::class)
+                    ->authorize(fn(): bool => auth()->user()->email === 'eko.lancer@gmail.com'),
             ])
             ->navigationGroups([
                 'Dokumen Hukum',
@@ -104,7 +109,7 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::footer',
-                fn () => view('filament.pages.action.footer')
+                fn() => view('filament.pages.action.footer')
             );
     }
 }
