@@ -2,17 +2,21 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Peraturan;
+use App\Models\DokumenHukum;
 use Filament\Widgets\ChartWidget;
 
 class PeraturanChart extends ChartWidget
 {
     protected static ?string $heading = 'Status Peraturan';
 
+    protected static ?int $sort = 3;
+    
+    protected static ?string $maxHeight = '250px';
+
     protected function getData(): array
     {
-        $berlakuCount = Peraturan::where('status', 'BERLAKU')->count();
-        $tidakBerlakuCount = Peraturan::where('status', 'TIDAK BERLAKU')->count();
+        $berlakuCount = DokumenHukum::where('status', 'BERLAKU')->count();
+        $tidakBerlakuCount = DokumenHukum::where('status', 'TIDAK BERLAKU')->count();
 
         return [
             'labels' => ['Berlaku', 'Tidak Berlaku'],
@@ -49,6 +53,4 @@ class PeraturanChart extends ChartWidget
             ],
         ];
     }
-
-    protected static ?string $maxHeight = '200px';
 }

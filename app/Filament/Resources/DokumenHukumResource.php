@@ -47,7 +47,7 @@ class DokumenHukumResource extends Resource
 {
     protected static ?string $model = DokumenHukum::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-scale';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Main Menu';
 

@@ -49,10 +49,7 @@ class WebminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->brandLogo(asset('img/logo_jdih.png'))
             ->brandName('JDIH BNPB')
             ->brandLogoHeight('3rem')

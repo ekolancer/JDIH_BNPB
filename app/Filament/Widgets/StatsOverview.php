@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Artikel;
+use App\Models\DokumenHukum;
 use App\Models\Monograf;
 use App\Models\Peraturan;
 use App\Models\Putusan;
@@ -15,21 +16,27 @@ class StatsOverview extends BaseWidget
 
     protected static bool $isLazy = true;
 
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         return [
-            Stat::make('Peraturan Perundang - Undangan', Peraturan::count())
-                ->description('Jumlah Peraturan')
-                ->color('success'),
-            Stat::make('Monografi', Monograf::count())
-                ->description('Jumlah Monografi')
-                ->color('success'),
-            Stat::make('Putasan', Putusan::count())
-                ->description('Jumlah Putusan')
-                ->color('success'),
-            Stat::make('Artikel', Artikel::count())
-                ->description('Jumlah Artikel')
-                ->color('success'),
+            Stat::make('Jumlah Dokumen', DokumenHukum::where('tipeDok', 'peraturan')->count())
+                ->description('Peraturan Undang-Undang')
+                ->color('success')
+                ->descriptionIcon('heroicon-o-scale'),
+            Stat::make('Jumlah Dokumen', DokumenHukum::where('tipeDok', 'monografi')->count())
+                ->description('Monografi')
+                ->color('success')
+                ->descriptionIcon('heroicon-o-scale'),
+            Stat::make('Jumlah Dokumen', DokumenHukum::where('tipeDok', 'artikel')->count())
+                ->description('Artikel Hukum')
+                ->color('success')
+                ->descriptionIcon('heroicon-o-newspaper'),
+            Stat::make('Jumlah Dokumen', DokumenHukum::where('tipeDok', 'putusan')->count())
+                ->description('Putusan Pengadilan')
+                ->color('success')
+                ->descriptionIcon('heroicon-o-building-library'),
         ];
     }
 }

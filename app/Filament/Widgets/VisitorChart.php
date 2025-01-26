@@ -14,6 +14,10 @@ class VisitorChart extends ChartWidget
 
     protected static bool $isLazy = true;
 
+    protected static ?int $sort = 4;
+    
+    protected static ?string $maxHeight = '250px';
+
     // protected int | string | array $columnSpan = [
     //     'sm' => 2,  // Mengambil 2 kolom pada layar kecil
     //     'lg' => 2,  // Mengambil 4 kolom pada layar besar
@@ -21,7 +25,7 @@ class VisitorChart extends ChartWidget
 
     protected static ?string $heading = 'Traffic Overview';
 
-    public ?string $filter = 'week';
+    public ?string $filter = 'month';
 
     protected function getFilters(): ?array
     {
@@ -107,7 +111,7 @@ class VisitorChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Pengunjung',
+                    'label' => 'Visitor',
                     'data' => $data->map(fn(TrendValue $value) => (int) $value->aggregate), // Pastikan bilangan bulat
                     'backgroundColor' => '#36A2EB',
                     'borderColor' => '#9BD0F5',
