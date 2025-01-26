@@ -99,7 +99,7 @@ class WebminPanelProvider extends PanelProvider
                     ->authorize(fn(): bool => auth()->user()->email === 'eko.lancer@gmail.com'),
             ])
             ->navigationGroups([
-                'Dokumen Hukum',
+                'Main Menu',
                 'Informasi Hukum',
                 'User Management',
                 'Features',

@@ -41,7 +41,7 @@ class InfografisResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
 
-    protected static ?string $navigationGroup = 'Informasi Hukum';
+    protected static ?string $navigationGroup = 'Main Menu';
 
     protected static ?int $navigationSort = 2;
 

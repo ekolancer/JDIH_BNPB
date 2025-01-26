@@ -40,6 +40,11 @@ class ArtikelResource extends Resource
 {
     protected static ?string $model = Artikel::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; //menyembunyikan menu navigasi
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';

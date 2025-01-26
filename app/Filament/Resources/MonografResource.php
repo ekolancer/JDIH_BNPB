@@ -40,9 +40,15 @@ class MonografResource extends Resource
 {
     protected static ?string $model = Monograf::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; //menyembunyikan menu navigasi
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string

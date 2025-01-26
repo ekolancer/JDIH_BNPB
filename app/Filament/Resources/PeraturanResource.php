@@ -42,9 +42,15 @@ class PeraturanResource extends Resource
 {
     protected static ?string $model = Peraturan::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; //menyembunyikan menu navigasi
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $label = 'Peraturan';

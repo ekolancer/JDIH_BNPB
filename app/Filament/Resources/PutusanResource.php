@@ -40,9 +40,15 @@ class PutusanResource extends Resource
 {
     protected static ?string $model = Putusan::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; //menyembunyikan menu navigasi
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
     protected static ?string $navigationGroup = 'Dokumen Hukum';
+
     protected static ?int $navigationSort = 4;
 
     protected static ?string $label = 'Putusan';
