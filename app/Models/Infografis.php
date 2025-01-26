@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Observers\InfografisObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([InfografisObserver::class])]
 class Infografis extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'infografis';
 
