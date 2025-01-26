@@ -115,6 +115,10 @@ class WebminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::footer',
                 fn() => view('filament.pages.action.footer')
+            )
+            ->renderHook(
+                'panels::global-search.before',
+                fn() => view('filament.pages.action.DateTime')
             );
     }
 }
