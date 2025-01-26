@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30eab6d4dcf5ea6827b9ef14344e7ca6",
+    "content-hash": "eac6b0dc0e5d851ac4e7232b17e361f3",
     "packages": [
         {
             "name": "afatmustafa/filamentv3-turnstile",
@@ -4080,6 +4080,71 @@
             "time": "2024-03-31T07:05:07+00:00"
         },
         {
+            "name": "mohammadhprp/filament-ip-to-country-flag-column",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column.git",
+                "reference": "9fbe31ca4b44372c82624b363d49fd521593586a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mohammadhprp/filament-ip-to-country-flag-column/zipball/9fbe31ca4b44372c82624b363d49fd521593586a",
+                "reference": "9fbe31ca4b44372c82624b363d49fd521593586a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "filament/tables": "^3.0-stable",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpunit/phpunit": "^9.5|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mohammadhprp\\IPToCountryFlagColumn\\IPToCountryFlagColumnServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mohammadhprp\\IPToCountryFlagColumn\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammadhprp",
+                    "email": "mohammadhprp@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Display Country flag from IP address in your Filament tables",
+            "homepage": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column",
+            "keywords": [
+                "admin panel",
+                "column",
+                "filament",
+                "filament-ip-to-country-flag",
+                "laravel",
+                "mohammadhrpr",
+                "tables"
+            ],
+            "support": {
+                "issues": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column/issues",
+                "source": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column/tree/v1.0.2"
+            },
+            "time": "2023-08-13T19:13:15+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.8.1",
             "source": {
@@ -4493,6 +4558,76 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.4.0"
             },
             "time": "2024-12-30T11:07:19+00:00"
+        },
+        {
+            "name": "niladam/filament-auto-logout",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/niladam/filament-auto-logout.git",
+                "reference": "49a91c21b7c3f98e5dd75f331029d2f2b883c530"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/niladam/filament-auto-logout/zipball/49a91c21b7c3f98e5dd75f331029d2f2b883c530",
+                "reference": "49a91c21b7c3f98e5dd75f331029d2f2b883c530",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Niladam\\FilamentAutoLogout\\AutoLogoutServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Niladam\\FilamentAutoLogout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madalin Tache",
+                    "email": "niladam@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A filament plugin that auto logs out your users if they are idle.",
+            "homepage": "https://github.com/niladam/filament-auto-logout",
+            "keywords": [
+                "afk logout",
+                "autologout",
+                "filament auto logout",
+                "filament-auto-logout",
+                "laravel",
+                "logout if afk",
+                "logout if idle",
+                "logout on idle"
+            ],
+            "support": {
+                "issues": "https://github.com/niladam/filament-auto-logout/issues",
+                "source": "https://github.com/niladam/filament-auto-logout"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/niladam",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-28T11:09:45+00:00"
         },
         {
             "name": "nunomaduro/termwind",

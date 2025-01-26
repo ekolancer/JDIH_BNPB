@@ -22,6 +22,8 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
+use Carbon\Carbon;
+use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -94,6 +96,12 @@ class WebminPanelProvider extends PanelProvider
                 FilamentSpatieLaravelHealthPlugin::make()
                     ->usingPage(HealthCheckResults::class)
                     ->authorize(fn(): bool => auth()->user()->email === 'eko.lancer@gmail.com'),
+                AutoLogoutPlugin::make()
+                    ->color(Color::Emerald)                         // Set the color. Defaults to Zinc
+                    ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
+                    ->withoutTimeLeft()                             // Disable the time left
+                    ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
+                    ->timeLeftText('')
             ])
             ->navigationGroups([
                 'Main Menu',

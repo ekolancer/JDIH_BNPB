@@ -17,6 +17,7 @@ use Filament\Support\Enums\VerticalAlignment;
 use App\Filament\Resources\VisitorResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\VisitorResource\RelationManagers;
+use Mohammadhprp\IPToCountryFlagColumn\Columns\IPToCountryFlagColumn;
 
 class VisitorResource extends Resource
 {
@@ -43,8 +44,10 @@ class VisitorResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('ip_address')
+                IPToCountryFlagColumn::make('ip_address')
                     ->label('IP Address')
+                    ->location(position: 'below')
+                    ->flagPosition('left')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->sortable()
