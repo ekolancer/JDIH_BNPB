@@ -53,4 +53,12 @@ class Berita extends Model
             }
         });
     }
+
+    // Method untuk mengambil data berita yang aktif
+    public static function getBeritaActive()
+    {
+        return Berita::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 #[ObservedBy([DokumenHukumObserver::class])]
 class DokumenHukum extends Model
@@ -120,5 +121,51 @@ class DokumenHukum extends Model
                 // Untuk tipe dokumen yang tidak dikenali, return slug dari judul atau nilai default lainnya
                 return Str::slug($this->judul);
         }
+    }
+
+    // Menghitung jumlah dokumen berdasarkan tipe
+    public static function countByType()
+    {
+        $result = self::select('tipeDok', DB::raw('COUNT(*) as total'))
+            ->groupBy('tipeDok')
+            ->pluck('total', 'tipeDok')
+            ->toArray();
+
+        // Tambahkan default 0 untuk tipe dokumen yang tidak ada
+        $types = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
+        return array_merge(array_fill_keys($types, 0), $result);
+    }
+
+
+    // Mendapatkan dokumen terbaru
+    public static function getLatest($limit = null, $tipeDok = 'peraturan')
+    {
+        return self::where('tipeDok', $tipeDok)
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+    }
+
+    // Mendapatkan dokumen terpopuler
+    public static function getMostViewed($limit = null, $tipeDok = 'peraturan')
+    {
+        return self::where('tipeDok', $tipeDok)
+            ->orderBy('view_count', 'desc')
+            ->take($limit)
+            ->get();
+    }
+
+    // Fungsi untuk mengambil nilai unik dari kolom tertentu
+    public static function getUniqueValues(array $columns)
+    {
+        $uniqueValues = [];
+        foreach ($columns as $column) {
+            $uniqueValues[$column] = self::select($column)
+                ->distinct()
+                ->pluck($column)
+                ->values()
+                ->toArray();
+        }
+        return $uniqueValues;
     }
 }

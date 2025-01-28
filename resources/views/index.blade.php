@@ -14,7 +14,7 @@
             <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-primary shadow-sm">
                     <i class="fa fa-balance-scale mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['peraturan'] }}" data-purecounter-duration="1"></h3>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Peraturan'] }}" data-purecounter-duration="1"></h3>
                     <p class="feature-title">Peraturan Perundang-Undangan</p>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-secondary shadow-sm">
                     <i class="fa fa-book-open mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['monografi'] }}" data-purecounter-duration="1"></h3>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Monografi'] }}" data-purecounter-duration="1"></h3>
                     <p class="feature-title">Monografi Hukum</p>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-tertiary shadow-sm">
                     <i class="fa fa-newspaper mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['artikel'] }}" data-purecounter-duration="1"></h3>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Artikel'] }}" data-purecounter-duration="1"></h3>
                     <p class="feature-title">Artikel Hukum</p>
                 </div>
             </div>
@@ -38,7 +38,7 @@
             <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div class="feature-item bg-gradient-quaternary shadow-sm">
                     <i class="fa fa-gavel mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['putusan'] }}" data-purecounter-duration="1"></h3>
+                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Putusan'] }}" data-purecounter-duration="1"></h3>
                     <p class="feature-title">Putusan Hukum</p>
                 </div>
             </div>
@@ -74,7 +74,7 @@
         <!-- Tab Terkini -->
         <div class="tab-pane fade show active" id="brs">
             <div class="row g-4">
-                @foreach ($peraturanTerbaru as $peraturan)
+                @foreach ($data['peraturanTerbaru'] as $peraturan)
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
@@ -82,7 +82,7 @@
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
                                 <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
-                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
+                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
                                 </h6>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
         <!-- Tab Populer -->
         <div class="tab-pane fade" id="tabel">
             <div class="row g-4">
-                @foreach ($peraturanPopuler as $peraturan)
+                @foreach ($data['peraturanPopuler'] as $peraturan)
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
@@ -123,7 +123,7 @@
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
                                 <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
-                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahunTerbit }}
+                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
                                 </h6>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                     <div class="swiper-button-next"></div>
                 </div>
                 <div class="swiper-wrapper">
-                    @foreach($infografis as $item)
+                    @foreach($data['infografis'] as $item)
                     <div class="swiper-slide">
                         <div class="card border-0">
                             <div class="position-relative">
@@ -198,7 +198,7 @@
                 <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita.</h2>
             </div>
             <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
-                @foreach($berita as $item)
+                @foreach($data['berita'] as $item)
                 <div class="packages-item">
                     <div class="packages-img">
                         <img src="{{ asset('storage/'.$item->gambar) }}" class="img-fluid w-100 rounded-top" alt="Image">
@@ -245,7 +245,7 @@
                             <div class="counter-item">
                                 <i class="fas fa-calendar-day"></i>
                                 <div>
-                                    <h3>{{ $todayVisitors }}</h3>
+                                    <h3>{{ $data['visitorStats']['today'] }}</h3>
                                     <p class="counter-title">Pengunjung Hari ini</p>
                                 </div>
                             </div>
@@ -254,8 +254,8 @@
                             <div class="counter-item">
                                 <i class="fas fa-calendar-minus"></i>
                                 <div>
-                                    <h3>{{ $yesterdayVisitors }}</h3>
-                                    <p class="counter-title">Pengunjung Kemarin</p>
+                                    <h3>{{ $data['visitorStats']['week'] }}</h3>
+                                    <p class="counter-title">Pengunjung Minggu ini</p>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +263,7 @@
                             <div class="counter-item">
                                 <i class="fas fa-calendar-alt"></i>
                                 <div>
-                                    <h3>{{ $thisMonthVisitors }}</h3>
+                                    <h3>{{ $data['visitorStats']['month'] }}</h3>
                                     <p class="counter-title">Pengunjung Bulan ini</p>
                                 </div>
                             </div>
@@ -272,7 +272,7 @@
                             <div class="counter-item">
                                 <i class="fas fa-chart-line"></i>
                                 <div>
-                                    <h3>{{ $thisYearVisitors }}</h3>
+                                    <h3>{{ $data['visitorStats']['year'] }}</h3>
                                     <p class="counter-title">Pengunjung Tahun ini</p>
                                 </div>
                             </div>

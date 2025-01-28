@@ -47,4 +47,13 @@ class Infografis extends Model
             }
         });
     }
+
+    // Method untuk mengambil data infografis yang aktif
+    public static function getInfografisActive()
+    {
+        return Infografis::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+    }
 }

@@ -131,10 +131,9 @@
                                 <div class="row">
                                     <!-- Tipe Dokumen -->
                                     <div class="col-md-4 mb-3">
-                                        <label for="documentType" class="form-label">Jenis Dokumen</label>
                                         <select class="form-select" id="documentType" name="tipe_dokumen">
-                                            <option value="">Pilih Jenis Dokumen</option>
-                                            @foreach($tipeDokumen as $tipe)
+                                            <option value="">Jenis Dokumen</option>
+                                            @foreach($data['dokumenAttributes']['tipeDok'] as $tipe)
                                             <option value="{{ $tipe }}" {{ request('tipe_dokumen') == $tipe ? 'selected' : '' }}>
                                                 {{ $tipe }}
                                             </option>
@@ -144,10 +143,9 @@
 
                                     <!-- Bentuk Dokumen -->
                                     <div class="col-md-4 mb-3">
-                                        <label for="documentForm" class="form-label">Bentuk Dokumen</label>
                                         <select class="form-select" id="documentForm" name="bentuk_dokumen">
                                             <option value="">Bentuk Dokumen</option>
-                                            @foreach($bentukDokumen as $bentuk)
+                                            @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
                                             <option value="{{ $bentuk }}" {{ request('bentuk_dokumen') == $bentuk ? 'selected' : '' }}>
                                                 {{ $bentuk }}
                                             </option>
@@ -157,7 +155,6 @@
 
                                     <!-- Tahun -->
                                     <div class="col-md-4 mb-3">
-                                        <label for="documentYear" class="form-label">Tahun</label>
                                         <input type="text"
                                             class="form-control"
                                             id="documentYear"

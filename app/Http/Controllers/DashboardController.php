@@ -10,6 +10,7 @@ use App\Models\Visitor;
 use App\Models\Monograf;
 use App\Models\Peraturan;
 use App\Models\Infografis;
+use App\Models\DokumenHukum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -23,109 +24,36 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Menghitung jumlah data dari masing-masing tabel
         $data = [
-            'peraturan' => Peraturan::count(),
-            'monografi' => Monograf::count(),
-            'artikel' => Artikel::count(),
-            'putusan' => Putusan::count(),
+            // Menghitung jumlah data berdasarkan tipeDok
+            'jumlahDokumen' => DokumenHukum::countByType(),
+            // Mengambil data visitorStats dari model Visitor
+            'visitorStats' => Visitor::getVisitorStats(),
+            // Mengambil peraturan terbaru dari model DokumenHukum
+            'peraturanTerbaru' => DokumenHukum::getLatest(2),
+            // Mengambil peraturan terpopuler dari model DokumenHukum
+            'peraturanPopuler' => DokumenHukum::getMostViewed(2),
+            // Mengambil nilai unik untuk tipeDok dan jenisDok
+            'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']),
+            // Mengambil data berita aktif dari model Berita
+            'berita' => Berita::getBeritaActive(),
+            // Mengambil data Infografis aktif dari model Infografis
+            'infografis' => Infografis::getInfografisActive(),
         ];
 
-        // Mengambil data terbaru dari tabel peraturan
-        $peraturanTerbaru = Peraturan::orderBy('created_at', 'desc')->take(4)->get();
-        $peraturanPopuler = Peraturan::orderBy('view_count', 'desc')->take(8)->get();
-        $berita = Berita::where('status', 1)->orderBy('created_at', 'desc')->get();
-        $infografis = Infografis::where('status', 1)
-            ->orderBy('created_at', 'desc')
-            ->take(6) // Ambil 6 data untuk ditampilkan
-            ->get();
-
-
-        // Ambil nilai unik tipeDok dan jenisDok dari keempat tabel
-        $tipeDokumen = collect()
-            ->merge(Peraturan::select('tipeDok')->distinct()->pluck('tipeDok'))
-            ->merge(Monograf::select('tipeDok')->distinct()->pluck('tipeDok'))
-            ->merge(Artikel::select('tipeDok')->distinct()->pluck('tipeDok'))
-            ->merge(Putusan::select('tipeDok')->distinct()->pluck('tipeDok'))
-            ->unique()
-            ->values();
-
-        $bentukDokumen = collect()
-            ->merge(Peraturan::select('jenisDok')->distinct()->pluck('jenisDok'))
-            ->merge(Monograf::select('jenisDok')->distinct()->pluck('jenisDok'))
-            ->merge(Artikel::select('jenisDok')->distinct()->pluck('jenisDok'))
-            ->merge(Putusan::select('jenisDok')->distinct()->pluck('jenisDok'))
-            ->unique()
-            ->values();
-
-        // Hitung jumlah pengunjung hari ini
-        $todayVisitors = Visitor::whereDate('visited_at', now()->toDateString())->count();
-
-        // Hitung jumlah pengunjung kemarin
-        $yesterdayVisitors = Visitor::whereDate('visited_at', now()->subDay()->toDateString())->count();
-
-        // Hitung jumlah pengunjung bulan ini
-        $thisMonthVisitors = Visitor::whereMonth('visited_at', now()->month)
-            ->whereYear('visited_at', now()->year)
-            ->count();
-
-        // Hitung jumlah pengunjung tahun ini
-        $thisYearVisitors = Visitor::whereYear('visited_at', now()->year)->count();
-
+        // Debugging sementara
+        // dd($data);
 
         // Mengirimkan data ke view
-        return view('index', compact(
-            'data',
-            'peraturanTerbaru',
-            'peraturanPopuler',
-            'berita',
-            'infografis',
-            'tipeDokumen',
-            'bentukDokumen',
-            'todayVisitors',
-            'yesterdayVisitors',
-            'thisMonthVisitors',
-            'thisYearVisitors'
-        ));
-    }
-
-    public function download($lampiran)
-    {
-        // Cari di tabel `peraturan`
-        $data = Peraturan::where('lampiran', $lampiran)->first();
-
-        if ($data) {
-            // Log query SQL sebelum increment
-            logger('Increment before: ' . $data->download_count);
-            $data->increment('download_count');
-            logger('Increment after: ' . $data->download_count);
-        } else {
-            // Cari di tabel `putusan`
-            $data = Putusan::where('lampiran', $lampiran)->first();
-
-            if ($data) {
-                // Log query SQL sebelum increment
-                logger('Increment before: ' . $data->download_count);
-                $data->increment('download_count');
-                logger('Increment after: ' . $data->download_count);
-            } else {
-                // Data tidak ditemukan
-                abort(404, 'File lampiran tidak ditemukan.');
-            }
-        }
-
-        // Periksa keberadaan file di storage
-        if (!Storage::exists($lampiran)) {
-            abort(404, 'File tidak ditemukan di storage.');
-        }
-
-        // Unduh file
-        return Storage::download($lampiran, basename($lampiran));
+        return view('index', compact('data'));
     }
 
     // Search dengan Validasi dan Pagination
     public function search(Request $request)
     {
+        // Mengambil nilai unik untuk tipeDok dan jenisDok
+        $dokumenAttributes = DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']);
+
         $validated = $request->validate([
             'q' => 'nullable|string|max:100',
             'tipe_dokumen' => 'nullable|string|max:100',
@@ -133,120 +61,32 @@ class DashboardController extends Controller
             'tahun' => 'nullable|integer',
         ]);
 
-        $query = $validated['q'] ?? null;
-        $tipeDokumen = $validated['tipe_dokumen'] ?? null;
-        $bentukDokumen = $validated['bentuk_dokumen'] ?? null;
-        $tahun = $validated['tahun'] ?? null;
+        $query = isset($validated['q']) ? $validated['q'] : null;
+        $tipeDokumen = isset($validated['tipe_dokumen']) ? $validated['tipe_dokumen'] : null;
+        $bentukDokumen = isset($validated['bentuk_dokumen']) ? $validated['bentuk_dokumen'] : null;
+        $tahun = isset($validated['tahun']) ? $validated['tahun'] : null;
 
-        // Gabungkan hasil pencarian dari keempat tabel
-        $results = collect();
+        // Query hanya menggunakan tabel DokumenHukum
+        $results = DokumenHukum::query()
+            ->when($query, function($q) use ($query) {
+                return $q->where('judul', 'LIKE', "%{$query}%");
+            })
+            ->when($tipeDokumen, function($q) use ($tipeDokumen) {
+                return $q->where('tipeDok', $tipeDokumen);
+            })
+            ->when($bentukDokumen, function($q) use ($bentukDokumen) {
+                return $q->where('jenisDok', $bentukDokumen);
+            })
+            ->when($tahun, function($q) use ($tahun) {
+                return $q->where('tahun', $tahun);
+            })
+            ->paginate(10); // Pagination bawaan Laravel
 
-        // Peraturan
-        $results = $results->merge(
-            Peraturan::query()
-                ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
-                ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
-                ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
-                ->get()
-        );
-
-        // Monograf
-        $results = $results->merge(
-            Monograf::query()
-                ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
-                ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
-                ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
-                ->get()
-        );
-
-        // Artikel
-        $results = $results->merge(
-            Artikel::query()
-                ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
-                ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
-                ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
-                ->get()
-        );
-
-        // Putusan
-        $results = $results->merge(
-            Putusan::query()
-                ->when($query, fn($q) => $q->where('judul', 'LIKE', "%{$query}%"))
-                ->when($tipeDokumen, fn($q) => $q->where('tipeDok', $tipeDokumen))
-                ->when($bentukDokumen, fn($q) => $q->where('jenisDok', $bentukDokumen))
-                ->when($tahun, fn($q) => $q->where('tahunTerbit', $tahun))
-                ->get()
-        );
-
-        // Pagination manual
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentItems = $results->slice(($currentPage - 1) * $perPage, $perPage);
-        $paginatedResults = new LengthAwarePaginator(
-            $currentItems,
-            $results->count(),
-            $perPage,
-            $currentPage,
-            ['path' => LengthAwarePaginator::resolveCurrentPath()]
-        );
-
-        return view('list-doc', compact('paginatedResults'));
-    }
-
-    // Function Simpan Rating
-    public function store(Request $request)
-    {
-        // Validasi data
-        $validated = $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-        ]);
-
-        // Simpan data ke database
-        Survey::create($validated);
-
-        // Kembalikan respon JSON
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Terima kasih atas penilaian Anda!',
-            'redirect_url' => route('survey.store'), // Atau URL lain untuk redirect
+        return view('list-doc', [
+            'dokumenAttributes' => $dokumenAttributes,
+            'results' => $results, // Jika pakai pagination bawaan
         ]);
     }
-
-    public function getRatingDistribution()
-    {
-        $ratingCounts = Survey::selectRaw('rating, COUNT(*) as count')
-            ->groupBy('rating')
-            ->pluck('count', 'rating');
-
-        // Pastikan semua nilai rating (1-5) ada, isi 0 jika tidak ditemukan
-        $data = [];
-        for ($i = 5; $i >= 1; $i--) {
-            $data[] = $ratingCounts[$i] ?? 0;
-        }
-
-        return response()->json($data);
-    }
-
-    public function getAverageRating()
-    {
-        $averageRating = Survey::average('rating'); // Menghitung rata-rata kolom 'rating'
-        return response()->json(['average' => round($averageRating, 1)]); // Membulatkan ke 1 desimal
-    }
-
-    public function getRatingSummary()
-    {
-        $averageRating = Survey::average('rating'); // Menghitung rata-rata rating
-        $totalRatings = Survey::count(); // Menghitung jumlah total penilaian
-
-        return response()->json([
-            'average' => round($averageRating, 1), // Membulatkan rata-rata ke 1 desimal
-            'total' => $totalRatings
-        ]);
-    }
-
 
     // Function Webview Perihal
     public function about()
