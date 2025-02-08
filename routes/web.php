@@ -21,7 +21,6 @@ Route::get('/dokumen/{tipeDok}', [DokumenController::class, 'filterByType'])
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');
-Route::get('/dokumen/{id}/lampiran', [DokumenController::class, 'showLampiran']);
 
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eac6b0dc0e5d851ac4e7232b17e361f3",
+    "content-hash": "56afa0c3ffd46c6117a4bf7f53692903",
     "packages": [
         {
             "name": "afatmustafa/filamentv3-turnstile",

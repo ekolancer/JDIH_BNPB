@@ -37,25 +37,30 @@ class DokumenController extends Controller
         DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('view_count');
 
         // Tentukan path file lampiran
-        $fileLampiranPath = storage_path('app/public/' . $dokumen->lampiran);
+        $fullTextPath = storage_path('app/public/' . $dokumen->lampiran);
+        $abstrakPath = storage_path('app/public/' . $dokumen->abstrak);
 
         // Cek apakah file ada, kemudian hitung ukuran file
-        $fileSize = file_exists($fileLampiranPath) ? filesize($fileLampiranPath) : 0;
+        $lampiranSize = file_exists($fullTextPath) ? filesize($fullTextPath) : 0;
+        $abstrakSize = file_exists($abstrakPath) ? filesize($abstrakPath) : 0;
 
         // Mengonversi ukuran file menjadi KB atau MB
-        $fileSizeInKb = round($fileSize / 1024, 2); // Ukuran dalam KB
-        $fileSizeInMb = round($fileSizeInKb / 1024, 2); // Ukuran dalam MB
+        $lampiranSizeInKb = round($lampiranSize / 1024, 2); // Ukuran lampiran dalam KB
+        $abstrakSizeInKb = round($abstrakSize / 1024, 2); // Ukuran lampiran dalam KB
+        $lampiranSizeInMb = round($lampiranSizeInKb / 1024, 2); // Ukuran abstrak dalam MB
+        $abstrakSizeInMb = round($abstrakSizeInKb / 1024, 2); // Ukuran abstrak dalam MB
+
+        // Tentukan teks tombol berdasarkan tipe dokumen
+        $buttonText = $dokumen->tipeDok == 'Monografi' ? 'Cover' : 'Baca';
 
         // Pemetaan metadata per tipe dokumen
         $metadata = [
             'Peraturan' => [
-                'Tipe Dokumen' => $dokumen->tipeDok,
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
                 'T.E.U Badan' => $dokumen->teuBadan,
                 'Nomor' => $dokumen->nomor,
                 'Tahun Terbit' => $dokumen->tahun,
-                'Singkatan' => $dokumen->singkatan,
                 'Tempat Terbit' => $dokumen->tempat,
                 'Tanggal Penetapan' => \Carbon\Carbon::parse($dokumen->tglPenetapan)->translatedFormat('d F Y'),
                 'Tanggal Pengundangan' => \Carbon\Carbon::parse($dokumen->tglPengundangan)->translatedFormat('d F Y'),
@@ -64,9 +69,9 @@ class DokumenController extends Controller
                 'Bahasa' => $dokumen->bahasa,
                 'Lokasi' => $dokumen->lokasi,
                 'Bidang Hukum' => $dokumen->bidangHukum,
+                'Penandatangan' => $dokumen->penandatangan,
             ],
             'Putusan' => [
-                'Tipe Dokumen' => $dokumen->tipeDok,
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
                 'T.E.U Badan' => $dokumen->teuBadan,
@@ -84,7 +89,6 @@ class DokumenController extends Controller
                 'Penandatangan' => $dokumen->penandatangan,
             ],
             'Monografi' => [
-                'Tipe Dokumen' => $dokumen->tipeDok,
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
                 'T.E.U Badan' => $dokumen->teuBadan,
@@ -102,7 +106,6 @@ class DokumenController extends Controller
                 'Nomor Induk Buku' => $dokumen->nomorIndukBuku,
             ],
             'Artikel' => [
-                'Tipe Dokumen' => $dokumen->tipeDok,
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
                 'T.E.U Badan' => $dokumen->teuBadan,
@@ -118,7 +121,7 @@ class DokumenController extends Controller
             ],
         ];
 
-        return view('dokumen.detail', compact('dokumen', 'fileSizeInKb', 'fileSizeInMb', 'metadata'));
+        return view('dokumen.detail', compact('dokumen', 'lampiranSizeInKb', 'lampiranSizeInMb', 'abstrakSizeInKb', 'abstrakSizeInMb', 'metadata', 'buttonText'));
     }
 
     public function filterByType($tipeDok)

@@ -103,21 +103,21 @@
                                 <div>
                                     <small class="text-muted me-3">
                                         <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
-                                        {{ \Carbon\Carbon::parse($result->created_at)->format('d F Y') }}
+                                        {{ \Carbon\Carbon::parse($result->created_at)->translatedFormat('d F Y') }}
                                     </small>
                                     <small class="text-muted me-3">
                                         <i class="far fa-eye me-1" style="font-weight: bold;"></i>
-                                        {{ $result->view_count }}x Tayang
+                                        {{ $result->view_count }} Dilihat
                                     </small>
                                     <small class="text-muted">
                                         <i class="far fa-download me-1" style="font-weight: bold;"></i>
-                                        {{ $result->download_count }}x Unduhan
+                                        {{ $result->download_count }} Diunduh
                                     </small>
                                 </div>
                                 <!-- Tombol aksi -->
-                                <div class="d-flex">
+                                <div class="d-flex mb-2">
                                     <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}" class="btn btn-primary btn-sm me-2">
-                                        <i class="fas fa-eye me-1"></i>Detail
+                                        <i class="fas fa-eye me-1"></i>Lihat
                                     </a>
                                 </div>
                             </div>

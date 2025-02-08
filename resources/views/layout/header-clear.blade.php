@@ -103,7 +103,18 @@
                 text-decoration: underline;
                 /* Hover effect */
             }
+
+            .modal-dialog {
+                max-width: 70%;
+                /* Adjust the width of the modal */
+                height: 100%;
+                /* Adjust the height of the modal */
+                margin: 1.75rem auto;
+            }
         </style>
+
+        <!-- Livewire Styles -->
+        @livewireStyles
     </head>
 
 <body>
@@ -160,6 +171,6 @@
             <div class="overlay position-absolute w-100 h-100"></div>
             <div class="container py-5">
                 <h1 class="title-bread display-4 fw-bold">PRODUK HUKUM</h1>
-                
+
             </div>
         </div>
