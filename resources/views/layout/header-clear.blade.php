@@ -129,10 +129,10 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dokumen Hukum</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
-                            <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
-                            <a href="{{ route('artikel.index') }}" class="dropdown-item">Artikel</a>
-                            <a href="{{ route('putusan.index') }}" class="dropdown-item">Putusan</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'peraturan']) }}" class="dropdown-item">Peraturan</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'monografi']) }}" class="dropdown-item">Monografi</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'artikel']) }}" class="dropdown-item">Artikel</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'putusan']) }}" class="dropdown-item">Putusan</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -160,36 +160,6 @@
             <div class="overlay position-absolute w-100 h-100"></div>
             <div class="container py-5">
                 <h1 class="title-bread display-4 fw-bold">PRODUK HUKUM</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mt-3">
-                        <!-- Breadcrumb Home -->
-                        <li class="breadcrumb-item">
-                            <a href="/" class="text-white text-decoration-none">
-                                <i class="fas fa-home me-2"></i>Beranda
-                            </a>
-                        </li>
-
-                        <!-- Breadcrumb untuk "Peraturan" jika route adalah 'peraturan.index' -->
-                        @if (Route::is('peraturan.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Peraturan</li>
-
-                        <!-- Breadcrumb untuk "Monografi" jika route adalah 'monografi.index' -->
-                        @elseif (Route::is('monograf.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Monografi</li>
-
-                        <!-- Breadcrumb untuk "Artikel" jika route adalah 'artikel.index' -->
-                        @elseif (Route::is('artikel.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Artikel</li>
-
-                        <!-- Breadcrumb untuk "Putusan" jika route adalah 'putusan.index' -->
-                        @elseif (Route::is('putusan.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Putusan</li>
-
-                        <!-- Kondisi default jika tidak ada yang cocok -->
-                        @else
-                        <li class="breadcrumb-item active text-warning" aria-current="page">All</li>
-                        @endif
-                    </ol>
-                </nav>
+                
             </div>
         </div>

@@ -9,7 +9,7 @@
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <form method="GET" action="{{ route('peraturan.index') }}">
+                    <form method="GET" action="#">
                         <!-- Judul -->
                         <div class="input-group mb-3">
                             <span class="input-group-text bg-white border-end-0">
@@ -64,7 +64,7 @@
                         <!-- Tombol Filter -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">Cari</button>
-                            <a href="{{ route('peraturan.index') }}" class="btn btn-warning">Reset</a>
+                            <a href="#" class="btn btn-warning">Reset</a>
                         </div>
                     </form>
                 </div>
@@ -114,6 +114,12 @@
                                         {{ $result->download_count }}x Unduhan
                                     </small>
                                 </div>
+                                <!-- Tombol aksi -->
+                                <div class="d-flex">
+                                    <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}" class="btn btn-primary btn-sm me-2">
+                                        <i class="fas fa-eye me-1"></i>Detail
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,7 +143,7 @@
 
 @endsection
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const tipeDokumen = document.getElementById('tipe_dokumen');
         const bentukPeraturanContainer = document.getElementById('bentuk_peraturan_container');
 

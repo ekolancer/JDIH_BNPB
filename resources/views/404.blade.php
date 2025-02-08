@@ -70,10 +70,10 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dokumen Hukum</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('peraturan.index') }}" class="dropdown-item">Peraturan</a>
-                            <a href="{{ route('monograf.index') }}" class="dropdown-item">Monografi</a>
-                            <a href="{{ route('artikel.index') }}" class="dropdown-item">Artikel</a>
-                            <a href="{{ route('putusan.index') }}" class="dropdown-item">Putusan</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'peraturan']) }}" class="dropdown-item">Peraturan</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'monografi']) }}" class="dropdown-item">Monografi</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'artikel']) }}" class="dropdown-item">Artikel</a>
+                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'putusan']) }}" class="dropdown-item">Putusan</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">

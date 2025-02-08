@@ -10,6 +10,7 @@ use Spatie\Health\Checks\Checks\DebugModeCheck;
 use Spatie\Health\Checks\Checks\EnvironmentCheck;
 use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
             PingCheck::new()->url('https://jdih.bnpb.go.id')->timeout(2),
             DatabaseCheck::new(),
         ]);
+
+        Carbon::setLocale(config('app.locale')); // Atur sesuai locale yang diinginkan
     }
 }

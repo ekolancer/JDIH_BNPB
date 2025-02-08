@@ -168,4 +168,9 @@ class DokumenHukum extends Model
         }
         return $uniqueValues;
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug'; // Laravel akan otomatis mencari dokumen berdasarkan slug, bukan ID
+    }
 }

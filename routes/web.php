@@ -1,16 +1,12 @@
 <?php
 
-use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BeritaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
-use App\Http\Controllers\MonografController;
-use App\Http\Controllers\PeraturanController;
-use App\Http\Controllers\PutusanController;
 use App\Http\Controllers\SurveyController;
 use App\Models\DokumenHukum;
-use League\Csv\Query\Row;
+use App\Http\Controllers\DokumenController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/search/list', [DashboardController::class, 'search'])->name('dashboard.search');
@@ -18,21 +14,14 @@ Route::get('/about', [DashboardController::class, 'about'])->name('about');
 Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMisi');
 Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
 
-//Route Peraturan
-Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
-Route::get('/peraturan/{slug}/detail', [PeraturanController::class, 'show'])->name('peraturan.show');
-
-//Route Monograf
-Route::get('/monograf', [MonografController::class, 'index'])->name('monograf.index');
-Route::get('/monograf/{slug}/detail', [MonografController::class, 'show'])->name('monograf.show');
-
-//Route Artikel
-Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
-Route::get('/artikel/{slug}/detail', [ArtikelController::class, 'show'])->name('artikel.show');
-
-//Route Putusan
-Route::get('/putusan', [PutusanController::class, 'index'])->name('putusan.index');
-Route::get('/putusan/{slug}/detail', [PutusanController::class, 'show'])->name('putusan.show');
+// Route Dokumen Hukum
+Route::get('/dokumen/{tipeDok}', [DokumenController::class, 'filterByType'])
+    ->where('tipeDok', 'peraturan|monografi|artikel|putusan')
+    ->name('dokumen.filter');
+Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
+    ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
+    ->name('dokumen.detail');
+Route::get('/dokumen/{id}/lampiran', [DokumenController::class, 'showLampiran']);
 
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');

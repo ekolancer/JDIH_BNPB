@@ -52,7 +52,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
-        <a href="{{ route('peraturan.index') }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
+        <a href="#" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
     </div>
 
     <!-- Tabs -->
@@ -102,7 +102,7 @@
                                 {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
-                            <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm">
+                            <a href="#" class="btn btn-primary btn-sm">
                                 <i class="fas fa-eye me-1"></i>Detail
                             </a>
                         </div>
@@ -143,7 +143,7 @@
                                 {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
-                            <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm">
+                            <a href="#" class="btn btn-primary btn-sm">
                                 <i class="fas fa-eye me-1"></i>Detail
                             </a>
                         </div>

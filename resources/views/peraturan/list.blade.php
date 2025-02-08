@@ -110,7 +110,7 @@
                                 </div>
                                 <!-- Tombol aksi -->
                                 <div class="d-flex">
-                                    <a href="{{ route('peraturan.show', $peraturan->slug) }}" class="btn btn-primary btn-sm me-2">
+                                    <a href="#" class="btn btn-primary btn-sm me-2">
                                         <i class="fas fa-eye me-1"></i>Detail
                                     </a>
                                     <a href="{{ route('file.download', $peraturan->lampiran) }}" class="btn btn-secondary btn-sm">
