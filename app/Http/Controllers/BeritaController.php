@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BeritaController extends Controller
 {
@@ -29,8 +30,8 @@ class BeritaController extends Controller
         // Mengambil data peraturan berdasarkan judul
         $berita = Berita::where('slug', $slug)->firstOrFail();
 
-        // Tingkatkan view count
-        $berita->increment('view_count');
+        // Update view_count tanpa memicu event observer
+        DB::table('berita')->where('id', $berita->id)->increment('view_count');
 
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $berita->gambar);

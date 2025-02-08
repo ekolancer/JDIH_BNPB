@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Infografis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InfografisController extends Controller
 {
@@ -22,8 +23,8 @@ class InfografisController extends Controller
         // Mengambil data peraturan berdasarkan judul
         $infografis = Infografis::where('slug', $slug)->firstOrFail();
 
-        // Tingkatkan view count
-        $infografis->increment('view_count');
+        // Update view_count tanpa memicu event observer
+        DB::table('infografis')->where('id', $infografis->id)->increment('view_count');
 
         // Cek apakah gambar berupa array dan ambil gambar pertama
         $gambarPertama = is_array($infografis->gambar) ? $infografis->gambar[0] : $infografis->gambar;

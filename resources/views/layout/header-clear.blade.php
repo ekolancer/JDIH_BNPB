@@ -53,23 +53,6 @@
                 align-items: center;
             }
 
-            .search-bar input {
-                border-top-left-radius: 5px;
-                border-bottom-left-radius: 5px;
-                border-right: none;
-            }
-
-            .search-bar button {
-                border-top-right-radius: 5px;
-                border-bottom-right-radius: 5px;
-                background-color: #ffcc00;
-                border: none;
-            }
-
-            .search-bar button i {
-                color: white;
-            }
-
             .btn-group-custom {
                 margin-top: 10px;
             }

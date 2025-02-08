@@ -52,7 +52,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
-        <a href="#" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
+        <a href="{{ route('dokumen.filter', ['tipeDok' => 'peraturan']) }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
     </div>
 
     <!-- Tabs -->
@@ -99,11 +99,11 @@
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->translatedFormat('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye me-1"></i>Detail
+                            <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>Lihat
                             </a>
                         </div>
                     </div>
@@ -140,11 +140,11 @@
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->format('d F Y') }}
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->translatedFormat('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye me-1"></i>Detail
+                            <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>Lihat
                             </a>
                         </div>
                     </div>
@@ -175,10 +175,15 @@
                     <div class="swiper-slide">
                         <div class="card border-0">
                             <div class="position-relative">
+                                <!-- Gambar dengan hyperlink -->
                                 @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
-                                <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
+                                <a href="{{ route('infografis.show', $item->slug) }}"> <!-- Ubah dengan URL tujuan -->
+                                    <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
+                                </a>
                                 @else
-                                <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
+                                <a href="{{ url('/path/to/your/destination') }}">
+                                    <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
+                                </a>
                                 @endif
                             </div>
                         </div>
@@ -210,7 +215,7 @@
                     </div>
                     <div class="packages-content bg-light">
                         <div class="p-4 pb-0">
-                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
+                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
                         </div>
                         <div class="p-4 pb-4 pt-4">
                             <small class="text-uppercase">{{ Str::limit(strip_tags($item->konten), 100) }}</small>
@@ -220,7 +225,7 @@
                                 <a href="{{ route('berita.show', $item->slug) }}" class="btn-hover btn text-white py-2 px-4">Read More</a>
                             </div>
                             <div class="col-6 text-end px-0">
-                                <a href="#" class="btn-hover btn text-white py-2 px-4"><i class="fas fa-eye me-2"></i> {{ $item->view_count }} dilihat</a>
+                                <a class="btn-hover btn text-white py-2 px-4"><i class="fas fa-eye me-2"></i> {{ $item->view_count }} dilihat</a>
                             </div>
                         </div>
                     </div>
