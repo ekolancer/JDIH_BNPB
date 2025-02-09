@@ -15,12 +15,15 @@ Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMi
 Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
 
 // Route Dokumen Hukum
+Route::get('/dokumen/all', [DokumenController::class, 'index'])->name('dokumen.index');
 Route::get('/dokumen/{tipeDok}', [DokumenController::class, 'filterByType'])
     ->where('tipeDok', 'peraturan|monografi|artikel|putusan')
     ->name('dokumen.filter');
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');
+Route::get('/dokumen/{slug}/download-lampiran', [DokumenController::class, 'unduhLampiran'])->name('dokumen.unduhLampiran');
+Route::get('/dokumen/{slug}/download-abstrak', [DokumenController::class, 'unduhAbstrak'])->name('dokumen.unduhAbstrak');
 
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');

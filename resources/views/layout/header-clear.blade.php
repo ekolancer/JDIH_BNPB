@@ -154,6 +154,19 @@
             <div class="overlay position-absolute w-100 h-100"></div>
             <div class="container py-5">
                 <h1 class="title-bread display-4 fw-bold">PRODUK HUKUM</h1>
-
+                <!-- Breadcrumbs -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        @foreach ($breadcrumbs as $breadcrumb)
+                        <li class="breadcrumb-item">
+                            @isset($breadcrumb['url'])
+                            <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['title'] }}</a>
+                            @else
+                            {{ $breadcrumb['title'] }}
+                            @endisset
+                        </li>
+                        @endforeach
+                    </ol>
+                </nav>
             </div>
         </div>

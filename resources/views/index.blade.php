@@ -181,9 +181,7 @@
                                     <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
                                 </a>
                                 @else
-                                <a href="{{ url('/path/to/your/destination') }}">
                                     <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
-                                </a>
                                 @endif
                             </div>
                         </div>

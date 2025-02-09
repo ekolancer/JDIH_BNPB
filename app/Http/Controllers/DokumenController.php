@@ -6,6 +6,7 @@ use App\Models\DokumenHukum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class DokumenController extends Controller
 {
@@ -14,7 +15,11 @@ class DokumenController extends Controller
      */
     public function index()
     {
-        //
+        // Ambil semua data DokumenHukum dan urutkan berdasarkan created_at
+        $results = DokumenHukum::orderBy('created_at', 'desc')->get()->paginate(10);
+
+        // Kembalikan ke view dengan data dokumen
+        return view('dokumen.index', compact('results'));
     }
 
     /**
@@ -32,6 +37,14 @@ class DokumenController extends Controller
         $dokumen = DokumenHukum::where('tipeDok', $tipeDok)
             ->where('slug', $slug)
             ->firstOrFail();
+
+        // Menentukan breadcrumbs berdasarkan tipe dokumen
+        $breadcrumbs = [
+            ['title' => 'Home', 'url' => route('dashboard.index')],
+            ['title' => 'Produk Hukum', 'url' => route('dokumen.index')], // Link ke indeks produk hukum
+            ['title' => ucfirst($tipeDok)], // Tidak ada URL untuk breadcrumb terakhir
+            ['title' => $dokumen->judul] // Tidak ada URL untuk breadcrumb terakhir
+        ];
 
         // Update view_count tanpa memicu event observer
         DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('view_count');
@@ -58,7 +71,7 @@ class DokumenController extends Controller
             'Peraturan' => [
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
-                'T.E.U Badan' => $dokumen->teuBadan,
+                'Tajuk Entri Utama' => $dokumen->teuBadan,
                 'Nomor' => $dokumen->nomor,
                 'Tahun Terbit' => $dokumen->tahun,
                 'Tempat Terbit' => $dokumen->tempat,
@@ -74,7 +87,7 @@ class DokumenController extends Controller
             'Putusan' => [
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
-                'T.E.U Badan' => $dokumen->teuBadan,
+                'Tajuk Entri Utama' => $dokumen->teuBadan,
                 'Nomor Putusan' => $dokumen->nomor,
                 'Tahun Terbit' => $dokumen->tahun,
                 'Singkatan' => $dokumen->singkatan,
@@ -91,7 +104,7 @@ class DokumenController extends Controller
             'Monografi' => [
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
-                'T.E.U Badan' => $dokumen->teuBadan,
+                'Tajuk Entri Utama' => $dokumen->teuBadan,
                 'Tahun Terbit' => $dokumen->tahun,
                 'Tempat Terbit' => $dokumen->tempat,
                 'Penerbit' => $dokumen->penerbit,
@@ -108,7 +121,7 @@ class DokumenController extends Controller
             'Artikel' => [
                 'Jenis Dokumen' => $dokumen->jenisDok,
                 'Judul' => $dokumen->judul,
-                'T.E.U Badan' => $dokumen->teuBadan,
+                'Tajuk Entri Utama' => $dokumen->teuBadan,
                 'Tahun Terbit' => $dokumen->tahun,
                 'Tempat Terbit' => $dokumen->tempat,
                 'Penerbit' => $dokumen->penerbit,
@@ -121,7 +134,7 @@ class DokumenController extends Controller
             ],
         ];
 
-        return view('dokumen.detail', compact('dokumen', 'lampiranSizeInKb', 'lampiranSizeInMb', 'abstrakSizeInKb', 'abstrakSizeInMb', 'metadata', 'buttonText'));
+        return view('dokumen.detail', compact('dokumen', 'breadcrumbs', 'lampiranSizeInKb', 'lampiranSizeInMb', 'abstrakSizeInKb', 'abstrakSizeInMb', 'metadata', 'buttonText'));
     }
 
     public function filterByType($tipeDok)
@@ -133,11 +146,78 @@ class DokumenController extends Controller
             abort(404); // Jika tidak valid, lemparkan error 404
         }
 
+        // Menentukan breadcrumbs berdasarkan tipe dokumen
+        $breadcrumbs = [
+            ['title' => 'Home', 'url' => route('dashboard.index')],
+            ['title' => 'Produk Hukum', 'url' => route('dokumen.index')], // Link ke indeks produk hukum
+            ['title' => ucfirst($tipeDok)] // Tidak ada URL untuk breadcrumb terakhir
+        ];
+
         // Ambil dokumen berdasarkan tipe
         $results = DokumenHukum::where('tipeDok', ucfirst($tipeDok))->paginate(10);
 
         $dokumenAttributes = DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']);
 
-        return view('dokumen.list-doc', compact('results', 'tipeDok', 'dokumenAttributes'));
+        return view('dokumen.list-doc', compact('results', 'tipeDok', 'dokumenAttributes', 'breadcrumbs'));
+    }
+
+    /**
+     * Unduh file lampiran
+     *
+     * @param int $dokumenId
+     * @return \Illuminate\Http\Response
+     */
+    public function unduhLampiran($dokumenId)
+    {
+        // Cari dokumen berdasarkan ID
+        $dokumen = DokumenHukum::findOrFail($dokumenId);
+
+        // Mendapatkan path file
+        $filePath = public_path('storage/' . $dokumen->lampiran);
+
+        // Mengecek apakah file ada
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        // Increment download_count di database tanpa memperhatikan cache
+        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count');
+
+        // Mengembalikan file untuk diunduh
+        return response()->download($filePath, null, [
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ]);
+    }
+
+    /**
+     * Unduh file abstrak
+     *
+     * @param int $dokumenId
+     * @return \Illuminate\Http\Response
+     */
+    public function unduhAbstrak($dokumenId)
+    {
+        // Cari dokumen berdasarkan ID
+        $dokumen = DokumenHukum::findOrFail($dokumenId);
+
+        // Mendapatkan path file
+        $filePath = public_path('storage/' . $dokumen->abstrak);
+
+        // Mengecek apakah file ada
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        // Increment download_count di database tanpa memperhatikan cache
+        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count');
+
+        // Mengembalikan file untuk diunduh
+        return response()->download($filePath, null, [
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ]);
     }
 }

@@ -110,11 +110,11 @@
                 <div class="d-flex">
                     <!-- Lampiran Full Text -->
                     <div class="file-info flex-grow-1 me-3">
-                        <a href="#" target="_blank" class="btn btn-primary text-white text-uppercase d-flex flex-column align-items-center">
+                        <a href="{{ route('dokumen.unduhLampiran', $dokumen->id) }}" target="_self" class="btn btn-primary text-white text-uppercase d-flex flex-column align-items-center" style="text-decoration: none;">
                             Full Text
                             <span class="mt-1 text-black">
                                 @if($lampiranSizeInKb < 1000)
-                                    {{ number_format($lampiranSizeInKb, 2) }} KB
+                                    {{ number_format($lampiranSizeInKb) }} KB
                                     @else
                                     {{ number_format($lampiranSizeInMb, 2) }} MB
                                     @endif
@@ -123,18 +123,18 @@
                     </div>
 
                     <!-- Lampiran Abstrak -->
-                    <div class="file-info flex-grow-1">
-                        <a href="#" target="_blank" class="btn btn-primary text-white text-uppercase d-flex flex-column align-items-center">
+                    <!-- <div class="file-info flex-grow-1">
+                        <a href="{{ route('dokumen.unduhAbstrak', $dokumen->id) }}" target="_self" class="btn btn-primary text-white text-uppercase d-flex flex-column align-items-center">
                             Abstrak
                             <span class="mt-1 text-black">
                                 @if($abstrakSizeInKb < 1000)
-                                    {{ number_format($abstrakSizeInKb, 2) }} KB
+                                    {{ number_format($abstrakSizeInKb) }} KB
                                     @else
                                     {{ number_format($abstrakSizeInMb, 2) }} MB
                                     @endif
                                     </span>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             @endif
