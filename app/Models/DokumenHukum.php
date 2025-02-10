@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 #[ObservedBy([DokumenHukumObserver::class])]
 class DokumenHukum extends Model
@@ -172,5 +173,126 @@ class DokumenHukum extends Model
     public function getRouteKeyName()
     {
         return 'slug'; // Laravel akan otomatis mencari dokumen berdasarkan slug, bukan ID
+    }
+
+    // Scope untuk filter berdasarkan tipe dan slug
+    public function scopeFindBySlug($query, $tipeDok, $slug)
+    {
+        return $query->where('tipeDok', $tipeDok)->where('slug', $slug);
+    }
+
+    // Accessor untuk format tanggal otomatis
+    public function getTglPenetapanFormattedAttribute()
+    {
+        return $this->tglPenetapan ? Carbon::parse($this->tglPenetapan)->translatedFormat('d F Y') : null;
+    }
+
+    public function getTglPengundanganFormattedAttribute()
+    {
+        return $this->tglPengundangan ? Carbon::parse($this->tglPengundangan)->translatedFormat('d F Y') : null;
+    }
+
+    // Accessor untuk mendapatkan ukuran file dalam KB & MB
+    public function getLampiranSizeAttribute()
+    {
+        $filePath = storage_path("app/public/{$this->lampiran}");
+        if (!file_exists($filePath)) return ['kb' => 0, 'mb' => 0];
+
+        $sizeInKb = round(filesize($filePath) / 1024, 2);
+        return [
+            'kb' => $sizeInKb,
+            'mb' => round($sizeInKb / 1024, 2),
+        ];
+    }
+
+    public function getAbstrakSizeAttribute()
+    {
+        $filePath = storage_path("app/public/{$this->abstrak}");
+        if (!file_exists($filePath)) return ['kb' => 0, 'mb' => 0];
+
+        $sizeInKb = round(filesize($filePath) / 1024, 2);
+        return [
+            'kb' => $sizeInKb,
+            'mb' => round($sizeInKb / 1024, 2),
+        ];
+    }
+
+    // Method untuk mendapatkan metadata berdasarkan tipe
+    public function getMetadataAttribute()
+    {
+        $metadataTemplates = [
+            'Peraturan' => [
+                'Jenis Dokumen' => $this->jenisDok,
+                'Judul' => $this->judul,
+                'Tajuk Entri Utama' => $this->teuBadan,
+                'Nomor' => $this->nomor,
+                'Tahun Terbit' => $this->tahun,
+                'Tempat Terbit' => $this->tempat,
+                'Tanggal Penetapan' => \Carbon\Carbon::parse($this->tglPenetapan)->translatedFormat('d F Y'),
+                'Tanggal Pengundangan' => \Carbon\Carbon::parse($this->tglPengundangan)->translatedFormat('d F Y'),
+                'Subjek' => $this->subjek,
+                'Sumber' => $this->sumber,
+                'Bahasa' => $this->bahasa,
+                'Lokasi' => $this->lokasi,
+                'Bidang Hukum' => $this->bidangHukum,
+                'Penandatangan' => $this->penandatangan,
+            ],
+            'Putusan' => [
+                'Jenis Dokumen' => $this->jenisDok,
+                'Judul' => $this->judul,
+                'Tajuk Entri Utama' => $this->teuBadan,
+                'Nomor Putusan' => $this->nomor,
+                'Tahun Terbit' => $this->tahun,
+                'Singkatan' => $this->singkatan,
+                'Tempat Peradilan' => $this->tempat,
+                'Penerbit' => $this->penerbit,
+                'Tanggal DiBacakan' => \Carbon\Carbon::parse($this->tglDiBacakan)->translatedFormat('d F Y'),
+                'Subjek' => $this->subjek,
+                'Sumber' => $this->sumber,
+                'Bahasa' => $this->bahasa,
+                'Lokasi' => $this->lokasi,
+                'Bidang Hukum' => $this->bidangHukum,
+                'Penandatangan' => $this->penandatangan,
+            ],
+            'Monografi' => [
+                'Jenis Dokumen' => $this->jenisDok,
+                'Judul' => $this->judul,
+                'Tajuk Entri Utama' => $this->teuBadan,
+                'Tahun Terbit' => $this->tahun,
+                'Tempat Terbit' => $this->tempat,
+                'Penerbit' => $this->penerbit,
+                'Nomor Panggil' => $this->nomorPanggil,
+                'Cetakan / Edisi' => $this->cetakanEdisi,
+                'Deskripsi Fisik' => $this->deskripsiFisik,
+                'Subjek' => $this->subjek,
+                'ISBN' => $this->isbn,
+                'Bahasa' => $this->bahasa,
+                'Lokasi' => $this->lokasi,
+                'Bidang Hukum' => $this->bidangHukum,
+                'Nomor Induk Buku' => $this->nomorIndukBuku,
+            ],
+            'Artikel' => [
+                'Jenis Dokumen' => $this->jenisDok,
+                'Judul' => $this->judul,
+                'Tajuk Entri Utama' => $this->teuBadan,
+                'Tahun Terbit' => $this->tahun,
+                'Tempat Terbit' => $this->tempat,
+                'Penerbit' => $this->penerbit,
+                'Subjek' => $this->subjek,
+                'Sumber' => $this->sumber,
+                'Status' => $this->status,
+                'Bahasa' => $this->bahasa,
+                'Lokasi' => $this->lokasi,
+                'Bidang Hukum' => $this->bidangHukum,
+            ],
+        ];
+
+        return $metadataTemplates[$this->tipeDok] ?? [];
+    }
+
+    // Method untuk menentukan teks tombol
+    public function getButtonTextAttribute()
+    {
+        return $this->tipeDok == 'Monografi' ? 'Cover' : 'Baca';
     }
 }

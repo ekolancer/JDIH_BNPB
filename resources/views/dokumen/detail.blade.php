@@ -52,7 +52,7 @@
                             <th class="table-primary">Metadata</th>
                             <th class="table-primary">Keterangan</th>
                         </tr>
-                        @foreach($metadata[$dokumen->tipeDok] as $key => $value)
+                        @foreach($metadata as $key => $value)
                         <tr>
                             <th>{{ $key }}</th>
                             <td>
