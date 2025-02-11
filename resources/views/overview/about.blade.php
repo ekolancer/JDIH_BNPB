@@ -1,4 +1,4 @@
-@extends('layout.app-overview')
+@extends('layout.app-clear')
 
 @section('content')
 
