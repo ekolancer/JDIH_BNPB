@@ -11,6 +11,8 @@ use Spatie\Health\Checks\Checks\EnvironmentCheck;
 use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
+use App\View\Composers\BreadcrumbComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
         ]);
 
-        Carbon::setLocale(config('app.locale')); // Atur sesuai locale yang diinginkan
+        // Atur sesuai locale yang diinginkan
+        Carbon::setLocale(config('app.locale'));
+
+        // View composer untuk breadcrumbs dinamis
+        View::composer('partials.breadcrumbs', BreadcrumbComposer::class);
     }
 }

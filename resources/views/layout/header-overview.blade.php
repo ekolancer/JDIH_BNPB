@@ -157,37 +157,8 @@
             <div class="overlay position-absolute w-100 h-100"></div>
             <div class="container py-5">
                 <h1 class="title-bread display-4 fw-bold">PROFILE JDIH BNPB</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mt-3">
-                        <!-- Breadcrumb Home -->
-                        <li class="breadcrumb-item">
-                            <a href="/" class="text-white text-decoration-none">
-                                <i class="fas fa-home me-2"></i>Beranda
-                            </a>
-                        </li>
-
-                        <!-- Breadcrumb untuk "Peraturan" jika route adalah 'peraturan.index' -->
-                        @if (Route::is('about'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Tentang kami</li>
-
-                        <!-- Breadcrumb untuk "Monografi" jika route adalah 'monografi.index' -->
-                        @elseif (Route::is('visiMisi'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Visi Misi</li>
-
-                        <!-- Breadcrumb untuk "Artikel" jika route adalah 'artikel.index' -->
-                        @elseif (Route::is('artikel.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Artikel</li>
-
-                        <!-- Breadcrumb untuk "Putusan" jika route adalah 'putusan.index' -->
-                        @elseif (Route::is('putusan.index'))
-                        <li class="breadcrumb-item active text-warning" aria-current="page">Putusan</li>
-
-                        <!-- Kondisi default jika tidak ada yang cocok -->
-                        @else
-                        <li class="breadcrumb-item active text-warning" aria-current="page">All</li>
-                        @endif
-                    </ol>
-                </nav>
+                <!-- Breadcrumbs -->
+                @include('partials.breadcrumbs')
             </div>
         </div>
 </body>
