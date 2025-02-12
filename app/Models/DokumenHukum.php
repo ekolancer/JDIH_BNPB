@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 #[ObservedBy([DokumenHukumObserver::class])]
 class DokumenHukum extends Model
@@ -294,5 +296,33 @@ class DokumenHukum extends Model
     public function getButtonTextAttribute()
     {
         return $this->tipeDok == 'Monografi' ? 'Cover' : 'Baca';
+    }
+
+    public function scopeGroupByColumns(Builder $query)
+    {
+        // Daftar kolom yang ingin dikelompokkan
+        $groupableColumns = [
+            'tipeDok',
+            'jenisDok',
+            'singkatan',
+            'tempat',
+            'penerbit',
+            'subjek',
+            'sumber',
+            'status',
+            'bahasa',
+            'bidangHukum',
+        ];
+
+        $data = [];
+
+        foreach ($groupableColumns as $column) {
+            $data[$column] = $query->groupBy($column)
+                ->selectRaw("$column, COUNT(*) as count")
+                ->pluck('count', $column)
+                ->toArray();
+        }
+
+        return $data;
     }
 }
