@@ -69,19 +69,13 @@ class DashboardController extends Controller
         $data = DokumenHukum::query()->groupByColumns(); // Ambil hasil groupBy dari model Dokumen
 
         $filterNames = [
-            'tipeDok' => 'Tipe Dokumen',
-            'jenisDok' => 'Jenis Dokumen',
-            'singkatan' => 'Singkatan',
-            'tempat' => 'Tempat Penetapan',
-            'penerbit' => 'Penerbit',
-            'nomorPanggil' => 'Nomor Panggil',
-            'subjek' => 'Subjek',
-            'sumber' => 'Sumber',
-            'isbn' => 'ISBN',
-            'status' => 'Status',
-            'bahasa' => 'Bahasa',
-            'bidangHukum' => 'Bidang Hukum',
-            'nomorIndukBuku' => 'Nomor Induk Buku',
+            'tipeDok' => 'TIPE DOKUMEN',
+            'jenisDok' => 'JENIS DOKUMEN',
+            'singkatan' => 'SINGKATAN',
+            'penerbit' => 'PENERBIT',
+            'subjek' => 'SUBJEK',
+            'status' => 'STATUS',
+            'bidangHukum' => 'BIDANG HUKUM',
         ];
 
         // Query hanya menggunakan tabel DokumenHukum
@@ -100,7 +94,7 @@ class DashboardController extends Controller
             })
             ->paginate(10); // Pagination bawaan Laravel
 
-        return view('list-doc', compact('data', 'filterNames'), [
+        return view('dokumen.list-doc', compact('data', 'filterNames'), [
             'dokumenAttributes' => $dokumenAttributes,
             'results' => $results, // Jika pakai pagination bawaan
         ]);

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-2" style="padding: 50px;">
-    @livewire('list-doc-search')
+    <livewire:dokumen-list />
 </div>
 
 @endsection

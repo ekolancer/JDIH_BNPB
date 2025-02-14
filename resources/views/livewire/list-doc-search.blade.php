@@ -1,74 +1,71 @@
 <div>
-    <!-- Search Form -->
-    <form wire:submit.prevent="search">
-        <div class="input-group mb-3 w-75 mx-auto">
-            <input type="text"
-                class="form-control"
-                placeholder="Masukkan kata kunci pencarian"
-                aria-label="Search"
-                wire:model.defer="q">
-            <button type="submit" class="btn btn-outline-warning">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-    </form>
-
-    <!-- Advanced Filters -->
-    <button class="btn btn-outline-secondary mb-3" type="button" wire:click="$toggle('showFilters')">
-        <i class="fas fa-filter"></i> Advanced Search
-    </button>
-
-    @if($showFilters)
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <select class="form-select" wire:model="tipe_dokumen">
-                <option value="">Jenis Dokumen</option>
-                @foreach($dokumenAttributes['tipeDok'] as $tipe)
-                <option value="{{ $tipe }}">{{ $tipe }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select" wire:model="bentuk_dokumen">
-                <option value="">Bentuk Dokumen</option>
-                @foreach($dokumenAttributes['jenisDok'] as $bentuk)
-                <option value="{{ $bentuk }}">{{ $bentuk }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <input type="number" class="form-control" placeholder="Tahun" wire:model="tahun">
-        </div>
-    </div>
-    @endif
-
-    <!-- List Dokumen -->
     <div class="row">
-        @forelse ($results as $result)
-        <div class="col-12 mb-3">
-            <div class="card shadow-lg border-0 zoom-card">
-                <div class="card-body">
-                    <h5 class="card-title text-primary fw-bold">
-                        {{ $result->jenisDok }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
-                    </h5>
-                    <p class="card-text text-muted">{{ $result->judul ?? 'Tidak ada deskripsi.' }}</p>
+        <!-- Sidebar Filter -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm bg-light">
+                <div class="card-header d-flex justify-content-between">
+                    <h5 class="fw-bold mb-0">Filter</h5>
+                    <button wire:click="resetFilters" class="btn btn-light btn-sm text-danger fw-bold">
+                        <i class="bi bi-trash3"></i> Reset
+                    </button>
                 </div>
-                <div class="card-footer bg-light border-top">
-                    <small class="text-muted"><i class="far fa-calendar-alt"></i> {{ $result->created_at->format('d F Y') }}</small>
-                    <small class="text-muted"><i class="far fa-eye"></i> {{ $result->view_count }} Dilihat</small>
-                    <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}" class="btn btn-primary btn-sm">Lihat</a>
+                <div class="card-body">
+                    @foreach($availableFilters as $column => $values)
+                    <div class="filter-section mb-3">
+                        <h6 class="fw-bold">{{ ucfirst(str_replace('_', ' ', $column)) }}</h6>
+                        <div id="filter_{{ $column }}">
+                            @foreach($values as $key => $value)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" wire:model="filters.{{ $column }}" value="{{ $value }}" id="{{ $column }}_{{ $value }}">
+                                <label class="form-check-label d-flex justify-content-between w-100" for="{{ $column }}_{{ $value }}">
+                                    <span>{{ $value }}</span>
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <hr>
+                    @endforeach
                 </div>
             </div>
         </div>
-        @empty
-        <div class="col-12">
-            <div class="alert alert-warning text-center">Tidak ada data ditemukan.</div>
-        </div>
-        @endforelse
-    </div>
 
-    <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4">
-        {{ $results->links() }}
+        <!-- List Dokumen -->
+        <div class="col-md-8">
+            <div class="row">
+                @forelse ($results as $result)
+                <div class="col-12 mb-3">
+                    <div class="card shadow-lg border-0 zoom-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary fw-bold mb-0">
+                                {{ $result->jenisDok }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
+                            </h5>
+                            <p class="card-text mb-3 text-muted">
+                                {{ $result->judul ?? 'Tidak ada deskripsi.' }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-light border-top">
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted"><i class="far fa-eye me-1"></i> {{ $result->view_count }}x Tayang</small>
+                                <small class="text-muted"><i class="far fa-download me-1"></i> {{ $result->download_count }}x Unduhan</small>
+                                <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye"></i> Detail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12">
+                    <div class="alert alert-warning text-center">
+                        Tidak ada data peraturan ditemukan.
+                    </div>
+                </div>
+                @endforelse
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                {{ $results->links() }}
+            </div>
+        </div>
     </div>
 </div>

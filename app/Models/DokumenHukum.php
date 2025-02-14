@@ -302,15 +302,11 @@ class DokumenHukum extends Model
     {
         // Daftar kolom yang ingin dikelompokkan
         $groupableColumns = [
-            'tipeDok',
             'jenisDok',
             'singkatan',
-            'tempat',
             'penerbit',
             'subjek',
-            'sumber',
             'status',
-            'bahasa',
             'bidangHukum',
         ];
 

@@ -1,77 +1,55 @@
 <?php
+// 1. Buat Livewire Component dengan command:
+// php artisan make:livewire ListDocSearch
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\DokumenHukum;
 use Livewire\WithPagination;
+use App\Models\DokumenHukum;
 
 class ListDocSearch extends Component
 {
     use WithPagination;
+    
+    public $filters = [];
+    public $availableFilters;
 
-    public $showFilters = false; // Toggle filter
-    public $q = '';
-    public $tipe_dokumen = '';
-    public $bentuk_dokumen = '';
-    public $tahun = '';
+    public function mount()
+    {
+        // Ambil data unik untuk masing-masing filter dari database
+        $this->availableFilters = [
+            'jenisDok' => DokumenHukum::select('jenisDok')->distinct()->pluck('jenisDok')->toArray(),
+            'singkatan' => DokumenHukum::select('singkatan')->distinct()->pluck('singkatan')->toArray(),
+            'penerbit' => DokumenHukum::select('penerbit')->distinct()->pluck('penerbit')->toArray(),
+            'subjek' => DokumenHukum::select('subjek')->distinct()->pluck('subjek')->toArray(),
+            'status' => DokumenHukum::select('status')->distinct()->pluck('status')->toArray(),
+            'bidangHukum' => DokumenHukum::select('bidangHukum')->distinct()->pluck('bidangHukum')->toArray(),
+        ];
+    }
 
-    protected $queryString = ['q', 'tipe_dokumen', 'bentuk_dokumen', 'tahun'];
-
-    public function updatingQ()
+    public function updatedFilters()
     {
         $this->resetPage();
     }
 
-    public function updatingTipeDokumen()
+    public function resetFilters()
     {
-        $this->resetPage();
-    }
-
-    public function updatingBentukDokumen()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingTahun()
-    {
-        $this->resetPage();
-    }
-
-    public function search()
-    {
-        $this->resetPage();
+        $this->filters = [];
     }
 
     public function render()
     {
         $query = DokumenHukum::query();
 
-        if (!empty($this->q)) {
-            $query->where(function ($q) {
-                $q->where('judul', 'like', '%' . $this->q . '%')
-                  ->orWhere('nomor', 'like', '%' . $this->q . '%')
-                  ->orWhere('tahun', 'like', '%' . $this->q . '%');
-            });
-        }
-
-        if (!empty($this->tipe_dokumen)) {
-            $query->where('tipeDok', $this->tipe_dokumen);
-        }
-
-        if (!empty($this->bentuk_dokumen)) {
-            $query->where('jenisDok', $this->bentuk_dokumen);
-        }
-
-        if (!empty($this->tahun)) {
-            $query->where('tahun', $this->tahun);
+        // Terapkan filter jika ada
+        foreach ($this->filters as $key => $value) {
+            if (!empty($value)) {
+                $query->whereIn($key, $value);
+            }
         }
 
         $results = $query->paginate(10);
-
-        // Mengambil nilai unik untuk tipeDok dan jenisDok
-        $dokumenAttributes = DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']);
-
-        return view('livewire.list-doc-search', compact('results', 'dokumenAttributes'));
+        return view('livewire.list-doc-search', compact('results'));
     }
 }
