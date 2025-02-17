@@ -1,15 +1,18 @@
 <?php
 
-use App\Http\Controllers\BeritaController;
+use App\Models\DokumenHukum;
+use App\Livewire\DokumenList;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
-use App\Http\Controllers\SurveyController;
-use App\Models\DokumenHukum;
-use App\Http\Controllers\DokumenController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/search/list', [DashboardController::class, 'search'])->name('dashboard.search');
+Route::get('/list-doc', function () {
+    return view('dokumen.list-doc');
+})->name('list-doc');
 Route::get('/about', [DashboardController::class, 'about'])->name('about');
 Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMisi');
 Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');

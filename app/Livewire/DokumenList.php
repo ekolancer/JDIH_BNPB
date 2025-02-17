@@ -5,7 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\DokumenHukum;
+use Livewire\Attributes\Layout;
 
+#[Layout('app-clear')]
 class DokumenList extends Component
 {
     use WithPagination;
@@ -31,12 +33,15 @@ class DokumenList extends Component
     public function mount()
     {
         $this->loadAvailableFilters();
+        // Mengisi filters dengan parameter dari query string
+        $queryParams = request()->only(array_keys($this->filters));
+        $this->filters = array_merge($this->filters, $queryParams);
+        // dd($this->filters); // Debugging parameter pencarian
     }
 
     public function updatedFilters()
     {
         $this->resetPage();
-        $this->dispatch('filtersUpdated');
     }
 
     public function updated($propertyName)
@@ -111,24 +116,19 @@ class DokumenList extends Component
     {
         foreach ($this->filters as $key => $value) {
             if (is_array($value)) {
-                // Format activeFilter: "JenisDok: Peraturan" → kita harus pecah nama filter dan nilai
                 foreach ($value as $index => $item) {
                     if (ucfirst($key) . ': ' . $item == $filter) {
-                        unset($this->filters[$key][$index]); // Hapus item yang sesuai
+                        unset($this->filters[$key][$index]);
                     }
                 }
-                // Reset ulang indeks array agar tidak ada key yang kosong
                 $this->filters[$key] = array_values($this->filters[$key]);
             } elseif (ucfirst($key) . ': ' . $value == $filter) {
-                // Hapus filter yang berbentuk string / angka
                 $this->filters[$key] = ($key === 'tahun') ? null : '';
             }
         }
 
-        // Memastikan tampilan diperbarui
         $this->updatedFilters();
     }
-
 
     public function render()
     {
@@ -136,6 +136,7 @@ class DokumenList extends Component
 
         $query = DokumenHukum::query();
 
+        // Gunakan filters untuk memfilter query
         if (!empty($this->filters['judul'])) {
             $query->where('judul', 'like', '%' . $this->filters['judul'] . '%');
         }
@@ -158,7 +159,7 @@ class DokumenList extends Component
             'results' => $results,
             'numResults' => $this->numResults,
             'queryTime' => round($this->queryTime, 2),
-            'activeFilters' => $this->getActiveFilters(), // ✅ Mengirim `activeFilters` ke Blade
-        ]);
+            'activeFilters' => $this->getActiveFilters(),
+            'availableFilters' => $this->availableFilters]);
     }
 }

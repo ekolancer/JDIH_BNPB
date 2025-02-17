@@ -106,16 +106,16 @@
                         <p style="font-weight: bold;">
                         <h1 style="font: size 60px; color:white;">Cari Dokumen hukum disini.</h1>
                         </p>
-                        <!-- Search Form -->
-                        <form method="GET" action="{{ route('dashboard.search') }}">
+                        <!-- resources/views/index.blade.php -->
+                        <form method="GET" action="{{ route('list-doc') }}">
                             <div class="input-group mb-3 w-75 mx-auto">
                                 <input type="text"
                                     class="form-control"
                                     placeholder="Masukan kata kunci pencarian"
                                     aria-label="Search"
                                     aria-describedby="button-addon2"
-                                    name="q"
-                                    value="{{ request('q') }}">
+                                    name="judul"
+                                    value="{{ request('judul') }}">
                                 <button class="btn btn-outline-warning" type="submit" id="button-addon2">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -131,10 +131,10 @@
                                 <div class="row">
                                     <!-- Tipe Dokumen -->
                                     <div class="col-md-4 mb-3">
-                                        <select class="form-select" id="documentType" name="tipe_dokumen">
+                                        <select class="form-select" id="documentType" name="tipeDok">
                                             <option value="">Jenis Dokumen</option>
                                             @foreach($data['dokumenAttributes']['tipeDok'] as $tipe)
-                                            <option value="{{ $tipe }}" {{ request('tipe_dokumen') == $tipe ? 'selected' : '' }}>
+                                            <option value="{{ $tipe }}" {{ request('tipeDok') == $tipe ? 'selected' : '' }}>
                                                 {{ $tipe }}
                                             </option>
                                             @endforeach
@@ -143,10 +143,10 @@
 
                                     <!-- Bentuk Dokumen -->
                                     <div class="col-md-4 mb-3">
-                                        <select class="form-select" id="documentForm" name="bentuk_dokumen">
+                                        <select class="form-select" id="documentForm" name="jenisDok">
                                             <option value="">Bentuk Dokumen</option>
                                             @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
-                                            <option value="{{ $bentuk }}" {{ request('bentuk_dokumen') == $bentuk ? 'selected' : '' }}>
+                                            <option value="{{ $bentuk }}" {{ request('jenisDok') == $bentuk ? 'selected' : '' }}>
                                                 {{ $bentuk }}
                                             </option>
                                             @endforeach
