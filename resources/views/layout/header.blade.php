@@ -155,7 +155,7 @@
 
                                     <!-- Tahun -->
                                     <div class="col-md-4 mb-3">
-                                        <input type="text"
+                                        <input type="number"
                                             class="form-control"
                                             id="documentYear"
                                             name="tahun"

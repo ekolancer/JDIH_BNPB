@@ -13,7 +13,7 @@
                     <!-- Filter by Judul -->
                     <div class="filter-section mb-3 shadow-md">
                         <div class="d-flex">
-                            <input type="text" wire:model.defer="filters.judul" class="form-control me-2" placeholder="Masukan Judul...">
+                            <input type="text" wire:model.defer="filters.judul" class="form-control me-2" placeholder="Cari judul...">
                             <button wire:click="applyFilters" class="btn btn-primary btn-sm"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </div>
@@ -33,6 +33,14 @@
                     </div>
                     <div class="d-flex justify-content-end mt-2">
                         <button wire:click="applyFilters" class="btn btn-primary btn-sm">Terapkan</button>
+                    </div>
+                    <hr>
+                    <!-- Filter by Nomor -->
+                    <div class="filter-section mb-3 shadow-md">
+                        <div class="d-flex">
+                            <input type="number" wire:model.defer="filters.nomor" min="1" max="300" class="form-control me-2" placeholder="Cari berdasarkan nomor...">
+                            <button wire:click="applyFilters" class="btn btn-primary btn-sm"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
                     </div>
                     <hr>
                     <!-- Filter by Tahun Terbit -->

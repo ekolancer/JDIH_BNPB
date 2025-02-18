@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\DokumenHukum;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Cache;
 
 #[Layout('app-clear')]
 class DokumenList extends Component
@@ -22,6 +23,7 @@ class DokumenList extends Component
         'subjek' => [],
         'status' => [],
         'bidangHukum' => [],
+        'nomor' => '',
     ];
 
     public $availableFilters = [];
@@ -30,25 +32,25 @@ class DokumenList extends Component
     public $numResults = 0;
     public $queryTime = 0;
 
-    public function mount()
-    {
-        $this->loadAvailableFilters();
-        // Mengisi filters dengan parameter dari query string
-        $queryParams = request()->only(array_keys($this->filters));
-        $this->filters = array_merge($this->filters, $queryParams);
-        // dd($this->filters); // Debugging parameter pencarian
-    }
+    protected $updatesQueryString = ['filters' => ['except' => []]];
 
-    public function updatedFilters()
+    public function mount($filters = [])
     {
-        $this->resetPage();
+        $this->filters = array_merge($this->filters, $filters);
+        $this->filters = array_merge($this->filters, request()->query());
+        $this->loadAvailableFilters();
     }
 
     public function updated($propertyName)
     {
         if (str_starts_with($propertyName, 'filters')) {
-            $this->updatedFilters();
+            $this->resetPage();
         }
+    }
+
+    public function updatedFilters()
+    {
+        $this->resetPage();
     }
 
     public function sortBy($field)
@@ -72,25 +74,28 @@ class DokumenList extends Component
             'subjek' => [],
             'status' => [],
             'bidangHukum' => [],
+            'nomor' => '',
         ];
         $this->resetPage();
     }
 
     private function loadAvailableFilters()
     {
-        $this->availableFilters = [
-            'jenisDok' => DokumenHukum::distinct()->pluck('jenisDok')->toArray(),
-            'singkatan' => DokumenHukum::distinct()->pluck('singkatan')->toArray(),
-            'penerbit' => DokumenHukum::distinct()->pluck('penerbit')->toArray(),
-            'subjek' => DokumenHukum::distinct()->pluck('subjek')->toArray(),
-            'status' => DokumenHukum::distinct()->pluck('status')->toArray(),
-            'bidangHukum' => DokumenHukum::distinct()->pluck('bidangHukum')->toArray(),
-        ];
+        $this->availableFilters = Cache::remember('available_filters', 60, function () {
+            return [
+                'jenisDok' => DokumenHukum::distinct()->pluck('jenisDok')->toArray(),
+                'singkatan' => DokumenHukum::distinct()->pluck('singkatan')->toArray(),
+                'penerbit' => DokumenHukum::distinct()->pluck('penerbit')->toArray(),
+                'subjek' => DokumenHukum::distinct()->pluck('subjek')->toArray(),
+                'status' => DokumenHukum::distinct()->pluck('status')->toArray(),
+                'bidangHukum' => DokumenHukum::distinct()->pluck('bidangHukum')->toArray(),
+            ];
+        });
     }
 
     public function applyFilters()
     {
-        $this->render();
+        $this->resetPage();
     }
 
     public function getActiveFilters()
@@ -123,7 +128,7 @@ class DokumenList extends Component
                 }
                 $this->filters[$key] = array_values($this->filters[$key]);
             } elseif (ucfirst($key) . ': ' . $value == $filter) {
-                $this->filters[$key] = ($key === 'tahun') ? null : '';
+                $this->filters[$key] = ($key === 'tahun' || $key === 'nomor') ? null : '';
             }
         }
 
@@ -135,23 +140,10 @@ class DokumenList extends Component
         $startTime = microtime(true);
 
         $query = DokumenHukum::query();
+        $this->applyFiltersToQuery($query);
 
-        // Gunakan filters untuk memfilter query
-        if (!empty($this->filters['judul'])) {
-            $query->where('judul', 'like', '%' . $this->filters['judul'] . '%');
-        }
-        if (!empty($this->filters['tahun'])) {
-            $query->where('tahun', $this->filters['tahun']);
-        }
-        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $filter) {
-            if (!empty($this->filters[$filter])) {
-                $query->whereIn($filter, (array) $this->filters[$filter]);
-            }
-        }
+        $results = $query->orderBy($this->sortField, $this->sortDirection)->paginate(10);
 
-        $query->orderBy($this->sortField, $this->sortDirection);
-
-        $results = $query->paginate(10);
         $this->numResults = $results->total();
         $this->queryTime = microtime(true) - $startTime;
 
@@ -160,6 +152,25 @@ class DokumenList extends Component
             'numResults' => $this->numResults,
             'queryTime' => round($this->queryTime, 2),
             'activeFilters' => $this->getActiveFilters(),
-            'availableFilters' => $this->availableFilters]);
+            'availableFilters' => $this->availableFilters
+        ]);
+    }
+
+    private function applyFiltersToQuery($query)
+    {
+        if (!empty($this->filters['judul'])) {
+            $query->where('judul', 'like', '%' . $this->filters['judul'] . '%');
+        }
+        if (!empty($this->filters['tahun'])) {
+            $query->where('tahun', $this->filters['tahun']);
+        }
+        if (!empty($this->filters['nomor'])) {
+            $query->where('nomor', 'like', '%' . $this->filters['nomor'] . '%');
+        }
+        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $filter) {
+            if (!empty($this->filters[$filter])) {
+                $query->whereIn($filter, (array) $this->filters[$filter]);
+            }
+        }
     }
 }
