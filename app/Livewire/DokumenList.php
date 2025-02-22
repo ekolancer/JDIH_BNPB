@@ -39,9 +39,10 @@ class DokumenList extends Component
         $this->filters = array_merge($this->filters, $filters);
         $this->filters = array_merge($this->filters, request()->query());
 
-        // Konversi jenisDok menjadi array jika dikirim sebagai string dari URL
-        if (!is_array($this->filters['jenisDok'])) {
-            $this->filters['jenisDok'] = array_filter(explode(',', $this->filters['jenisDok']));
+        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
+            if (!is_array($this->filters[$key])) {
+                $this->filters[$key] = array_filter(explode(',', $this->filters[$key]));
+            }
         }
 
         $this->loadAvailableFilters();
@@ -173,8 +174,10 @@ class DokumenList extends Component
         if (!empty($this->filters['nomor'])) {
             $query->where('nomor', 'like', '%' . $this->filters['nomor'] . '%');
         }
-        if (!empty($this->filters['jenisDok']) && is_array($this->filters['jenisDok'])) {
-            $query->whereIn('jenisDok', $this->filters['jenisDok']);
+        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
+            if (!empty($this->filters[$key]) && is_array($this->filters[$key])) {
+                $query->whereIn($key, $this->filters[$key]);
+            }
         }
     }
 }
