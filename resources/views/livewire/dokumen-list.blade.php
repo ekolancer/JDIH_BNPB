@@ -6,7 +6,7 @@
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="fw-bold mb-0">Filter</h5>
                     <button wire:click="resetFilters" class="btn btn-light btn-sm text-danger fw-bold">
-                        <i class="bi bi-trash3"></i> Reset
+                        <i class="fa-solid fa-trash-can me-2"></i> Reset
                     </button>
                 </div>
                 <div class="card-body">
@@ -108,7 +108,7 @@
                 <!-- Bagian kanan: Dropdown Sorting -->
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm d-flex align-items-center" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-list-ul me-1"></i> Urutkan
+                        <i class="fa-solid fa-sort me-2"></i> Urutkan
                     </button>
                     <ul class="dropdown-menu">
                         <li>
@@ -181,7 +181,7 @@
                                     <!-- Tombol aksi -->
                                     <div class="d-flex">
                                         <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}" class="btn btn-primary btn-sm me-2">
-                                            <i class="fas fa-eye me-1"></i>Detail
+                                            <i class="fas fa-eye me-2"></i>Detail
                                         </a>
                                     </div>
                                 </div>

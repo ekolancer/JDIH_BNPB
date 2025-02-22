@@ -48,58 +48,6 @@ class DashboardController extends Controller
         return view('index', compact('data'));
     }
 
-    // Search dengan Validasi dan Pagination
-    public function search(Request $request)
-    {
-        // Mengambil nilai unik untuk tipeDok dan jenisDok
-        $dokumenAttributes = DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']);
-
-        $validated = $request->validate([
-            'q' => 'nullable|string|max:100',
-            'tipe_dokumen' => 'nullable|string|max:100',
-            'bentuk_dokumen' => 'nullable|string|max:100',
-            'tahun' => 'nullable|integer',
-        ]);
-
-        $query = isset($validated['q']) ? $validated['q'] : null;
-        $tipeDokumen = isset($validated['tipe_dokumen']) ? $validated['tipe_dokumen'] : null;
-        $bentukDokumen = isset($validated['bentuk_dokumen']) ? $validated['bentuk_dokumen'] : null;
-        $tahun = isset($validated['tahun']) ? $validated['tahun'] : null;
-
-        $data = DokumenHukum::query()->groupByColumns(); // Ambil hasil groupBy dari model Dokumen
-
-        $filterNames = [
-            'tipeDok' => 'TIPE DOKUMEN',
-            'jenisDok' => 'JENIS DOKUMEN',
-            'singkatan' => 'SINGKATAN',
-            'penerbit' => 'PENERBIT',
-            'subjek' => 'SUBJEK',
-            'status' => 'STATUS',
-            'bidangHukum' => 'BIDANG HUKUM',
-        ];
-
-        // Query hanya menggunakan tabel DokumenHukum
-        $results = DokumenHukum::query()
-            ->when($query, function($q) use ($query) {
-                return $q->where('judul', 'LIKE', "%{$query}%");
-            })
-            ->when($tipeDokumen, function($q) use ($tipeDokumen) {
-                return $q->where('tipeDok', $tipeDokumen);
-            })
-            ->when($bentukDokumen, function($q) use ($bentukDokumen) {
-                return $q->where('jenisDok', $bentukDokumen);
-            })
-            ->when($tahun, function($q) use ($tahun) {
-                return $q->where('tahun', $tahun);
-            })
-            ->paginate(10); // Pagination bawaan Laravel
-
-        return view('dokumen.list-doc', compact('data', 'filterNames'), [
-            'dokumenAttributes' => $dokumenAttributes,
-            'results' => $results, // Jika pakai pagination bawaan
-        ]);
-    }
-
     // Function Webview Perihal
     public function about()
     {

@@ -129,18 +129,6 @@
                             <!-- Advanced Filters (Hidden by Default) -->
                             <div class="advanced-filters mt-3" style="display: none;">
                                 <div class="row">
-                                    <!-- Tipe Dokumen -->
-                                    <div class="col-md-4 mb-3">
-                                        <select class="form-select" id="documentType" name="tipeDok">
-                                            <option value="">Jenis Dokumen</option>
-                                            @foreach($data['dokumenAttributes']['tipeDok'] as $tipe)
-                                            <option value="{{ $tipe }}" {{ request('tipeDok') == $tipe ? 'selected' : '' }}>
-                                                {{ $tipe }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
                                     <!-- Bentuk Dokumen -->
                                     <div class="col-md-4 mb-3">
                                         <select class="form-select" id="documentForm" name="jenisDok">
@@ -151,6 +139,16 @@
                                             </option>
                                             @endforeach
                                         </select>
+                                    </div>
+
+                                    <!-- Nomor -->
+                                    <div class="col-md-4 mb-3">
+                                        <input type="number"
+                                            class="form-control"
+                                            id="documentNumber"
+                                            name="nomor"
+                                            placeholder="Nomor"
+                                            value="{{ request('nomor') }}">
                                     </div>
 
                                     <!-- Tahun -->
