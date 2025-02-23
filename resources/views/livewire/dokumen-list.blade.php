@@ -211,5 +211,9 @@
         slider.oninput = function() {
             output.textContent = this.value;
         };
+
+        window.addEventListener('scroll-to-top', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     });
 </script>

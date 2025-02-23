@@ -123,6 +123,7 @@ class DokumenList extends Component
     public function applyFilters()
     {
         $this->resetPage();
+        $this->dispatch('scroll-to-top');
     }
 
     // Mendapatkan filter aktif dalam format yang dapat dibaca
@@ -132,12 +133,13 @@ class DokumenList extends Component
 
         foreach ($this->filters as $key => $value) {
             if (!empty($value)) {
+                $displayKey = $this->getDisplayKey($key);
                 if (is_array($value)) {
                     foreach ($value as $item) {
-                        $filters[] = ucfirst($key) . ': ' . $item;
+                        $filters[] = ucfirst($displayKey) . ': ' . $item;
                     }
                 } else {
-                    $filters[] = ucfirst($key) . ': ' . $value;
+                    $filters[] = ucfirst($displayKey) . ': ' . $value;
                 }
             }
         }
@@ -151,12 +153,12 @@ class DokumenList extends Component
         foreach ($this->filters as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $index => $item) {
-                    if (ucfirst($key) . ': ' . $item == $filter) {
+                    if (ucfirst($this->getDisplayKey($key)) . ': ' . $item == $filter) {
                         unset($this->filters[$key][$index]);
                     }
                 }
                 $this->filters[$key] = array_values($this->filters[$key]);
-            } elseif (ucfirst($key) . ': ' . $value == $filter) {
+            } elseif (ucfirst($this->getDisplayKey($key)) . ': ' . $value == $filter) {
                 $this->filters[$key] = ($key === 'tahun' || $key === 'nomor') ? null : '';
             }
         }
@@ -201,5 +203,24 @@ class DokumenList extends Component
                 $query->whereIn($key, $this->filters[$key]);
             }
         }
+    }
+
+    // Mendapatkan nama tampilan untuk filter
+    private function getDisplayKey($key)
+    {
+        $displayKeys = [
+            'tipeDok' => 'Tipe',
+            'jenisDok' => 'Jenis',
+            'singkatan' => 'Singkatan',
+            'penerbit' => 'Penerbit',
+            'subjek' => 'Subjek',
+            'status' => 'Status',
+            'bidangHukum' => 'Bidang',
+            'judul' => 'Judul',
+            'tahun' => 'Tahun',
+            'nomor' => 'Nomor',
+        ];
+
+        return isset($displayKeys[$key]) ? $displayKeys[$key] : $key;
     }
 }
