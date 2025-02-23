@@ -120,15 +120,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <a href="/" class="nav-item nav-link active">Beranda</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dokumen Hukum</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'peraturan']) }}" class="dropdown-item">Peraturan</a>
-                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'monografi']) }}" class="dropdown-item">Monografi</a>
-                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'artikel']) }}" class="dropdown-item">Artikel</a>
-                            <a href="{{ route('dokumen.filter', ['tipeDok' => 'putusan']) }}" class="dropdown-item">Putusan</a>
-                        </div>
-                    </div>
+                    <!-- Dropdown Dokumen Hukum dengan Livewire -->
+                    <livewire:dropdown-dokumen />
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu m-0">

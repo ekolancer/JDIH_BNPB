@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/list-doc', function () {
+Route::get('/search-doc', function () {
     return view('dokumen.list-doc');
 })->name('list-doc');
 Route::get('/about', [DashboardController::class, 'about'])->name('about');

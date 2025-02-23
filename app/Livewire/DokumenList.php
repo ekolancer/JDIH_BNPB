@@ -27,16 +27,23 @@ class DokumenList extends Component
     ];
 
     public $availableFilters = [];
+
     public $sortField = 'created_at';
+
     public $sortDirection = 'desc';
+
     public $numResults = 0;
+
     public $queryTime = 0;
+
+    public $selectedTipeDok;
 
     protected $updatesQueryString = ['filters' => ['except' => []]];
 
     public function mount($filters = [])
     {
         $this->filters = array_merge($this->filters, $filters);
+
         $this->filters = array_merge($this->filters, request()->query());
 
         foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
@@ -48,6 +55,14 @@ class DokumenList extends Component
         $this->loadAvailableFilters();
     }
 
+    // Perbarui tipeDok secara dinamis saat dipilih di navbar
+    public function updateTipeDok($tipeDok)
+    {
+        $this->filters['tipeDok'] = $tipeDok;
+        $this->resetPage();
+    }
+
+    // Reset pagination saat filter diperbarui
     public function updated($propertyName)
     {
         if (str_starts_with($propertyName, 'filters')) {
@@ -55,11 +70,13 @@ class DokumenList extends Component
         }
     }
 
-    public function updatedFilters()
-    {
-        $this->resetPage();
-    }
+    // Fungsi ini tidak diperlukan karena logikanya sudah ada di fungsi updated
+    // public function updatedFilters()
+    // {
+    //     $this->resetPage();
+    // }
 
+    // Mengatur field sorting dan arah sorting
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -70,6 +87,7 @@ class DokumenList extends Component
         }
     }
 
+    // Reset semua filter ke nilai default
     public function resetFilters()
     {
         $this->filters = [
@@ -86,6 +104,7 @@ class DokumenList extends Component
         $this->resetPage();
     }
 
+    // Memuat filter yang tersedia dari cache
     private function loadAvailableFilters()
     {
         $this->availableFilters = Cache::remember('available_filters', 60, function () {
@@ -100,11 +119,13 @@ class DokumenList extends Component
         });
     }
 
+    // Terapkan filter dan reset pagination
     public function applyFilters()
     {
         $this->resetPage();
     }
 
+    // Mendapatkan filter aktif dalam format yang dapat dibaca
     public function getActiveFilters()
     {
         $filters = [];
@@ -124,6 +145,7 @@ class DokumenList extends Component
         return $filters;
     }
 
+    // Menghapus filter tertentu
     public function removeFilter($filter)
     {
         foreach ($this->filters as $key => $value) {
@@ -139,9 +161,10 @@ class DokumenList extends Component
             }
         }
 
-        $this->updatedFilters();
+        $this->updated('filters');
     }
 
+    // Render tampilan dengan hasil query dan informasi lainnya
     public function render()
     {
         $startTime = microtime(true);
@@ -159,21 +182,20 @@ class DokumenList extends Component
             'numResults' => $this->numResults,
             'queryTime' => round($this->queryTime, 2),
             'activeFilters' => $this->getActiveFilters(),
-            'availableFilters' => $this->availableFilters
+            'availableFilters' => $this->availableFilters,
         ]);
     }
 
+    // Terapkan filter ke query
     private function applyFiltersToQuery($query)
     {
-        if (!empty($this->filters['judul'])) {
-            $query->where('judul', 'like', '%' . $this->filters['judul'] . '%');
+        $filterableFields = ['tipeDok', 'judul', 'tahun', 'nomor'];
+        foreach ($filterableFields as $field) {
+            if (!empty($this->filters[$field])) {
+                $query->where($field, 'like', '%' . $this->filters[$field] . '%');
+            }
         }
-        if (!empty($this->filters['tahun'])) {
-            $query->where('tahun', $this->filters['tahun']);
-        }
-        if (!empty($this->filters['nomor'])) {
-            $query->where('nomor', 'like', '%' . $this->filters['nomor'] . '%');
-        }
+
         foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
             if (!empty($this->filters[$key]) && is_array($this->filters[$key])) {
                 $query->whereIn($key, $this->filters[$key]);
