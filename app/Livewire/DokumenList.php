@@ -3,8 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\WithPagination;
+use Illuminate\Support\Arr;
 use App\Models\DokumenHukum;
+use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Cache;
 
@@ -48,6 +49,16 @@ class DokumenList extends Component
             if (!is_array($this->filters[$key])) {
                 $this->filters[$key] = array_filter(explode(',', $this->filters[$key]));
             }
+
+            // Validasi isi array hanya boleh berupa string alfanumerik
+            $this->filters[$key] = array_filter($this->filters[$key], function ($item) {
+                return ctype_alnum(str_replace([' ', '-'], '', $item));
+            });
+        }
+
+        // Validasi tahun agar hanya angka
+        if (!is_numeric($this->filters['tahun'])) {
+            $this->filters['tahun'] = null;
         }
 
         $this->loadAvailableFilters();
@@ -78,7 +89,7 @@ class DokumenList extends Component
     // Memuat filter yang tersedia dari cache
     private function loadAvailableFilters()
     {
-        $this->availableFilters = Cache::remember('available_filters', 60, function () {
+        $this->availableFilters = Cache::remember('available_filters', now()->addMinutes(30), function () {
             return [
                 'jenisDok' => DokumenHukum::distinct()->pluck('jenisDok')->toArray(),
                 'singkatan' => DokumenHukum::distinct()->pluck('singkatan')->toArray(),
@@ -97,7 +108,9 @@ class DokumenList extends Component
         $this->dispatch('scroll-to-top');
 
         // Bersihkan filter agar tidak ada nilai kosong
-        $filteredFilters = array_filter($this->filters, fn($value) => is_array($value) ? count($value) > 0 : !empty($value));
+        $filteredFilters = array_filter($this->filters, function ($value) {
+            return is_array($value) ? count($value) > 0 : !empty($value);
+        });
 
         // Konversi array menjadi string sebelum dikirim ke query string
         foreach ($filteredFilters as $key => $value) {
@@ -107,10 +120,7 @@ class DokumenList extends Component
         }
 
         // Buat query string
-        $queryString = http_build_query($filteredFilters);
-
-        // DEBUG: Cek hasil query string
-        // dd($queryString);
+        $queryString = Arr::query($filteredFilters);
 
         // Dispatch event ke frontend
         $this->dispatch('update-url', filters: $queryString);
@@ -205,14 +215,16 @@ class DokumenList extends Component
     {
         $filterableFields = ['tipeDok', 'judul', 'tahun', 'nomor'];
         foreach ($filterableFields as $field) {
-            if (!empty($this->filters[$field])) {
-                $query->where($field, 'like', '%' . $this->filters[$field] . '%');
+            $value = trim($this->filters[$field] ?? '');
+            if (!empty($value) && ctype_alnum(str_replace([' ', '-'], '', $value))) {
+                $query->where($field, 'like', '%' . addslashes($value) . '%');
             }
         }
 
         foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
-            if (!empty($this->filters[$key]) && is_array($this->filters[$key])) {
-                $query->whereIn($key, $this->filters[$key]);
+            $values = array_filter(array_map('trim', $this->filters[$key] ?? []));
+            if (!empty($values)) {
+                $query->whereIn($key, array_map('addslashes', $values));
             }
         }
     }
