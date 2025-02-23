@@ -211,9 +211,24 @@
         slider.oninput = function() {
             output.textContent = this.value;
         };
+    });
+</script>
 
-        window.addEventListener('scroll-to-top', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+<script>
+    window.addEventListener('scroll-to-top', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
+    });
+</script>
+
+<script>
+    window.addEventListener('update-url', event => {
+        console.log("Update URL Event Triggered:", event.detail);
+        console.log("Filters Data:", event.detail.filters);
+
+        const newUrl = event.detail.filters ? '?' + event.detail.filters : window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
     });
 </script>

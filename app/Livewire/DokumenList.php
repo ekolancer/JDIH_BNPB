@@ -70,12 +70,6 @@ class DokumenList extends Component
         }
     }
 
-    // Fungsi ini tidak diperlukan karena logikanya sudah ada di fungsi updated
-    // public function updatedFilters()
-    // {
-    //     $this->resetPage();
-    // }
-
     // Mengatur field sorting dan arah sorting
     public function sortBy($field)
     {
@@ -124,6 +118,27 @@ class DokumenList extends Component
     {
         $this->resetPage();
         $this->dispatch('scroll-to-top');
+
+        // Bersihkan filter agar tidak ada nilai kosong
+        $filteredFilters = array_filter($this->filters, function ($value) {
+            return is_array($value) ? count($value) > 0 : !empty($value);
+        });
+
+        // Konversi array menjadi string sebelum dikirim ke query string
+        foreach ($filteredFilters as $key => $value) {
+            if (is_array($value)) {
+                $filteredFilters[$key] = implode(',', $value);
+            }
+        }
+
+        // Buat query string
+        $queryString = http_build_query($filteredFilters);
+
+        // DEBUG: Cek hasil query string
+        // dd($queryString);
+
+        // Dispatch event ke frontend
+        $this->dispatch('update-url', filters: $queryString);
     }
 
     // Mendapatkan filter aktif dalam format yang dapat dibaca
