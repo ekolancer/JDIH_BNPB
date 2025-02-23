@@ -52,7 +52,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
-        <a href="{{ route('dokumen.filter', ['tipeDok' => 'peraturan']) }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
+        <a href="{{ route('list-doc', ['tipeDok' => 'peraturan']) }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
     </div>
 
     <!-- Tabs -->

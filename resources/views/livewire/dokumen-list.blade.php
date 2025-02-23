@@ -61,9 +61,11 @@
                     @if($column !== 'jenisDok')
                     <div class="filter-section mb-3 shadow-md">
                         <h6 class="fw-bold">{{ ucfirst(str_replace('_', ' ', $column)) }}</h6>
-                        @foreach($values as $value)
-                        @if(!empty($value) && $value !== '-') <!-- Hanya tampilkan jika tidak kosong atau '-' -->
-                        <div class="form-check d-flex justify-content-between align-items-center">
+
+                        @foreach($values as $index => $value)
+                        @if(!empty($value) && $value !== '-')
+                        <div class="form-check d-flex justify-content-between align-items-center 
+                        {{ $index >= 3 ? 'd-none more-' . $column : '' }}">
                             <div>
                                 <input class="form-check-input" type="checkbox" wire:model.defer="filters.{{ $column }}" value="{{ $value }}">
                                 <label class="form-check-label">{{ $value }}</label>
@@ -72,6 +74,14 @@
                         </div>
                         @endif
                         @endforeach
+
+                        <!-- Tombol Tampilkan Lebih Banyak -->
+                        @if(count($values) > 3)
+                        <button class="btn btn-link btn-sm mt-2 toggle-more"
+                            data-column="{{ $column }}">
+                            Lihat lebih banyak...
+                        </button>
+                        @endif
                     </div>
                     <div class="d-flex justify-content-end mt-2">
                         <button wire:click="applyFilters" class="btn btn-primary btn-sm">Terapkan</button>
@@ -205,6 +215,7 @@
     </div>
 </div>
 
+<!-- Script untuk slider tahun -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const slider = document.getElementById('tahunSlider');
@@ -215,6 +226,7 @@
     });
 </script>
 
+<!-- Script untuk scroll ke atas -->
 <script>
     window.addEventListener('scroll-to-top', function() {
         window.scrollTo({
@@ -224,6 +236,7 @@
     });
 </script>
 
+<!-- script untuk refresh URL ketika filter diterapkan -->
 <script>
     window.addEventListener('update-url', event => {
         console.log("Update URL Event Triggered:", event.detail);
@@ -231,5 +244,25 @@
 
         const newUrl = event.detail.filters ? '?' + event.detail.filters : window.location.pathname;
         window.history.replaceState({}, '', newUrl);
+    });
+</script>
+
+<!-- Script untuk menampilkan lebih banyak filter -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.toggle-more').forEach(button => {
+            button.addEventListener('click', function() {
+                let column = this.getAttribute('data-column');
+                let elements = document.querySelectorAll('.more-' + column);
+
+                if (this.innerText.includes('Lihat lebih banyak')) {
+                    elements.forEach(el => el.classList.remove('d-none'));
+                    this.innerText = 'Lihat lebih sedikit';
+                } else {
+                    elements.forEach(el => el.classList.add('d-none'));
+                    this.innerText = 'Lihat lebih banyak...';
+                }
+            });
+        });
     });
 </script>
