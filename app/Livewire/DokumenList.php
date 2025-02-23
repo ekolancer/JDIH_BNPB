@@ -81,23 +81,6 @@ class DokumenList extends Component
         }
     }
 
-    // Reset semua filter ke nilai default
-    public function resetFilters()
-    {
-        $this->filters = [
-            'judul' => '',
-            'tahun' => null,
-            'jenisDok' => [],
-            'singkatan' => [],
-            'penerbit' => [],
-            'subjek' => [],
-            'status' => [],
-            'bidangHukum' => [],
-            'nomor' => '',
-        ];
-        $this->resetPage();
-    }
-
     // Memuat filter yang tersedia dari cache
     private function loadAvailableFilters()
     {
@@ -141,25 +124,24 @@ class DokumenList extends Component
         $this->dispatch('update-url', filters: $queryString);
     }
 
-    // Mendapatkan filter aktif dalam format yang dapat dibaca
-    public function getActiveFilters()
+    // Reset semua filter ke nilai default
+    public function resetFilters()
     {
-        $filters = [];
+        $this->filters = [
+            'judul' => '',
+            'tahun' => null,
+            'jenisDok' => [],
+            'singkatan' => [],
+            'penerbit' => [],
+            'subjek' => [],
+            'status' => [],
+            'bidangHukum' => [],
+            'nomor' => '',
+        ];
 
-        foreach ($this->filters as $key => $value) {
-            if (!empty($value)) {
-                $displayKey = $this->getDisplayKey($key);
-                if (is_array($value)) {
-                    foreach ($value as $item) {
-                        $filters[] = ucfirst($displayKey) . ': ' . $item;
-                    }
-                } else {
-                    $filters[] = ucfirst($displayKey) . ': ' . $value;
-                }
-            }
-        }
-
-        return $filters;
+        $this->resetPage();
+        // Bersihkan URL ke `/search-doc`
+        $this->dispatch('update-url', filters: null);
     }
 
     // Menghapus filter tertentu
@@ -179,6 +161,29 @@ class DokumenList extends Component
         }
 
         $this->updated('filters');
+        // Perbarui URL setelah filter dihapus
+        $this->applyFilters();
+    }
+
+    // Mendapatkan filter aktif dalam format yang dapat dibaca
+    public function getActiveFilters()
+    {
+        $filters = [];
+
+        foreach ($this->filters as $key => $value) {
+            if (!empty($value)) {
+                $displayKey = $this->getDisplayKey($key);
+                if (is_array($value)) {
+                    foreach ($value as $item) {
+                        $filters[] = ucfirst($displayKey) . ': ' . $item;
+                    }
+                } else {
+                    $filters[] = ucfirst($displayKey) . ': ' . $value;
+                }
+            }
+        }
+
+        return $filters;
     }
 
     // Render tampilan dengan hasil query dan informasi lainnya
