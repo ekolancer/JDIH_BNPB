@@ -62,6 +62,7 @@
                     <div class="filter-section mb-3 shadow-md">
                         <h6 class="fw-bold">{{ ucfirst(str_replace('_', ' ', $column)) }}</h6>
                         @foreach($values as $value)
+                        @if(!empty($value) && $value !== '-') <!-- Hanya tampilkan jika tidak kosong atau '-' -->
                         <div class="form-check d-flex justify-content-between align-items-center">
                             <div>
                                 <input class="form-check-input" type="checkbox" wire:model.defer="filters.{{ $column }}" value="{{ $value }}">
@@ -69,6 +70,7 @@
                             </div>
                             <span class="badge bg-primary">{{ \App\Models\DokumenHukum::where($column, $value)->count() }}</span>
                         </div>
+                        @endif
                         @endforeach
                     </div>
                     <div class="d-flex justify-content-end mt-2">
@@ -112,12 +114,12 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="#" wire:click="sortBy('created_at')">
+                            <a class="dropdown-item" wire:click="sortBy('created_at')">
                                 Terbaru
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" wire:click="sortBy('view_count')">
+                            <a class="dropdown-item" wire:click="sortBy('view_count')">
                                 Terpopuler
                             </a>
                         </li>
@@ -125,13 +127,12 @@
                 </div>
             </div>
 
-
-            <div class="col-12">
-                <div wire:loading class="alert alert-info text-center">
-                    Tunggu sebentar.
-                </div>
+            <!-- Loading Spinner -->
+            <div wire:loading class="alert alert-info text-center custom-alert" style="font-size: 1.2rem; padding: 20px;">
+                <i class="fa fa-spinner fa-spin"></i> Please wait, loading...
             </div>
 
+            <!-- List Dokumen -->
             <div wire:loading.remove>
                 <div class="row">
                     @forelse ($results as $result)
@@ -191,7 +192,7 @@
                     @empty
                     <div class="col-12">
                         <div class="alert alert-warning text-center">
-                            Tidak ada data peraturan ditemukan.
+                            Tidak ada dokumen hukum ditemukan.
                         </div>
                     </div>
                     @endforelse

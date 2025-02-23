@@ -18,10 +18,6 @@ Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMi
 Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
 
 // Route Dokumen Hukum
-Route::get('/dokumen/all', [DokumenController::class, 'index'])->name('dokumen.index');
-Route::get('/dokumen/{tipeDok}', [DokumenController::class, 'filterByType'])
-    ->where('tipeDok', 'peraturan|monografi|artikel|putusan')
-    ->name('dokumen.filter');
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');

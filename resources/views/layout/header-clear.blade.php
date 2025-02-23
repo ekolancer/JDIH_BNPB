@@ -94,6 +94,11 @@
                 /* Adjust the height of the modal */
                 margin: 1.75rem auto;
             }
+            .custom-alert {
+                width: 100%;
+                border-radius: 10px;
+                color: #333;
+            }
         </style>
 
         <!-- Livewire Styles -->
