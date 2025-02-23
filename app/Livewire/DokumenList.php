@@ -42,9 +42,7 @@ class DokumenList extends Component
 
     public function mount($filters = [])
     {
-        $this->filters = array_merge($this->filters, $filters);
-
-        $this->filters = array_merge($this->filters, request()->query());
+        $this->filters = array_merge($this->filters, $filters, request()->query());
 
         foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
             if (!is_array($this->filters[$key])) {
@@ -73,12 +71,8 @@ class DokumenList extends Component
     // Mengatur field sorting dan arah sorting
     public function sortBy($field)
     {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'desc';
-        }
+        $this->sortDirection = $this->sortField === $field && $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        $this->sortField = $field;
     }
 
     // Memuat filter yang tersedia dari cache
@@ -103,9 +97,7 @@ class DokumenList extends Component
         $this->dispatch('scroll-to-top');
 
         // Bersihkan filter agar tidak ada nilai kosong
-        $filteredFilters = array_filter($this->filters, function ($value) {
-            return is_array($value) ? count($value) > 0 : !empty($value);
-        });
+        $filteredFilters = array_filter($this->filters, fn($value) => is_array($value) ? count($value) > 0 : !empty($value));
 
         // Konversi array menjadi string sebelum dikirim ke query string
         foreach ($filteredFilters as $key => $value) {
