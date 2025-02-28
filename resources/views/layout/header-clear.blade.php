@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title>JDIH - Badan Nasional Penanggulangan Bencana</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="JDIH, Badan Nasional Penanggulangan Bencana, BNPB, Dokumentasi Hukum, Informasi Hukum" name="keywords">
+    <meta content="Jaringan Dokumentasi dan Informasi Hukum Badan Nasional Penanggulangan Bencana menyediakan informasi dan dokumentasi hukum terkait penanggulangan bencana di Indonesia." name="description">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,75 +35,10 @@
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
-
-    <head>
-        <style>
-            .navbar-custom {
-                background-color: #0052cc;
-                padding: 10px 20px;
-            }
-
-            .navbar-custom .navbar-brand,
-            .navbar-custom .nav-link {
-                color: white;
-            }
-
-            .search-bar {
-                display: flex;
-                align-items: center;
-            }
-
-            .btn-group-custom {
-                margin-top: 10px;
-            }
-
-            /* Prevent navbar from overlapping the hero section */
-            .hero-section {
-                padding-top: 120px;
-                /* Adjust to the height of the navbar */
-                background-color: #f8f9fa;
-            }
-
-            /* Styling for Breadcrumb */
-            .breadcrumb {
-                background-color: transparent;
-                margin-top: 20px;
-                /* Give space from the navbar/hero */
-            }
-
-            .breadcrumb-item+.breadcrumb-item::before {
-                content: "›";
-                /* Use custom separator for the breadcrumb */
-            }
-
-            .breadcrumb-item a {
-                color: white;
-                /* Link color */
-                text-decoration: none;
-            }
-
-            .breadcrumb-item a:hover {
-                text-decoration: underline;
-                /* Hover effect */
-            }
-
-            .modal-dialog {
-                max-width: 70%;
-                /* Adjust the width of the modal */
-                height: 100%;
-                /* Adjust the height of the modal */
-                margin: 1.75rem auto;
-            }
-            .custom-alert {
-                width: 100%;
-                border-radius: 10px;
-                color: #333;
-            }
-        </style>
-
-        <!-- Livewire Styles -->
-        @livewireStyles
-    </head>
+    
+    <!-- Livewire Styles -->
+    @livewireStyles
+</head>
 
 <body>
 

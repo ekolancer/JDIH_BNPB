@@ -136,6 +136,8 @@ body {
     background-color: transparent;
     padding: 0;
     font-size: 18px;
+    margin-top: 20px;
+    /* Give space from the navbar/hero */
 }
 
 .breadcrumb-item a {
@@ -146,6 +148,12 @@ body {
 .breadcrumb-item.active {
     color: white;
     font-weight: bold;
+    text-transform: uppercase;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "/";
+    /* Use custom separator for the breadcrumb */
 }
 
 /* Gaya untuk gambar dengan rounded edges dan shadow */
@@ -174,21 +182,26 @@ body {
     font-size: 24px;
     font-weight: bold;
 }
+
 .article-meta {
     color: #666;
     font-size: 14px;
     justify-content: space-between;
 }
+
 .article-meta i {
     margin-right: 5px;
 }
+
 .article-image {
     margin: 20px 0;
 }
+
 .article-caption {
     font-size: 12px;
     color: #666;
 }
+
 .article-content {
     font-size: 14px;
     color: #333;
@@ -200,16 +213,20 @@ body {
 .popular-item {
     display: flex;
     align-items: center;
-    background-color: #f5f5f5; /* Background abu-abu */
+    background-color: #f5f5f5;
+    /* Background abu-abu */
     margin-bottom: 10px;
     padding: 10px;
 }
 
 .popular-item img {
-    width: 50px; /* Ukuran gambar di sebelah kiri */
+    width: 50px;
+    /* Ukuran gambar di sebelah kiri */
     height: 50px;
-    object-fit: cover; /* Memastikan gambar proporsional */
-    margin-right: 15px; /* Spasi antara gambar dan judul */
+    object-fit: cover;
+    /* Memastikan gambar proporsional */
+    margin-right: 15px;
+    /* Spasi antara gambar dan judul */
 }
 
 .popular-item .content {
@@ -221,12 +238,143 @@ body {
 
 .popular-item .content h6 {
     margin: 0;
-    font-size: 16px; /* Ukuran judul */
+    font-size: 16px;
+    /* Ukuran judul */
     font-weight: bold;
 }
 
 .popular-item .content p {
     margin: 0;
     font-size: 12px;
-    color: #888; /* Tanggal dengan warna abu-abu */
+    color: #888;
+    /* Tanggal dengan warna abu-abu */
+}
+
+/* Download Button Dokumen */
+/* From Uiverse.io by vinodjangid07 */
+.btnDL {
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 12px 20px;
+    color: white;
+    background:rgb(103, 92, 156);
+    border: none;
+    box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
+    letter-spacing: 0.05em;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.btnDL svg {
+    margin-right: 8px;
+    width: 25px;
+}
+
+.btnDL:hover {
+    box-shadow: 0 0.5em 1.5em -0.5em rgba(88, 71, 116, 0.627);
+}
+
+.btnDL:active {
+    box-shadow: 0 0.3em 1em -0.5em rgba(88, 71, 116, 0.627);
+}
+
+.btnDL::before {
+    content: "";
+    width: 4px;
+    height: 40%;
+    background-color: white;
+    position: absolute;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    left: 0;
+    transition: all 0.2s;
+}
+
+.btnDL::after {
+    content: "";
+    width: 4px;
+    height: 40%;
+    background-color: white;
+    position: absolute;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    right: 0;
+    transition: all 0.2s;
+}
+
+.btnDL:hover::before,
+.btnDL:hover::after {
+    height: 60%;
+}
+
+/* Navbar Custom */
+.navbar-custom {
+    background-color: #0052cc;
+    padding: 10px 20px;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: white;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+/* Button Group Custom */
+.btn-group-custom {
+    margin-top: 10px;
+}
+
+/* Prevent navbar from overlapping the hero section */
+.hero-section {
+    padding-top: 120px;
+    /* Adjust to the height of the navbar */
+    background-color: #f8f9fa;
+}
+
+/* Styling for Breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+    margin-top: 20px;
+    /* Give space from the navbar/hero */
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "›";
+    /* Use custom separator for the breadcrumb */
+}
+
+.breadcrumb-item a {
+    color: white;
+    /* Link color */
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+    /* Hover effect */
+}
+
+/* Modal Dialog */
+.modal-dialog {
+    max-width: 70%;
+    /* Adjust the width of the modal */
+    height: 100%;
+    /* Adjust the height of the modal */
+    margin: 1.75rem auto;
+}
+
+/* Custom Alert */
+.custom-alert {
+    width: 100%;
+    border-radius: 10px;
+    color: #333;
 }

@@ -75,14 +75,14 @@
         <div class="tab-pane fade show active" id="brs">
             <div class="row g-4">
                 @foreach ($data['peraturanTerbaru'] as $peraturan)
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex hero-items-center p-3">
+                        <div class="card-header bg-primary d-flex hero-items-center">
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
-                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
+                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase" style="font-size: 0.9rem;">
+                                    {{ $peraturan->singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
                                 </h6>
                             </div>
                         </div>
@@ -116,14 +116,14 @@
         <div class="tab-pane fade" id="tabel">
             <div class="row g-4">
                 @foreach ($data['peraturanPopuler'] as $peraturan)
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="card shadow-sm border-0 h-100">
                         <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex hero-items-center p-3">
+                        <div class="card-header bg-primary d-flex hero-items-center">
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase">
-                                    {{ $peraturan->singkatan }} Nomor {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
+                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase" style="font-size: 0.9rem;">
+                                    {{ $peraturan->singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
                                 </h6>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                     <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
                                 </a>
                                 @else
-                                    <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
+                                <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
                                 @endif
                             </div>
                         </div>

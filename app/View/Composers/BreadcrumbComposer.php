@@ -29,9 +29,15 @@ class BreadcrumbComposer
             'DokumenController' => 'PRODUK HUKUM',
             'DashboardController' => 'PROFILE JDIH'
         ];
-
+        
+        // Jika route adalah 'list-doc', set pageTitle menjadi 'Produk Hukum'
+        if (Route::currentRouteName() == 'list-doc') {
+            $titles[$currentController] = 'PRODUK HUKUM';
+        }
+        
         // Gunakan judul sesuai controller, jika tidak ditemukan pakai "Publikasi"
-        $pageTitle = $titles[$currentController] ?? 'PUBLIKASI';
+        $pageTitle = isset($titles[$currentController]) ? $titles[$currentController] : 'PUBLIKASI';
+
 
         $view->with(compact('breadcrumbs', 'pageTitle'));
     }
