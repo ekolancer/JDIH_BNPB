@@ -62,8 +62,3 @@ Route::get('/check-data', function () {
         ], 500);
     }
 });
-
-// Route 404 Page
-Route::fallback(function () {
-    return response()->view('404', [], 404);
-});
