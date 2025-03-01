@@ -955,24 +955,6 @@
 }
 
 /* Styling untuk tombol navigasi */
-.swiper-container {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Membuat ruang untuk tombol navigasi di atas slider */
-.swiper-navigation {
-    position: absolute;
-    top: -40px;
-    /* Posisi di atas slider */
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    z-index: 10;
-}
-
-/* Styling untuk tombol navigasi */
 .swiper-button-prev,
 .swiper-button-next {
     background-color: rgba(0, 0, 0, 0.5);
@@ -999,17 +981,16 @@
 }
 
 /* Menyembunyikan ikon di dalam tombol */
-.swiper-button-prev::after,
-.swiper-button-next::after {
+.swiper-button-prev::after {
     font-size: 20px;
-    content: '\f104';
-    /* Font Awesome left arrow */
+    content: '←';
+    /* Menggunakan karakter panah kiri */
 }
 
-/* Menambahkan simbol ke tombol next */
 .swiper-button-next::after {
-    content: '\f105';
-    /* Font Awesome right arrow */
+    font-size: 20px;
+    content: '→';
+    /* Menggunakan karakter panah kanan */
 }
 
 /* Menambahkan jarak antar slide */

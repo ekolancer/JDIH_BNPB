@@ -166,10 +166,8 @@
             <!-- Swiper Container -->
             <div class="swiper-container position-relative" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
                 <!-- Navigation Arrows Above -->
-                <div class="swiper-navigation">
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
                 <div class="swiper-wrapper">
                     @foreach($data['infografis'] as $item)
                     <div class="swiper-slide">
