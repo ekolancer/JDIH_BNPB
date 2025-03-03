@@ -20,7 +20,7 @@
 <div class="container">
     <div class="row">
         <!-- Detail Container -->
-        <div class="col-md-10">
+        <div class="col-md-8">
             <div class="container-detail shadow-lg">
                 <div class="title-section">
                     <h1 class="article-title">
@@ -42,12 +42,35 @@
                             src="{{ asset('storage/' . $berita->gambar) }}"
                             style="object-fit: cover; width: 100%; height: auto;" />
                     </div>
-                    <p class="article-content">
+                    <div class="article-content">
                         {!! str($berita->konten)->sanitizeHtml() !!}
-                    </p>
+                    </div>
 
                     <!-- Tombol Kembali -->
                     <a href="{{ url()->previous() }}" class="btn btn-secondary btn-back">Kembali</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Berita Terpopuler -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Terpopuler</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach($beritaTerpopuler as $item)
+                        <li class="list-group-item popular-item">
+                            <!-- Gambar di sebelah kiri -->
+                            <img src="{{ asset('storage/'.$item->gambar) }}" alt="Gambar Berita" class="img-fluid">
+                            <div class="content">
+                                <!-- Judul dengan maksimal 50 karakter dan hyperlink ke halaman detail -->
+                                <h6><a href="{{ route('berita.show', $item->slug) }}" class="text-decoration-none text-dark">{{ Str::limit($item->judul, 50) }}</a></h6>
+                                <!-- Tanggal dibuat -->
+                                <p class="text-muted"><i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</p>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

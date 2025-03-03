@@ -36,6 +36,11 @@ class BeritaController extends Controller
         // Tentukan path file lampiran
         $fileLampiranPath = storage_path('app/public/' . $berita->gambar);
 
-        return view('berita.detail', compact('berita'));
+        // Ambil 5 berita terpopuler berdasarkan view terbanyak
+        $beritaTerpopuler = Berita::orderByDesc('view_count')
+            ->limit(5)
+            ->get();
+
+        return view('berita.detail', compact('berita', 'beritaTerpopuler'));
     }
 }

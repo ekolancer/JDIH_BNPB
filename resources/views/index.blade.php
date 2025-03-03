@@ -9,37 +9,37 @@
             <p class="text-muted" data-aos="zoom-in" data-aos-duration="800">Produk Hukum</p>
             <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berdasarkan Kategori.</h2>
         </div>
-        <div class="row gy-4 text-center">
-            <!-- Peraturan -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div class="feature-item bg-gradient-primary shadow-sm">
-                    <i class="fa fa-balance-scale mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Peraturan'] }}" data-purecounter-duration="1"></h3>
-                    <p class="feature-title">Peraturan Perundang-Undangan</p>
-                </div>
-            </div>
-            <!-- Monografi Hukum -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div class="feature-item bg-gradient-secondary shadow-sm">
-                    <i class="fa fa-book-open mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Monografi'] }}" data-purecounter-duration="1"></h3>
-                    <p class="feature-title">Monografi Hukum</p>
-                </div>
-            </div>
-            <!-- Artikel Hukum -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div class="feature-item bg-gradient-tertiary shadow-sm">
-                    <i class="fa fa-newspaper mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Artikel'] }}" data-purecounter-duration="1"></h3>
-                    <p class="feature-title">Artikel Hukum</p>
-                </div>
-            </div>
-            <!-- Putusan Hukum -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div class="feature-item bg-gradient-quaternary shadow-sm">
-                    <i class="fa fa-gavel mb-3"></i>
-                    <h3 class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Putusan'] }}" data-purecounter-duration="1"></h3>
-                    <p class="feature-title">Putusan Hukum</p>
+        <div id="projectFacts" class="sectionClass">
+            <div class="fullWidth eight columns">
+                <div class="projectFactsWrap" style="font-family: 'Open Sans', sans-serif;">
+                    <!-- Peraturan -->
+                    <div class="item wow fadeInUpBig animated animated" style="visibility: visible;">
+                        <i class="fa fa-balance-scale mb-3"></i>
+                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Peraturan'] }}" data-purecounter-duration="1"></p>
+                        <span></span>
+                        <p>Peraturan</p>
+                    </div>
+                    <!-- Monografi -->
+                    <div class="item wow fadeInUpBig animated animated" style="visibility: visible;">
+                        <i class="fa fa-book-open mb-3"></i>
+                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Monografi'] }}" data-purecounter-duration="1"></p>
+                        <span></span>
+                        <p>Monografi</p>
+                    </div>
+                    <!-- Artikel -->
+                    <div class="item wow fadeInUpBig animated animated" data-number="359" style="visibility: visible;">
+                        <i class="fa fa-newspaper mb-3"></i>
+                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Artikel'] }}" data-purecounter-duration="1"></p>
+                        <span></span>
+                        <p>Artikel</p>
+                    </div>
+                    <!-- Putusan -->
+                    <div class="item wow fadeInUpBig animated animated" data-number="246" style="visibility: visible;">
+                        <i class="fa fa-gavel mb-3"></i>
+                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Putusan'] }}" data-purecounter-duration="1"></p>
+                        <span></span>
+                        <p>Putusan</p>
+                    </div>
                 </div>
             </div>
         </div>

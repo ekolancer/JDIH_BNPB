@@ -2,10 +2,16 @@
 
 @section('content')
 
-<div class="container mt-2" style="padding: 50px;">
-    <!-- Title "Daftar monograf" in the center -->
-    <h2 class="text-center w-100" style="padding-bottom: 50px">List Berita</h2>
+<section id="stats" class="stats section light-background py-5">
+    <div class="container">
+        <div class="mx-auto text-center pt-3" style="max-width: 800px;">
+            <p class="text-muted" data-aos="zoom-in" data-aos-duration="800">Informasi Hukum</p>
+            <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita Seputar JDIH BNPB.</h2>
+        </div>
+    </div>
+</section>
 
+<div class="container" style="padding: 10px;">
     <div class="row align-items-start">
         <!-- Berita Terpopuler -->
         <div class="col-md-4 mb-3">
@@ -66,7 +72,7 @@
                                     <h5 class="card-title text-primary fw-bold mb-2">
                                         {{ $item->judul }}
                                     </h5>
-                                    <p class="card-text text-muted mb-0">
+                                    <p class="card-text text-muted mb-0" style="text-align: justify;">
                                         {{ Str::limit(strip_tags($item->konten), 200) }}
                                     </p>
                                 </div>

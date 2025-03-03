@@ -118,14 +118,6 @@
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="https://static.elfsight.com/platform/platform.js" async></script>
 
-<!-- AOS Library -->
-<script>
-    AOS.init({
-        // ... your other initialisation options here ...
-        once: true,
-    });
-</script>
-
 </body>
 
 </html>

@@ -208,7 +208,7 @@
                     @endforelse
                 </div>
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $results->links() }}
+                    {{ $results->links('pagination::simple-modern') }}
                 </div>
             </div>
         </div>

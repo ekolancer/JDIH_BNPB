@@ -30,9 +30,9 @@ class DashboardController extends Controller
             // Mengambil data visitorStats dari model Visitor
             'visitorStats' => Visitor::getVisitorStats(),
             // Mengambil peraturan terbaru dari model DokumenHukum
-            'peraturanTerbaru' => DokumenHukum::getLatest(3),
+            'peraturanTerbaru' => DokumenHukum::getLatest(4),
             // Mengambil peraturan terpopuler dari model DokumenHukum
-            'peraturanPopuler' => DokumenHukum::getMostViewed(6),
+            'peraturanPopuler' => DokumenHukum::getMostViewed(8),
             // Mengambil nilai unik untuk tipeDok dan jenisDok
             'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']),
             // Mengambil data berita aktif dari model Berita
