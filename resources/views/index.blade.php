@@ -160,7 +160,7 @@
     <div class="container-fluid pt-5 pb-1">
         <div class="container">
             <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Publikasi</p>
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Informasi Hukum</p>
                 <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Infografis.</h2>
             </div>
             <!-- Swiper Container -->
@@ -195,7 +195,7 @@
     <div class="container-fluid packages pt-5">
         <div class="container">
             <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Publikasi</p>
+                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Informasi Hukum</p>
                 <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita.</h2>
             </div>
             <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">

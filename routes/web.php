@@ -26,11 +26,11 @@ Route::get('/dokumen/{slug}/download-abstrak', [DokumenController::class, 'unduh
 
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
-Route::get('/berita/{slug}/detail', [BeritaController::class, 'show'])->name('berita.show');
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 
 //Route Infografis
 Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
-Route::get('/infografis/{slug}/detail', [InfografisController::class, 'show'])->name('infografis.show');
+Route::get('/infografis/{slug}', [InfografisController::class, 'show'])->name('infografis.show');
 
 // Route Rating Website
 Route::post('/', [SurveyController::class, 'store'])->name('survey.store');

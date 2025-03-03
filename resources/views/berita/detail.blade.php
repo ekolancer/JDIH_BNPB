@@ -29,7 +29,7 @@
                     <div class="article-meta d-flex justify-content-between align-items-center">
                         <p class="mb-0">
                             <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
-                            {{ \Carbon\Carbon::parse($berita->created_at)->format('d F Y') }}
+                            {{ \Carbon\Carbon::parse($berita->created_at)->translatedFormat('d F Y') }}
                         </p>
                         <p class="mb-0">
                             <i class="fas fa-eye" style="font-weight: bold;"></i> {{ $berita->view_count }} dilihat

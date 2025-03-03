@@ -1,5 +1,4 @@
 /*** Spinner Start ***/
-/*** Spinner ***/
 #spinner {
     display: none;
     position: fixed;
@@ -31,34 +30,223 @@
 }
 
 /* HTML: <div class="loader"></div> */
-.loader {
-    width: 120px;
-    height: 22px;
-    border-radius: 40px;
-    color: #514b82;
-    border: 2px solid;
-    position: relative;
-    overflow: hidden;
+/* From Uiverse.io by Nawsome */
+.pl {
+    width: 6em;
+    height: 6em;
 }
 
-.loader::before {
-    content: "";
-    position: absolute;
-    margin: 2px;
-    width: 14px;
-    top: 0;
-    bottom: 0;
-    left: -20px;
-    border-radius: inherit;
-    background: currentColor;
-    box-shadow: -10px 0 12px 3px currentColor;
-    clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 95%, -30px 50%);
-    animation: l14 1s infinite linear;
+.pl__ring {
+    animation: ringA 2s linear infinite;
 }
 
-@keyframes l14 {
-    100% {
-        left: calc(100% + 20px)
+.pl__ring--a {
+    stroke: #f42f25;
+}
+
+.pl__ring--b {
+    animation-name: ringB;
+    stroke: #f49725;
+}
+
+.pl__ring--c {
+    animation-name: ringC;
+    stroke: #255ff4;
+}
+
+.pl__ring--d {
+    animation-name: ringD;
+    stroke: #f42582;
+}
+
+/* Animations */
+@keyframes ringA {
+
+    from,
+    4% {
+        stroke-dasharray: 0 660;
+        stroke-width: 20;
+        stroke-dashoffset: -330;
+    }
+
+    12% {
+        stroke-dasharray: 60 600;
+        stroke-width: 30;
+        stroke-dashoffset: -335;
+    }
+
+    32% {
+        stroke-dasharray: 60 600;
+        stroke-width: 30;
+        stroke-dashoffset: -595;
+    }
+
+    40%,
+    54% {
+        stroke-dasharray: 0 660;
+        stroke-width: 20;
+        stroke-dashoffset: -660;
+    }
+
+    62% {
+        stroke-dasharray: 60 600;
+        stroke-width: 30;
+        stroke-dashoffset: -665;
+    }
+
+    82% {
+        stroke-dasharray: 60 600;
+        stroke-width: 30;
+        stroke-dashoffset: -925;
+    }
+
+    90%,
+    to {
+        stroke-dasharray: 0 660;
+        stroke-width: 20;
+        stroke-dashoffset: -990;
+    }
+}
+
+@keyframes ringB {
+
+    from,
+    12% {
+        stroke-dasharray: 0 220;
+        stroke-width: 20;
+        stroke-dashoffset: -110;
+    }
+
+    20% {
+        stroke-dasharray: 20 200;
+        stroke-width: 30;
+        stroke-dashoffset: -115;
+    }
+
+    40% {
+        stroke-dasharray: 20 200;
+        stroke-width: 30;
+        stroke-dashoffset: -195;
+    }
+
+    48%,
+    62% {
+        stroke-dasharray: 0 220;
+        stroke-width: 20;
+        stroke-dashoffset: -220;
+    }
+
+    70% {
+        stroke-dasharray: 20 200;
+        stroke-width: 30;
+        stroke-dashoffset: -225;
+    }
+
+    90% {
+        stroke-dasharray: 20 200;
+        stroke-width: 30;
+        stroke-dashoffset: -305;
+    }
+
+    98%,
+    to {
+        stroke-dasharray: 0 220;
+        stroke-width: 20;
+        stroke-dashoffset: -330;
+    }
+}
+
+@keyframes ringC {
+    from {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: 0;
+    }
+
+    8% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -5;
+    }
+
+    28% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -175;
+    }
+
+    36%,
+    58% {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: -220;
+    }
+
+    66% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -225;
+    }
+
+    86% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -395;
+    }
+
+    94%,
+    to {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: -440;
+    }
+}
+
+@keyframes ringD {
+
+    from,
+    8% {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: 0;
+    }
+
+    16% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -5;
+    }
+
+    36% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -175;
+    }
+
+    44%,
+    50% {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: -220;
+    }
+
+    58% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -225;
+    }
+
+    78% {
+        stroke-dasharray: 40 400;
+        stroke-width: 30;
+        stroke-dashoffset: -395;
+    }
+
+    86%,
+    to {
+        stroke-dasharray: 0 440;
+        stroke-width: 20;
+        stroke-dashoffset: -440;
     }
 }
 
@@ -571,7 +759,6 @@
 
 /*** Single Page Hero Header End ***/
 
-/* Feature Box Statistik Dokumen Start */
 /* Container Section */
 .stats {
     background-color: #f9f9f9;
@@ -587,33 +774,6 @@
 .text-muted {
     font-size: 1rem;
     color: #666;
-}
-
-/* Feature Items */
-.feature-item {
-    border-radius: 12px;
-    padding: 25px;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-item i {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-.feature-item h3 {
-    font-size: 2rem;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.feature-title {
-    font-size: 1.1rem;
-    margin: 0;
 }
 
 /* Gradients */
@@ -632,33 +792,6 @@
 .bg-gradient-quaternary {
     background: linear-gradient(135deg, #dc3545, #f07585);
 }
-
-/* Hover Effect */
-.feature-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .feature-item {
-        padding: 20px;
-    }
-
-    .feature-item i {
-        font-size: 2.5rem;
-    }
-
-    .feature-item h3 {
-        font-size: 1.5rem;
-    }
-
-    .feature-title {
-        font-size: 1rem;
-    }
-}
-
-/* Feature Box Statistik Dokumen End */
 
 /* Feature Box Statistik Dokumen 2 Start */
 .sectionClass {
@@ -1044,6 +1177,22 @@
 .infografis-img:hover {
     transform: scale(1.1);
     /* Zoom-in gambar saat hover */
+}
+
+.infografis-date {
+    opacity: 0;
+    /* Awal transparan */
+    transform: translateY(20px);
+    /* Turun 20px ke bawah */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    /* Transisi animasi */
+}
+
+.infografis-item:hover .infografis-date {
+    opacity: 1;
+    /* Muncul */
+    transform: translateY(0);
+    /* Kembali ke posisi semula */
 }
 
 .owl-theme .owl-dots .owl-dot span {
@@ -1608,7 +1757,7 @@ ul {
     width: 100%;
     padding: 14px 28px;
     border: 1px solid #2E2E2E;
-    color: #fff;
+    color: #2E2E2E;
 }
 
 .subscribe-form button {

@@ -36,7 +36,7 @@ class BreadcrumbComposer
         }
         
         // Gunakan judul sesuai controller, jika tidak ditemukan pakai "Publikasi"
-        $pageTitle = isset($titles[$currentController]) ? $titles[$currentController] : 'PUBLIKASI';
+        $pageTitle = isset($titles[$currentController]) ? $titles[$currentController] : 'INFORMASI HUKUM';
 
 
         $view->with(compact('breadcrumbs', 'pageTitle'));

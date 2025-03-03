@@ -17,21 +17,20 @@
     <div class="row">
         @forelse ($infografis as $item)
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <a href="{{ route('infografis.show', $item->slug) }}" class="d-block position-relative">
+            <a href="{{ route('infografis.show', $item->slug) }}" class="d-block position-relative infografis-item">
                 @if($item->gambar)
                 <img
                     src="{{ asset('storage/' . $item->gambar) }}"
-                    alt="Gambar Lampiran"
-                    class="img-fluid rounded shadow-sm" />
+                    alt="Gambar Infografis"
+                    class="img-fluid rounded shadow-lg infografis-img" />
                 @else
                 <img
                     src="{{ asset('img/noimage.png') }}"
-                    alt="Ikon Default"
-                    class="img-fluid rounded shadow-sm" />
+                    alt="Gambar Default"
+                    class="img-fluid rounded shadow-sm infografis-img" />
                 @endif
-                <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-50 text-white text-center py-2 rounded-bottom">
-                    <h5 class="mb-0">{{ $item->judul }}</h5>
-                    <small>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</small>
+                <div class="position-absolute bottom-0 start-0 end-0 bg-white bg-opacity-30 text-black text-center py-2 rounded-bottom infografis-date">
+                    <small>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
                 </div>
             </a>
         </div>

@@ -27,7 +27,7 @@
                                 <!-- Judul dengan maksimal 50 karakter dan hyperlink ke halaman detail -->
                                 <h6><a href="{{ route('berita.show', $item->slug) }}" class="text-decoration-none text-dark">{{ Str::limit($item->judul, 50) }}</a></h6>
                                 <!-- Tanggal dibuat -->
-                                <p class="text-muted"><i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</p>
+                                <p class="text-muted"><i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</p>
                             </div>
                         </li>
                         @endforeach

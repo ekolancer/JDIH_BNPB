@@ -54,18 +54,18 @@
                     <!-- Dropdown Dokumen Hukum dengan Livewire -->
                     <livewire:dropdown-dokumen />
                     <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
+                            <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('about') }}" class="dropdown-item">Tentang Kami</a>
                             <a href="{{ route('visiMisi') }}" class="dropdown-item">Visi Misi</a>
                             <a href="{{ route('struktur') }}" class="dropdown-item">Struktur Organisasi Biro Hukum</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Publikasi</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
-                            <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
                         </div>
                     </div>
                 </div>

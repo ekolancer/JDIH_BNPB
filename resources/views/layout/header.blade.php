@@ -44,9 +44,14 @@
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="loader"></div>
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <!-- From Uiverse.io by Nawsome -->
+        <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+        </svg>
     </div>
     <!-- Spinner End -->
 
@@ -71,18 +76,18 @@
                     <!-- Dropdown Dokumen Hukum dengan Livewire -->
                     <livewire:dropdown-dokumen />
                     <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
+                            <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu m-0">
                             <a href="{{ route('about') }}" class="dropdown-item">Tentang Kami</a>
                             <a href="{{ route('visiMisi') }}" class="dropdown-item">Visi Misi</a>
                             <a href="{{ route('struktur') }}" class="dropdown-item">Struktur Organisasi Biro Hukum</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Publikasi</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
-                            <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
                         </div>
                     </div>
                 </div>
