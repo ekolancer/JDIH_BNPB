@@ -27,8 +27,9 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
 
-    <!-- Livewire Styles -->
-    @livewireStyles
+    <!-- Livewire Stylesheet -->
+    <livewire:styles />
+    
 </head>
 
 <body>

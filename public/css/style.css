@@ -367,7 +367,7 @@
     /* Padding di dalam border */
     margin-top: 10px;
     /* Jarak atas dari elemen sebelumnya */
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.5);
     /* Warna latar belakang putih */
 }
 
@@ -666,7 +666,7 @@
 }
 
 .input-group .form-control {
-    border-radius: 50px;
+    border-radius: 5px;
     padding-left: 20px;
     padding-right: 15px;
 }

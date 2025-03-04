@@ -25,7 +25,7 @@
                         <div class="form-check d-flex justify-content-between align-items-center border-zinc-950">
                             <div>
                                 <input class="form-check-input" type="checkbox" wire:model.defer="filters.jenisDok" value="{{ $option }}">
-                                <label class="form-check-label">{{ $option }}</label>
+                                <label class="form-check-label text-uppercase">{{ $option }}</label>
                             </div>
                             <span class="badge bg-primary">{{ \App\Models\DokumenHukum::where('jenisDok', $option)->count() }}</span>
                         </div>
@@ -49,7 +49,11 @@
                             <h6 class="fw-bold mb-0">Tahun Terbit</h6>
                             <span class="fw-bold text-primary" id="tahunValue">{{ $filters['tahun'] }}</span>
                         </div>
-                        <input type="range" wire:model.defer="filters.tahun" min="1990" max="2025" class="form-range" id="tahunSlider">
+                        <input type="range" wire:model.defer="filters.tahun" min="1990" max="{{ date('Y') }}" class="form-range" id="tahunSlider">
+                        <div class="d-flex justify-content-between mt-2">
+                            <span>1990</span>
+                            <span>{{ date('Y') }}</span>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end mt-2">
                         <button wire:click="applyFilters" class="btn btn-primary btn-sm">Terapkan</button>
@@ -68,7 +72,7 @@
                         {{ $index >= 3 ? 'd-none more-' . $column : '' }}">
                             <div>
                                 <input class="form-check-input" type="checkbox" wire:model.defer="filters.{{ $column }}" value="{{ $value }}">
-                                <label class="form-check-label">{{ $value }}</label>
+                                <label class="form-check-label text-uppercase text-start">{{ $value }}</label>
                             </div>
                             <span class="badge bg-primary">{{ \App\Models\DokumenHukum::where($column, $value)->count() }}</span>
                         </div>
@@ -138,7 +142,7 @@
             </div>
 
             <!-- Loading Spinner -->
-            <div wire:loading class="alert alert-info text-center custom-alert" style="font-size: 1.2rem; padding: 20px;">
+            <div wire:loading.delay class="alert alert-info text-center custom-alert" style="font-size: 1.2rem; padding: 20px;">
                 <i class="fa fa-spinner fa-spin"></i> Please wait, loading...
             </div>
 
@@ -158,15 +162,15 @@
                                     </div>
                                     <!-- Kolom Tipe Dokumen dan Judul -->
                                     <div class="d-flex flex-column w-100">
-                                        <h5 class="card-title text-primary fw-bold mb-0">
+                                        <h5 class="card-title text-primary fw-bold mb-0 text-uppercase text-start">
                                             @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
                                             {{ $result->singkatan }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
                                             @else
                                             {{ $result->judul }}
                                             @endif
                                         </h5>
-                                        <p class="card-text mb-3 text-muted">
-                                            {{ $result->judul ?? 'Tidak ada deskripsi.' }}
+                                        <p class="card-text mb-3 text-muted text-justify" style="text-align: justify; hyphens: auto; word-wrap: break-word;">
+                                            {{ Str::limit($result->judul ?? 'Tidak ada deskripsi.', 150) }}
                                         </p>
                                     </div>
                                 </div>

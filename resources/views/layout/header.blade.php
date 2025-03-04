@@ -11,8 +11,8 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome for arrows -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -38,6 +38,9 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- Livewire Stylesheet -->
+    <livewire:styles />
 
 </head>
 
@@ -104,23 +107,23 @@
                         <h1 style="font: size 60px; color:white;">Cari Dokumen hukum disini.</h1>
                         </p>
                         <!-- resources/views/index.blade.php -->
-                        <form method="GET" action="{{ route('list-doc') }}">
+                        <form method="GET" action="{{ route('list-doc') }}" class="search-form">
                             <div class="input-group mb-3 w-75 mx-auto">
                                 <input type="text"
                                     class="form-control"
-                                    placeholder="Masukan kata kunci pencarian"
+                                    placeholder="Cari dokumen hukum..."
                                     aria-label="Search"
                                     aria-describedby="button-addon2"
                                     name="judul"
                                     value="{{ request('judul') }}">
-                                <button class="btn btn-outline-warning" type="submit" id="button-addon2">
+                                <button class="btn btn-warning" type="submit" id="button-addon2">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
 
                             <!-- Optional Advanced Search Button -->
-                            <button class="btn btn-outline-secondary" type="button" id="advanced-search-toggle">
-                                <i class="fas fa-filter"></i> Advanced Search
+                            <button class="btn btn-secondary" type="button" id="advanced-search-toggle">
+                                <i class="fas fa-filter"></i> Pencairan Lanjutan
                             </button>
 
                             <!-- Advanced Filters (Hidden by Default) -->
@@ -128,39 +131,52 @@
                                 <div class="row">
                                     <!-- Bentuk Dokumen -->
                                     <div class="col-md-4 mb-3">
-                                        <select class="form-select" id="documentForm" name="jenisDok">
-                                            <option value="">Bentuk Dokumen</option>
-                                            @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
-                                            <option value="{{ $bentuk }}" {{ request('jenisDok') == $bentuk ? 'selected' : '' }}>
-                                                {{ $bentuk }}
-                                            </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
+                                            <select class="form-select" id="documentForm" name="jenisDok">
+                                                <option value="">Bentuk Dokumen</option>
+                                                @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
+                                                <option value="{{ $bentuk }}" {{ request('jenisDok') == $bentuk ? 'selected' : '' }}>
+                                                    {{ $bentuk }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <!-- Nomor -->
                                     <div class="col-md-4 mb-3">
-                                        <input type="number"
-                                            class="form-control"
-                                            id="documentNumber"
-                                            name="nomor"
-                                            placeholder="Nomor"
-                                            value="{{ request('nomor') }}">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
+                                            <input type="number"
+                                                class="form-control"
+                                                id="documentNumber"
+                                                name="nomor"
+                                                placeholder="Nomor"
+                                                value="{{ request('nomor') }}">
+                                        </div>
                                     </div>
 
                                     <!-- Tahun -->
                                     <div class="col-md-4 mb-3">
-                                        <input type="number"
-                                            class="form-control"
-                                            id="documentYear"
-                                            name="tahun"
-                                            placeholder="Tahun"
-                                            value="{{ request('tahun') }}">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            <input type="number"
+                                                class="form-control"
+                                                id="documentYear"
+                                                name="tahun"
+                                                placeholder="Tahun"
+                                                value="{{ request('tahun') }}">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Submit Button -->
-                                <button class="btn btn-primary" type="submit">Apply Filters</button>
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i> Cari
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
