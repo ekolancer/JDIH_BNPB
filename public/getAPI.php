@@ -3,9 +3,9 @@ header("Content-Type: application/json");
 
 // Konfigurasi database
 $servername = "127.0.0.1"; // Nama server
-$username = "jdih_bnpb";   // Username database
+$username = "root";   // Username database
 $password = "jdih_T@n99uH@@#!"; // Password database
-$dbname = "jdih_2024";     // Nama database
+$dbname = "jdih_bnpb_fix";     // Nama database
 
 // Membuat array untuk response JSON
 $varjson = array();
@@ -53,8 +53,8 @@ try {
             $row_array->teuBadan = isset($row["teuBadan"]) ? $row["teuBadan"] : "-";
             $row_array->nomorIndukBuku = isset($row["nomorIndukBuku"]) ? $row["nomorIndukBuku"] : "-";
             $row_array->fileDownload = isset($row["lampiran"]) ? basename($row["lampiran"]) : "-";
-            $row_array->urlDownload = isset($row["lampiran"])
-                ? $base_url . basename($row["lampiran"])
+            $row_array->urlDownload = isset($row["lampiran"]) && !empty($row["lampiran"])
+                ? $base_url . ltrim($row["lampiran"], '/')
                 : "-";
             $row_array->abstrak = isset($row["abstrak"]) ? $row["abstrak"] : "-";
             $row_array->urlabstrak = isset($row["urlabstrak"]) ? $row["urlabstrak"] : "-";
