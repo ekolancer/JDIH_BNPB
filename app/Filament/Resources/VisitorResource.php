@@ -77,6 +77,7 @@ class VisitorResource extends Resource
                     ->sortable()
                     ->disableClick(), // Menonaktifkan clickable pada list table
             ])
+            ->defaultSort('visited_at', 'desc')
             ->filters([
                 //
             ])
