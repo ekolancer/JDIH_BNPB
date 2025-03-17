@@ -101,12 +101,9 @@ class DokumenList extends Component
         });
     }
 
-    // Terapkan filter dan reset pagination
+    // Terapkan filter tanpa mereset pagination
     public function applyFilters()
     {
-        $this->resetPage();
-        $this->dispatch('scroll-to-top');
-
         // Bersihkan filter agar tidak ada nilai kosong
         $filteredFilters = array_filter($this->filters, function ($value) {
             return is_array($value) ? count($value) > 0 : !empty($value);
@@ -119,19 +116,23 @@ class DokumenList extends Component
             }
         }
 
+        // Set pagination ke halaman 1
+        $filteredFilters['page'] = 1;
+
         // Buat query string
         $queryString = Arr::query($filteredFilters);
 
-        // Dispatch event ke frontend
-        $this->dispatch('update-url', filters: $queryString);
+        // Redirect to the updated URL with filters applied
+        return redirect()->to('/dokumen/search-doc?' . $queryString);
     }
 
-    // Reset semua filter ke nilai default
+    // Reset semua filter ke nilai default dan reset pagination
     public function resetFilters()
     {
         $this->filters = [
             'judul' => '',
             'tahun' => null,
+            'tipeDok' => '',
             'jenisDok' => [],
             'singkatan' => [],
             'penerbit' => [],
@@ -141,12 +142,13 @@ class DokumenList extends Component
             'nomor' => '',
         ];
 
+        $this->filters['page'] = 1;
         $this->resetPage();
-        // Bersihkan URL ke `/search-doc`
-        $this->dispatch('update-url', filters: null);
+        // Redirect to the base URL without filters
+        return redirect()->to('/dokumen/search-doc');
     }
 
-    // Menghapus filter tertentu
+    // Menghapus filter tertentu dan reset pagination
     public function removeFilter($filter)
     {
         foreach ($this->filters as $key => $value) {
@@ -162,7 +164,10 @@ class DokumenList extends Component
             }
         }
 
-        $this->updated('filters');
+        // Reset pagination to page 1
+        $this->filters['page'] = 1;
+        $this->resetPage();
+
         // Perbarui URL setelah filter dihapus
         $this->applyFilters();
     }
@@ -184,6 +189,9 @@ class DokumenList extends Component
                 }
             }
         }
+
+        // Pastikan pagination direset saat filter aktif diperbarui
+        $this->resetPage();
 
         return $filters;
     }
