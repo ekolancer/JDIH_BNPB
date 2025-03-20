@@ -166,7 +166,7 @@ class DokumenList extends Component
 
         // Reset pagination to page 1
         $this->filters['page'] = 1;
-        $this->resetPage();
+        // $this->resetPage();
 
         // Perbarui URL setelah filter dihapus
         $this->applyFilters();
@@ -191,7 +191,7 @@ class DokumenList extends Component
         }
 
         // Pastikan pagination direset saat filter aktif diperbarui
-        $this->resetPage();
+        // $this->resetPage();
 
         return $filters;
     }
@@ -251,6 +251,7 @@ class DokumenList extends Component
             'judul' => 'Judul',
             'tahun' => 'Tahun',
             'nomor' => 'Nomor',
+            'page' => 'Hal',
         ];
 
         return isset($displayKeys[$key]) ? $displayKeys[$key] : $key;
