@@ -122,7 +122,7 @@
                 </div>
 
                 <!-- Bagian kanan: Dropdown Sorting -->
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <button class="btn btn-primary btn-sm d-flex align-items-center" type="button" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-sort me-2"></i> Urutkan
                     </button>
@@ -138,7 +138,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
 
             <!-- Loading Spinner -->

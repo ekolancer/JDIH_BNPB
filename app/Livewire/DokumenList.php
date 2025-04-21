@@ -29,10 +29,6 @@ class DokumenList extends Component
 
     public $availableFilters = [];
 
-    public $sortField = 'created_at';
-
-    public $sortDirection = 'desc';
-
     public $numResults = 0;
 
     public $queryTime = 0;
@@ -77,13 +73,6 @@ class DokumenList extends Component
         if (str_starts_with($propertyName, 'filters')) {
             $this->resetPage();
         }
-    }
-
-    // Mengatur field sorting dan arah sorting
-    public function sortBy($field)
-    {
-        $this->sortDirection = $this->sortField === $field && $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        $this->sortField = $field;
     }
 
     // Memuat filter yang tersedia dari cache
@@ -178,6 +167,11 @@ class DokumenList extends Component
         $filters = [];
 
         foreach ($this->filters as $key => $value) {
+            // Abaikan filter 'page'
+            if ($key === 'page' || $key === 'tipeDok') {
+                continue;
+            }
+
             if (!empty($value)) {
                 $displayKey = $this->getDisplayKey($key);
                 if (is_array($value)) {
@@ -190,9 +184,6 @@ class DokumenList extends Component
             }
         }
 
-        // Pastikan pagination direset saat filter aktif diperbarui
-        // $this->resetPage();
-
         return $filters;
     }
 
@@ -202,11 +193,13 @@ class DokumenList extends Component
         $startTime = microtime(true);
 
         $query = DokumenHukum::query();
+
         $this->applyFiltersToQuery($query);
 
-        $results = $query->orderBy($this->sortField, $this->sortDirection)->paginate(10);
+        $results = $query->orderBy('tahun', 'desc')->orderBy('nomor', 'desc')->paginate(10);
 
         $this->numResults = $results->total();
+        
         $this->queryTime = microtime(true) - $startTime;
 
         return view('livewire.dokumen-list', [

@@ -698,8 +698,8 @@
 }
 
 .hero-image {
-    background-image: url('https://jdih.bnpb.go.id/img/headerhero.webp');
-    /* background-size: cover; */
+    background-image: url('/img/headerhero.webp');
+    background-size: cover;
     background-position: center;
     height: 35vh;
     position: relative;
