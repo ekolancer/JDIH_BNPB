@@ -4,7 +4,7 @@
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm bg-light">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="fw-bold mb-0">Filter</h5>
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-filter me-2"></i>Filter</h5>
                     <button wire:click="resetFilters" class="btn btn-light btn-sm text-danger fw-bold">
                         <i class="fa-solid fa-trash-can me-2"></i> Reset
                     </button>
@@ -20,7 +20,7 @@
                     <hr>
                     <!-- Filter by Jenis Dokumen -->
                     <div class="filter-section mb-3 shadow-md">
-                        <h6 class="fw-bold">Jenis Dokumen</h6>
+                        <h6 class="fw-bold"><i class="fa-solid fa-list me-2"></i>JENIS DOKUMEN</h6>
                         @foreach($availableFilters['jenisDok'] as $option)
                         <div class="form-check d-flex justify-content-between align-items-center border-zinc-950">
                             <div>
@@ -46,7 +46,7 @@
                     <!-- Filter by Tahun Terbit -->
                     <div class="filter-section mb-3 shadow-md">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="fw-bold mb-0">Tahun Terbit</h6>
+                            <h6 class="fw-bold mb-0"><i class="fa-solid fa-list me-2"></i>TAHUN TERBIT</h6>
                             <span class="fw-bold text-primary" id="tahunValue">{{ $filters['tahun'] }}</span>
                         </div>
                         <input type="range" wire:model.defer="filters.tahun" min="1990" max="{{ date('Y') }}" class="form-range" id="tahunSlider">
@@ -62,9 +62,9 @@
 
                     <!-- Other Filters -->
                     @foreach($availableFilters as $column => $values)
-                    @if($column !== 'jenisDok')
+                    @if($column !== 'jenisDok' && $column !== 'singkatan')
                     <div class="filter-section mb-3 shadow-md">
-                        <h6 class="fw-bold">{{ ucfirst(str_replace('_', ' ', $column)) }}</h6>
+                        <h6 class="fw-bold"><i class="fa-solid fa-list me-2"></i>{{ strtoupper(str_replace('_', ' ', $column)) }}</h6>
 
                         @foreach($values as $index => $value)
                         @if(!empty($value) && $value !== '-')
