@@ -62,7 +62,7 @@
 
                     <!-- Other Filters -->
                     @foreach($availableFilters as $column => $values)
-                    @if($column !== 'jenisDok' && $column !== 'singkatan')
+                    @if($column !== 'jenisDok' && $column !== 'singkatan' && $column !== 'penerbit')
                     <div class="filter-section mb-3 shadow-md">
                         <h6 class="fw-bold"><i class="fa-solid fa-list me-2"></i>{{ strtoupper(str_replace('_', ' ', $column)) }}</h6>
 
@@ -122,23 +122,13 @@
                 </div>
 
                 <!-- Bagian kanan: Dropdown Sorting -->
-                <!-- <div class="dropdown">
-                    <button class="btn btn-primary btn-sm d-flex align-items-center" type="button" data-bs-toggle="dropdown">
-                        <i class="fa-solid fa-sort me-2"></i> Urutkan
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" wire:click="sortBy('created_at')">
-                                Terbaru
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" wire:click="sortBy('view_count')">
-                                Terpopuler
-                            </a>
-                        </li>
-                    </ul>
-                </div> -->
+                <div class="sort-options d-flex align-items-center gap-2">
+                    <label for="sortBy" class="fw-bold text-muted mb-0">Urutkan :</label>
+                    <select id="sortBy" class="form-select form-select-sm w-auto" onchange="window.location.href='?sortBy=' + this.value">
+                        <option value="latest" {{ request('sortBy') === 'latest' ? 'selected' : '' }}>Terbaru</option>
+                        <option value="popular" {{ request('sortBy') === 'popular' ? 'selected' : '' }}>Terpopuler</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Loading Spinner -->

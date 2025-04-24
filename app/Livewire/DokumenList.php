@@ -19,8 +19,6 @@ class DokumenList extends Component
         'tahun' => null,
         'tipeDok' => '',
         'jenisDok' => [],
-        'singkatan' => [],
-        'penerbit' => [],
         'subjek' => [],
         'status' => [],
         'bidangHukum' => [],
@@ -28,20 +26,22 @@ class DokumenList extends Component
     ];
 
     public $availableFilters = [];
-
     public $numResults = 0;
-
     public $queryTime = 0;
-
     public $selectedTipeDok;
+    public $sortBy = 'latest'; // Default sorting: 'latest', 'popular'
 
-    protected $updatesQueryString = ['filters' => ['except' => []]];
+    protected $updatesQueryString = [
+        'filters' => ['except' => []],
+        'sortBy' => ['except' => 'latest'], // Add sortBy to query string
+    ];
 
-    public function mount($filters = [])
+    public function mount($filters = [], $sortBy = 'latest')
     {
         $this->filters = array_merge($this->filters, $filters, request()->query());
+        $this->sortBy = request()->query('sortBy', $sortBy);
 
-        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
+        foreach (['jenisDok', 'subjek', 'status', 'bidangHukum'] as $key) {
             if (!is_array($this->filters[$key])) {
                 $this->filters[$key] = array_filter(explode(',', $this->filters[$key]));
             }
@@ -75,14 +75,21 @@ class DokumenList extends Component
         }
     }
 
+    public function updateSortBy($sortBy)
+    {
+        $this->sortBy = $sortBy;
+
+        // Redirect to the updated URL with the new sortBy value
+        $queryString = Arr::query(array_merge(request()->query(), ['sortBy' => $this->sortBy]));
+        return redirect()->to('/dokumen/search-doc?' . $queryString);
+    }
+
     // Memuat filter yang tersedia dari cache
     private function loadAvailableFilters()
     {
         $this->availableFilters = Cache::remember('available_filters', now()->addMinutes(30), function () {
             return [
                 'jenisDok' => DokumenHukum::distinct()->pluck('jenisDok')->toArray(),
-                'singkatan' => DokumenHukum::distinct()->pluck('singkatan')->toArray(),
-                'penerbit' => DokumenHukum::distinct()->pluck('penerbit')->toArray(),
                 'subjek' => DokumenHukum::distinct()->pluck('subjek')->toArray(),
                 'status' => DokumenHukum::distinct()->pluck('status')->toArray(),
                 'bidangHukum' => DokumenHukum::distinct()->pluck('bidangHukum')->toArray(),
@@ -123,8 +130,6 @@ class DokumenList extends Component
             'tahun' => null,
             'tipeDok' => '',
             'jenisDok' => [],
-            'singkatan' => [],
-            'penerbit' => [],
             'subjek' => [],
             'status' => [],
             'bidangHukum' => [],
@@ -168,7 +173,7 @@ class DokumenList extends Component
 
         foreach ($this->filters as $key => $value) {
             // Abaikan filter 'page'
-            if ($key === 'page' || $key === 'tipeDok') {
+            if ($key === 'page' || $key === 'tipeDok' || $key === 'sortBy') {
                 continue;
             }
 
@@ -196,7 +201,7 @@ class DokumenList extends Component
 
         $this->applyFiltersToQuery($query);
 
-        $results = $query->orderBy('tahun', 'desc')->orderBy('nomor', 'desc')->paginate(10);
+        $results = $query->paginate(10);
 
         $this->numResults = $results->total();
         
@@ -208,6 +213,7 @@ class DokumenList extends Component
             'queryTime' => round($this->queryTime, 2),
             'activeFilters' => $this->getActiveFilters(),
             'availableFilters' => $this->availableFilters,
+            'sortBy' => $this->sortBy, // Pass sortBy to the view
         ]);
     }
 
@@ -222,11 +228,18 @@ class DokumenList extends Component
             }
         }
 
-        foreach (['jenisDok', 'singkatan', 'penerbit', 'subjek', 'status', 'bidangHukum'] as $key) {
+        foreach (['jenisDok', 'subjek', 'status', 'bidangHukum'] as $key) {
             $values = array_filter(array_map('trim', $this->filters[$key] ?? []));
             if (!empty($values)) {
                 $query->whereIn($key, array_map('addslashes', $values));
             }
+        }
+
+        // Apply sorting
+        if ($this->sortBy === 'latest') {
+            $query->orderBy('tahun', 'desc')->orderBy('nomor', 'desc');
+        } elseif ($this->sortBy === 'popular') {
+            $query->orderBy('view_count', 'desc');
         }
     }
 
@@ -236,8 +249,6 @@ class DokumenList extends Component
         $displayKeys = [
             'tipeDok' => 'Tipe',
             'jenisDok' => 'Jenis',
-            'singkatan' => 'Singkatan',
-            'penerbit' => 'Penerbit',
             'subjek' => 'Subjek',
             'status' => 'Status',
             'bidangHukum' => 'Bidang',
