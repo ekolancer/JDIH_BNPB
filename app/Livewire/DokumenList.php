@@ -79,9 +79,8 @@ class DokumenList extends Component
     {
         $this->sortBy = $sortBy;
 
-        // Redirect to the updated URL with the new sortBy value
-        $queryString = Arr::query(array_merge(request()->query(), ['sortBy' => $this->sortBy]));
-        return redirect()->to('/dokumen/search-doc?' . $queryString);
+        // Terapkan filter dan sorting ke URL
+        $this->applyFilters();
     }
 
     // Memuat filter yang tersedia dari cache
@@ -112,14 +111,17 @@ class DokumenList extends Component
             }
         }
 
+        // Tambahkan sortBy ke query string
+        $filteredFilters['sortBy'] = $this->sortBy;
+
         // Set pagination ke halaman 1
         $filteredFilters['page'] = 1;
 
         // Buat query string
         $queryString = Arr::query($filteredFilters);
 
-        // Redirect to the updated URL with filters applied
-        return redirect()->to('/dokumen/search-doc?' . $queryString);
+        // Redirect to the updated URL with filters and sort applied
+        return redirect()->to('/dokumen?' . $queryString);
     }
 
     // Reset semua filter ke nilai default dan reset pagination
@@ -139,7 +141,7 @@ class DokumenList extends Component
         $this->filters['page'] = 1;
         $this->resetPage();
         // Redirect to the base URL without filters
-        return redirect()->to('/dokumen/search-doc');
+        return redirect()->to('/dokumen');
     }
 
     // Menghapus filter tertentu dan reset pagination

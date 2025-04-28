@@ -124,10 +124,23 @@
                 <!-- Bagian kanan: Dropdown Sorting -->
                 <div class="sort-options d-flex align-items-center gap-2">
                     <label for="sortBy" class="fw-bold text-muted mb-0">Urutkan :</label>
-                    <select id="sortBy" class="form-select form-select-sm w-auto" onchange="window.location.href='?sortBy=' + this.value">
-                        <option value="latest" {{ request('sortBy') === 'latest' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="popular" {{ request('sortBy') === 'popular' ? 'selected' : '' }}>Terpopuler</option>
-                    </select>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle btn-sm" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ $sortBy === 'latest' ? 'Terbaru' : 'Populer' }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                            <li>
+                                <a class="dropdown-item {{ $sortBy === 'latest' ? 'active' : '' }}" href="#" wire:click.prevent="updateSortBy('latest')">
+                                    Terbaru
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ $sortBy === 'popular' ? 'active' : '' }}" href="#" wire:click.prevent="updateSortBy('popular')">
+                                    Populer
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
