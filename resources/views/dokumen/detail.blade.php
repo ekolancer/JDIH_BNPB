@@ -1,4 +1,4 @@
-@extends('layout.app-clear')
+@extends('layout.app-detail')
 
 @section('content')
 
@@ -152,7 +152,7 @@
                 </div>
                 <!-- Tombol Social Share Upgrade -->
                 <div class="redes">
-                    <a class="instagram" href="https://www.instagram.com/create/story/?url={{ urlencode(Request::fullUrl()) }}" target="_blank">
+                <a class="instagram" href="https://www.instagram.com/create/story/?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Instagram'); return false;">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="#ffffff"
@@ -165,7 +165,7 @@
                         </svg>
                     </a>
 
-                    <a class="twitter" href="https://twitter.com/intent/tweet?url={{ urlencode(Request::fullUrl()) }}" target="_blank">
+                    <a class="twitter" href="https://twitter.com/intent/tweet?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Twitter'); return false;">
                         <svg
                             fill="white"
                             class="svgIcon"
@@ -178,7 +178,7 @@
                         </svg>
                     </a>
 
-                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}" target="_blank">
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Facebook'); return false;">
                         <svg
                             class="icon icons8-Facebook-Filled"
                             viewBox="0 0 50 50"
@@ -191,7 +191,7 @@
                         </svg>
                     </a>
 
-                    <a class="telegram" href="https://t.me/share/url?url={{ urlencode(Request::fullUrl()) }}" target="_blank">
+                    <a class="telegram" href="https://t.me/share/url?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Telegram'); return false;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="25"
                             height="25"
@@ -202,7 +202,7 @@
                         </svg>
                     </a>
 
-                    <a class="whatsapp" href="https://api.whatsapp.com/send?text={{ urlencode(Request::fullUrl()) }}" target="_blank">
+                    <a class="whatsapp" href="https://api.whatsapp.com/send?text={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'WhatsApp'); return false;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="25"
                             height="25"
@@ -281,3 +281,18 @@
 </div>
 
 @endsection
+
+<script>
+    function openSharePopup(url, title) {
+        const width = 600;
+        const height = 400;
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+
+        window.open(
+            url,
+            title,
+            `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+        );
+    }
+</script>
