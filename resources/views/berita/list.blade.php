@@ -2,9 +2,14 @@
 
 @section('content')
 
+<!-- Section List Biru -->
+<section class="file-title-section">
+    <div class="container"></div>
+</section>
+
 <section id="stats" class="stats section light-background py-5">
     <div class="container">
-        <div class="mx-auto text-center pt-3" style="max-width: 800px;">
+        <div class="mx-auto text-center" style="max-width: 800px;">
             <p class="text-muted" data-aos="zoom-in" data-aos-duration="800">Informasi Hukum</p>
             <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita Seputar JDIH BNPB.</h2>
         </div>

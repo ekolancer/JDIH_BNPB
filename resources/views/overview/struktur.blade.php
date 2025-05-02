@@ -20,6 +20,10 @@
 </head>
 
 <body>
+    <!-- Section List Biru -->
+    <section class="file-title-section">
+        <div class="container"></div>
+    </section>
 
     <div class="container">
         <h1 class="text-center mt-5 mb-4">Struktur Organisasi</h1>

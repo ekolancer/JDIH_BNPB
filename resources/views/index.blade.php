@@ -1,6 +1,10 @@
 @extends('layout.app')
 
 @section('content')
+<!-- Section List Biru -->
+<section class="file-title-section">
+    <div class="container"></div>
+</section>
 
 <!-- Stats Section -->
 <section id="stats" class="stats section light-background py-5">

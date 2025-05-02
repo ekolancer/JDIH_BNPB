@@ -9,6 +9,7 @@ use Filament\PanelProvider;
 use App\Filament\Auth\Login;
 use Filament\Support\Colors\Color;
 use App\Filament\Pages\HealthCheckResults;
+use App\Http\Middleware\RestrictIpMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -65,6 +66,7 @@ class WebminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RestrictIpMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

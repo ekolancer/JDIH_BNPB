@@ -3,18 +3,9 @@
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Section Judul File dan Breadcrumb -->
+<!-- Section List Biru -->
 <section class="file-title-section">
-    <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
-                <li class="breadcrumb-item"><a href="{{ url('/berita') }}">Berita</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ Str::limit(($berita->judul), 20) }}</li>
-            </ol>
-        </nav>
-    </div>
+    <div class="container"></div>
 </section>
 
 <div class="container">

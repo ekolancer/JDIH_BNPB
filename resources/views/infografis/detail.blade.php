@@ -1,6 +1,10 @@
 @extends('layout.app-clear')
 
 @section('content')
+<!-- Section List Biru -->
+<section class="file-title-section">
+    <div class="container"></div>
+</section>
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">

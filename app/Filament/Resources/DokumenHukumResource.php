@@ -43,6 +43,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
 use App\Filament\Resources\DokumenHukumResource\RelationManagers;
 
+use function Laravel\Prompts\select;
+
 class DokumenHukumResource extends Resource
 {
     protected static ?string $model = DokumenHukum::class;
@@ -321,6 +323,16 @@ class DokumenHukumResource extends Resource
                     ->disableClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
+                SelectFilter::make('singkatan')
+                    ->placeholder('Pilih Jenis Dokumen')
+                    ->multiple()
+                    ->options([
+                        'PERBAN' => 'Peraturan Badan',
+                        'PERKA' => 'Peraturan Kepala Badan',
+                        'Pedoman' => 'Pedoman',
+                        'Juklak' => 'Petunjuk Pelaksanaan',
+                        'Juknis' => 'Petunjuk Teknis',
+                    ]),
                 SelectFilter::make('status')
                     ->options([
                         'BERLAKU' => 'Berlaku',
