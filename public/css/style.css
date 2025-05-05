@@ -488,7 +488,7 @@
         background: var(--bs-white);
     }
 
-    .navbar-light .navbar-brand h1 {
+    .navbar-light .navbar-brand h5 {
         color: var(--bs-primary);
     }
 
@@ -516,6 +516,12 @@
 
     .navbar-light .navbar-brand img {
         max-height: 45px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-light .navbar-brand h5 {
+        display: none;
     }
 }
 
