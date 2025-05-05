@@ -324,15 +324,14 @@ class DokumenHukumResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('singkatan')
+                    ->label('Jenis Dokumen')
                     ->placeholder('Pilih Jenis Dokumen')
                     ->multiple()
-                    ->options([
-                        'PERBAN' => 'Peraturan Badan',
-                        'PERKA' => 'Peraturan Kepala Badan',
-                        'Pedoman' => 'Pedoman',
-                        'Juklak' => 'Petunjuk Pelaksanaan',
-                        'Juknis' => 'Petunjuk Teknis',
-                    ]),
+                    ->options(fn() => DokumenHukum::query()
+                        ->distinct()
+                        ->pluck('singkatan', 'singkatan')
+                        ->mapWithKeys(fn($value) => [strtoupper($value) => strtoupper($value)])
+                        ->toArray()),
                 SelectFilter::make('status')
                     ->options([
                         'BERLAKU' => 'Berlaku',

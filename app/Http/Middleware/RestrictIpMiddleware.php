@@ -18,6 +18,11 @@ class RestrictIpMiddleware
 
     public function handle(Request $request, Closure $next): Response
     {
+        // Izinkan akses jika IP adalah localhost
+        if (in_array($request->ip(), ['127.0.0.1', '::1'])) {
+            return $next($request);
+        }
+
         foreach ($this->allowedIps as $range) {
             if ($this->ipInRange($request->ip(), trim($range))) {
                 return $next($request);
