@@ -26,6 +26,7 @@ class VisitorResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $navigationGroup = 'Features';
+    
     protected static ?int $navigationSort = 2;
 
     protected static ?string $label = 'Visitor';
@@ -47,8 +48,8 @@ class VisitorResource extends Resource
                 IPToCountryFlagColumn::make('ip_address')
                     ->label('IP Address')
                     ->location(position: 'below')
-                    ->flagPosition('left')
-                    ->alignment(Alignment::Center)
+                    ->flagPosition('right')
+                    ->alignment(Alignment::Left)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->sortable()
                     ->disableClick(), // Menonaktifkan clickable pada list table
@@ -80,9 +81,6 @@ class VisitorResource extends Resource
             ->defaultSort('visited_at', 'desc')
             ->filters([
                 //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

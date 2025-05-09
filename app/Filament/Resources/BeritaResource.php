@@ -43,6 +43,8 @@ class BeritaResource extends Resource
     protected static ?int $navigationSort = 3;
 
     protected static ?string $label = 'Berita';
+
+    protected static ?string $slug = 'berita';
     
     protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
 
