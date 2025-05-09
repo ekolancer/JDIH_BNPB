@@ -21,8 +21,8 @@ Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');
-Route::get('/dokumen/{slug}/download-lampiran', [DokumenController::class, 'unduhLampiran'])->name('dokumen.unduhLampiran');
-Route::get('/dokumen/{slug}/download-abstrak', [DokumenController::class, 'unduhAbstrak'])->name('dokumen.unduhAbstrak');
+Route::get('/download-lampiran/{slug}', [DokumenController::class, 'unduhLampiran'])->name('dokumen.unduhLampiran');
+Route::get('/download-abstrak/{slug}', [DokumenController::class, 'unduhAbstrak'])->name('dokumen.unduhAbstrak');
 
 //Route Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');

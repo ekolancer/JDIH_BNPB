@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /webmin/
+Allow: /
+
+Sitemap: https://jdih.bnpb.go.id/sitemap.xml

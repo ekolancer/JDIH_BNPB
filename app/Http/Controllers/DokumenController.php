@@ -68,10 +68,10 @@ class DokumenController extends Controller
      * @param int $dokumenId
      * @return \Illuminate\Http\Response
      */
-    public function unduhLampiran($dokumenId)
+    public function unduhLampiran($slug)
     {
         // Cari dokumen berdasarkan ID
-        $dokumen = DokumenHukum::findOrFail($dokumenId);
+        $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
         // Mendapatkan path file
         $filePath = public_path('storage/' . $dokumen->lampiran);
@@ -98,10 +98,10 @@ class DokumenController extends Controller
      * @param int $dokumenId
      * @return \Illuminate\Http\Response
      */
-    public function unduhAbstrak($dokumenId)
+    public function unduhAbstrak($slug)
     {
         // Cari dokumen berdasarkan ID
-        $dokumen = DokumenHukum::findOrFail($dokumenId);
+        $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
         // Mendapatkan path file
         $filePath = public_path('storage/' . $dokumen->abstrak);
