@@ -45,8 +45,13 @@ if ($result->num_rows > 0) {
         $row_array->fileDownload = basename($row["lampiran"]); // Menghilangkan prefix file/ dan hanya mengambil nama file
         $row_array->urlDownload = $baseUrl . "/download-lampiran/" . $slug; // URL download lampiran
         $row_array->abstrak = $row["abstrak"];
-        $row_array->urlabstrak = $baseUrl . "/download-abstrak/" . $slug; // URL download abstrak
-        $row_array->urlDetailPeraturan = $row["slug"]; //berisi url halaman detail peraturan
+        // Jika abstrak null, maka urlabstrak juga null
+        if (is_null($row["abstrak"])) {
+            $row_array->urlabstrak = null;
+        } else {
+            $row_array->urlabstrak = $baseUrl . "/download-abstrak/" . $slug; // URL download abstrak
+        }
+        $row_array->urlDetailPeraturan = $baseUrl . "/dokumen/" . $row["tipeDok"] . "/" . $row["slug"]; //berisi url halaman detail peraturan
         $row_array->operasi = "4"; //wajib ada
         $row_array->display = "1"; //wajib ada
         array_push($varjson, json_decode(json_encode($row_array)));
