@@ -103,7 +103,7 @@
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->translatedFormat('d F Y') }}
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->locale('id')->translatedFormat('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
                             <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
@@ -144,7 +144,7 @@
                             <!-- Informasi tambahan -->
                             <small class="text-muted">
                                 <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->translatedFormat('d F Y') }}
+                                {{ \Carbon\Carbon::parse($peraturan->created_at)->locale('id')->translatedFormat('d F Y') }}
                             </small>
                             <!-- Tombol aksi -->
                             <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
@@ -215,7 +215,7 @@
                     </div>
                     <div class="packages-content bg-light">
                         <div class="p-4 pb-0">
-                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
+                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}</small>
                         </div>
                         <div class="p-4 pb-4 pt-4">
                             <small class="text-uppercase">{{ Str::limit(strip_tags($item->konten), 100) }}</small>

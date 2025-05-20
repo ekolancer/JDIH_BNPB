@@ -101,7 +101,7 @@
                     <div class="d-flex text-muted justify-content mt-2">
                         <!-- Created At -->
                         <span class="bg-info text-dark px-3 py-2 d-inline-block">
-                            <i class="fas fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($dokumen->created_at)->translatedFormat('d F Y') }}
+                            <i class="fas fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($dokumen->created_at)->locale('id')->translatedFormat('d F Y') }}
                         </span>
 
                         <!-- View Count -->

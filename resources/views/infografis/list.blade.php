@@ -34,7 +34,7 @@
                     class="img-fluid rounded shadow-sm infografis-img" />
                 @endif
                 <div class="position-absolute bottom-0 start-0 end-0 bg-white bg-opacity-30 text-black text-center py-2 rounded-bottom infografis-date">
-                    <small>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
+                    <small>{{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}</small>
                 </div>
             </a>
         </div>

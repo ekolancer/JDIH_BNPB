@@ -14,7 +14,7 @@
                 <div class="card-header d-flex justify-content-between bg-primary text-white p-4">
                     <div class="me-3 flex-shrink-0">
                         <i class="far fa-calendar-alt me-1"></i>
-                        {{ \Carbon\Carbon::parse($infografis->created_at)->translatedFormat('d F Y') }}
+                        {{ \Carbon\Carbon::parse($infografis->created_at)->locale('id')->translatedFormat('d F Y') }}
                     </div>
                     <h5 class="fw-bold text-uppercase text-center mb-0 mx-3" style="flex: 1; overflow: hidden; text-overflow: ellipsis;">
                         {{ $infografis->judul }}

@@ -185,7 +185,7 @@
                                     <div>
                                         <small class="text-muted me-3">
                                             <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
-                                            {{ \Carbon\Carbon::parse($result->created_at)->translatedFormat('d F Y') }}
+                                            {{ \Carbon\Carbon::parse($result->created_at)->locale('id')->translatedFormat('d F Y') }}
                                         </small>
                                         <small class="text-muted me-3">
                                             <i class="far fa-eye me-1" style="font-weight: bold;"></i>
