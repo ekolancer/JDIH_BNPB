@@ -186,12 +186,12 @@ class DokumenHukum extends Model
     // Accessor untuk format tanggal otomatis
     public function getTglPenetapanFormattedAttribute()
     {
-        return $this->tglPenetapan ? Carbon::parse($this->tglPenetapan)->translatedFormat('d F Y') : null;
+        return $this->tglPenetapan ? Carbon::parse($this->tglPenetapan)->locale('id')->translatedFormat('d F Y') : null;
     }
 
     public function getTglPengundanganFormattedAttribute()
     {
-        return $this->tglPengundangan ? Carbon::parse($this->tglPengundangan)->translatedFormat('d F Y') : null;
+        return $this->tglPengundangan ? Carbon::parse($this->tglPengundangan)->locale('id')->translatedFormat('d F Y') : null;
     }
 
     // Accessor untuk mendapatkan ukuran file dalam KB & MB
@@ -230,8 +230,8 @@ class DokumenHukum extends Model
                 'Nomor' => $this->nomor,
                 'Tahun Terbit' => $this->tahun,
                 'Tempat Terbit' => $this->tempat,
-                'Tanggal Penetapan' => \Carbon\Carbon::parse($this->tglPenetapan)->translatedFormat('d F Y'),
-                'Tanggal Pengundangan' => \Carbon\Carbon::parse($this->tglPengundangan)->translatedFormat('d F Y'),
+                'Tanggal Penetapan' => \Carbon\Carbon::parse($this->tglPenetapan)->locale('id')->translatedFormat('d F Y'),
+                'Tanggal Pengundangan' => \Carbon\Carbon::parse($this->tglPengundangan)->locale('id')->translatedFormat('d F Y'),
                 'Subjek' => $this->subjek,
                 'Sumber' => $this->sumber,
                 'Bahasa' => $this->bahasa,
@@ -248,7 +248,7 @@ class DokumenHukum extends Model
                 'Singkatan' => $this->singkatan,
                 'Tempat Peradilan' => $this->tempat,
                 'Penerbit' => $this->penerbit,
-                'Tanggal DiBacakan' => \Carbon\Carbon::parse($this->tglDiBacakan)->translatedFormat('d F Y'),
+                'Tanggal DiBacakan' => \Carbon\Carbon::parse($this->tglDiBacakan)->locale('id')->translatedFormat('d F Y'),
                 'Subjek' => $this->subjek,
                 'Sumber' => $this->sumber,
                 'Bahasa' => $this->bahasa,
