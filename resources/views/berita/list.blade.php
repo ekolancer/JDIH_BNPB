@@ -30,9 +30,12 @@
                             <img src="{{ asset('storage/'.$item->gambar) }}" alt="Gambar Berita" class="img-fluid">
                             <div class="content">
                                 <!-- Judul dengan maksimal 50 karakter dan hyperlink ke halaman detail -->
-                                <h6><a href="{{ route('berita.show', $item->slug) }}" class="text-decoration-none text-dark">{{ Str::limit($item->judul, 50) }}</a></h6>
+                                <h6><a href="{{ route('berita.show', $item->slug) }}" class="text-decoration-none text-dark">
+                                        {{ Str::limit($item->judul, 50) }}</a></h6>
                                 <!-- Tanggal dibuat -->
-                                <p class="text-muted"><i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>{{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}</p>
+                                <p class="text-muted"><i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
+                                    {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
+                                </p>
                             </div>
                         </li>
                         @endforeach
@@ -90,7 +93,7 @@
                                 <div>
                                     <small class="text-muted me-3">
                                         <i class="far fa-calendar-alt me-1" style="font-weight: bold;"></i>
-                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}
+                                        {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
                                     </small>
                                     <small class="text-muted">
                                         <i class="far fa-eye me-1" style="font-weight: bold;"></i>

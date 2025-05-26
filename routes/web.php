@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Models\DokumenHukum;
-use App\Livewire\DokumenList;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\SurveyController;
@@ -39,6 +39,7 @@ Route::post('/', [SurveyController::class, 'store'])->name('survey.store');
 Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->name('rating.distribution');
 Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->name('rating.average');
 Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->name('rating.summary');
+Route::get('/api', [ApiController::class, 'index']);
 
 Route::get('/check-data', function () {
     try {
