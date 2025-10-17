@@ -23,17 +23,17 @@ class VisitorChart extends ChartWidget
     //     'lg' => 2,  // Mengambil 4 kolom pada layar besar
     // ];
 
-    protected static ?string $heading = 'Traffic Overview';
+    protected static ?string $heading = 'Pengunjung Situs';
 
     public ?string $filter = 'month';
 
     protected function getFilters(): ?array
     {
         return [
-            'today' => 'Today',
-            'week' => 'Last week',
-            'month' => 'Last month',
-            'year' => 'This year',
+            'today' => 'Per Hari',
+            'week' => 'Per Minggu',
+            'month' => 'Per Bulan',
+            'year' => 'Per Tahun',
         ];
     }
 
@@ -104,8 +104,21 @@ class VisitorChart extends ChartWidget
                 break;
 
             default:
-                // Untuk filter "today" atau default lainnya, tampilkan hanya satu hari
-                $labels = [$startDate->format('l')]; // Format hari (Senin, dll.)
+                if ($activeFilter === 'today') {
+                    // Untuk filter "today", tampilkan jam 00:00 - 23:00
+                    $labels = collect(range(0, 23))->map(function ($hour) use ($startDate) {
+                        return $startDate->copy()->startOfDay()->addHours($hour)->format('H:00'); // Format jam (00:00, 01:00, ...)
+                    });
+
+                    // Ambil data per jam untuk hari ini
+                    $data = Trend::model(Visitor::class)
+                        ->between(start: $startDate, end: $endDate)
+                        ->perHour()
+                        ->count();
+                } else {
+                    // Untuk filter default lainnya, tampilkan hanya satu hari
+                    $labels = [$startDate->format('l')]; // Format hari (Senin, dll.)
+                }
         }
 
         return [
@@ -144,6 +157,6 @@ JS);
 
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 }
