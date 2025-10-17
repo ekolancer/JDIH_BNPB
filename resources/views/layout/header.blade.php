@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQ4PR27V84"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-XQ4PR27V84');
+    </script>
     <meta charset="utf-8">
     <title>JDIH - Badan Nasional Penanggulangan Bencana</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">

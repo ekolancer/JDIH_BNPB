@@ -6,6 +6,7 @@ use Closure;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class VisitorCounter
 {
@@ -14,9 +15,23 @@ class VisitorCounter
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+
     public function handle(Request $request, Closure $next): Response
     {
-        // Cek apakah IP sudah tercatat hari ini
+        $response = $next($request);
+
+        if ($request->is('webmin/*') || $request->is('api/*')) {
+            return $response;
+        }
+
+        $userAgent = $request->userAgent();
+
+        $crawler = new CrawlerDetect;
+
+        if (!$userAgent || $crawler->isCrawler($userAgent)) {
+            return $response; // Abaikan bot/crawler
+        }
+
         $ip = $request->ip();
         $userAgent = $request->userAgent();
 
@@ -27,10 +42,11 @@ class VisitorCounter
         if (!$exists) {
             Visitor::create([
                 'ip_address' => $ip,
-                'user_agent' => $userAgent,
+                'user_agent' => substr($userAgent, 0, 255),
+                'visited_at' => now(),
             ]);
         }
 
-        return $next($request);
+        return $response;
     }
 }
