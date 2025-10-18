@@ -13,6 +13,8 @@ class MostDownloadDoc extends BaseWidget
 {
     protected static ?string $heading = 'Top 5 Dokumen Hukum Diunduh';
 
+    protected static ?int $sort = 6;
+
     public function table(Table $table): Table
     {
         $model = DokumenHukumResource::getModel();

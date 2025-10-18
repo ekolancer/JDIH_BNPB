@@ -12,6 +12,8 @@ use Filament\Tables\Columns\TextColumn;
 class MostViewedDoc extends BaseWidget
 {
     protected static ?string $heading = 'Top 5 Dokumen Hukum Dilihat';
+    
+    protected static ?int $sort = 6;
 
     public function table(Table $table): Table
     {
