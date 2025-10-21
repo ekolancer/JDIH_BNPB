@@ -2,106 +2,144 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Visitor;
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Visitor;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Filters\Filter;
 use Filament\Support\Enums\Alignment;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Support\Enums\VerticalAlignment;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\IconColumn;
 use App\Filament\Resources\VisitorResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\VisitorResource\RelationManagers;
 use Mohammadhprp\IPToCountryFlagColumn\Columns\IPToCountryFlagColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 
 class VisitorResource extends Resource
 {
     protected static ?string $model = Visitor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationGroup = 'Features';
-    
+
     protected static ?int $navigationSort = 2;
 
     protected static ?string $label = 'Visitor';
 
-    protected static ?string $navigationLabel = 'Visitor'; // Memberikan Label Navigasi
+    protected static ?string $navigationLabel = 'Visitors Logs';
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return $form->schema([]); // Tidak diperlukan
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            // 🧩 Kolom Ringan & Optimal
             ->columns([
-                IPToCountryFlagColumn::make('ip_address')
+                TextColumn::make('ip_address')
                     ->label('IP Address')
-                    ->location(position: 'below')
-                    ->flagPosition('right')
+                    ->searchable()
+                    ->copyable()
                     ->alignment(Alignment::Left)
-                    ->verticalAlignment(VerticalAlignment::Center)
-                    ->sortable()
-                    ->disableClick(), // Menonaktifkan clickable pada list table
-                TextColumn::make('user_agent')
-                    ->label('Browser')
+                    ->disabledClick(),
+
+                TextColumn::make('path')
+                    ->label('Path')
+                    ->limit(35)
                     ->alignment(Alignment::Center)
-                    ->verticalAlignment(VerticalAlignment::Center)
-                    ->limit(70)
-                    ->tooltip(function (TextColumn $column): ?string {
-                        $state = $column->getState();
+                    ->tooltip(false)
+                    ->searchable()
+                    ->disabledClick(),
 
-                        if (strlen($state) <= $column->getCharacterLimit()) {
-                            return null;
-                        }
+                BadgeColumn::make('country')
+                    ->label('Country')
+                    ->colors([
+                        'success' => fn($state): bool => strtolower($state) === 'indonesia',
+                        'gray' => fn($state): bool => strtolower($state) !== 'indonesia',
+                    ])
+                    ->formatStateUsing(fn($state) => ucfirst($state ?? '-'))
+                    ->disabledClick(),
 
-                        // Only render the tooltip if the column content exceeds the length limit.
-                        return $state;
-                    })
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                TextColumn::make('city')
+                    ->label('City')
+                    ->alignment(Alignment::Center)
+                    ->default('-')
+                    ->limit(20)
+                    ->disabledClick(),
+
+                IconColumn::make('suspicious')
+                    ->label('Suspicious')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-shield-exclamation')
+                    ->alignment(Alignment::Center)
+                    ->falseIcon('heroicon-o-check-circle')
+                    ->color(fn($state) => $state ? 'danger' : 'success')
+                    ->tooltip(fn($state) => $state ? 'Aktivitas mencurigakan' : 'Normal')
+                    ->disabledClick(),
+
                 TextColumn::make('visited_at')
-                    ->label('Visited_at')
+                    ->label('Visited')
+                    ->dateTime('d M Y H:i')
                     ->alignment(Alignment::Center)
-                    ->verticalAlignment(VerticalAlignment::Center)
-                    ->since()
-                    ->dateTimeTooltip()
-                    ->sortable()
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(),
             ])
+
+            // ⚙️ Optimasi Query
             ->defaultSort('visited_at', 'desc')
+            ->paginationPageOptions([10, 25, 50, 100])
+            ->defaultPaginationPageOption(25)
+            ->striped() // Lebih ringan untuk mata
+
+            // 🎛️ Filter ringan
             ->filters([
-                //
+                SelectFilter::make('country')
+                    ->label('Negara')
+                    ->options(fn() => Visitor::query()
+                        ->select('country')
+                        ->distinct()
+                        ->orderBy('country')
+                        ->pluck('country', 'country')
+                        ->filter()
+                        ->toArray()
+                    ),
+                Filter::make('suspicious')
+                    ->label('Suspicious Only')
+                    ->query(fn($query) => $query->where('suspicious', true)),
             ])
+
+            // 🧭 Aksi
+            ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->label('Detail')
+                    ->modalHeading('Detail Kunjungan')
+                    ->modalContent(fn($record) => view('filament.visitors.detail', ['visitor' => $record]))
+                    ->icon('heroicon-o-eye'),
+            ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Hapus Terpilih')
+                        ->requiresConfirmation(),
                 ]),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListVisitors::route('/'),
-            'create' => Pages\CreateVisitor::route('/create'),
-            'edit' => Pages\EditVisitor::route('/{record}/edit'),
         ];
     }
 }
