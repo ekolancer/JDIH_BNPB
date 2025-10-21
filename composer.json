@@ -22,6 +22,7 @@
         "niladam/filament-auto-logout": "^1.0",
         "shuvroroy/filament-spatie-laravel-health": "^2.3",
         "spatie/laravel-sluggable": "^3.6",
+        "torann/geoip": "^3.0",
         "z3d0x/filament-logger": "^0.7.2"
     },
     "require-dev": {
