@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class VisitorCounter
 {
@@ -15,13 +16,13 @@ class VisitorCounter
     {
         $response = $next($request);
 
-        // 🚫 Abaikan route yang tidak relevan
-        if ($request->is('webmin/*') || $request->is('api/*') || $request->is('telescope*')) {
+        // 🚫 Abaikan route tertentu (admin & API)
+        if ($request->is('webmin/*') || $request->is('api/*')) {
             return $response;
         }
 
-        $userAgent = $request->userAgent() ?? 'unknown';
         $ip = $request->ip();
+        $userAgent = $request->userAgent() ?? 'Unknown';
         $path = $request->path();
         $referrer = $request->headers->get('referer', 'Direct');
 
@@ -31,33 +32,36 @@ class VisitorCounter
             return $response;
         }
 
-        // 🧭 Ambil lokasi GEOIP dengan fallback tanpa cache
-        $location = null;
-        try {
-            $location = geoip()->getLocation($ip, false); // tanpa cache
-        } catch (\Throwable $e) {
-            Log::warning('GeoIP lookup failed: ' . $e->getMessage());
-        }
-
+        // 🌐 Deteksi lokasi via API ipapi.co
         $isLocal = $this->isLocalIp($ip);
+        $country = 'Unknown';
+        $city = '-';
 
         if ($isLocal) {
-            $country = 'indonesia';
+            $country = 'Indonesia';
             $city = 'Local Network';
         } else {
-            $country = strtolower($location->country ?? '');
-            $city = $location->city ?? null;
+            try {
+                $apiResponse = Http::timeout(3)->get("https://ipapi.co/{$ip}/json/");
+                if ($apiResponse->ok()) {
+                    $data = $apiResponse->json();
+                    $country = $data['country_name'] ?? 'Unknown';
+                    $city = $data['city'] ?? '-';
+                }
+            } catch (\Throwable $e) {
+                Log::warning("ipapi.co lookup failed: " . $e->getMessage());
+            }
         }
 
-        // 🚫 Abaikan negara lain, tapi izinkan jika lokal/dev
-        if (!$isLocal && $country && $country !== 'indonesia') {
+        // 🚫 Abaikan pengunjung luar negeri (kecuali IP lokal)
+        if (!$isLocal && strtolower($country) !== 'indonesia') {
             return $response;
         }
 
         // 🚨 Deteksi aktivitas mencurigakan
-        $suspicious = $this->isSuspicious($request, $userAgent);
+        $suspicious = $this->isSuspicious($userAgent);
 
-        // ⚙️ Kurangi overhead query: cek visitor hanya 1x/hari
+        // ⚙️ Kurangi query duplikat: 1x/hari per kombinasi IP + user agent
         $exists = Visitor::whereDate('visited_at', now()->toDateString())
             ->where('ip_address', $ip)
             ->where('user_agent', substr($userAgent, 0, 255))
@@ -70,25 +74,28 @@ class VisitorCounter
                     'user_agent' => substr($userAgent, 0, 255),
                     'path'       => $path,
                     'referrer'   => $referrer,
-                    'country'    => ucfirst($country ?: 'Unknown'),
+                    'country'    => $country,
                     'city'       => $city,
                     'suspicious' => $suspicious,
                     'visited_at' => now(),
                 ]);
             } catch (\Throwable $e) {
-                Log::error('Failed to create visitor record: ' . $e->getMessage());
+                Log::error('Failed to insert visitor: ' . $e->getMessage(), [
+                    'ip' => $ip,
+                    'path' => $path,
+                ]);
             }
         }
 
-        // 📋 (Opsional) Log ringan untuk debugging dev
+        // 🧾 Logging ringan (aktif di local)
         if (app()->environment('local')) {
-            Log::info('Visitor logged', [
+            Log::info('Visitor recorded', [
                 'ip' => $ip,
                 'path' => $path,
                 'country' => $country,
                 'city' => $city,
-                'local' => $isLocal,
                 'suspicious' => $suspicious,
+                'local' => $isLocal,
             ]);
         }
 
@@ -96,7 +103,7 @@ class VisitorCounter
     }
 
     /**
-     * Cek apakah IP termasuk lokal/dev.
+     * 🔍 Cek apakah IP lokal.
      */
     private function isLocalIp(string $ip): bool
     {
@@ -107,11 +114,12 @@ class VisitorCounter
     }
 
     /**
-     * Deteksi aktivitas mencurigakan berdasarkan pola User-Agent.
+     * ⚠️ Deteksi user-agent mencurigakan.
      */
-    private function isSuspicious(Request $request, string $userAgent): bool
+    private function isSuspicious(string $userAgent): bool
     {
         $ua = strtolower($userAgent);
+
         $patterns = [
             'sqlmap',
             'curl/',
@@ -122,6 +130,7 @@ class VisitorCounter
             'zgrab',
             'libwww-perl',
             'httpclient',
+            'scanbot',
         ];
 
         foreach ($patterns as $pattern) {
@@ -129,9 +138,6 @@ class VisitorCounter
                 return true;
             }
         }
-
-        // Tambahan: terlalu banyak request dalam 5 detik dari IP sama (opsional)
-        // Bisa implementasikan rate limiting manual jika perlu
 
         return false;
     }

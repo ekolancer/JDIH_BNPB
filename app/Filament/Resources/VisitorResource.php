@@ -24,6 +24,8 @@ class VisitorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $pollingInterval = '10s'; // Refresh setiap 10 detik
+
     protected static ?string $navigationGroup = 'Features';
 
     protected static ?int $navigationSort = 2;

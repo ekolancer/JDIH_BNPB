@@ -41,25 +41,25 @@ Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])
 Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->name('rating.summary');
 Route::get('/api', [ApiController::class, 'index']);
 
-Route::get('/check-data', function () {
-    try {
-        // Ambil semua data dari model
-        $data = DokumenHukum::all();
+// Route::get('/check-data', function () {
+//     try {
+//         // Ambil semua data dari model
+//         $data = DokumenHukum::all();
 
-        // Jika data kosong
-        if ($data->isEmpty()) {
-            return response()->json([
-                'message' => 'Tidak ada data ditemukan.',
-            ], 200);
-        }
+//         // Jika data kosong
+//         if ($data->isEmpty()) {
+//             return response()->json([
+//                 'message' => 'Tidak ada data ditemukan.',
+//             ], 200);
+//         }
 
-        // Tampilkan data sebagai HTML sederhana
-        return response()->make('<pre>' . print_r($data->toArray(), true) . '</pre>');
-    } catch (\Exception $e) {
-        // Jika terjadi error
-        return response()->json([
-            'error' => 'Terjadi masalah saat memuat data.',
-            'message' => $e->getMessage(),
-        ], 500);
-    }
-});
+//         // Tampilkan data sebagai HTML sederhana
+//         return response()->make('<pre>' . print_r($data->toArray(), true) . '</pre>');
+//     } catch (\Exception $e) {
+//         // Jika terjadi error
+//         return response()->json([
+//             'error' => 'Terjadi masalah saat memuat data.',
+//             'message' => $e->getMessage(),
+//         ], 500);
+//     }
+// });

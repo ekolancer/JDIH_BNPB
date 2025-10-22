@@ -280,19 +280,19 @@ class DokumenHukumResource extends Resource
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('nomor')
                     ->label('NOMOR')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->disabledClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
                 TextColumn::make('tahun')
                     ->label('TAHUN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->disabledClick() // Menonaktifkan clickable pada list table
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('isbn')
@@ -300,7 +300,7 @@ class DokumenHukumResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->disabledClick() // Menonaktifkan clickable pada list table
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('penerbit')
@@ -308,7 +308,7 @@ class DokumenHukumResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disableClick() // Menonaktifkan clickable pada list table
+                    ->disabledClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
                 TextColumn::make('status')
                     ->label('STATUS')
@@ -320,7 +320,7 @@ class DokumenHukumResource extends Resource
                         'BERLAKU' => 'info',
                         'TIDAK BERLAKU' => 'danger',
                     })
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
                 SelectFilter::make('singkatan')
