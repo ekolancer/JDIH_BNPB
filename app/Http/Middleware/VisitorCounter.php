@@ -43,13 +43,24 @@ class VisitorCounter
         } else {
             try {
                 $apiResponse = Http::timeout(3)->get("https://ipapi.co/{$ip}/json/");
-                if ($apiResponse->ok()) {
+                $data = $apiResponse->json();
+
+                // Jika rate-limited atau gagal, fallback ke ipwho.is
+                if (isset($data['error']) || !isset($data['country_name'])) {
+                    Log::info("ipapi.co failed or rate limited for IP {$ip}, using ipwho.is fallback.");
+                    $apiResponse = Http::timeout(3)->get("https://ipwho.is/{$ip}");
                     $data = $apiResponse->json();
-                    $country = $data['country_name'] ?? 'Unknown';
-                    $city = $data['city'] ?? '-';
+                    Log::info("ipwho.is result for {$ip}: " . json_encode([
+                        'country' => $data['country_name'] ?? null,
+                        'city' => $data['city'] ?? null,
+                    ]));
                 }
+
+
+                $country = $data['country_name'] ?? 'Unknown';
+                $city = $data['city'] ?? '-';
             } catch (\Throwable $e) {
-                Log::warning("ipapi.co lookup failed: " . $e->getMessage());
+                Log::warning("Geo lookup failed for IP {$ip}: " . $e->getMessage());
             }
         }
 
