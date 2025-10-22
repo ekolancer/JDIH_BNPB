@@ -39,7 +39,9 @@ Route::post('/', [SurveyController::class, 'store'])->name('survey.store');
 Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->name('rating.distribution');
 Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->name('rating.average');
 Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->name('rating.summary');
-Route::get('/api', [ApiController::class, 'index']);
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/api', [ApiController::class, 'index']);
+});
 
 // Route::get('/check-data', function () {
 //     try {

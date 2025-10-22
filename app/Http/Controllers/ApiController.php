@@ -2,59 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DokumenHukumResource;
+use App\Models\DokumenHukum;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        //menyesuaikan base url
-        $baseUrl = config('app.url', 'http://jdih.bnpb.go.id');
-        // Ambil semua data dari tabel dokumen_hukums
-        $data = DB::table('dokumen_hukums')->get();
-        // dd($data->first());
+        try {
+            // Validate request parameters for pagination and filtering
+            $validated = $request->validate([
+                'per_page' => 'nullable|integer|min:1|max:100',
+                'page' => 'nullable|integer|min:1',
+                'tipeDok' => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
+                'tahun' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
+                'judul' => 'nullable|string|max:255',
+                'subjek' => 'nullable|string|max:255',
+                'bidangHukum' => 'nullable|string|max:255',
+                'sort_by' => 'nullable|string|in:id,tahun,judul,created_at',
+                'sort_order' => 'nullable|string|in:asc,desc',
+            ]);
 
-        $result = [];
-        foreach ($data as $row) {
-            $slug = $row->slug;
+            $perPage = $validated['per_page'] ?? 15; // Default 15 items per page, max 100
+            $query = DokumenHukum::query();
 
-            $item = [
-                'idData' => $row->id,
-                'tahun_pengundangan' => $row->tahun,
-                'tanggal_pengundangan' => $row->tglPengundangan,
-                'jenis' => $row->jenisDok,
-                'noPeraturan' => $row->nomor,
-                'judul' => $row->judul,
-                'noPanggil' => $row->nomorPanggil,
-                'singkatanJenis' => $row->singkatan,
-                'tempatTerbit' => $row->tempat,
-                'penerbit' => $row->penerbit,
-                'deskripsiFisik' => $row->deskripsiFisik,
-                'sumber' => $row->sumber,
-                'subjek' => $row->subjek,
-                'isbn' => $row->isbn,
-                'status' => $row->status,
-                'bahasa' => $row->bahasa,
-                'bidangHukum' => $row->bidangHukum,
-                'teuBadan' => $row->teuBadan,
-                'nomorIndukBuku' => $row->nomorIndukBuku,
-                'fileDownload' => basename($row->lampiran),
-                'urlDownload' => $baseUrl . "/download-lampiran/" . $slug,
-                'abstrak' => $row->abstrak,
-                'urlabstrak' => is_null($row->abstrak) ? null : $baseUrl . "/download-abstrak/" . $slug,
-                'urlDetailPeraturan' => $baseUrl . "/dokumen/" . $row->tipeDok . "/" . $row->slug,
-                'operasi' => "4",
-                'display' => "1",
-            ];
-            $result[] = $item;
+            // Apply filters if provided
+            if (isset($validated['tipeDok'])) {
+                $query->where('tipeDok', $validated['tipeDok']);
+            }
+
+            if (isset($validated['tahun'])) {
+                $query->where('tahun', $validated['tahun']);
+            }
+
+            if (isset($validated['judul'])) {
+                $query->where('judul', 'like', '%' . $validated['judul'] . '%');
+            }
+
+            if (isset($validated['subjek'])) {
+                $query->where('subjek', 'like', '%' . $validated['subjek'] . '%');
+            }
+
+            if (isset($validated['bidangHukum'])) {
+                $query->where('bidangHukum', $validated['bidangHukum']);
+            }
+
+            // Apply sorting
+            $sortBy = $validated['sort_by'] ?? 'created_at';
+            $sortOrder = $validated['sort_order'] ?? 'desc';
+            $query->orderBy($sortBy, $sortOrder);
+
+            // Paginate the results
+            // $dokumenHukums = $query->paginate($perPage); uncommented to enable pagination
+            
+            // Now fetch all results without pagination
+            $dokumenHukums = $query->get();
+
+            // Return paginated resource collection
+            return DokumenHukumResource::collection($dokumenHukums);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed',
+                'message' => 'Invalid request parameters',
+                'details' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('API Error: ' . $e->getMessage(), [
+                'request' => $request->all(),
+                'user_agent' => $request->userAgent(),
+                'ip' => $request->ip(),
+            ]);
+
+            return response()->json([
+                'error' => 'Internal server error',
+                'message' => 'An unexpected error occurred. Please try again later.',
+            ], 500);
         }
-
-        return response()->json($result);
     }
 }
