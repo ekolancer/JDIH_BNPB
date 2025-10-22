@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             DebugModeCheck::new(),
             OptimizedAppCheck::new(),
             UsedDiskSpaceCheck::new(),
-            PingCheck::new()->url('https://jdih.bnpb.go.id')->timeout(2),
+            PingCheck::new()->url('https://bnpb.go.id/')->timeout(2)->retryTimes(3),
             DatabaseCheck::new(),
         ]);
 
