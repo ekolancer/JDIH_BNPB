@@ -10,6 +10,7 @@
         "bezhansalleh/filament-shield": "^3.3",
         "diogogpinto/filament-auth-ui-enhancer": "^1.0",
         "filament/filament": "^3.2",
+        "filipfonal/filament-log-manager": "^2.1",
         "flowframe/laravel-trend": "^0.3.0",
         "hasnayeen/themes": "^3.0",
         "hisorange/browser-detect": "^5.0",

@@ -25,6 +25,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use Carbon\Carbon;
 use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
+use FilipFonal\FilamentLogManager\FilamentLogManager;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -88,6 +89,7 @@ class WebminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+                FilamentLogManager::make(),
                 AuthUIEnhancerPlugin::make()
                     ->showEmptyPanelOnMobile(false)
                     ->formPanelPosition('right')
