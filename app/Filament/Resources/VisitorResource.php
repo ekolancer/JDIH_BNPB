@@ -55,7 +55,7 @@ class VisitorResource extends Resource
                     ->label('Path')
                     ->limit(35)
                     ->alignment(Alignment::Center)
-                    ->tooltip(false)
+                    ->tooltip(fn($state) => $state)
                     ->searchable()
                     ->disabledClick(),
 

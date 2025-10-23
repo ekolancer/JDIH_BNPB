@@ -7,8 +7,8 @@ use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class VisitorCounter
 {
@@ -32,7 +32,7 @@ class VisitorCounter
             return $response;
         }
 
-        // 🌐 Deteksi lokasi via API ipapi.co
+        // 🌐 Deteksi lokasi
         $isLocal = $this->isLocalIp($ip);
         $country = 'Unknown';
         $city = '-';
@@ -46,33 +46,33 @@ class VisitorCounter
                 $data = $apiResponse->json();
 
                 // Jika rate-limited atau gagal, fallback ke ipwho.is
-                if (isset($data['error']) || !isset($data['country_name'])) {
-                    Log::info("ipapi.co failed or rate limited for IP {$ip}, using ipwho.is fallback.");
+                if (isset($data['error']) || empty($data['country'])) {
+                    Log::channel('visitor')->info("ipapi.co failed for {$ip}, using ipwho.is fallback.");
                     $apiResponse = Http::timeout(3)->get("https://ipwho.is/{$ip}");
                     $data = $apiResponse->json();
-                    Log::info("ipwho.is result for {$ip}: " . json_encode([
-                        'country' => $data['country_name'] ?? null,
+                    Log::channel('visitor')->info("ipwho.is result for {$ip}", [
+                        'country' => $data['country'] ?? null,
                         'city' => $data['city'] ?? null,
-                    ]));
+                    ]);
                 }
 
-
-                $country = $data['country_name'] ?? 'Unknown';
+                $country = $data['country'] ?? 'Unknown';
                 $city = $data['city'] ?? '-';
             } catch (\Throwable $e) {
-                Log::warning("Geo lookup failed for IP {$ip}: " . $e->getMessage());
+                Log::channel('visitor')->warning("Geo lookup failed for {$ip}: " . $e->getMessage());
             }
         }
 
         // 🚫 Abaikan pengunjung luar negeri (kecuali IP lokal)
         if (!$isLocal && strtolower($country) !== 'indonesia') {
+            Log::channel('visitor')->info("Skipped non-Indonesian visitor {$ip} ({$country})");
             return $response;
         }
 
         // 🚨 Deteksi aktivitas mencurigakan
         $suspicious = $this->isSuspicious($userAgent);
 
-        // ⚙️ Kurangi query duplikat: 1x/hari per kombinasi IP + user agent
+        // ⚙️ Cegah duplikasi log harian
         $exists = Visitor::whereDate('visited_at', now()->toDateString())
             ->where('ip_address', $ip)
             ->where('user_agent', substr($userAgent, 0, 255))
@@ -90,24 +90,21 @@ class VisitorCounter
                     'suspicious' => $suspicious,
                     'visited_at' => now(),
                 ]);
-            } catch (\Throwable $e) {
-                Log::error('Failed to insert visitor: ' . $e->getMessage(), [
+
+                Log::channel('visitor')->info("✅ Visitor recorded", [
                     'ip' => $ip,
                     'path' => $path,
+                    'country' => $country,
+                    'city' => $city,
+                    'suspicious' => $suspicious,
+                ]);
+            } catch (\Throwable $e) {
+                Log::channel('visitor')->error('❌ Failed to insert visitor', [
+                    'ip' => $ip,
+                    'path' => $path,
+                    'error' => $e->getMessage(),
                 ]);
             }
-        }
-
-        // 🧾 Logging ringan (aktif di local)
-        if (app()->environment('local')) {
-            Log::info('Visitor recorded', [
-                'ip' => $ip,
-                'path' => $path,
-                'country' => $country,
-                'city' => $city,
-                'suspicious' => $suspicious,
-                'local' => $isLocal,
-            ]);
         }
 
         return $response;
@@ -130,18 +127,9 @@ class VisitorCounter
     private function isSuspicious(string $userAgent): bool
     {
         $ua = strtolower($userAgent);
-
         $patterns = [
-            'sqlmap',
-            'curl/',
-            'wget',
-            'python-requests',
-            'nmap',
-            'masscan',
-            'zgrab',
-            'libwww-perl',
-            'httpclient',
-            'scanbot',
+            'sqlmap', 'curl/', 'wget', 'python-requests', 'nmap',
+            'masscan', 'zgrab', 'libwww-perl', 'httpclient', 'scanbot',
         ];
 
         foreach ($patterns as $pattern) {
