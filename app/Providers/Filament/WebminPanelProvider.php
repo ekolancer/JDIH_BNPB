@@ -51,6 +51,7 @@ class WebminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                \App\Filament\Pages\SystemMonitoring::class, // Dashboard custom untuk Pulse
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([])
@@ -99,7 +100,7 @@ class WebminPanelProvider extends PanelProvider
                     ->emptyPanelBackgroundImageUrl(asset('img/gBNPB.webp')),
                 FilamentSpatieLaravelHealthPlugin::make()
                     ->usingPage(HealthCheckResults::class)
-                    ->authorize(fn(): bool => auth()->user()->email === 'eko.lancer@gmail.com'),
+                    ->authorize(fn(): bool => \Illuminate\Support\Facades\Auth::user()?->email === 'eko.lancer@gmail.com'),
                 AutoLogoutPlugin::make()
                     ->color(Color::Emerald)                         // Set the color. Defaults to Zinc
                     ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
