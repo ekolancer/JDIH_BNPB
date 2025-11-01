@@ -10,80 +10,83 @@ use Illuminate\Support\Facades\Log;
 class ApiController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Endpoint API untuk sinkronisasi data ke sistem PUU.
+     * Mengembalikan array JSON langsung (tanpa wrapper "data").
      */
     public function index(Request $request)
     {
         try {
-            // Validate request parameters for pagination and filtering
+            // Validasi parameter request
             $validated = $request->validate([
-                'per_page' => 'nullable|integer|min:1|max:100',
-                'page' => 'nullable|integer|min:1',
-                'tipeDok' => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
-                'tahun' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-                'judul' => 'nullable|string|max:255',
-                'subjek' => 'nullable|string|max:255',
-                'bidangHukum' => 'nullable|string|max:255',
-                'sort_by' => 'nullable|string|in:id,tahun,judul,created_at',
-                'sort_order' => 'nullable|string|in:asc,desc',
+                'per_page'     => 'nullable|integer|min:1|max:100',
+                'page'         => 'nullable|integer|min:1',
+                'tipeDok'      => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
+                'tahun'        => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
+                'judul'        => 'nullable|string|max:255',
+                'subjek'       => 'nullable|string|max:255',
+                'bidangHukum'  => 'nullable|string|max:255',
+                'sort_by'      => 'nullable|string|in:id,tahun,judul,created_at',
+                'sort_order'   => 'nullable|string|in:asc,desc',
             ]);
 
-            $perPage = $validated['per_page'] ?? 15; // Default 15 items per page, max 100
-            $query = DokumenHukum::query();
+            // Parameter dasar
+            $perPage = $validated['per_page'] ?? 15;
+            $query   = DokumenHukum::query();
 
-            // Apply filters if provided
-            if (isset($validated['tipeDok'])) {
+            // Filter opsional
+            if (!empty($validated['tipeDok'])) {
                 $query->where('tipeDok', $validated['tipeDok']);
             }
 
-            if (isset($validated['tahun'])) {
+            if (!empty($validated['tahun'])) {
                 $query->where('tahun', $validated['tahun']);
             }
 
-            if (isset($validated['judul'])) {
+            if (!empty($validated['judul'])) {
                 $query->where('judul', 'like', '%' . $validated['judul'] . '%');
             }
 
-            if (isset($validated['subjek'])) {
+            if (!empty($validated['subjek'])) {
                 $query->where('subjek', 'like', '%' . $validated['subjek'] . '%');
             }
 
-            if (isset($validated['bidangHukum'])) {
+            if (!empty($validated['bidangHukum'])) {
                 $query->where('bidangHukum', $validated['bidangHukum']);
             }
 
-            // Apply sorting
-            $sortBy = $validated['sort_by'] ?? 'created_at';
+            // Urutan hasil
+            $sortBy    = $validated['sort_by'] ?? 'tahun';
             $sortOrder = $validated['sort_order'] ?? 'desc';
             $query->orderBy($sortBy, $sortOrder);
 
-            // Paginate the results
-            // $dokumenHukums = $query->paginate($perPage); uncommented to enable pagination
-            
-            // Now fetch all results without pagination
+            // Ambil data (tanpa pagination agar semua data keluar)
             $dokumenHukums = $query->get();
 
-            // Return paginated resource collection
-            return DokumenHukumResource::collection($dokumenHukums);
+            // Ubah resource collection menjadi array biasa
+            $data = $dokumenHukums->map(function ($item) {
+                return (new DokumenHukumResource($item))->toArray(request());
+            });
+
+            // Return sebagai array JSON langsung (tanpa key "data")
+            return response()->json($data, 200, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            // Error validasi parameter input
             return response()->json([
-                'error' => 'Validation failed',
+                'error'   => 'Validation failed',
                 'message' => 'Invalid request parameters',
                 'details' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            // Log the error for debugging
+            // Error umum
             Log::error('API Error: ' . $e->getMessage(), [
-                'request' => $request->all(),
-                'user_agent' => $request->userAgent(),
-                'ip' => $request->ip(),
+                'request'     => $request->all(),
+                'user_agent'  => $request->userAgent(),
+                'ip'          => $request->ip(),
             ]);
 
             return response()->json([
-                'error' => 'Internal server error',
+                'error'   => 'Internal server error',
                 'message' => 'An unexpected error occurred. Please try again later.',
             ], 500);
         }

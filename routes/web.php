@@ -40,7 +40,7 @@ Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->n
 Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->name('rating.average');
 Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->name('rating.summary');
 Route::middleware(['throttle:60,1'])->group(function () {
-    Route::get('/api', [ApiController::class, 'index']);
+    Route::get('/metadata/api', [ApiController::class, 'index']);
 });
 
 // Route::get('/check-data', function () {
