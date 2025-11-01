@@ -58,6 +58,8 @@ class DokumenHukum extends Model
 
         // Event `creating` untuk membuat id dan slug dinamis
         static::creating(function ($dokumenHukum) {
+            // Generate Document UID
+            $dokumenHukum->generateDocumentUid();
 
             // Generate slug jika belum ada            
             if (empty($dokumenHukum->slug)) {
@@ -92,6 +94,11 @@ class DokumenHukum extends Model
                     Storage::disk('public')->delete($oldAbstrak);
                 }
             }
+
+            // Jika jenis, nomor, atau tahun berubah — update UID
+            if ($dokumenHukum->isDirty(['jenis', 'nomor', 'tahun'])) {
+                $dokumenHukum->generateDocumentUid();
+            }
         });
 
         // Event `deleted` untuk menghapus file terkait setelah data dihapus
@@ -124,6 +131,31 @@ class DokumenHukum extends Model
                 // Untuk tipe dokumen yang tidak dikenali, return slug dari judul atau nilai default lainnya
                 return Str::slug($this->judul);
         }
+    }
+
+    // Generate Document UID berdasarkan jenis, nomor, dan tahun
+    public function generateDocumentUid()
+    {
+        if (empty($this->singkatan) || empty($this->nomor) || empty($this->tahun)) {
+            return;
+        }
+
+        // Pastikan format uppercase dan rapih
+        $prefix = strtoupper(preg_replace('/\s+/', '', $this->singkatan));
+        $nomor = str_pad(preg_replace('/\D/', '', $this->nomor), 2, '0', STR_PAD_LEFT);
+        $tahun = $this->tahun;
+
+        $uid = "{$prefix}-{$nomor}{$tahun}";
+
+        // Pastikan unik (kalau sudah ada, tambahkan suffix angka)
+        $originalUid = $uid;
+        $counter = 1;
+        while (self::where('document_uid', $uid)->exists()) {
+            $uid = "{$originalUid}-{$counter}";
+            $counter++;
+        }
+
+        $this->document_uid = $uid;
     }
 
     // Menghitung jumlah dokumen berdasarkan tipe
