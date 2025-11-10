@@ -5,7 +5,7 @@
 <style>
     body {
         background-color: #f8f9fa;
-        font-family: 'Arial', sans-serif;
+        font-family: 'Poppins';
     }
 
     .card-header {

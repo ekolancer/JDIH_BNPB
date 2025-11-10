@@ -1,4 +1,8 @@
 /*** Spinner Start ***/
+body {
+    font-family: 'Poppins';
+}
+
 #spinner {
     display: none;
     position: fixed;
@@ -409,7 +413,7 @@
 
 /*** Navbar ***/
 .navbar-light .navbar-nav .nav-link {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins';
     position: relative;
     padding: 35px 15px;
     color: var(--bs-white) !important;
@@ -887,7 +891,7 @@
     font-size: 18px;
     margin: 0;
     padding: 10px;
-    font-family: 'Open Sans';
+    font-family: 'Poppins';
 }
 
 
@@ -1326,6 +1330,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, background-color 0.3s ease;
+    font-family: 'Poppins';
 }
 
 .counters .counter-item:hover {
@@ -1678,7 +1683,7 @@ ul {
     display: block;
     font-size: 20px;
     font-weight: 700;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins';
     margin-bottom: 20px;
 }
 

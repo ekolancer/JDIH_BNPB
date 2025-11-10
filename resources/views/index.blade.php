@@ -15,7 +15,7 @@
         </div>
         <div id="projectFacts" class="sectionClass">
             <div class="fullWidth eight columns">
-                <div class="projectFactsWrap" style="font-family: 'Open Sans', sans-serif;">
+                <div class="projectFactsWrap">
                     <!-- Peraturan -->
                     <div class="item wow fadeInUpBig animated animated" style="visibility: visible;">
                         <i class="fa fa-balance-scale mb-3"></i>

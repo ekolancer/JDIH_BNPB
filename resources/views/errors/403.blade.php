@@ -26,7 +26,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins';
         }
     </style>
 </head>

@@ -76,7 +76,7 @@ class PeraturanChart extends ChartWidget
                     $ctx->save();
 
                     $fontSize = (min($width, $height) / 100) * 5;
-                    $ctx->font = "bold {$fontSize}px sans-serif";
+                    $ctx->font = "bold {$fontSize}px Poppins";
                     $ctx->fillStyle = '#333';
                     $ctx->textBaseline = 'middle';
                     $text = "Total: {$total}";

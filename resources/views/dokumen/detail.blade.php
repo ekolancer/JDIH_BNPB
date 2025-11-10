@@ -21,6 +21,52 @@
         margin-bottom: 10px;
     }
 
+    /* Modern Badge Styles */
+    .modern-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        margin: 4px 6px 4px 0;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: capitalize;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .modern-badge::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .modern-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+
+    .modern-badge:hover::before {
+        left: 100%;
+    }
+
+    .modern-badge i {
+        margin-right: 6px;
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
     /* ======================================================= */
     /* From Uiverse.io by stlyash */
     .redes {
@@ -136,9 +182,9 @@
                             <th>{{ $key }}</th>
                             <td>
                                 @if($key == 'Subjek' && !empty($value))
-                                @foreach(explode(' ', $value) as $word)
-                                <span class="badge bg-primary">{{ $word }}</span>
-                                @endforeach
+                                <span class="modern-badge">
+                                    <i class="fas fa-tag"></i> {{ $value }}
+                                </span>
                                 @else
                                 {{ $value }}
                                 @endif
