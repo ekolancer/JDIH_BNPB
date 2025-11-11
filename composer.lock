@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "719126a67617cfab900f1517f34fc654",
+    "content-hash": "fea9756c60f6f2db756ecb2d6b787a04",
     "packages": [
         {
             "name": "afatmustafa/filamentv3-turnstile",
@@ -2767,82 +2767,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "hasnayeen/themes",
-            "version": "v3.0.23",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Hasnayeen/themes.git",
-                "reference": "6f5cc1719719591d31c30e6f971fe5cede7aa000"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Hasnayeen/themes/zipball/6f5cc1719719591d31c30e6f971fe5cede7aa000",
-                "reference": "6f5cc1719719591d31c30e6f971fe5cede7aa000",
-                "shasum": ""
-            },
-            "require": {
-                "filament/filament": "^3.0",
-                "illuminate/contracts": "^10.0|^11.0",
-                "php": "^8.1",
-                "spatie/laravel-package-tools": "^1.15.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^7.9",
-                "nunomaduro/larastan": "^2.0.1",
-                "orchestra/testbench": "^8.0|^9.0",
-                "pestphp/pest": "^2.0",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.0",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Hasnayeen\\Themes\\ThemesServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Hasnayeen\\Themes\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Hasnayeen",
-                    "email": "searching.nehal@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Themes for Filament panels",
-            "homepage": "https://github.com/hasnayeen/themes",
-            "keywords": [
-                "Hasnayeen",
-                "filament",
-                "laravel",
-                "themes"
-            ],
-            "support": {
-                "issues": "https://github.com/hasnayeen/themes/issues",
-                "source": "https://github.com/hasnayeen/themes"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Hasnayeen",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-04-10T06:31:54+00:00"
         },
         {
             "name": "hisorange/browser-detect",
@@ -9694,86 +9618,6 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
-        },
-        {
-            "name": "torann/geoip",
-            "version": "3.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Torann/laravel-geoip.git",
-                "reference": "1ea60c7e1a1608de3885e8cd76389cfe5c8424de"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Torann/laravel-geoip/zipball/1ea60c7e1a1608de3885e8cd76389cfe5c8424de",
-                "reference": "1ea60c7e1a1608de3885e8cd76389cfe5c8424de",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/cache": "^8.0|^9.0|^10.0|^11.0|^12.0",
-                "illuminate/console": "^8.0|^9.0|^10.0|^11.0|^12.0",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
-                "php": "^8.0|^8.1|^8.2|^8.3"
-            },
-            "require-dev": {
-                "geoip2/geoip2": "~2.1|~3.0",
-                "mockery/mockery": "^1.3",
-                "phpstan/phpstan": "^0.12.14|^1.9",
-                "phpunit/phpunit": "^8.0|^9.0|^10.0|^11.0",
-                "squizlabs/php_codesniffer": "^3.5",
-                "vlucas/phpdotenv": "^5.0"
-            },
-            "suggest": {
-                "geoip2/geoip2": "Required to use the MaxMind database or web service with GeoIP (~2.1).",
-                "monolog/monolog": "Allows for storing location not found errors to the log"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "GeoIP": "Torann\\GeoIP\\Facades\\GeoIP"
-                    },
-                    "providers": [
-                        "Torann\\GeoIP\\GeoIPServiceProvider"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Torann\\GeoIP\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Stainback",
-                    "email": "torann@gmail.com"
-                }
-            ],
-            "description": "Support for multiple Geographical Location services.",
-            "keywords": [
-                "IP API",
-                "geographical",
-                "geoip",
-                "geolocation",
-                "infoDB",
-                "laravel",
-                "location"
-            ],
-            "support": {
-                "issues": "https://github.com/Torann/laravel-geoip/issues",
-                "source": "https://github.com/Torann/laravel-geoip/tree/3.0.9"
-            },
-            "time": "2025-02-25T18:24:54+00:00"
         },
         {
             "name": "ua-parser/uap-php",
