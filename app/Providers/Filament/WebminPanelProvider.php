@@ -124,6 +124,7 @@ class WebminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::global-search.before',
                 fn() => view('filament.pages.action.DateTime')
-            );
+            )
+            ->font('Poppins');
     }
 }

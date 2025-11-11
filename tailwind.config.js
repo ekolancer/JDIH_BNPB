@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Poppins', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'filament-panel': '#FF5733', // Warna kustom panel

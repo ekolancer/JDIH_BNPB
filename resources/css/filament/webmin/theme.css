@@ -41,13 +41,21 @@
         background-color: #ecfdf5;
     }
 
+    .fi-ta-header-ctn {
+        background-color: #93ccb2 !important;
+    }
+
+    .fi-section-header {
+        background-color: #93ccb2 !important;
+    }
+
 }
 
 @layer components {
 
     .fi-main,
     .fi-layout {
-        background-color: #2759ec;
+        background-color: #ebebeb;
     }
 
     .fi-sidebar {
