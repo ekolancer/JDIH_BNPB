@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('penulis')->nullable();
             $table->string('kategori')->nullable();
             $table->string('gambar')->nullable();
-            $table->timestamp('tanggal_publikasi')->nullable();
-            $table->enum('status', ['Draft', 'Publikasi'])->default('Draft');
+            $table->boolean('status')->default(false);
             $table->json('tag')->nullable();
             $table->unsignedBigInteger('view_count')->default(0);
             $table->timestamps(); // created_at dan updated_at

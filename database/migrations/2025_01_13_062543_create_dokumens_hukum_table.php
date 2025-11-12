@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('dokumen_hukums', function (Blueprint $table) {
             $table->id();
+            $table->string('document_uid', 50)->nullable()->unique();
             $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan']); // 'peraturan', 'monografi', 'artikel', 'putusan'.
             $table->string('jenisDok'); // 'peraturan', 'monografi', 'artikel', 'putusan'.
             $table->text('judul'); // untuk seluruh dokumen.
