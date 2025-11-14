@@ -13,37 +13,74 @@ return new class extends Migration
     {
         Schema::create('dokumen_hukums', function (Blueprint $table) {
             $table->id();
-            $table->string('document_uid', 50)->nullable()->unique();
-            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan']); // 'peraturan', 'monografi', 'artikel', 'putusan'.
-            $table->string('jenisDok'); // 'peraturan', 'monografi', 'artikel', 'putusan'.
-            $table->text('judul'); // untuk seluruh dokumen.
-            $table->string('slug')->unique(); // Kolom slug untuk URL-friendly
-            $table->string('teuBadan'); // untuk seluruh dokumen.
-            $table->integer('nomor')->nullable(); // Untuk peraturan dan putusan
-            $table->integer('tahun'); // untuk seluruh dokumen.
-            $table->string('singkatan')->default('-'); // Untuk peraturan dan putusan
-            $table->string('tempat'); // untuk seluruh dokumen.
-            $table->string('penerbit')->default('-'); // untuk monografi dan artikel.
-            $table->date('tglPenetapan')->nullable(); // Untuk peraturan
-            $table->date('tglPengundangan')->nullable(); // Untuk peraturan dan putusan
-            $table->date('tglDiBacakan')->nullable(); // Untuk putusan
-            $table->integer('nomorPanggil')->nullable(); // Untuk monografi
-            $table->string('cetakanEdisi')->default('-'); // Untuk monografi
-            $table->string('deskripsiFisik')->default('-'); // Untuk monografi
-            $table->text('subjek');  // untuk seluruh dokumen.
-            $table->string('sumber')->default('-'); // Untuk peraturan dan putusan
-            $table->string('isbn')->default('-'); // Untuk monografi
-            $table->enum('status', ['BERLAKU', 'TIDAK BERLAKU'])->nullable(); // Untuk peraturan
-            $table->string('bahasa'); // untuk seluruh dokumen.
-            $table->string('lokasi'); // untuk seluruh dokumen.
-            $table->string('bidangHukum'); // untuk seluruh dokumen.
-            $table->string('lampiran')->default('-'); // Untuk file peraturan dan putusan
-            $table->string('abstrak')->nullable(); // Untuk peraturan
-            $table->integer('nomorIndukBuku')->nullable(); // Untuk monografi
-            $table->string('penandatangan')->default('-'); // untuk seluruh dokumen.
+
+            // UID dokumen (PERKA/BNPB/01/2024)
+            $table->string('document_uid', 100)->nullable()->unique();
+
+            // Tipe dokumen utama
+            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan']);
+
+            // Relasi jenis dokumen (master baru)
+            $table->foreignId('ref_jenis_dokumen_id')
+                ->nullable()
+                ->constrained('ref_jenis_dokumen')
+                ->nullOnDelete();
+
+            // Informasi umum dokumen
+            $table->string('judul');
+            $table->string('slug')->unique();
+            $table->string('teuBadan')->nullable();
+
+            // Identitas dokumen
+            $table->string('nomor')->nullable();
+            $table->string('tahun', 4);
+            $table->string('tempat')->nullable();
+            $table->string('penerbit')->nullable();
+
+            // Tanggal penting
+            $table->date('tglPenetapan')->nullable();
+            $table->date('tglPengundangan')->nullable();
+            $table->date('tglDiBacakan')->nullable();
+
+            // Bidang lain
+            $table->string('nomorPanggil')->nullable();
+            $table->string('cetakanEdisi')->nullable();
+            $table->string('deskripsiFisik')->nullable();
+            $table->text('subjek')->nullable();
+            $table->string('sumber')->nullable();
+            $table->string('isbn')->nullable();
+            $table->string('status')->nullable();
+            $table->string('bahasa')->nullable();
+            $table->string('lokasi')->nullable();
+            $table->string('bidangHukum')->nullable();
+
+            // File
+            $table->string('lampiran')->nullable();
+            $table->string('abstrak')->nullable();
+
+            // Monografi
+            $table->string('nomorIndukBuku')->nullable();
+
+            // Penandatangan
+            $table->string('penandatangan')->nullable();
+
+            // Statistik
             $table->unsignedBigInteger('view_count')->default(0);
             $table->unsignedBigInteger('download_count')->default(0);
+
             $table->timestamps();
+        });
+
+        /**
+         * Index tambahan agar cepat pencarian
+         */
+        Schema::table('dokumen_hukums', function (Blueprint $table) {
+            $table->index('tipeDok');
+            $table->index('ref_jenis_dokumen_id');
+            $table->index('nomor');
+            $table->index('tahun');
+            $table->index('slug');
+            $table->index('document_uid');
         });
     }
 
@@ -52,6 +89,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dokumenHukum');
+        Schema::dropIfExists('dokumen_hukums');
     }
 };
