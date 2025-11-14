@@ -20,15 +20,16 @@ class DokumenHukum extends Model
 {
     use HasFactory, Notifiable;
 
+    protected $hidden = ['jenisDok', 'singkatar'];
+
     protected $fillable =   [
         'tipeDok',
-        'jenisDok',
         'judul',
+        'ref_jenis_dokumen_id',
         'slug',
         'teuBadan',
         'nomor',
         'tahun',
-        'singkatan',
         'tempat',
         'penerbit',
         'tglPenetapan',
@@ -352,5 +353,10 @@ class DokumenHukum extends Model
         }
 
         return $data;
+    }
+
+    public function jenisDokumen()
+    {
+        return $this->belongsTo(RefJenisDokumen::class, 'ref_jenis_dokumen_id');
     }
 }
