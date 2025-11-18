@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -12,27 +13,33 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ref_jenis_dokumen', function (Blueprint $table) {
+            // Charset & Collation mengikuti SQL manual
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+
             $table->id();
 
-            // Nama jenis dokumen (misal: Peraturan Badan, Peraturan Kepala)
-            $table->string('nama')->unique();
+            // Sesuai SQL manual (VARCHAR 150)
+            $table->string('nama', 150)->unique();
 
-            // Singkatan (misal: PERBAN, PERKA, JUKLAK)
+            // Sesuai SQL manual (VARCHAR 50)
             $table->string('singkatan', 50)->unique();
 
-            // Deskripsi opsional
             $table->text('deskripsi')->nullable();
 
-            // Status aktif
-            $table->boolean('is_active')->default(true);
+            // BOOLEAN → TINYINT(1)
+            $table->tinyInteger('is_active')->default(1);
 
-            $table->timestamps();
+            // TIMESTAMP DEFAULT CURRENT_TIMESTAMP (sesuai SQL)
+            $table->timestamp('created_at')->nullable()->useCurrent();
+
+            // TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (sesuai SQL)
+            $table->timestamp('updated_at')->nullable()
+                ->useCurrent()->useCurrentOnUpdate();
         });
 
-        // Optional indexing
+        // Index tambahan (sama seperti SQL UNIQUE)
         Schema::table('ref_jenis_dokumen', function (Blueprint $table) {
-            $table->index('nama');
-            $table->index('singkatan');
             $table->index('is_active');
         });
     }

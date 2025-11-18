@@ -5,12 +5,14 @@
 CREATE TABLE ref_jenis_dokumen (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nama VARCHAR(150) NOT NULL UNIQUE,
-  singkatan VARCHAR(50) NOT NULL,
+  singkatan VARCHAR(50) NOT NULL UNIQUE,
   deskripsi TEXT NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
 
 ## ⭐ 2. Tambahkan kolom FK ke tabel lama (dokumen_hukums)
 ALTER TABLE dokumen_hukums
@@ -21,7 +23,7 @@ ALTER TABLE dokumen_hukums
 
 ## ⭐ 3. Isi Master “jenisDokumen” dari data unik tabel lama
 INSERT INTO ref_jenis_dokumen (nama, singkatan)
-SELECT DISTINCT jenisDok, singkatar
+SELECT DISTINCT jenisDok, singkatan
 FROM dokumen_hukums
 WHERE jenisDok IS NOT NULL
   AND TRIM(jenisDok) <> '';
@@ -59,7 +61,7 @@ ALTER TABLE dokumen_hukums
 
 ALTER TABLE dokumen_hukums
   RENAME COLUMN jenisDok TO jenisDok_legacy,
-  RENAME COLUMN singkatar TO singkatar_legacy;
+  RENAME COLUMN singkatan TO singkatar_legacy;
 
 
 ## Jika frontend/back-end sudah diperbarui → baru dihapus:

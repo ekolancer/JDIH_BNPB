@@ -6,87 +6,91 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('dokumen_hukums', function (Blueprint $table) {
+            // EXACT MATCH: Charset + collation
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+
             $table->id();
 
-            // UID dokumen (PERKA/BNPB/01/2024)
-            $table->string('document_uid', 100)->nullable()->unique();
+            // varchar(50) nullable unique
+            $table->string('document_uid', 50)->nullable()->unique();
 
-            // Tipe dokumen utama
-            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan']);
+            // enum nullable
+            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan'])
+                  ->nullable();
 
-            // Relasi jenis dokumen (master baru)
-            $table->foreignId('ref_jenis_dokumen_id')
-                ->nullable()
-                ->constrained('ref_jenis_dokumen')
-                ->nullOnDelete();
+            // old legacy field (masih ada di SQL)
+            $table->string('jenisDok', 255);
 
-            // Informasi umum dokumen
-            $table->string('judul');
-            $table->string('slug')->unique();
-            $table->string('teuBadan')->nullable();
+            // foreign key ref
+            $table->unsignedBigInteger('ref_jenis_dokumen_id')->nullable();
 
-            // Identitas dokumen
-            $table->string('nomor')->nullable();
-            $table->string('tahun', 4);
-            $table->string('tempat')->nullable();
-            $table->string('penerbit')->nullable();
+            // judul TEXT NOT NULL
+            $table->text('judul');
 
-            // Tanggal penting
+            // slug VARCHAR(255) unique
+            $table->string('slug', 255)->unique();
+
+            $table->string('teuBadan', 255);
+
+            $table->integer('nomor')->nullable();
+            $table->integer('tahun');
+
+            $table->string('singkatan', 255)->default('-');
+
+            $table->string('tempat', 255);
+            $table->string('penerbit', 255)->default('-');
+
             $table->date('tglPenetapan')->nullable();
             $table->date('tglPengundangan')->nullable();
             $table->date('tglDiBacakan')->nullable();
 
-            // Bidang lain
-            $table->string('nomorPanggil')->nullable();
-            $table->string('cetakanEdisi')->nullable();
-            $table->string('deskripsiFisik')->nullable();
-            $table->text('subjek')->nullable();
-            $table->string('sumber')->nullable();
-            $table->string('isbn')->nullable();
-            $table->string('status')->nullable();
-            $table->string('bahasa')->nullable();
-            $table->string('lokasi')->nullable();
-            $table->string('bidangHukum')->nullable();
+            $table->integer('nomorPanggil')->nullable();
 
-            // File
-            $table->string('lampiran')->nullable();
-            $table->string('abstrak')->nullable();
+            $table->string('cetakanEdisi', 255)->default('-');
+            $table->string('deskripsiFisik', 255)->default('-');
 
-            // Monografi
-            $table->string('nomorIndukBuku')->nullable();
+            $table->text('subjek');
 
-            // Penandatangan
-            $table->string('penandatangan')->nullable();
+            $table->string('sumber', 255)->default('-');
+            $table->string('isbn', 255)->default('-');
 
-            // Statistik
+            $table->enum('status', ['BERLAKU', 'TIDAK BERLAKU'])
+                ->nullable();
+
+            $table->string('bahasa', 255);
+            $table->string('lokasi', 255);
+            $table->string('bidangHukum', 255);
+
+            $table->string('lampiran', 255)->default('-');
+            $table->string('abstrak', 255)->nullable();
+
+            $table->integer('nomorIndukBuku')->nullable();
+
+            $table->string('penandatangan', 255)->default('-');
+
             $table->unsignedBigInteger('view_count')->default(0);
             $table->unsignedBigInteger('download_count')->default(0);
 
-            $table->timestamps();
+            // timestamps (NULL default NULL)
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
+            // Foreign key (same name)
+            $table->foreign('ref_jenis_dokumen_id', 'fk_dokhukum_jenis')
+                  ->references('id')
+                  ->on('ref_jenis_dokumen');
         });
 
-        /**
-         * Index tambahan agar cepat pencarian
-         */
+        // Index sesuai SQL
         Schema::table('dokumen_hukums', function (Blueprint $table) {
-            $table->index('tipeDok');
-            $table->index('ref_jenis_dokumen_id');
-            $table->index('nomor');
-            $table->index('tahun');
-            $table->index('slug');
-            $table->index('document_uid');
+            $table->index('ref_jenis_dokumen_id', 'fk_dokhukum_jenis');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('dokumen_hukums');
