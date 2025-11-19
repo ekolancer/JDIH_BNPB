@@ -61,6 +61,12 @@ class DokumenHukum extends Model
         return $this->belongsTo(RefJenisDokumen::class, 'ref_jenis_dokumen_id');
     }
 
+    public function bidangHukumRef()
+    {
+        return $this->belongsTo(RefBidangHukum::class, 'ref_bidang_hukum_id');
+    }
+
+
     /***************************************************************
      *  EVENT MODEL (CREATING + UPDATING + DELETED)
      ***************************************************************/

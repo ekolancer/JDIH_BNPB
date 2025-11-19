@@ -20,6 +20,6 @@ class ListInfografis extends ListRecords
 
     public function getTitle(): string
     {
-        return "Data Infografis";
+        return "List Infografis";
     }
 }

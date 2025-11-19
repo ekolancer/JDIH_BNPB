@@ -85,3 +85,13 @@ Surat Edaran	        SE
 Petunjuk Teknis	        Juknis
 Petunjuk Pelaksanaan	Juklak
 Pedoman	                Pedoman
+
+## Update UUID dan Slug
+
+App\Models\DokumenHukum::chunk(100, function ($docs) {
+    foreach ($docs as $d) {
+        $d->generateDocumentUid();
+        $d->slug = $d->generateSlug();
+        $d->save();
+    }
+});

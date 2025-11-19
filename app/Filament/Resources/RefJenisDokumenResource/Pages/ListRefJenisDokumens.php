@@ -20,6 +20,6 @@ class ListRefJenisDokumens extends ListRecords
     
     public function getTitle(): string
     {
-        return "Jenis Dokumen";
+        return "List Jenis Dokumen";
     }
 }

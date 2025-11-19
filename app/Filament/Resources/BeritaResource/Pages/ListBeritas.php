@@ -20,6 +20,6 @@ class ListBeritas extends ListRecords
 
     public function getTitle(): string
     {
-        return "Data Berita";
+        return "List Berita";
     }
 }

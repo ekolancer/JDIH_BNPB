@@ -123,7 +123,7 @@ class DokumenHukumResource extends Resource
                                                     $set('singkatan', \App\Models\RefJenisDokumen::find($id)?->singkatan);
                                                 }
                                             })
-                                            ->visible(fn (Get $get) => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                                            ->visible(fn(Get $get) => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
                                         Textarea::make('judul')
                                             ->label('Judul')
                                             ->rows(5)
@@ -231,9 +231,11 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages(['required' => 'Lokasi tidak boleh kosong !'])
                                             ->label('Lokasi')
                                             ->required(),
-                                        TextInput::make('bidangHukum')
-                                            ->validationMessages(['required' => 'Bidang Hukum tidak boleh kosong !'])
+                                        Select::make('ref_bidang_hukum_id')
                                             ->label('Bidang Hukum')
+                                            ->relationship('bidangHukumRef', 'nama')
+                                            ->searchable()
+                                            ->preload()
                                             ->required(),
                                         TextInput::make('nomorIndukBuku')
                                             ->validationMessages(['required' => 'Nomor Induk Buku tidak boleh kosong !'])
