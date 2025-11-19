@@ -103,17 +103,38 @@ class DokumenHukumResource extends Resource
                                             ->required(),
                                         Select::make('ref_jenis_dokumen_id')
                                             ->label('Jenis Dokumen')
-                                            ->relationship('jenisDokumen', 'nama')
+                                            ->relationship(
+                                                name: 'jenisDokumen',
+                                                titleAttribute: 'nama',
+                                                modifyQueryUsing: fn($query) => $query->where('is_active', true)
+                                            )
                                             ->searchable()
                                             ->preload()
-                                            ->live() // penting untuk reactive!
+                                            ->live() // agar reactive
                                             ->afterStateUpdated(function ($state, callable $set) {
                                                 if ($state) {
                                                     $singkatan = \App\Models\RefJenisDokumen::find($state)?->singkatan;
                                                     $set('singkatan', $singkatan);
                                                 }
                                             })
-                                            ->required(),
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('nama')
+                                                    ->label('Nama Jenis Dokumen')
+                                                    ->required()
+                                                    ->unique(ignoreRecord: true),
+
+                                                Forms\Components\TextInput::make('singkatan')
+                                                    ->label('Singkatan')
+                                                    ->required(),
+
+                                                Forms\Components\Textarea::make('deskripsi')
+                                                    ->label('Deskripsi')
+                                                    ->nullable(),
+
+                                                Forms\Components\Toggle::make('is_active')
+                                                    ->label('Aktif')
+                                                    ->default(true),
+                                            ]),
                                         TextInput::make('singkatan')
                                             ->label('Singkatan Jenis')
                                             ->disabled() // user tidak bisa ubah
@@ -233,10 +254,25 @@ class DokumenHukumResource extends Resource
                                             ->required(),
                                         Select::make('ref_bidang_hukum_id')
                                             ->label('Bidang Hukum')
-                                            ->relationship('bidangHukumRef', 'nama')
+                                            ->relationship(
+                                                name: 'bidangHukumRef',
+                                                titleAttribute: 'nama',
+                                                modifyQueryUsing: fn($query) => $query->where('is_active', true)
+                                            )
                                             ->searchable()
                                             ->preload()
-                                            ->required(),
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('nama')
+                                                    ->label('Nama Bidang Hukum')
+                                                    ->required(),
+
+                                                Forms\Components\Textarea::make('deskripsi')
+                                                    ->nullable(),
+
+                                                Forms\Components\Toggle::make('is_active')
+                                                    ->label('Aktif')
+                                                    ->default(true),
+                                            ]),
                                         TextInput::make('nomorIndukBuku')
                                             ->validationMessages(['required' => 'Nomor Induk Buku tidak boleh kosong !'])
                                             ->label('Nomor Induk Buku')
