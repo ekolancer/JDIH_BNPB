@@ -101,15 +101,29 @@ class DokumenHukumResource extends Resource
                                             ->helperText('Pilih tipe dokumen yang sesuai sebelum mengisi metadata')
                                             ->reactive()
                                             ->required(),
-                                        TextInput::make('jenisDok')
+                                        Select::make('ref_jenis_dokumen_id')
                                             ->label('Jenis Dokumen')
-                                            ->validationMessages(['required' => 'Jenis dokumen tidak boleh kosong !'])
+                                            ->relationship('jenisDokumen', 'nama')
+                                            ->searchable()
+                                            ->preload()
+                                            ->live() // penting untuk reactive!
+                                            ->afterStateUpdated(function ($state, callable $set) {
+                                                if ($state) {
+                                                    $singkatan = \App\Models\RefJenisDokumen::find($state)?->singkatan;
+                                                    $set('singkatan', $singkatan);
+                                                }
+                                            })
                                             ->required(),
                                         TextInput::make('singkatan')
                                             ->label('Singkatan Jenis')
-                                            ->validationMessages(['required' => 'Singkatan tidak boleh kosong !'])
-                                            ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
-                                            ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                                            ->disabled() // user tidak bisa ubah
+                                            ->required()
+                                            ->afterStateHydrated(function (callable $set, $get) {
+                                                if ($id = $get('ref_jenis_dokumen_id')) {
+                                                    $set('singkatan', \App\Models\RefJenisDokumen::find($id)?->singkatan);
+                                                }
+                                            })
+                                            ->visible(fn(Get $get) => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
                                         Textarea::make('judul')
                                             ->label('Judul')
                                             ->rows(5)
@@ -217,9 +231,11 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages(['required' => 'Lokasi tidak boleh kosong !'])
                                             ->label('Lokasi')
                                             ->required(),
-                                        TextInput::make('bidangHukum')
-                                            ->validationMessages(['required' => 'Bidang Hukum tidak boleh kosong !'])
+                                        Select::make('ref_bidang_hukum_id')
                                             ->label('Bidang Hukum')
+                                            ->relationship('bidangHukumRef', 'nama')
+                                            ->searchable()
+                                            ->preload()
                                             ->required(),
                                         TextInput::make('nomorIndukBuku')
                                             ->validationMessages(['required' => 'Nomor Induk Buku tidak boleh kosong !'])

@@ -20,7 +20,7 @@ class ListDokumenHukums extends ListRecords
 
     public function getTitle(): string
     {
-        return "Dokumen Hukum";
+        return "List Dokumen Hukum";
     }
 
     public function getTabs(): array

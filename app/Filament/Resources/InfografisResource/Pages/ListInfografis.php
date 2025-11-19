@@ -13,12 +13,13 @@ class ListInfografis extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add'),
         ];
     }
 
     public function getTitle(): string
     {
-        return "Data Infografis";
+        return "List Infografis";
     }
 }

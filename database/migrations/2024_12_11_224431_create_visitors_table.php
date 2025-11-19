@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('ip_address', 45); // Untuk IPv4 dan IPv6
             $table->text('user_agent')->nullable();
             $table->timestamp('visited_at')->useCurrent();
+            $table->string('path')->nullable();
+            $table->string('referrer')->nullable();
+            $table->boolean('suspicious')->default(false);
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
             $table->timestamps();
         });               
     }
