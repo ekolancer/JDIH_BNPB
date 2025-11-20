@@ -235,10 +235,34 @@ class DokumenHukumResource extends Resource
                                             ->validationMessages(['required' => 'ISSN / ISBN tidak boleh kosong !'])
                                             ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi') // Hanya terlihat jika tipeDok adalah Monografi
                                             ->required(fn(Get $get): bool => $get('tipeDok') === 'Monografi'), // Wajib diisi jika tipeDok adalah Monografi
-                                        TextInput::make('subjek')
+                                        Select::make('subjekRef')
                                             ->label('Subjek')
-                                            ->validationMessages(['required' => 'Subjek tidak boleh kosong !'])
-                                            ->required(),
+                                            ->multiple()
+                                            ->relationship(
+                                                name: 'subjekRef',
+                                                titleAttribute: 'nama',
+                                                modifyQueryUsing: fn($query) => $query->where('is_active', 1)
+                                            )
+                                            ->searchable()
+                                            ->preload()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('nama')
+                                                    ->label('Nama Subjek')
+                                                    ->required()
+                                                    ->unique(ignoreRecord: true),
+
+                                                Forms\Components\TextInput::make('kategori')
+                                                    ->label('Kategori')
+                                                    ->nullable(),
+
+                                                Forms\Components\Textarea::make('deskripsi')
+                                                    ->label('Deskripsi')
+                                                    ->nullable(),
+
+                                                Forms\Components\Toggle::make('is_active')
+                                                    ->label('Aktif')
+                                                    ->default(true),
+                                            ]),
                                         TextInput::make('sumber')
                                             ->label('Sumber')
                                             ->validationMessages(['required' => 'Sumber tidak boleh kosong !'])
