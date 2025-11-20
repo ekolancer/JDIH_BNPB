@@ -66,6 +66,15 @@ class DokumenHukum extends Model
         return $this->belongsTo(RefBidangHukum::class, 'ref_bidang_hukum_id');
     }
 
+    public function subjekRef()
+    {
+        return $this->belongsToMany(
+            \App\Models\RefSubjek::class,
+            'dokumen_subjek',
+            'dokumen_hukum_id',
+            'subjek_id'
+        );
+    }
 
     /***************************************************************
      *  EVENT MODEL (CREATING + UPDATING + DELETED)

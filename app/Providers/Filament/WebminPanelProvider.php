@@ -110,9 +110,10 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Main Menu',
-                'Informasi Hukum',
+                'Metadata Referensi',
                 'User Management',
                 'Features',
+                'Systems',
             ])
             ->resources([
                 config('filament-logger.activity_resource')

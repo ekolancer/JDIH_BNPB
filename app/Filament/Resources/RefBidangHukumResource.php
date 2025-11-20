@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Support\Enums\VerticalAlignment;
+use Filament\Support\Enums\Alignment;
 
 class RefBidangHukumResource extends Resource
 {
@@ -45,12 +47,19 @@ class RefBidangHukumResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable()
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                    ->label('Aktif')
+                    ->boolean()
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
