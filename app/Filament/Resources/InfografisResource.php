@@ -143,8 +143,8 @@ class InfografisResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->onColor('success') // Hijau untuk "Publikasi"
                     ->offColor('danger') // Merah untuk "Draft"
-                    ->onIcon('heroicon-o-check') // Ikon untuk Published
-                    ->offIcon('heroicon-o-pencil') // Ikon untuk Draft
+                    ->onIcon('heroicon-o-check-circle') // Ikon untuk Published
+                    ->offIcon('heroicon-o-x-circle') // Ikon untuk Draft
                     ->afterStateUpdated(function ($state, $record) {
                         // Simpan perubahan ke database setelah konversi
                         $record->save();

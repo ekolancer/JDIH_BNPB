@@ -424,15 +424,14 @@ class DokumenHukumResource extends Resource
                         ->label('Detail')
                         ->icon('heroicon-o-eye')
                         ->color('warning')
-                        ->slideover() // Menggunakan slideover
+                        ->slideover()
                         ->modalWidth('5xl')
-                        ->modalHeading(fn(DokumenHukum $record): string => "{$record->jenisDok}") // Menggunakan data 'judul'
-                        ->modalDescription(fn(DokumenHukum $record): string => "{$record->judul}")
-                        ->modalContent(fn(DokumenHukum $record): View => view(
+                        ->modalHeading(fn(DokumenHukum $record) => "{$record->judul}")
+                        ->modalContent(fn(DokumenHukum $record) => view(
                             'filament.pages.action.dokumen-view',
                             ['record' => $record]
                         ))
-                        ->modalSubmitAction(false), // Menonaktifkan tombol submit
+                        ->modalSubmitAction(false),
                     Tables\Actions\EditAction::make()
                         ->modalHeading('Edit Data'),
                     Tables\Actions\DeleteAction::make(),

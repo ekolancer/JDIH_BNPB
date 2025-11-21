@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Support\Enums\VerticalAlignment;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Support\Enums\Alignment;
 
 class RefSubjekResource extends Resource
@@ -56,23 +57,42 @@ class RefSubjekResource extends Resource
                 Tables\Columns\TextColumn::make('kategori')
                     ->searchable()
                     ->alignment(Alignment::Start)
-                    ->verticalAlignment(VerticalAlignment::Center),
-                Tables\Columns\IconColumn::make('is_active')
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+
+                Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Aktif')
-                    ->boolean()
                     ->alignment(Alignment::Center)
-                    ->verticalAlignment(VerticalAlignment::Center),
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->onColor('success') // Hijau untuk "Publikasi"
+                    ->offColor('danger') // Merah untuk "Draft"
+                    ->onIcon('heroicon-o-check-circle') // Ikon untuk Published
+                    ->offIcon('heroicon-o-x-circle') // Ikon untuk Draft
+                    ->afterStateUpdated(function ($state, $record) {
+                        // Simpan perubahan ke database setelah konversi
+                        $record->save();
+                    })
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->alignment(Alignment::Start)
-                    ->verticalAlignment(VerticalAlignment::Center),
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->modalHeading('Edit Infografis'),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
