@@ -47,20 +47,4 @@ class DashboardController extends Controller
         // Mengirimkan data ke view
         return view('index', compact('data'));
     }
-
-    // Function Webview Perihal
-    public function about()
-    {
-        return view('overview.about');
-    }
-
-    public function visiMisi()
-    {
-        return view('overview.visiMisi');
-    }
-
-    public function struktur()
-    {
-        return view('overview.struktur');
-    }
 }

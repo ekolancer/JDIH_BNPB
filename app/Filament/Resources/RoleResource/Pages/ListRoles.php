@@ -17,4 +17,9 @@ class ListRoles extends ListRecords
                 ->label('Add'),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return "List Roles User";
+    }
 }

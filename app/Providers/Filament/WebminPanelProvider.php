@@ -55,7 +55,7 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([])
-            ->brandLogo(asset('img/new_jdih.png'))
+            ->brandLogo(asset('img/logo_jdih.png'))
             ->brandName('JDIH BNPB')
             ->brandLogoHeight('3rem')
             ->middleware([

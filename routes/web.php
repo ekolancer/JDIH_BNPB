@@ -8,14 +8,17 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
+use App\Models\ProfilPage;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dokumen', function () {
     return view('dokumen.list-doc');
 })->name('list-doc');
-Route::get('/about', [DashboardController::class, 'about'])->name('about');
-Route::get('/visi-misi', [DashboardController::class, 'visiMisi'])->name('visiMisi');
-Route::get('/SOTK', [DashboardController::class, 'struktur'])->name('struktur');
+
+Route::get('/profil/{slug}', function ($slug) {
+    $page = ProfilPage::where('slug', $slug)->firstOrFail();
+    return view('overview.page', compact('page'));
+});
 
 // Route Dokumen Hukum
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])

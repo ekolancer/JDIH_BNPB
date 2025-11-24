@@ -13,7 +13,13 @@ class ManageUsers extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Add'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return "List User";
     }
 }

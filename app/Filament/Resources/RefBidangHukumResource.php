@@ -18,7 +18,7 @@ class RefBidangHukumResource extends Resource
 {
     protected static ?string $model = RefBidangHukum::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
 
     protected static ?string $navigationGroup = 'Metadata Referensi';
 

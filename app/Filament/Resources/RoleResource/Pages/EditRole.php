@@ -18,7 +18,7 @@ class EditRole extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            //Actions\DeleteAction::make(),
         ];
     }
 
@@ -50,5 +50,10 @@ class EditRole extends EditRecord
         });
 
         $this->record->syncPermissions($permissionModels);
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
