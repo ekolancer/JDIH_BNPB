@@ -44,7 +44,7 @@ class WebminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
-            ->darkMode(false)
+            ->darkMode(true)
             ->databaseNotifications()
             ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -57,7 +57,9 @@ class WebminPanelProvider extends PanelProvider
             ->widgets([])
             ->brandLogo(asset('img/logo_jdih.png'))
             ->brandName('JDIH BNPB')
-            ->brandLogoHeight('3rem')
+            ->brandLogoHeight('3,5rem')
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('18rem')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

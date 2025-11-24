@@ -49,11 +49,6 @@ class InfografisResource extends Resource
 
     protected static ?string $navigationLabel = 'Infografis'; // Memberikan Label Navigasi
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -160,7 +155,7 @@ class InfografisResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
-                    ->label('Actions')
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

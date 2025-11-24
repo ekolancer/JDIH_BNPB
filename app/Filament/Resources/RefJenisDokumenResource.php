@@ -20,7 +20,7 @@ class RefJenisDokumenResource extends Resource
 {
     protected static ?string $model = RefJenisDokumen::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static ?string $navigationIcon = 'heroicon-o-link';
 
     protected static ?string $navigationGroup = 'Metadata Referensi';
 

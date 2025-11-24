@@ -61,11 +61,6 @@ class DokumenHukumResource extends Resource
 
     protected static ?string $label = 'Dokumen';
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
     protected static ?string $navigationLabel = 'Dokumen'; // Memberikan Label Navigasi
 
     protected static function getYearsOptions(): array
@@ -369,7 +364,6 @@ class DokumenHukumResource extends Resource
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->sortable()
                     ->searchable(),
                 TextColumn::make('isbn')
                     ->label('ISBN')
@@ -377,15 +371,18 @@ class DokumenHukumResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->hidden(fn($record): bool =>
+                    $record?->tipeDok !== 'Monografi'),
                 TextColumn::make('penerbit')
                     ->label('PENERBIT')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->searchable(),
+                    ->searchable()
+                    ->hidden(fn($record): bool =>
+                    $record?->tipeDok !== 'Monografi'),
                 TextColumn::make('status')
                     ->label('STATUS')
                     ->alignment(Alignment::Center)
@@ -437,7 +434,7 @@ class DokumenHukumResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
-                    ->label('Actions'),
+                    ->label('Aksi'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
