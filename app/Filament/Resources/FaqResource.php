@@ -38,7 +38,6 @@ class FaqResource extends Resource
         return 2; // atau angka berapapun
     }
 
-
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -68,12 +67,13 @@ class FaqResource extends Resource
                     ->limit(40)
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
+                    ->description(fn (Faq $record): string => str()->limit(strip_tags($record->answer), 60))
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
                 TextColumn::make('sort_order')
                     ->label('Urutan')
                     ->sortable()
-                    ->alignment(Alignment::Start)
+                    ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
