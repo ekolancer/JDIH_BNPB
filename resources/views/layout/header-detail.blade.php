@@ -66,6 +66,7 @@
                             <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
                             <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
                             <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                            <a href="/profil/faq" class="dropdown-item">FAQ</a>
                         </div>
                     </div>
                 </div>

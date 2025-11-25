@@ -8,6 +8,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
+use App\Models\Faq;
 use App\Models\ProfilPage;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -16,8 +17,28 @@ Route::get('/dokumen', function () {
 })->name('list-doc');
 
 Route::get('/profil/{slug}', function ($slug) {
+
+    // Jika halaman FAQ
+    if ($slug === 'faq') {
+        return view('overview.page', [
+            'slug' => $slug,
+            'page' => (object)[
+                'title' => 'FAQ',
+                'content' => null,
+                'image' => null,
+            ],
+            'faqs' => Faq::orderBy('sort_order')->get(),
+        ]);
+    }
+
+    // Halaman biasa dari tabel profil_pages
     $page = ProfilPage::where('slug', $slug)->firstOrFail();
-    return view('overview.page', compact('page'));
+
+    return view('overview.page', [
+        'page' => $page,
+        'slug' => $slug,
+        'faqs' => [],
+    ]);
 });
 
 // Route Dokumen Hukum

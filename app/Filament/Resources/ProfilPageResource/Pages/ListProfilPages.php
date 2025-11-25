@@ -20,6 +20,6 @@ class ListProfilPages extends ListRecords
 
     public function getTitle(): string
     {
-        return "Editor Website Profil";
+        return "Editor Profil Website";
     }
 }

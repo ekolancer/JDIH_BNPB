@@ -19,7 +19,7 @@ class HealthCheckResults extends BaseHealthCheckResults
 
     public static function getNavigationSort(): ?int
     {
-        return 3;
+        return 4;
     }
 
 }

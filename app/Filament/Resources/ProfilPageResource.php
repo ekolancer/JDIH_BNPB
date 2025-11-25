@@ -31,6 +31,11 @@ class ProfilPageResource extends Resource
 
     protected static ?string $label = 'Profil';
 
+    public static function getNavigationSort(): ?int
+    {
+        return 1; // atau angka berapapun
+    }
+
     public static function form(Form $form): Form
     {
         return $form

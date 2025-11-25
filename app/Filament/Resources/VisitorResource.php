@@ -28,7 +28,10 @@ class VisitorResource extends Resource
 
     protected static ?string $navigationGroup = 'Features';
 
-    protected static ?int $navigationSort = 1;
+    public static function getNavigationSort(): ?int
+    {
+        return 3; // atau angka berapapun
+    }
 
     protected static ?string $label = 'Visitor';
 
@@ -102,13 +105,14 @@ class VisitorResource extends Resource
             ->filters([
                 SelectFilter::make('country')
                     ->label('Negara')
-                    ->options(fn() => Visitor::query()
-                        ->select('country')
-                        ->distinct()
-                        ->orderBy('country')
-                        ->pluck('country', 'country')
-                        ->filter()
-                        ->toArray()
+                    ->options(
+                        fn() => Visitor::query()
+                            ->select('country')
+                            ->distinct()
+                            ->orderBy('country')
+                            ->pluck('country', 'country')
+                            ->filter()
+                            ->toArray()
                     ),
                 Filter::make('suspicious')
                     ->label('Suspicious Only')
