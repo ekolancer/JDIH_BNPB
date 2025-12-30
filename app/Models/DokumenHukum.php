@@ -19,7 +19,12 @@ class DokumenHukum extends Model
     use HasFactory, Notifiable;
 
     // Legacy fields hidden (keberadaannya tetap aman bila ada dalam DB lama)
-    protected $hidden = ['jenisDok', 'singkatar'];
+    protected $hidden = ['jenisDok', 'singkatan'];
+
+    protected $appends = [
+        'jenis_dokumen_label',
+        'bidang_hukum_label',
+    ];
 
     protected $fillable = [
         'tipeDok',
@@ -331,19 +336,27 @@ class DokumenHukum extends Model
     /**
      * Ambil dokumen terbaru (option limit dan tipe)
      */
-    public static function getLatest($limit = null, $tipeDok = 'Peraturan')
+    public function scopeLatestPeraturan(Builder $query, int $limit = 4)
     {
-        $q = self::query()->when($tipeDok, fn($q) => $q->where('tipeDok', $tipeDok));
-        return $limit ? $q->orderBy('created_at', 'desc')->take($limit)->get() : $q->orderBy('created_at', 'desc')->get();
+        return $query
+            ->where('tipeDok', 'Peraturan')
+            ->where('status', 'BERLAKU')
+            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->orderByDesc('tglPengundangan')
+            ->limit($limit);
     }
 
     /**
      * Ambil dokumen terpopuler berdasarkan view_count
      */
-    public static function getMostViewed($limit = null, $tipeDok = null)
+    public function scopeMostViewedPeraturan(Builder $query, int $limit = 8)
     {
-        $q = self::query()->when($tipeDok, fn($q) => $q->where('tipeDok', $tipeDok));
-        return $limit ? $q->orderBy('view_count', 'desc')->take($limit)->get() : $q->orderBy('view_count', 'desc')->get();
+        return $query
+            ->where('tipeDok', 'Peraturan')
+            ->where('status', 'BERLAKU')
+            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->orderByDesc('view_count')
+            ->limit($limit);
     }
 
     /**
@@ -431,5 +444,52 @@ class DokumenHukum extends Model
         }
 
         return $data;
+    }
+
+    /***************************************************************
+     *  ACCESSORS (UNTUK FRONTEND)
+     ***************************************************************/
+    /***************************************************************
+     *  ACCESSOR: jenis_dokumen_label
+     *
+     *  CATATAN PENTING:
+     *  - Atribut `jenis_dokumen_label` BUKAN kolom database
+     *  - Atribut ini dihasilkan oleh method:
+     *      getJenisDokumenLabelAttribute()
+     *  - Laravel otomatis mengubah:
+     *      JenisDokumenLabel -> jenis_dokumen_label (snake_case)
+     *  - Digunakan untuk FRONTEND (Blade / API)
+     *  - Frontend TIDAK BOLEH mengakses relasi `jenisDokumen` langsung
+     ***************************************************************/
+    public function getJenisDokumenLabelAttribute(): string
+    {
+        return $this->jenisDokumen
+            ? " {$this->jenisDokumen->nama}"
+            : '-';
+    }
+
+    public function getJenisDokumenSingkatanAttribute(): string
+    {
+        return $this->jenisDokumen
+            ? strtoupper($this->jenisDokumen->singkatan)
+            : '-';
+    }
+
+    /***************************************************************
+     *  ACCESSOR: bidang_hukum_label
+     *
+     *  CATATAN PENTING:
+     *  - Atribut `bidang_hukum_label` BUKAN kolom database
+     *  - Atribut ini dihasilkan oleh method:
+     *      getBidangHukumLabelAttribute()
+     *  - Laravel otomatis mengubah:
+     *      BidangHukumLabel -> bidang_hukum_label (snake_case)
+     *  - Digunakan untuk FRONTEND (Blade / API)
+     *  - Frontend TIDAK BOLEH mengakses relasi `bidangHukumRef` langsung
+     ***************************************************************/
+
+    public function getBidangHukumLabelAttribute(): string
+    {
+        return $this->bidangHukumRef?->nama ?? '-';
     }
 }
