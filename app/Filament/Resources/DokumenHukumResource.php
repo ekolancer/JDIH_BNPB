@@ -9,17 +9,15 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
-use Tables\Actions\DeleteAction;
-use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Tabs;
 use Filament\Tables\Actions\Action;
-use Illuminate\Contracts\View\View;
 use App\Imports\DokumenHukumsImport;
+use App\Models\RefBidangHukum;
+use App\Models\RefSubjek;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
-use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
 use Filament\Support\Enums\FontWeight;
 use Filament\Forms\Components\Fieldset;
@@ -103,7 +101,6 @@ class DokumenHukumResource extends Resource
                                                 titleAttribute: 'nama',
                                                 modifyQueryUsing: fn($query) => $query->where('is_active', true)
                                             )
-                                            ->searchable()
                                             ->preload()
                                             ->live() // agar reactive
                                             ->afterStateUpdated(function ($state, callable $set) {
@@ -238,7 +235,6 @@ class DokumenHukumResource extends Resource
                                                 titleAttribute: 'nama',
                                                 modifyQueryUsing: fn($query) => $query->where('is_active', 1)
                                             )
-                                            ->searchable()
                                             ->preload()
                                             ->createOptionForm([
                                                 Forms\Components\TextInput::make('nama')
@@ -278,7 +274,6 @@ class DokumenHukumResource extends Resource
                                                 titleAttribute: 'nama',
                                                 modifyQueryUsing: fn($query) => $query->where('is_active', true)
                                             )
-                                            ->searchable()
                                             ->preload()
                                             ->createOptionForm([
                                                 Forms\Components\TextInput::make('nama')
@@ -344,14 +339,14 @@ class DokumenHukumResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('jenisDok')
+                TextColumn::make('jenisDokumen.nama')
                     ->label('JENIS DOKUMEN')
                     ->description(fn(DokumenHukum $record): string => $record->judul)
                     ->weight(FontWeight::Bold)
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
-                    ->disabledClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(),
                 TextColumn::make('nomor')
                     ->label('NOMOR')
                     ->alignment(Alignment::Center)
@@ -363,15 +358,13 @@ class DokumenHukumResource extends Resource
                     ->label('TAHUN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->searchable(),
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('isbn')
                     ->label('ISBN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->searchable()
                     ->hidden(fn($record): bool =>
                     $record?->tipeDok !== 'Monografi'),
                 TextColumn::make('penerbit')
@@ -380,7 +373,6 @@ class DokumenHukumResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
-                    ->searchable()
                     ->hidden(fn($record): bool =>
                     $record?->tipeDok !== 'Monografi'),
                 TextColumn::make('status')
@@ -395,25 +387,45 @@ class DokumenHukumResource extends Resource
                     })
                     ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
-                SelectFilter::make('singkatan')
+                SelectFilter::make('ref_jenis_dokumen_id')
                     ->label('Jenis Dokumen')
-                    ->placeholder('Pilih Jenis Dokumen')
                     ->multiple()
-                    ->options(fn() => DokumenHukum::query()
-                        ->distinct()
-                        ->pluck('singkatan', 'singkatan')
-                        ->mapWithKeys(fn($value) => [strtoupper($value) => strtoupper($value)])
-                        ->toArray()),
-                SelectFilter::make('status')
-                    ->options([
-                        'BERLAKU' => 'Berlaku',
-                        'TIDAK BERLAKU' => 'Tidak Berlaku',
-                    ]),
+                    ->relationship(
+                        'jenisDokumen',
+                        'singkatan',
+                        fn($query) => $query->where('is_active', true)
+                    ),
+
+                SelectFilter::make('subjekRef')
+                    ->label('Subjek')
+                    ->multiple()
+                    ->relationship(
+                        'subjekRef',
+                        'nama',
+                        fn($query) => $query->where('is_active', true)
+                    ),
+
+                SelectFilter::make('ref_bidang_hukum_id')
+                    ->label('Bidang Hukum')
+                    ->relationship(
+                        'bidangHukumRef',
+                        'nama',
+                        fn($query) => $query->where('is_active', true)
+                    ),
+
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(static::getYearsOptions())
                     ->multiple(),
+
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'BERLAKU' => 'Berlaku',
+                        'TIDAK BERLAKU' => 'Tidak Berlaku',
+                    ]),
             ])
             ->actions([
                 ActionGroup::make([
@@ -485,7 +497,7 @@ class DokumenHukumResource extends Resource
                     ->label('Jenis Dokumen')
                     ->collapsible(),
             ])
-            ->searchPlaceholder('Nomor/Tahun/ISBN/Penerbit');
+            ->searchPlaceholder('Nomor');
     }
 
     public static function getRelations(): array

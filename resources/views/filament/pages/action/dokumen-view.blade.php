@@ -12,7 +12,7 @@
         $informasiUtama = [
             ['label' => 'Tipe Dokumen', 'value' => $tipeDokValue],
             ['label' => 'Jenis Dokumen', 'value' => $record->jenisDokumen->nama ?? '-'],
-            ['label' => 'Singkatan', 'value' => $record->singkatan],
+            ['label' => 'Singkatan', 'value' => $record->jenisDokumen->singkatan ?? '-'],
             ['label' => 'T.E.U Badan', 'value' => $record->teuBadan],
             ['label' => 'Nomor & Tahun Terbit', 'value' => str_pad($record->nomor, 2, '0', STR_PAD_LEFT) . ' / ' . $record->tahun],
         ];

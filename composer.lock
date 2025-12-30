@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fea9756c60f6f2db756ecb2d6b787a04",
+    "content-hash": "a16e0503bb88f1aa97f0ffa0b616d951",
     "packages": [
         {
             "name": "afatmustafa/filamentv3-turnstile",
@@ -4679,71 +4679,6 @@
                 }
             ],
             "time": "2024-12-10T15:32:06+00:00"
-        },
-        {
-            "name": "mohammadhprp/filament-ip-to-country-flag-column",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column.git",
-                "reference": "9fbe31ca4b44372c82624b363d49fd521593586a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mohammadhprp/filament-ip-to-country-flag-column/zipball/9fbe31ca4b44372c82624b363d49fd521593586a",
-                "reference": "9fbe31ca4b44372c82624b363d49fd521593586a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "filament/tables": "^3.0-stable",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "orchestra/testbench": "^7.0|^8.0",
-                "phpunit/phpunit": "^9.5|^10.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Mohammadhprp\\IPToCountryFlagColumn\\IPToCountryFlagColumnServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mohammadhprp\\IPToCountryFlagColumn\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mohammadhprp",
-                    "email": "mohammadhprp@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Display Country flag from IP address in your Filament tables",
-            "homepage": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column",
-            "keywords": [
-                "admin panel",
-                "column",
-                "filament",
-                "filament-ip-to-country-flag",
-                "laravel",
-                "mohammadhrpr",
-                "tables"
-            ],
-            "support": {
-                "issues": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column/issues",
-                "source": "https://github.com/mohammadhprp/filament-ip-to-country-flag-column/tree/v1.0.2"
-            },
-            "time": "2023-08-13T19:13:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -12259,5 +12194,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
