@@ -15,7 +15,7 @@ class RefJenisDokumen extends Model
         'is_active',
     ];
 
-    public function dokumens()
+    public function dokumenHukum()
     {
         return $this->hasMany(DokumenHukum::class, 'ref_jenis_dokumen_id');
     }

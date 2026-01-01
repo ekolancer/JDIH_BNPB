@@ -15,7 +15,7 @@ class RefSubjek extends Model
         'is_active',
     ];
 
-    public function dokumen()
+    public function dokumenHukum()
     {
         return $this->belongsToMany(DokumenHukum::class, 'dokumen_subjek', 'subjek_id', 'dokumen_hukum_id');
     }
