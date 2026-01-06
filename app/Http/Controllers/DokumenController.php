@@ -45,23 +45,6 @@ class DokumenController extends Controller
         ]);
     }
 
-    public function filterByType($tipeDok)
-    {
-        // Validasi tipeDok agar hanya menerima yang diizinkan
-        $validTypes = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-
-        if (!in_array(ucfirst($tipeDok), $validTypes)) {
-            abort(404); // Jika tidak valid, lemparkan error 404
-        }
-
-        // Ambil dokumen berdasarkan tipe
-        $results = DokumenHukum::where('tipeDok', ucfirst($tipeDok))->paginate(10);
-
-        $dokumenAttributes = DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']);
-
-        return view('dokumen.list-doc', compact('results', 'tipeDok', 'dokumenAttributes'));
-    }
-
     /**
      * Unduh file lampiran
      *

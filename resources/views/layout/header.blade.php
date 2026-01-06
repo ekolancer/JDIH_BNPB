@@ -144,11 +144,11 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
-                                            <select class="form-select" id="documentForm" name="jenisDok">
+                                            <select class="form-select" id="documentForm" name="ref_jenis_dokumen_id">
                                                 <option value="">Bentuk Dokumen</option>
-                                                @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
-                                                <option value="{{ $bentuk }}" {{ request('jenisDok') == $bentuk ? 'selected' : '' }}>
-                                                    {{ $bentuk }}
+                                                @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
+                                                <option value="{{ $id }}" {{ request('ref_jenis_dokumen_id') == $id ? 'selected' : '' }}>
+                                                    {{ $nama }}
                                                 </option>
                                                 @endforeach
                                             </select>

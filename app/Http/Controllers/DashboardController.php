@@ -34,7 +34,7 @@ class DashboardController extends Controller
             // Mengambil peraturan terpopuler dari model DokumenHukum
             'peraturanPopuler' => DokumenHukum::mostViewedPeraturan(8)->get(),
             // Mengambil nilai unik untuk tipeDok dan jenisDok
-            'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']),
+            'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'ref_jenis_dokumen_id']),
             // Mengambil data berita aktif dari model Berita
             'berita' => Berita::getBeritaActive(),
             // Mengambil data Infografis aktif dari model Infografis

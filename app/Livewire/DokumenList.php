@@ -158,6 +158,7 @@ class DokumenList extends Component
         $results = $query->paginate(10);
 
         $this->numResults = $results->total();
+        
         $this->queryTime = round(microtime(true) - $start, 3);
 
         return view('livewire.dokumen-list', [
