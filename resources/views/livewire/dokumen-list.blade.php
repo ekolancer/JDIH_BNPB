@@ -52,7 +52,7 @@
                             </label>
                         </div>
                         <span class="badge bg-primary">
-                            {{ $jenis->dokumen_hukum_count }}
+                            {{ $filterCounts['jenis_dokumen'][$jenis->id] ?? 0 }}
                         </span>
                     </div>
                     @endforeach
@@ -125,7 +125,7 @@
                             </label>
                         </div>
                         <span class="badge bg-primary">
-                            {{ $bidang->dokumen_hukum_count }}
+                            {{ $filterCounts['bidang_hukum'][$bidang->id] ?? 0 }}
                         </span>
                     </div>
                     @endforeach
@@ -164,7 +164,7 @@
                             </label>
                         </div>
                         <span class="badge bg-primary">
-                            {{ $subjek->dokumen_hukum_count }}
+                            {{ $filterCounts['subjek'][$subjek->id] ?? 0 }}
                         </span>
                     </div>
                     @endforeach

@@ -314,6 +314,45 @@ class DokumenHukum extends Model
         return $this->tipeDok === 'Monografi' ? 'Cover' : 'Baca';
     }
 
+    /**
+     * Route key menggunakan slug
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Ambil nilai unik dari beberapa kolom (berguna untuk filter)
+     *
+     * @param array $columns
+     * @return array
+     */
+    public static function getUniqueValues(array $columns): array
+    {
+        $uniqueValues = [];
+        foreach ($columns as $column) {
+            // special case untuk ref_jenis_dokumen_id — kembalikan nama
+            if ($column === 'ref_jenis_dokumen_id') {
+                $uniqueValues[$column] = DB::table('ref_jenis_dokumen')
+                    ->select('id', 'nama')
+                    ->orderBy('nama')
+                    ->get()
+                    ->mapWithKeys(fn($r) => [$r->id => $r->nama])
+                    ->toArray();
+                continue;
+            }
+
+            $uniqueValues[$column] = self::select($column)
+                ->distinct()
+                ->pluck($column)
+                ->filter(fn($v) => !is_null($v) && $v !== '')
+                ->values()
+                ->toArray();
+        }
+        return $uniqueValues;
+    }
+
     /***************************************************************
      *  QUERY HELPERS / SCOPES / AGGREGATIONS
      ***************************************************************/
@@ -357,45 +396,6 @@ class DokumenHukum extends Model
             ->with(['jenisDokumen', 'bidangHukumRef'])
             ->orderByDesc('view_count')
             ->limit($limit);
-    }
-
-    /**
-     * Ambil nilai unik dari beberapa kolom (berguna untuk filter)
-     *
-     * @param array $columns
-     * @return array
-     */
-    public static function getUniqueValues(array $columns): array
-    {
-        $uniqueValues = [];
-        foreach ($columns as $column) {
-            // special case untuk ref_jenis_dokumen_id — kembalikan nama
-            if ($column === 'ref_jenis_dokumen_id') {
-                $uniqueValues[$column] = DB::table('ref_jenis_dokumen')
-                    ->select('id', 'nama')
-                    ->orderBy('nama')
-                    ->get()
-                    ->mapWithKeys(fn($r) => [$r->id => $r->nama])
-                    ->toArray();
-                continue;
-            }
-
-            $uniqueValues[$column] = self::select($column)
-                ->distinct()
-                ->pluck($column)
-                ->filter(fn($v) => !is_null($v) && $v !== '')
-                ->values()
-                ->toArray();
-        }
-        return $uniqueValues;
-    }
-
-    /**
-     * Route key menggunakan slug
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
     /**
@@ -444,6 +444,64 @@ class DokumenHukum extends Model
         }
 
         return $data;
+    }
+
+    public function scopeApplyFilters(Builder $query, array $filters): void
+    {
+        $query->when(
+            $filters['judul'] ?? null,
+            fn($q, $v) => $q->where('judul', 'like', "%{$v}%")
+        );
+
+        $query->when(
+            $filters['nomor'] ?? null,
+            fn($q, $v) => $q->where('nomor', 'like', "%{$v}%")
+        );
+
+        $query->when(
+            $filters['tahun'] ?? null,
+            fn($q, $v) => $q->where('tahun', $v)
+        );
+
+        $query->when(
+            $filters['tipeDok'] ?? null,
+            fn($q, $v) => $q->where('tipeDok', $v)
+        );
+
+        $query->when(
+            $filters['ref_jenis_dokumen_id'] ?? [],
+            fn($q, $v) => $q->whereIn('ref_jenis_dokumen_id', $v)
+        );
+
+        $query->when(
+            $filters['ref_bidang_hukum_id'] ?? [],
+            fn($q, $v) => $q->whereIn('ref_bidang_hukum_id', $v)
+        );
+
+        $query->when(
+            $filters['status'] ?? [],
+            fn($q, $v) => $q->whereIn('status', $v)
+        );
+
+        $query->when(
+            $filters['subjek'] ?? [],
+            fn($q, $v) =>
+            $q->whereHas(
+                'subjekRef',
+                fn($sq) => $sq->whereIn('ref_subjek.id', $v)
+            )
+        );
+    }
+
+    /* ==========================================================
+     *  QUERY SCOPES — SORTING
+     * ========================================================*/
+    public function scopeApplySorting(Builder $query, string $sortBy): void
+    {
+        match ($sortBy) {
+            'popular' => $query->orderByDesc('view_count'),
+            default   => $query->orderByDesc('tahun')->orderByDesc('nomor'),
+        };
     }
 
     /***************************************************************
