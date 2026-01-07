@@ -38,14 +38,14 @@ class DokumenList extends Component
      *  URL ALIAS (PUBLIC CONTRACT)
      * ========================================================*/
     protected array $filterAliases = [
-        'judul'                => 'title',
-        'tahun'                => 'year',
+        'judul'                => 'judul',
+        'tahun'                => 'tahun',
         'tipeDok'              => 'type',
-        'ref_jenis_dokumen_id' => 'jenis',
+        'ref_jenis_dokumen_id' => 'bentuk',
         'ref_bidang_hukum_id'  => 'bidang',
-        'subjek'               => 'subject',
+        'subjek'               => 'subjek',
         'status'               => 'status',
-        'nomor'                => 'number',
+        'nomor'                => 'no',
     ];
 
     public array $availableFilters = [];
@@ -86,7 +86,7 @@ class DokumenList extends Component
         $reverse = array_flip($this->filterAliases);
 
         foreach ($query as $key => $value) {
-            if (isset($reverse[$key])) {
+            if (isset($reverse[$key]) && $reverse[$key] !== $key) {
                 $query[$reverse[$key]] = $value;
                 unset($query[$key]);
             }

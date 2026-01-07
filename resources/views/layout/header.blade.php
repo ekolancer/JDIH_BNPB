@@ -212,6 +212,16 @@
                 }, 200); // Delay singkat untuk memicu transisi
             }
         });
+
+        // Remove empty inputs from form submission
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            const inputs = this.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (!input.value || input.value === '') {
+                    input.name = ''; // Remove name attribute so it's not sent
+                }
+            });
+        });
     </script>
 
     <!-- Navbar & Hero End -->

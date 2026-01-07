@@ -1,3 +1,8 @@
+@php
+    $queryString = http_build_query(\Illuminate\Support\Arr::except(request()->query(), 'page'));
+    $queryString = $queryString ? '&' . $queryString : '';
+@endphp
+
 @if ($paginator->hasPages())
     <nav>
         <ul class="pagination justify-content-center">
@@ -8,7 +13,7 @@
                 </li>
             @else
                 <li class="page-item">
-                    <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">&larr;</a>
+                    <a class="page-link" href="{{ $paginator->previousPageUrl() . $queryString }}" rel="prev">&larr;</a>
                 </li>
             @endif
 
@@ -26,7 +31,7 @@
                             <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                <a class="page-link" href="{{ $url . $queryString }}">{{ $page }}</a>
                             </li>
                         @endif
                     @endforeach
@@ -36,7 +41,7 @@
             {{-- Tombol Selanjutnya --}}
             @if ($paginator->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">&rarr;</a>
+                    <a class="page-link" href="{{ $paginator->nextPageUrl() . $queryString }}" rel="next">&rarr;</a>
                 </li>
             @else
                 <li class="page-item disabled">
