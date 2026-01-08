@@ -207,10 +207,15 @@
         </div>
 
         {{-- TOMBOL TOGGLE --}}
+        @php
+        $extraCount = max(0, $visibleSubjek->count() - 5);
+        @endphp
+
         <button type="button"
             class="filter-more-btn"
-            data-toggle="subjek">
-            <span class="label">Lihat lainnya</span>
+            data-toggle="subjek"
+            data-extra="{{ $extraCount }}">
+            <span class="label">+{{ $extraCount }} lainnya</span>
             <i class="fa fa-chevron-down"></i>
         </button>
         @endif

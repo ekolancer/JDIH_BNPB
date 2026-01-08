@@ -164,24 +164,59 @@ class DokumenList extends Component
 
     private function loadFilterCounts(): array
     {
-        return Cache::remember('dokumen.filter_counts.v1', now()->addMinutes(30), function () {
-            return [
-                'jenis_dokumen' => DB::table('dokumen_hukums')
-                    ->select('ref_jenis_dokumen_id', DB::raw('COUNT(*) as total'))
-                    ->groupBy('ref_jenis_dokumen_id')
-                    ->pluck('total', 'ref_jenis_dokumen_id'),
+        // Cache berbasis filter aktif
+        $hash = md5(json_encode([
+            'jenis'  => $this->filters['ref_jenis_dokumen_id'] ?? [],
+            'bidang' => $this->filters['ref_bidang_hukum_id'] ?? [],
+            'tahun'  => $this->filters['tahun'] ?? null,
+            'nomor'  => $this->filters['nomor'] ?? null,
+            'judul'  => $this->filters['judul'] ?? null,
+            'status' => $this->filters['status'] ?? [],
+        ]));
 
-                'bidang_hukum' => DB::table('dokumen_hukums')
-                    ->select('ref_bidang_hukum_id', DB::raw('COUNT(*) as total'))
-                    ->groupBy('ref_bidang_hukum_id')
-                    ->pluck('total', 'ref_bidang_hukum_id'),
+        return Cache::remember(
+            "dokumen.filter_counts.$hash",
+            now()->addMinutes(10),
+            function () {
 
-                'subjek' => DB::table('dokumen_subjek')
-                    ->select('subjek_id', DB::raw('COUNT(*) as total'))
-                    ->groupBy('subjek_id')
-                    ->pluck('total', 'subjek_id'),
-            ];
-        });
+                // 1️⃣ Query dasar yang SUDAH TERFILTER
+                $baseQuery = DokumenHukum::query()
+                    ->applyFilters($this->filters);
+
+                // Ambil ID dokumen yang relevan
+                $dokumenIds = $baseQuery->pluck('id');
+
+                return [
+
+                    // ===============================
+                    // JENIS DOKUMEN
+                    // ===============================
+                    'jenis_dokumen' => DB::table('dokumen_hukums')
+                        ->select('ref_jenis_dokumen_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds)
+                        ->groupBy('ref_jenis_dokumen_id')
+                        ->pluck('total', 'ref_jenis_dokumen_id'),
+
+                    // ===============================
+                    // BIDANG HUKUM
+                    // ===============================
+                    'bidang_hukum' => DB::table('dokumen_hukums')
+                        ->select('ref_bidang_hukum_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds)
+                        ->groupBy('ref_bidang_hukum_id')
+                        ->pluck('total', 'ref_bidang_hukum_id'),
+
+                    // ===============================
+                    // SUBJEK (INI KUNCI)
+                    // ===============================
+                    'subjek' => DB::table('dokumen_subjek')
+                        ->select('subjek_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('dokumen_hukum_id', $dokumenIds)
+                        ->groupBy('subjek_id')
+                        ->pluck('total', 'subjek_id'),
+                ];
+            }
+        );
     }
 
     /* ==========================================================

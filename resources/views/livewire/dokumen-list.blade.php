@@ -280,12 +280,13 @@
         const label = btn.querySelector('.label');
 
         const expanded = extra.classList.contains('expanded');
+        const extraCount = btn.dataset.extra;
 
         extra.classList.toggle('expanded', !expanded);
         extra.classList.toggle('collapsed', expanded);
 
         btn.classList.toggle('expanded', !expanded);
-        label.textContent = expanded ? 'Lihat lainnya' : 'Tutup';
+        label.textContent = expanded ? `+${extraCount} lainnya` : 'Tutup';
     });
 </script>
 
