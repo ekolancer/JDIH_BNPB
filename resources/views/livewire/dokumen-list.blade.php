@@ -47,6 +47,25 @@
                 </div>
             </div>
 
+            {{-- Active Filter Chips --}}
+            @if(collect($filters)->flatten()->filter()->count())
+            <div class="filter-chips">
+                @foreach($filters['ref_jenis_dokumen_id'] as $id)
+                <div class="filter-chip">
+                    {{ $availableFilters['jenis_dokumen']->firstWhere('id',$id)->singkatan }}
+                    <button wire:click="$set('filters.ref_jenis_dokumen_id', [])">×</button>
+                </div>
+                @endforeach
+
+                @foreach($filters['subjek'] as $id)
+                <div class="filter-chip">
+                    {{ $availableFilters['subjek']->firstWhere('id',$id)->nama }}
+                    <button wire:click="$set('filters.subjek', [])">×</button>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
             <!-- Loading Spinner -->
             <div wire:loading.delay
                 class="alert alert-info text-center custom-alert"
@@ -161,9 +180,11 @@
     document.addEventListener("DOMContentLoaded", function() {
         const slider = document.getElementById('tahunSlider');
         const output = document.getElementById('tahunValue');
-        slider.oninput = function() {
-            output.textContent = this.value;
-        };
+
+        if (slider && output) {
+            output.textContent = slider.value || '—';
+            slider.oninput = () => output.textContent = slider.value;
+        }
     });
 </script>
 
@@ -203,6 +224,19 @@
                 button.textContent = isHidden ?
                     'Lihat lebih sedikit' :
                     'Lihat lebih banyak...';
+            });
+        });
+    });
+</script>
+
+{{-- Script untuk filter sidebar --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.filter-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.toggle;
+                document.querySelectorAll('.more-' + key)
+                    .forEach(el => el.classList.toggle('d-none'));
             });
         });
     });
