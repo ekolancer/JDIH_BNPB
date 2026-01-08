@@ -39,9 +39,27 @@
                         <i class="fa-solid fa-list me-2"></i>Jenis Dokumen
                     </h6>
 
+                    @php
+                    // Counter item yang benar-benar ditampilkan
+                    $shownJenis = 0;
+
+                    // Hitung jumlah filter yang punya count > 0
+                    $visibleJenis = collect($availableFilters['jenis_dokumen'])
+                    ->filter(fn ($j) => ($filterCounts['jenis_dokumen'][$j->id] ?? 0) > 0)
+                    ->count();
+                    @endphp
+
+
                     @foreach($availableFilters['jenis_dokumen'] as $jenis)
+                    @php
+                    $count = $filterCounts['jenis_dokumen'][$jenis->id] ?? 0;
+                    @endphp
+
+                    @if($count > 0)
+                    @php $shownJenis++; @endphp
+
                     <div class="form-check d-flex justify-content-between align-items-center mb-1
-     {{ $loop->index >= 5 ? 'd-none more-jenis-dokumen' : '' }}">
+            {{ $shownJenis > 5 ? 'd-none more-jenis-dokumen' : '' }}">
                         <div>
                             <input class="form-check-input"
                                 type="checkbox"
@@ -51,13 +69,12 @@
                                 {{ $jenis->singkatan }}
                             </label>
                         </div>
-                        <span class="badge bg-primary">
-                            {{ $filterCounts['jenis_dokumen'][$jenis->id] ?? 0 }}
-                        </span>
+                        <span class="badge bg-primary">{{ $count }}</span>
                     </div>
+                    @endif
                     @endforeach
 
-                    @if(count($availableFilters['jenis_dokumen']) > 5)
+                    @if($visibleJenis > 5)
                     <button class="btn btn-link btn-sm px-0 toggle-more"
                         data-target="jenis-dokumen">
                         Lihat lebih banyak...
@@ -146,14 +163,62 @@
 
                     <hr>
 
-                    {{-- Subjek --}}
+                    {{-- ================== Subjek ================== --}}
                     <h6 class="fw-bold mb-2">
                         <i class="fa-solid fa-tags me-2"></i>Subjek
                     </h6>
 
+                    @php
+                    /**
+                    * Subjek yang dipilih user
+                    * Pastikan array & tanpa nilai kosong
+                    */
+                    $selectedSubjek = array_filter($filters['subjek'] ?? []);
+
+                    /**
+                    * Counter untuk toggle (dipakai jika belum memilih subjek)
+                    */
+                    $shownSubjek = 0;
+
+                    /**
+                    * Hitung jumlah subjek yang valid (punya dokumen)
+                    * Toggle hanya muncul jika > 5
+                    */
+                    $visibleSubjek = collect($availableFilters['subjek'])
+                    ->filter(fn ($s) => ($filterCounts['subjek'][$s->id] ?? 0) > 0)
+                    ->count();
+                    @endphp
+
                     @foreach($availableFilters['subjek'] as $subjek)
+                    @php
+                    $count = $filterCounts['subjek'][$subjek->id] ?? 0;
+                    $isSelected = in_array($subjek->id, $selectedSubjek);
+                    @endphp
+
+                    {{-- ================== JIKA ADA SUBJEK DIPILIH → tampilkan HANYA yang dipilih ================== --}}
+                    @if(!empty($selectedSubjek))
+                    @if($isSelected)
+                    <div class="form-check d-flex justify-content-between align-items-center mb-1">
+                        <div>
+                            <input class="form-check-input"
+                                type="checkbox"
+                                wire:model.defer="filters.subjek"
+                                value="{{ $subjek->id }}">
+                            <label class="form-check-label text-primary">
+                                {{ $subjek->nama }}
+                            </label>
+                        </div>
+                        <span class="badge bg-primary">{{ $count }}</span>
+                    </div>
+                    @endif
+
+                    {{-- ================== JIKA BELUM MEMILIH SUBJEK → tampil normal + toggle ================== --}}
+                    @else
+                    @if($count > 0)
+                    @php $shownSubjek++; @endphp
+
                     <div class="form-check d-flex justify-content-between align-items-center mb-1
-     {{ $loop->index >= 5 ? 'd-none more-subjek' : '' }}">
+                {{ $shownSubjek > 5 ? 'd-none more-subjek' : '' }}">
                         <div>
                             <input class="form-check-input"
                                 type="checkbox"
@@ -163,13 +228,14 @@
                                 {{ $subjek->nama }}
                             </label>
                         </div>
-                        <span class="badge bg-primary">
-                            {{ $filterCounts['subjek'][$subjek->id] ?? 0 }}
-                        </span>
+                        <span class="badge bg-primary">{{ $count }}</span>
                     </div>
+                    @endif
+                    @endif
                     @endforeach
 
-                    @if(count($availableFilters['subjek']) > 5)
+                    {{-- ================== TOGGLE LIHAT LEBIH BANYAK (HANYA jika belum memilih subjek) ================== --}}
+                    @if(empty($selectedSubjek) && $visibleSubjek > 5)
                     <button class="btn btn-link btn-sm px-0 toggle-more"
                         data-target="subjek">
                         Lihat lebih banyak...
