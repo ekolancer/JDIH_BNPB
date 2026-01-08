@@ -47,24 +47,84 @@
                 </div>
             </div>
 
-            {{-- Active Filter Chips --}}
+            {{-- ACTIVE FILTER CHIPS --}}
             @if(collect($filters)->flatten()->filter()->count())
             <div class="filter-chips">
-                @foreach($filters['ref_jenis_dokumen_id'] as $id)
+
+                {{-- Judul --}}
+                @if(filled($filters['judul']))
                 <div class="filter-chip">
-                    {{ $availableFilters['jenis_dokumen']->firstWhere('id',$id)->singkatan }}
+                    Judul: "{{ $filters['judul'] }}"
+                    <button wire:click="$set('filters.judul', '')">×</button>
+                </div>
+                @endif
+
+                {{-- Nomor --}}
+                @if(filled($filters['nomor']))
+                <div class="filter-chip">
+                    Nomor: {{ $filters['nomor'] }}
+                    <button wire:click="$set('filters.nomor', '')">×</button>
+                </div>
+                @endif
+
+                {{-- Tahun --}}
+                @if(filled($filters['tahun']))
+                <div class="filter-chip">
+                    Tahun: {{ $filters['tahun'] }}
+                    <button wire:click="$set('filters.tahun', null)">×</button>
+                </div>
+                @endif
+
+                {{-- Jenis Dokumen --}}
+                @foreach($filters['ref_jenis_dokumen_id'] as $id)
+                @php
+                $jenis = $availableFilters['jenis_dokumen']->firstWhere('id', $id);
+                @endphp
+                @if($jenis)
+                <div class="filter-chip">
+                    {{ $jenis->singkatan }}
                     <button wire:click="$set('filters.ref_jenis_dokumen_id', [])">×</button>
+                </div>
+                @endif
+                @endforeach
+
+                {{-- Bidang Hukum --}}
+                @foreach($filters['ref_bidang_hukum_id'] as $id)
+                @php
+                $bidang = $availableFilters['bidang_hukum']->firstWhere('id', $id);
+                @endphp
+                @if($bidang)
+                <div class="filter-chip">
+                    {{ $bidang->nama }}
+                    <button wire:click="$set('filters.ref_bidang_hukum_id', [])">×</button>
+                </div>
+                @endif
+                @endforeach
+
+                {{-- Subjek --}}
+                @foreach($filters['subjek'] as $id)
+                @php
+                $subjek = $availableFilters['subjek']->firstWhere('id', $id);
+                @endphp
+                @if($subjek)
+                <div class="filter-chip">
+                    {{ $subjek->nama }}
+                    <button wire:click="$set('filters.subjek', [])">×</button>
+                </div>
+                @endif
+                @endforeach
+
+                {{-- Status --}}
+                @foreach($filters['status'] as $status)
+                <div class="filter-chip">
+                    Status: {{ ucfirst(strtolower($status)) }}
+                    <button wire:click="$set('filters.status', [])">×</button>
                 </div>
                 @endforeach
 
-                @foreach($filters['subjek'] as $id)
-                <div class="filter-chip">
-                    {{ $availableFilters['subjek']->firstWhere('id',$id)->nama }}
-                    <button wire:click="$set('filters.subjek', [])">×</button>
-                </div>
-                @endforeach
             </div>
             @endif
+
 
             <!-- Loading Spinner -->
             <div wire:loading.delay
@@ -211,21 +271,21 @@
 
 <!-- Script untuk menampilkan lebih banyak filter -->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.toggle-more').forEach(button => {
-            button.addEventListener('click', () => {
-                const target = button.dataset.target;
-                const items = document.querySelectorAll('.more-' + target);
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.filter-more-btn');
+        if (!btn) return;
 
-                const isHidden = items[0].classList.contains('d-none');
+        const group = btn.closest('.filter-group');
+        const extra = group.querySelector('.filter-extra');
+        const label = btn.querySelector('.label');
 
-                items.forEach(el => el.classList.toggle('d-none'));
+        const expanded = extra.classList.contains('expanded');
 
-                button.textContent = isHidden ?
-                    'Lihat lebih sedikit' :
-                    'Lihat lebih banyak...';
-            });
-        });
+        extra.classList.toggle('expanded', !expanded);
+        extra.classList.toggle('collapsed', expanded);
+
+        btn.classList.toggle('expanded', !expanded);
+        label.textContent = expanded ? 'Lihat lainnya' : 'Tutup';
     });
 </script>
 
@@ -239,5 +299,38 @@
                     .forEach(el => el.classList.toggle('d-none'));
             });
         });
+    });
+</script>
+
+{{-- Script untuk tooltip slider tahun --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('tahunSlider');
+        const tooltip = document.getElementById('tahunTooltip');
+
+        if (!slider || !tooltip) return;
+
+        const updateTooltip = () => {
+            const value = slider.value;
+            const min = slider.min;
+            const max = slider.max;
+
+            const percent = (value - min) / (max - min);
+            const sliderWidth = slider.offsetWidth;
+
+            tooltip.style.left = `${percent * sliderWidth}px`;
+            tooltip.textContent = value;
+        };
+
+        slider.addEventListener('input', () => {
+            tooltip.style.opacity = 1;
+            updateTooltip();
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            tooltip.style.opacity = 0;
+        });
+
+        updateTooltip();
     });
 </script>
