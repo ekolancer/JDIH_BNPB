@@ -162,6 +162,9 @@ class DokumenList extends Component
         $this->applyFilters();
     }
 
+    //==========================================================
+    // FILTER COUNTS (DYNAMIC)
+    //==========================================================
     private function loadFilterCounts(): array
     {
         // Cache berbasis filter aktif
@@ -214,6 +217,17 @@ class DokumenList extends Component
                         ->whereIn('dokumen_hukum_id', $dokumenIds)
                         ->groupBy('subjek_id')
                         ->pluck('total', 'subjek_id'),
+
+                    // ===============================
+                    // STATUS
+                    // ===============================
+                    'status' => DB::table('dokumen_hukums')
+                        ->select('status', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds) // <-- INI YANG MEMBUAT DINAMIS
+                        ->whereNotNull('status')
+                        ->groupBy('status')
+                        ->pluck('total', 'status'),
+
                 ];
             }
         );

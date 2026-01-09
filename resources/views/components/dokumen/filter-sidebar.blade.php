@@ -67,26 +67,32 @@
     <div class="filter-title">
         <i class="fa-solid fa-book-open me-2"></i>JENIS DOKUMEN
     </div>
-    @php $shown=0; @endphp
-    <div class="filter-collapse expanded" data-collapse="jenis">
-        @foreach($availableFilters['jenis_dokumen'] as $j)
-        @php $c=$filterCounts['jenis_dokumen'][$j->id]??0; @endphp
-        @if($c>0)
-        @php $shown++; @endphp
-        <div class="filter-item {{ in_array($j->id,$filters['ref_jenis_dokumen_id'])?'active':'' }}
-                    {{ $shown>5?'d-none more-jenis':'' }}">
-            <div class="d-flex align-items">
-                <input type="checkbox" wire:model.defer="filters.ref_jenis_dokumen_id" value="{{ $j->id }}">
-                <label class="ms-2 text-uppercase">{{ $j->singkatan }}</label>
-            </div>
-            <span class="filter-count">{{ $c }}</span>
+    @php
+    $selectedJenis = $filters['ref_jenis_dokumen_id'] ?? [];
+    @endphp
+
+    @foreach($availableFilters['jenis_dokumen'] as $j)
+    @php
+    $count = $filterCounts['jenis_dokumen'][$j->id] ?? 0;
+    $isActive = in_array($j->id, $selectedJenis);
+    @endphp
+
+    <div class="filter-item {{ $isActive ? 'active' : '' }}">
+        <div class="d-flex align-items">
+            <input type="checkbox"
+                wire:model.defer="filters.ref_jenis_dokumen_id"
+                value="{{ $j->id }}">
+            <label class="ms-2 text-uppercase">
+                {{ $j->singkatan }}
+            </label>
         </div>
-        @endif
-        @endforeach
+
+        {{-- count tetap tampil walau 0 (optional) --}}
+        <span class="filter-count">
+            {{ $count }}
+        </span>
     </div>
-    @if($shown>5)
-    <button class="filter-toggle" data-toggle="jenis">Lihat lainnya</button>
-    @endif
+    @endforeach
 
     <div class="filter-divider"></div>
 
@@ -118,12 +124,27 @@
     <div class="filter-divider"></div>
 
     {{-- STATUS --}}
+
+    @php
+    $visibleStatus = collect($availableFilters['status'])
+    ->filter(fn($s) => ($filterCounts['status'][$s] ?? 0) > 0)
+    ->values();
+    @endphp
+
+    @if($visibleStatus->isNotEmpty())
+    <div class="filter-divider"></div>
+
     <div class="filter-title">
         <i class="fa-solid fa-info-circle me-2"></i>STATUS
     </div>
-    @foreach($availableFilters['status'] as $status)
-    <div class="filter-item
-        {{ in_array($status, $filters['status']) ? 'active' : '' }}">
+
+    @foreach($visibleStatus as $status)
+    @php
+    $count = $filterCounts['status'][$status];
+    $isActive = in_array($status, $filters['status']);
+    @endphp
+
+    <div class="filter-item {{ $isActive ? 'active' : '' }}">
         <div class="d-flex align-items">
             <input type="checkbox"
                 wire:model.defer="filters.status"
@@ -132,8 +153,13 @@
                 {{ ucfirst(strtolower($status)) }}
             </label>
         </div>
+
+        <span class="filter-count">
+            {{ $count }}
+        </span>
     </div>
     @endforeach
+    @endif
 
     <div class="filter-divider"></div>
 
