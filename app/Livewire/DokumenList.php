@@ -162,6 +162,31 @@ class DokumenList extends Component
         $this->applyFilters();
     }
 
+    public function removeFilter(string $key, $value = null)
+    {
+        if (is_array($this->filters[$key])) {
+            if ($value !== null) {
+                // hapus satu nilai dari array
+                $this->filters[$key] = array_values(
+                    array_diff($this->filters[$key], [$value])
+                );
+            } else {
+                // hapus semua
+                $this->filters[$key] = [];
+            }
+        } else {
+            // scalar
+            $this->filters[$key] = null;
+        }
+
+        $this->resetPage();
+
+        // jika masih pakai redirect
+        if (method_exists($this, 'applyFilters')) {
+            $this->applyFilters();
+        }
+    }
+
     //==========================================================
     // FILTER COUNTS (DYNAMIC)
     //==========================================================

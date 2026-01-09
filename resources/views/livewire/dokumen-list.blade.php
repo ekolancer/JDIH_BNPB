@@ -55,7 +55,7 @@
                 @if(filled($filters['judul']))
                 <div class="filter-chip">
                     Judul: "{{ $filters['judul'] }}"
-                    <button wire:click="$set('filters.judul', '')">×</button>
+                    <button wire:click="removeFilter('judul')">×</button>
                 </div>
                 @endif
 
@@ -63,7 +63,7 @@
                 @if(filled($filters['nomor']))
                 <div class="filter-chip">
                     Nomor: {{ $filters['nomor'] }}
-                    <button wire:click="$set('filters.nomor', '')">×</button>
+                    <button wire:click="removeFilter('nomor')">×</button>
                 </div>
                 @endif
 
@@ -71,7 +71,7 @@
                 @if(filled($filters['tahun']))
                 <div class="filter-chip">
                     Tahun: {{ $filters['tahun'] }}
-                    <button wire:click="$set('filters.tahun', null)">×</button>
+                    <button wire:click="removeFilter('tahun')">×</button>
                 </div>
                 @endif
 
@@ -83,7 +83,7 @@
                 @if($jenis)
                 <div class="filter-chip">
                     {{ $jenis->singkatan }}
-                    <button wire:click="$set('filters.ref_jenis_dokumen_id', [])">×</button>
+                    <button wire:click="removeFilter('ref_jenis_dokumen_id', {{ $id }})">×</button>
                 </div>
                 @endif
                 @endforeach
@@ -96,7 +96,7 @@
                 @if($bidang)
                 <div class="filter-chip">
                     {{ $bidang->nama }}
-                    <button wire:click="$set('filters.ref_bidang_hukum_id', [])">×</button>
+                    <button wire:click="removeFilter('ref_bidang_hukum_id', {{ $id }})">×</button>
                 </div>
                 @endif
                 @endforeach
@@ -109,7 +109,7 @@
                 @if($subjek)
                 <div class="filter-chip">
                     {{ $subjek->nama }}
-                    <button wire:click="$set('filters.subjek', [])">×</button>
+                    <button wire:click="removeFilter('subjek', {{ $id }})">×</button>
                 </div>
                 @endif
                 @endforeach
@@ -118,7 +118,7 @@
                 @foreach($filters['status'] as $status)
                 <div class="filter-chip">
                     Status: {{ ucfirst(strtolower($status)) }}
-                    <button wire:click="$set('filters.status', [])">×</button>
+                    <button wire:click="removeFilter('status', '{{ $status }}')">×</button>
                 </div>
                 @endforeach
 

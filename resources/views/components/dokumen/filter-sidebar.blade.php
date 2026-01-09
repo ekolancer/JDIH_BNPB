@@ -11,10 +11,14 @@
     {{-- CARI JUDUL --}}
     <div class="filter-title">judul</div>
     <div class="d-flex gap-2">
-        <input type="text" wire:model.live.debounce.500ms="filters.judul"
-            {{-- wire:change="applyFilters" --}}
+        <input type="text" wire:model.defer="filters.judul"
             class="form-control form-control-sm"
             placeholder="Cari judul...">
+
+        <button wire:click="applyFilters"
+            class="btn btn-outline-primary btn-sm">
+            <i class="fa fa-search"></i>
+        </button>
     </div>
 
     <div class="filter-divider"></div>
@@ -24,10 +28,14 @@
 
     <div class="d-flex gap-2">
         <input type="number"
-            wire:model.live.debounce.500ms="filters.nomor"
-            {{-- wire:change="applyFilters" --}}
+            wire:model.defer="filters.nomor"
             class="form-control form-control-sm"
             placeholder="Cari nomor...">
+
+        <button wire:click="applyFilters"
+            class="btn btn-outline-primary btn-sm">
+            <i class="fa fa-search"></i>
+        </button>
     </div>
 
     <div class="filter-divider"></div>
@@ -43,7 +51,7 @@
     <div class="tahun-slider-wrapper">
         <input type="range"
             wire:model.live="filters.tahun"
-            {{-- wire:change="applyFilters" --}}
+            wire:change="applyFilters"
             min="1990"
             max="{{ date('Y') }}"
             class="form-range tahun-slider"
@@ -74,7 +82,7 @@
         <div class="d-flex align-items">
             <input type="checkbox"
                 wire:model.live="filters.ref_jenis_dokumen_id"
-                {{-- wire:change="applyFilters" --}}
+                wire:change="applyFilters"
                 value="{{ $j->id }}">
             <label class="ms-2 text-uppercase">
                 {{ $j->singkatan }}
@@ -103,9 +111,9 @@
         <div class="filter-item {{ in_array($b->id,$filters['ref_bidang_hukum_id'])?'active':'' }}
                     {{ $shown>5?'d-none more-bidang':'' }}">
             <div class="d-flex align-items">
-                <input type="checkbox" 
-                    wire:model.live="filters.ref_bidang_hukum_id" 
-                    {{-- wire:change="applyFilters" --}}
+                <input type="checkbox"
+                    wire:model.live="filters.ref_bidang_hukum_id"
+                    wire:change="applyFilters"
                     value="{{ $b->id }}">
                 <label class="ms-2">{{ $b->nama }}</label>
             </div>
@@ -145,7 +153,7 @@
         <div class="d-flex align-items">
             <input type="checkbox"
                 wire:model.live="filters.status"
-                {{-- wire:change="applyFilters" --}}
+                wire:change="applyFilters"
                 value="{{ $status }}">
             <label class="ms-2">
                 {{ ucfirst(strtolower($status)) }}
@@ -185,7 +193,7 @@
             <div class="d-flex align-items">
                 <input type="checkbox"
                     wire:model.live="filters.subjek"
-                    {{-- wire:change="applyFilters" --}}
+                    wire:change="applyFilters"
                     value="{{ $s->id }}">
                 <label class="ms-2 fw-bold">{{ $s->nama }}</label>
             </div>
@@ -204,7 +212,7 @@
             <div class="d-flex align-items">
                 <input type="checkbox"
                     wire:model.live="filters.subjek"
-                    {{-- wire:change="applyFilters" --}}
+                    wire:change="applyFilters"
                     value="{{ $s->id }}">
                 <label class="ms-2">{{ $s->nama }}</label>
             </div>
@@ -222,7 +230,7 @@
                 <div class="d-flex align-items">
                     <input type="checkbox"
                         wire:model.live="filters.subjek"
-                        {{-- wire:change="applyFilters" --}}
+                        wire:change="applyFilters"
                         value="{{ $s->id }}">
                     <label class="ms-2">{{ $s->nama }}</label>
                 </div>
