@@ -16,24 +16,29 @@ class ApiController extends Controller
     public function index(Request $request)
     {
         try {
-            // Validasi parameter request
             $validated = $request->validate([
-                'per_page'     => 'nullable|integer|min:1|max:100',
-                'page'         => 'nullable|integer|min:1',
-                'tipeDok'      => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
-                'tahun'        => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-                'judul'        => 'nullable|string|max:255',
-                'subjek'       => 'nullable|string|max:255',
-                'bidangHukum'  => 'nullable|string|max:255',
-                'sort_by'      => 'nullable|string|in:id,tahun,judul,created_at',
-                'sort_order'   => 'nullable|string|in:asc,desc',
+                'per_page'    => 'nullable|integer|min:1|max:100',
+                'page'        => 'nullable|integer|min:1',
+                'tipeDok'     => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
+                'tahun'       => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
+                'judul'       => 'nullable|string|max:255',
+                'subjek'      => 'nullable|string|max:255',
+                'bidangHukum' => 'nullable|string|max:255',
+                'sort_by'     => 'nullable|string|in:id,tahun,judul,created_at',
+                'sort_order'  => 'nullable|string|in:asc,desc',
             ]);
 
-            // Parameter dasar
-            $perPage = $validated['per_page'] ?? 15;
-            $query   = DokumenHukum::query();
+            $query = DokumenHukum::query()
+                ->with([
+                    'jenisDokumen:id,nama,singkatan',
+                    'bidangHukumRef:id,nama',
+                    'subjekRef:id,nama',
+                ]);
 
-            // Filter opsional
+            /* ============================
+         * FILTER
+         * ============================*/
+
             if (!empty($validated['tipeDok'])) {
                 $query->where('tipeDok', $validated['tipeDok']);
             }
@@ -46,48 +51,57 @@ class ApiController extends Controller
                 $query->where('judul', 'like', '%' . $validated['judul'] . '%');
             }
 
+            // 🔹 SUBJEK (via relasi)
             if (!empty($validated['subjek'])) {
-                $query->where('subjek', 'like', '%' . $validated['subjek'] . '%');
+                $query->whereHas('subjekRef', function ($q) use ($validated) {
+                    $q->where('nama', 'like', '%' . $validated['subjek'] . '%');
+                });
             }
 
+            // 🔹 BIDANG HUKUM (via ref)
             if (!empty($validated['bidangHukum'])) {
-                $query->where('bidangHukum', $validated['bidangHukum']);
+                $query->whereHas('bidangHukumRef', function ($q) use ($validated) {
+                    $q->where('nama', 'like', '%' . $validated['bidangHukum'] . '%');
+                });
             }
 
-            // Urutan hasil
+            /* ============================
+         * SORTING
+         * ============================*/
             $sortBy    = $validated['sort_by'] ?? 'tahun';
             $sortOrder = $validated['sort_order'] ?? 'desc';
+
             $query->orderBy($sortBy, $sortOrder);
 
-            // Ambil data (tanpa pagination agar semua data keluar)
-            $dokumenHukums = $query->get();
+            /* ============================
+         * EXECUTE
+         * ============================*/
+            $dokumen = $query->get();
 
-            // Ubah resource collection menjadi array biasa
-            $data = $dokumenHukums->map(function ($item) {
-                return (new DokumenHukumResource($item))->toArray(request());
-            });
+            $data = $dokumen->map(
+                fn($item) => (new DokumenHukumResource($item))->toArray($request)
+            );
 
-            // Return sebagai array JSON langsung (tanpa key "data")
-            return response()->json($data, 200, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
+            return response()->json(
+                $data,
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+            );
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Error validasi parameter input
             return response()->json([
                 'error'   => 'Validation failed',
-                'message' => 'Invalid request parameters',
                 'details' => $e->errors(),
             ], 422);
-        } catch (\Exception $e) {
-            // Error umum
-            Log::error('API Error: ' . $e->getMessage(), [
-                'request'     => $request->all(),
-                'user_agent'  => $request->userAgent(),
-                'ip'          => $request->ip(),
+        } catch (\Throwable $e) {
+            Log::error('API Error', [
+                'message' => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
             ]);
 
             return response()->json([
                 'error'   => 'Internal server error',
-                'message' => 'An unexpected error occurred. Please try again later.',
+                'message' => 'Unexpected error',
             ], 500);
         }
     }
