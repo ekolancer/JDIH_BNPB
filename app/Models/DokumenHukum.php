@@ -161,7 +161,7 @@ class DokumenHukum extends Model
     }
 
     /***************************************************************
-     *  UID OFFICIAL FORMAT BPHN: PERKA/BNPB/01/2024
+     *  UID FORMAT: PERKA/BNPB/01/2024
      ***************************************************************/
     public function generateDocumentUid(): void
     {

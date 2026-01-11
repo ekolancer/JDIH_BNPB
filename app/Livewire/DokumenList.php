@@ -144,7 +144,7 @@ class DokumenList extends Component
             })
             ->toArray();
 
-        $filtered['sortBy'] = $this->sortBy;
+        $filtered['sort'] = $this->sortBy;
 
         $filtered['page']   = 1;
 
@@ -284,7 +284,7 @@ class DokumenList extends Component
             'queryTime'        => $this->queryTime,
             'availableFilters' => $this->availableFilters,
             'filterCounts'     => $filterCounts,
-            'sortBy'           => $this->sortBy,
+            'sort'           => $this->sortBy,
         ]);
     }
 }

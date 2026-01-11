@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{{ $dokumen->singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}</title>
+    <title class="text-uppercase">{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}</title>
     <meta property="og:title" content="{{ $dokumen['judul'] }}">
     
     <!-- Google Web Fonts -->
