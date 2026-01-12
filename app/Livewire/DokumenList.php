@@ -3,56 +3,74 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Arr;
-use App\Models\DokumenHukum;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use App\Models\DokumenHukum;
+use App\Models\RefJenisDokumen;
+use App\Models\RefBidangHukum;
+use App\Models\RefSubjek;
 
 #[Layout('app-clear')]
 class DokumenList extends Component
 {
     use WithPagination;
 
-    public $filters = [
+    protected $paginationTheme = 'bootstrap';
+
+    /* ==========================================================
+     *  FILTER STATE (INTERNAL)
+     * ========================================================*/
+    public array $filters = [
         'judul' => '',
         'tahun' => null,
         'tipeDok' => '',
-        'jenisDok' => [],
+        'ref_jenis_dokumen_id' => [],
+        'ref_bidang_hukum_id' => [],
         'subjek' => [],
         'status' => [],
-        'bidangHukum' => [],
         'nomor' => '',
     ];
 
-    public $availableFilters = [];
-    public $numResults = 0;
-    public $queryTime = 0;
-    public $selectedTipeDok;
-    public $sortBy = 'latest'; // Default sorting: 'latest', 'popular'
-
-    protected $updatesQueryString = [
-        'filters' => ['except' => []],
-        'sortBy' => ['except' => 'latest'], // Add sortBy to query string
+    /* ==========================================================
+     *  URL ALIAS (PUBLIC CONTRACT)
+     * ========================================================*/
+    protected array $filterAliases = [
+        'judul'                => 'judul',
+        'tahun'                => 'tahun',
+        'tipeDok'              => 'type',
+        'ref_jenis_dokumen_id' => 'bentuk',
+        'ref_bidang_hukum_id'  => 'bidang',
+        'subjek'               => 'subjek',
+        'status'               => 'status',
+        'nomor'                => 'no',
     ];
 
-    public function mount($filters = [], $sortBy = 'latest')
+    public array $availableFilters = [];
+    public int $numResults = 0;
+    public float $queryTime = 0;
+    public string $sortBy = 'latest';
+
+    /* ==========================================================
+     *  MOUNT
+     * ========================================================*/
+    public function mount()
     {
-        $this->filters = array_merge($this->filters, $filters, request()->query());
-        $this->sortBy = request()->query('sortBy', $sortBy);
+        $query = $this->mapAliasToFilters(request()->query());
 
-        foreach (['jenisDok', 'subjek', 'status', 'bidangHukum'] as $key) {
+        $this->filters = array_merge($this->filters, $query);
+        $this->sortBy  = request()->query('sortBy', 'latest');
+
+        foreach (['ref_jenis_dokumen_id', 'ref_bidang_hukum_id', 'subjek', 'status'] as $key) {
             if (!is_array($this->filters[$key])) {
-                $this->filters[$key] = array_filter(explode(',', $this->filters[$key]));
+                $this->filters[$key] = array_filter(
+                    explode(',', (string) $this->filters[$key])
+                );
             }
-
-            // Validasi isi array hanya boleh berupa string alfanumerik
-            $this->filters[$key] = array_filter($this->filters[$key], function ($item) {
-                return ctype_alnum(str_replace([' ', '-'], '', $item));
-            });
         }
 
-        // Validasi tahun agar hanya angka
         if (!is_numeric($this->filters['tahun'])) {
             $this->filters['tahun'] = null;
         }
@@ -60,206 +78,213 @@ class DokumenList extends Component
         $this->loadAvailableFilters();
     }
 
-    // Perbarui tipeDok secara dinamis saat dipilih di navbar
-    public function updateTipeDok($tipeDok)
+    /* ==========================================================
+     *  URL ALIAS MAPPER
+     * ========================================================*/
+    private function mapAliasToFilters(array $query): array
     {
-        $this->filters['tipeDok'] = $tipeDok;
-        $this->resetPage();
-    }
+        $reverse = array_flip($this->filterAliases);
 
-    // Reset pagination saat filter diperbarui
-    public function updated($propertyName)
-    {
-        if (str_starts_with($propertyName, 'filters')) {
-            $this->resetPage();
-        }
-    }
-
-    public function updateSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
-
-        // Terapkan filter dan sorting ke URL
-        $this->applyFilters();
-    }
-
-    // Memuat filter yang tersedia dari cache
-    private function loadAvailableFilters()
-    {
-        $this->availableFilters = Cache::remember('available_filters', now()->addMinutes(30), function () {
-            return [
-                'jenisDok' => DokumenHukum::distinct()->pluck('jenisDok')->toArray(),
-                'subjek' => DokumenHukum::distinct()->pluck('subjek')->toArray(),
-                'status' => DokumenHukum::distinct()->pluck('status')->toArray(),
-                'bidangHukum' => DokumenHukum::distinct()->pluck('bidangHukum')->toArray(),
-            ];
-        });
-    }
-
-    // Terapkan filter tanpa mereset pagination
-    public function applyFilters()
-    {
-        // Bersihkan filter agar tidak ada nilai kosong
-        $filteredFilters = array_filter($this->filters, function ($value) {
-            return is_array($value) ? count($value) > 0 : !empty($value);
-        });
-
-        // Konversi array menjadi string sebelum dikirim ke query string
-        foreach ($filteredFilters as $key => $value) {
-            if (is_array($value)) {
-                $filteredFilters[$key] = implode(',', $value);
+        foreach ($query as $key => $value) {
+            if (isset($reverse[$key]) && $reverse[$key] !== $key) {
+                $query[$reverse[$key]] = $value;
+                unset($query[$key]);
             }
         }
 
-        // Tambahkan sortBy ke query string
-        $filteredFilters['sortBy'] = $this->sortBy;
-
-        // Set pagination ke halaman 1
-        $filteredFilters['page'] = 1;
-
-        // Buat query string
-        $queryString = Arr::query($filteredFilters);
-
-        // Redirect to the updated URL with filters and sort applied
-        return redirect()->to('/dokumen?' . $queryString);
+        return $query;
     }
 
-    // Reset semua filter ke nilai default dan reset pagination
+    /* ==========================================================
+     *  AVAILABLE FILTERS (REF TABLE)
+     * ========================================================*/
+    private function loadAvailableFilters(): void
+    {
+        $this->availableFilters = Cache::remember(
+            'dokumen.available_filters.v3',
+            now()->addMinutes(30),
+            fn() => [
+                'jenis_dokumen' => RefJenisDokumen::where('is_active', true)
+                    ->orderBy('nama')
+                    ->get(['id', 'nama', 'singkatan']),
+
+                'bidang_hukum' => RefBidangHukum::where('is_active', true)
+                    ->orderBy('nama')
+                    ->get(['id', 'nama']),
+
+                'subjek' => RefSubjek::where('is_active', true)
+                    ->orderBy('nama')
+                    ->get(['id', 'nama']),
+
+                'status' => DokumenHukum::select('status')
+                    ->distinct()
+                    ->whereNotNull('status')
+                    ->pluck('status')
+                    ->values()
+                    ->toArray(),
+            ]
+        );
+    }
+
+    /* ==========================================================
+     *  FILTER ACTIONS
+     * ========================================================*/
+    public function applyFilters()
+    {
+        $filtered = collect($this->filters)
+            ->filter(fn($v) => is_array($v) ? count($v) : filled($v))
+            ->mapWithKeys(function ($value, $key) {
+                $alias = $this->filterAliases[$key] ?? $key;
+
+                return [
+                    $alias => is_array($value)
+                        ? implode(',', $value)
+                        : $value
+                ];
+            })
+            ->toArray();
+
+        $filtered['sort'] = $this->sortBy;
+
+        $filtered['page']   = 1;
+
+        return redirect()->to('/dokumen?' . Arr::query($filtered));
+    }
+
     public function resetFilters()
     {
-        $this->filters = [
-            'judul' => '',
-            'tahun' => null,
-            'tipeDok' => '',
-            'jenisDok' => [],
-            'subjek' => [],
-            'status' => [],
-            'bidangHukum' => [],
-            'nomor' => '',
-        ];
-
-        $this->filters['page'] = 1;
-        $this->resetPage();
-        // Redirect to the base URL without filters
         return redirect()->to('/dokumen');
     }
 
-    // Menghapus filter tertentu dan reset pagination
-    public function removeFilter($filter)
+    public function updateSortBy(string $sortBy)
     {
-        foreach ($this->filters as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $index => $item) {
-                    if (ucfirst($this->getDisplayKey($key)) . ': ' . $item == $filter) {
-                        unset($this->filters[$key][$index]);
-                    }
-                }
-                $this->filters[$key] = array_values($this->filters[$key]);
-            } elseif (ucfirst($this->getDisplayKey($key)) . ': ' . $value == $filter) {
-                $this->filters[$key] = ($key === 'tahun' || $key === 'nomor') ? null : '';
-            }
-        }
-
-        // Reset pagination to page 1
-        $this->filters['page'] = 1;
-        // $this->resetPage();
-
-        // Perbarui URL setelah filter dihapus
+        $this->sortBy = $sortBy;
         $this->applyFilters();
     }
 
-    // Mendapatkan filter aktif dalam format yang dapat dibaca
-    public function getActiveFilters()
+    public function removeFilter(string $key, $value = null)
     {
-        $filters = [];
-
-        foreach ($this->filters as $key => $value) {
-            // Abaikan filter 'page'
-            if ($key === 'page' || $key === 'tipeDok' || $key === 'sortBy') {
-                continue;
+        if (is_array($this->filters[$key])) {
+            if ($value !== null) {
+                // hapus satu nilai dari array
+                $this->filters[$key] = array_values(
+                    array_diff($this->filters[$key], [$value])
+                );
+            } else {
+                // hapus semua
+                $this->filters[$key] = [];
             }
-
-            if (!empty($value)) {
-                $displayKey = $this->getDisplayKey($key);
-                if (is_array($value)) {
-                    foreach ($value as $item) {
-                        $filters[] = ucfirst($displayKey) . ': ' . $item;
-                    }
-                } else {
-                    $filters[] = ucfirst($displayKey) . ': ' . $value;
-                }
-            }
+        } else {
+            // scalar
+            $this->filters[$key] = null;
         }
 
-        return $filters;
+        $this->resetPage();
+
+        // jika masih pakai redirect
+        if (method_exists($this, 'applyFilters')) {
+            $this->applyFilters();
+        }
     }
 
-    // Render tampilan dengan hasil query dan informasi lainnya
+    //==========================================================
+    // FILTER COUNTS (DYNAMIC)
+    //==========================================================
+    private function loadFilterCounts(): array
+    {
+        // Cache berbasis filter aktif
+        $hash = md5(json_encode([
+            'jenis'  => $this->filters['ref_jenis_dokumen_id'] ?? [],
+            'bidang' => $this->filters['ref_bidang_hukum_id'] ?? [],
+            'tahun'  => $this->filters['tahun'] ?? null,
+            'nomor'  => $this->filters['nomor'] ?? null,
+            'judul'  => $this->filters['judul'] ?? null,
+            'status' => $this->filters['status'] ?? [],
+        ]));
+
+        return Cache::remember(
+            "dokumen.filter_counts.$hash",
+            now()->addMinutes(10),
+            function () {
+
+                // 1️⃣ Query dasar yang SUDAH TERFILTER
+                $baseQuery = DokumenHukum::query()
+                    ->applyFilters($this->filters);
+
+                // Ambil ID dokumen yang relevan
+                $dokumenIds = $baseQuery->pluck('id');
+
+                return [
+
+                    // ===============================
+                    // JENIS DOKUMEN
+                    // ===============================
+                    'jenis_dokumen' => DB::table('dokumen_hukums')
+                        ->select('ref_jenis_dokumen_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds)
+                        ->groupBy('ref_jenis_dokumen_id')
+                        ->pluck('total', 'ref_jenis_dokumen_id'),
+
+                    // ===============================
+                    // BIDANG HUKUM
+                    // ===============================
+                    'bidang_hukum' => DB::table('dokumen_hukums')
+                        ->select('ref_bidang_hukum_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds)
+                        ->groupBy('ref_bidang_hukum_id')
+                        ->pluck('total', 'ref_bidang_hukum_id'),
+
+                    // ===============================
+                    // SUBJEK (INI KUNCI)
+                    // ===============================
+                    'subjek' => DB::table('dokumen_subjek')
+                        ->select('subjek_id', DB::raw('COUNT(*) as total'))
+                        ->whereIn('dokumen_hukum_id', $dokumenIds)
+                        ->groupBy('subjek_id')
+                        ->pluck('total', 'subjek_id'),
+
+                    // ===============================
+                    // STATUS
+                    // ===============================
+                    'status' => DB::table('dokumen_hukums')
+                        ->select('status', DB::raw('COUNT(*) as total'))
+                        ->whereIn('id', $dokumenIds) // <-- INI YANG MEMBUAT DINAMIS
+                        ->whereNotNull('status')
+                        ->groupBy('status')
+                        ->pluck('total', 'status'),
+
+                ];
+            }
+        );
+    }
+
+    /* ==========================================================
+     *  RENDER
+     * ========================================================*/
     public function render()
     {
-        $startTime = microtime(true);
+        $start = microtime(true);
 
-        $query = DokumenHukum::query();
-
-        $this->applyFiltersToQuery($query);
+        $query = DokumenHukum::query()
+            ->with(['jenisDokumen', 'bidangHukumRef', 'subjekRef'])
+            ->applyFilters($this->filters)
+            ->applySorting($this->sortBy);
 
         $results = $query->paginate(10);
 
         $this->numResults = $results->total();
-        
-        $this->queryTime = microtime(true) - $startTime;
+
+        $this->queryTime = round(microtime(true) - $start, 3);
+
+        $filterCounts = $this->loadFilterCounts();
 
         return view('livewire.dokumen-list', [
-            'results' => $results,
-            'numResults' => $this->numResults,
-            'queryTime' => round($this->queryTime, 2),
-            'activeFilters' => $this->getActiveFilters(),
+            'results'          => $results,
+            'numResults'       => $this->numResults,
+            'queryTime'        => $this->queryTime,
             'availableFilters' => $this->availableFilters,
-            'sortBy' => $this->sortBy, // Pass sortBy to the view
+            'filterCounts'     => $filterCounts,
+            'sort'           => $this->sortBy,
         ]);
-    }
-
-    // Terapkan filter ke query
-    private function applyFiltersToQuery($query)
-    {
-        $filterableFields = ['tipeDok', 'judul', 'tahun', 'nomor'];
-        foreach ($filterableFields as $field) {
-            $value = trim($this->filters[$field] ?? '');
-            if (!empty($value) && ctype_alnum(str_replace([' ', '-'], '', $value))) {
-                $query->where($field, 'like', '%' . addslashes($value) . '%');
-            }
-        }
-
-        foreach (['jenisDok', 'subjek', 'status', 'bidangHukum'] as $key) {
-            $values = array_filter(array_map('trim', $this->filters[$key] ?? []));
-            if (!empty($values)) {
-                $query->whereIn($key, array_map('addslashes', $values));
-            }
-        }
-
-        // Apply sorting
-        if ($this->sortBy === 'latest') {
-            $query->orderBy('tahun', 'desc')->orderBy('nomor', 'desc');
-        } elseif ($this->sortBy === 'popular') {
-            $query->orderBy('view_count', 'desc');
-        }
-    }
-
-    // Mendapatkan nama tampilan untuk filter
-    private function getDisplayKey($key)
-    {
-        $displayKeys = [
-            'tipeDok' => 'Tipe',
-            'jenisDok' => 'Jenis',
-            'subjek' => 'Subjek',
-            'status' => 'Status',
-            'bidangHukum' => 'Bidang',
-            'judul' => 'Judul',
-            'tahun' => 'Tahun',
-            'nomor' => 'Nomor',
-            'page' => 'Hal',
-        ];
-
-        return isset($displayKeys[$key]) ? $displayKeys[$key] : $key;
     }
 }

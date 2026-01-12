@@ -14,7 +14,7 @@ class RefBidangHukum extends Model
         'is_active',
     ];
 
-    public function dokumen()
+    public function dokumenHukum()
     {
         return $this->hasMany(DokumenHukum::class, 'ref_bidang_hukum_id');
     }

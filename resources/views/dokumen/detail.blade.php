@@ -25,12 +25,12 @@
     .modern-badge {
         display: inline-flex;
         align-items: center;
-        padding: 8px 16px;
+        padding: 4px 8px;
         margin: 4px 6px 4px 0;
         border-radius: 20px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 500;
         text-transform: capitalize;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
@@ -135,12 +135,12 @@
             <div class="container-detail shadow-lg p-4 bg-white rounded">
                 <div class="title-section mb-3">
                     <h2 class="fw-bold text-primary">
-                        <i class="fas fa-list me-2"></i>
-                        @if(in_array($dokumen->tipeDok, ['Peraturan', 'Putusan']))
-                        {{ $dokumen->singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}
+                        <i class="fas fa-list me-2"></i> DETAIL DOKUMEN
+                        <!-- @if(in_array($dokumen->tipeDok, ['Peraturan', 'Putusan']))
+                        {{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}
                         @else
                         {{ $dokumen->judul }}
-                        @endif
+                        @endif -->
                     </h2>
                     <hr>
                     <!-- sekilas info -->
@@ -177,22 +177,53 @@
                             <th class="table-primary">Metadata</th>
                             <th class="table-primary">Keterangan</th>
                         </tr>
-                        @foreach($metadata as $key => $value)
+
+                        @foreach($metadata as $label => $value)
                         <tr>
-                            <th>{{ $key }}</th>
+                            <th>{{ $label }}</th>
                             <td>
-                                @if($key == 'Subjek' && !empty($value))
-                                <span class="modern-badge">
-                                    <i class="fas fa-tag"></i> {{ $value }}
+
+                                {{-- SUBJEK (many to many + link filter) --}}
+                                @if($label === 'Subjek' && $value instanceof \Illuminate\Support\Collection)
+                                @forelse($value as $subjek)
+                                <a href="{{ url('/dokumen', ['subjek' => $subjek->nama]) }}"
+                                    class="modern-badge me-1 text-decoration-none text-capitalize">
+                                    <i class="fas fa-tag"></i> {{ $subjek->nama }}
+                                </a>
+                                @empty
+                                —
+                                @endforelse
+
+                                {{-- BIDANG HUKUM (ref + link filter) --}}
+                                @elseif($label === 'Bidang Hukum' && $value instanceof \Illuminate\Database\Eloquent\Model)
+                                <a href="{{ url('/dokumen', ['bidang' => $value->nama]) }}"
+                                    class="modern-badge me-1 text-decoration-none text-capitalize">
+                                    <i class="fas fa-tag"></i>{{ $value->nama }}
+                                </a>
+
+                                {{-- JENIS DOKUMEN (ref) --}}
+                                @elseif($label === 'Jenis Dokumen' && $value instanceof \Illuminate\Database\Eloquent\Model)
+                                {{ $value->nama }}
+
+                                {{-- STATUS --}}
+                                @elseif($label === 'Status')
+                                <span class="badge bg-info">
+                                    {{ ucfirst(strtolower($value)) }}
                                 </span>
+
+                                {{-- DEFAULT --}}
                                 @else
-                                {{ $value }}
+                                {{ $value ?: '—' }}
+
                                 @endif
+
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                <!-- Tombol Aksi -->
                 <div class="d-flex justify-content">
                     <!-- Tombol Kembali -->
                     <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">Kembali</a>
@@ -201,9 +232,10 @@
                     @livewire('media-file', ['dokumenId' => $dokumen->id])
 
                 </div>
+
                 <!-- Tombol Social Share Upgrade -->
                 <div class="redes">
-                <a class="instagram" href="https://www.instagram.com/create/story/?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Instagram'); return false;">
+                    <a class="instagram" href="https://www.instagram.com/create/story/?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Instagram'); return false;">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="#ffffff"
@@ -281,7 +313,7 @@
             <div class="card-status">
                 <div class="header text-uppercase">Singkatan</div>
                 <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem; height: 2px;">
-                <div class="content text-uppercase">{{ $dokumen->singkatan }}</div>
+                <div class="content text-uppercase">{{ $dokumen->jenis_dokumen_singkatan }}</div>
             </div>
             <!-- Status -->
             <div class="card-status">

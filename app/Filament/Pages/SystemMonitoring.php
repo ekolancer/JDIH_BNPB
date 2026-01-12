@@ -25,9 +25,6 @@ class SystemMonitoring extends Dashboard
     // 🧩 Judul halaman
     protected static ?string $title = 'Laravel Pulse Dashboard';
 
-    // 📋 Urutan menu di sidebar
-    // protected static ?int $navigationSort = 15;
-
     public static function getNavigationGroup(): ?string
     {
         return 'System';
@@ -45,10 +42,9 @@ class SystemMonitoring extends Dashboard
             PulseServers::class,
             PulseCache::class,
             PulseExceptions::class,
-            PulseUsage::class,
+            PulseSlowRequests::class,
             PulseQueues::class,
             PulseSlowQueries::class,
-            PulseSlowRequests::class,
             PulseSlowOutGoingRequests::class,
         ];
     }
@@ -56,6 +52,6 @@ class SystemMonitoring extends Dashboard
     // 🔲 Jumlah kolom (grid)
     public function getColumns(): int|string|array
     {
-        return 12; // Gunakan 12 kolom penuh untuk layout fleksibel
+        return 10; // Gunakan 12 kolom penuh untuk layout fleksibel
     }
 }

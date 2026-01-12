@@ -16,6 +16,8 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Filament\Support\Enums\VerticalAlignment;
+use Filament\Support\Enums\Alignment;
 
 class RoleResource extends Resource implements HasShieldPermissions
 {
@@ -88,26 +90,36 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->weight('font-medium')
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn ($state): string => Str::headline($state))
-                    ->searchable(),
+                    ->searchable()
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('guard_name')
                     ->badge()
                     ->color('warning')
-                    ->label(__('filament-shield::filament-shield.column.guard_name')),
+                    ->label(__('filament-shield::filament-shield.column.guard_name'))
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('team.name')
                     ->default('Global')
                     ->badge()
                     ->color(fn (mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
                     ->label(__('filament-shield::filament-shield.column.team'))
                     ->searchable()
-                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('permissions_count')
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.permissions'))
                     ->counts('permissions')
-                    ->colors(['success']),
+                    ->colors(['success'])
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
-                    ->dateTime(),
+                    ->dateTime()
+                    ->disableClick(), // Menonaktifkan clickable pada list table
+
             ])
             ->filters([
                 //
@@ -188,13 +200,6 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getSlug(): string
     {
         return Utils::getResourceSlug();
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return Utils::isResourceNavigationBadgeEnabled()
-            ? strval(static::getEloquentQuery()->count())
-            : null;
     }
 
     public static function isScopedToTenant(): bool

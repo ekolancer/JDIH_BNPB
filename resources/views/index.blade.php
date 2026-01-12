@@ -86,7 +86,7 @@
                             <!-- Kolom Jenis Peraturan -->
                             <div class="col text-start">
                                 <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase" style="font-size: 0.9rem;">
-                                    {{ $peraturan->singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
+                                    {{ $peraturan->jenis_dokumen_singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
                                 </h6>
                             </div>
                         </div>

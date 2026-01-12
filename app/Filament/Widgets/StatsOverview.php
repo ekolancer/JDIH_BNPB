@@ -66,14 +66,14 @@ class StatsOverview extends BaseWidget
             // 📘 Total Dokumen
             Stat::make('Total', number_format($totalDocs))
                 ->description('Dokumen Hukum Terdaftar')
-                ->descriptionIcon('heroicon-o-archive-box', IconPosition::Before)
+                ->descriptionIcon('heroicon-o-cloud-arrow-down', IconPosition::After)
                 ->color('primary')
                 ->chart([$totalDocs, $totalDocs, $totalDocs, $totalDocs, $totalDocs, $totalDocs, $totalDocs]),
 
             // 📂 Dokumen Lengkap
             Stat::make('Total', number_format($docsWithFile))
                 ->description('Dokumen Lengkap')
-                ->descriptionIcon('heroicon-o-document-text', IconPosition::Before)
+                ->descriptionIcon('heroicon-o-hand-thumb-up', IconPosition::After)
                 ->color('primary')
                 ->chart([$docsWithFile, $docsWithFile, $docsWithFile, $docsWithFile, $docsWithFile, $docsWithFile, $docsWithFile]),
 

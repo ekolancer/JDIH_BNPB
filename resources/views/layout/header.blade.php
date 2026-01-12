@@ -98,9 +98,10 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('about') }}" class="dropdown-item">Tentang Kami</a>
-                            <a href="{{ route('visiMisi') }}" class="dropdown-item">Visi Misi</a>
-                            <a href="{{ route('struktur') }}" class="dropdown-item">Struktur Organisasi Biro Hukum</a>
+                            <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
+                            <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
+                            <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                            <a href="/profil/faq" class="dropdown-item">FAQ</a>
                         </div>
                     </div>
                 </div>
@@ -126,8 +127,23 @@
                                     aria-describedby="button-addon2"
                                     name="judul"
                                     value="{{ request('judul') }}">
-                                <button class="btn btn-warning" type="submit" id="button-addon2">
-                                    <i class="fas fa-search"></i>
+                                <button class="tombol_search_adv" type="submit" id="button-addon2">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                width="24"
+                                                height="24"
+                                                aria-hidden="true">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <span>Cari</span>
                                 </button>
                             </div>
 
@@ -143,11 +159,11 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
-                                            <select class="form-select" id="documentForm" name="jenisDok">
+                                            <select class="form-select" id="documentForm" name="bentuk">
                                                 <option value="">Bentuk Dokumen</option>
-                                                @foreach($data['dokumenAttributes']['jenisDok'] as $bentuk)
-                                                <option value="{{ $bentuk }}" {{ request('jenisDok') == $bentuk ? 'selected' : '' }}>
-                                                    {{ $bentuk }}
+                                                @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
+                                                <option value="{{ $id }}" {{ request('ref_jenis_dokumen_id') == $id ? 'selected' : '' }}>
+                                                    {{ $nama }}
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -161,9 +177,9 @@
                                             <input type="number"
                                                 class="form-control"
                                                 id="documentNumber"
-                                                name="nomor"
+                                                name="no"
                                                 placeholder="Nomor"
-                                                value="{{ request('nomor') }}">
+                                                value="{{ request('no') }}">
                                         </div>
                                     </div>
 
@@ -183,8 +199,23 @@
 
                                 <!-- Submit Button -->
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search"></i> Cari
+                                    <button class="tombol_search_adv" type="submit">
+                                        <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    width="24"
+                                                    height="24"
+                                                    aria-hidden="true">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path
+                                                        fill="currentColor"
+                                                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Cari</span>
                                     </button>
                                 </div>
                             </div>
@@ -210,6 +241,16 @@
                     filters.classList.add('show');
                 }, 200); // Delay singkat untuk memicu transisi
             }
+        });
+
+        // Remove empty inputs from form submission
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            const inputs = this.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (!input.value || input.value === '') {
+                    input.name = ''; // Remove name attribute so it's not sent
+                }
+            });
         });
     </script>
 

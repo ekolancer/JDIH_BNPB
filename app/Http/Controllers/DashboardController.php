@@ -30,11 +30,11 @@ class DashboardController extends Controller
             // Mengambil data visitorStats dari model Visitor
             'visitorStats' => Visitor::getVisitorStats(),
             // Mengambil peraturan terbaru dari model DokumenHukum
-            'peraturanTerbaru' => DokumenHukum::getLatest(4),
+            'peraturanTerbaru' => DokumenHukum::latestPeraturan(4)->get(),
             // Mengambil peraturan terpopuler dari model DokumenHukum
-            'peraturanPopuler' => DokumenHukum::getMostViewed(8),
+            'peraturanPopuler' => DokumenHukum::mostViewedPeraturan(8)->get(),
             // Mengambil nilai unik untuk tipeDok dan jenisDok
-            'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'jenisDok']),
+            'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok', 'ref_jenis_dokumen_id']),
             // Mengambil data berita aktif dari model Berita
             'berita' => Berita::getBeritaActive(),
             // Mengambil data Infografis aktif dari model Infografis
@@ -46,21 +46,5 @@ class DashboardController extends Controller
 
         // Mengirimkan data ke view
         return view('index', compact('data'));
-    }
-
-    // Function Webview Perihal
-    public function about()
-    {
-        return view('overview.about');
-    }
-
-    public function visiMisi()
-    {
-        return view('overview.visiMisi');
-    }
-
-    public function struktur()
-    {
-        return view('overview.struktur');
     }
 }

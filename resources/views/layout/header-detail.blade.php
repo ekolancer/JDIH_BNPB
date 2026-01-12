@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{{ $dokumen->singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}</title>
+    <title class="text-uppercase">{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}</title>
     <meta property="og:title" content="{{ $dokumen['judul'] }}">
     
     <!-- Google Web Fonts -->
@@ -63,9 +63,10 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu m-0">
-                            <a href="{{ route('about') }}" class="dropdown-item">Tentang Kami</a>
-                            <a href="{{ route('visiMisi') }}" class="dropdown-item">Visi Misi</a>
-                            <a href="{{ route('struktur') }}" class="dropdown-item">Struktur Organisasi Biro Hukum</a>
+                            <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
+                            <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
+                            <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                            <a href="/profil/faq" class="dropdown-item">FAQ</a>
                         </div>
                     </div>
                 </div>

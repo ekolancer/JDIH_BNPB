@@ -47,14 +47,7 @@ class BeritaResource extends Resource
     protected static ?string $slug = 'berita';
     
     protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-
-
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -197,7 +190,7 @@ class BeritaResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
-                    ->label('Actions')
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

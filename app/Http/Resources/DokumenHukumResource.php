@@ -20,20 +20,22 @@ class DokumenHukumResource extends JsonResource
             'idData' => $this->document_uid,
             'tahun_pengundangan' => $this->tahun,
             'tanggal_pengundangan' => $this->tglPengundangan,
-            'jenis' => $this->jenisDok,
+            'jenis' => $this->jenisDokumen?->nama,
             'noPeraturan' => $this->nomor,
             'judul' => $this->judul,
             'noPanggil' => $this->nomorPanggil,
-            'singkatanJenis' => $this->singkatan,
+            'singkatanJenis' => $this->jenisDokumen?->singkatan,
             'tempatTerbit' => $this->tempat,
             'penerbit' => $this->penerbit,
             'deskripsiFisik' => $this->deskripsiFisik,
             'sumber' => $this->sumber,
-            'subjek' => $this->subjek,
+            'subjek' => $this->subjekRef->isNotEmpty()
+                ? $this->subjekRef->pluck('nama')->implode('; ')
+                : null,
             'isbn' => $this->isbn,
             'status' => $this->status,
             'bahasa' => $this->bahasa,
-            'bidangHukum' => $this->bidangHukum,
+            'bidangHukum' => $this->bidangHukumRef?->nama,
             'teuBadan' => $this->teuBadan,
             'nomorIndukBuku' => $this->nomorIndukBuku,
             'fileDownload' => basename($this->lampiran),
@@ -41,6 +43,8 @@ class DokumenHukumResource extends JsonResource
             'abstrak' => $this->abstrak,
             'urlabstrak' => $this->abstrak ? $baseUrl . "/download-abstrak/" . $this->slug : null,
             'urlDetailPeraturan' => $baseUrl . "/dokumen/" . $this->tipeDok . "/" . $this->slug,
+
+            // FLAG PUU
             'operasi' => "4",
             'display' => "1",
         ];

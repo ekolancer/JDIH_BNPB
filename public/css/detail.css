@@ -151,7 +151,7 @@ body {
     text-transform: uppercase;
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item + .breadcrumb-item::before {
     content: "/";
     /* Use custom separator for the breadcrumb */
 }
@@ -260,7 +260,7 @@ body {
     font-size: 17px;
     padding: 12px 20px;
     color: white;
-    background:rgb(103, 92, 156);
+    background: rgb(103, 92, 156);
     border: none;
     box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
     letter-spacing: 0.05em;
@@ -347,7 +347,7 @@ body {
     /* Give space from the navbar/hero */
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item + .breadcrumb-item::before {
     content: "›";
     /* Use custom separator for the breadcrumb */
 }
@@ -377,4 +377,210 @@ body {
     width: 100%;
     border-radius: 10px;
     color: #333;
+}
+
+/* ******Filter Sidebar CSS****** */
+/* ===============================
+   FILTER SIDEBAR – ELEGANT UI
+================================ */
+
+/* Wrapper */
+.filter-sidebar {
+    background: #ffffff;
+    border: 2px solid #d4d4d4; /* garis lebih tebal */
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+/* Header filter lebih kontras */
+.filter-sidebar > .d-flex:first-child {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 14px;
+}
+
+/* Section title */
+.filter-title {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+/* Item */
+.filter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.filter-item:hover {
+    background: #eef2ff;
+}
+.filter-item.active {
+    background: #e0ecff;
+    border-left: 4px solid #2563eb;
+}
+
+/* Checkbox */
+.filter-item input[type="checkbox"] {
+    transform: scale(1.15);
+    margin-right: 8px;
+}
+
+/* Label */
+.filter-item label {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Count badge */
+.filter-count {
+    font-size: 0.7rem;
+    background: #2563eb;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+/* Divider */
+.filter-divider {
+    height: 2px;
+    background: #e5e7eb;
+    margin: 14px 0;
+}
+
+/* Expand animation */
+.filter-collapse {
+    overflow: hidden;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+.filter-collapse.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+.filter-collapse.expanded {
+    max-height: 800px;
+    opacity: 1;
+}
+
+/* Toggle */
+.filter-toggle {
+    font-size: 0.8rem;
+    color: #2563eb;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    cursor: pointer;
+}
+
+/* Apply button */
+.filter-apply {
+    margin-top: 8px;
+}
+
+/* ===============================
+   ACTIVE FILTER CHIPS
+================================ */
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.filter-chip {
+    background: #e0ecff;
+    color: #1e40af;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.filter-chip button {
+    background: none;
+    border: none;
+    color: #1e40af;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ===============================
+   SLIDER TAHUN TOOLTIP
+================================ */
+.tahun-slider-wrapper {
+    position: relative;
+    margin-top: 8px;
+}
+
+.tahun-tooltip {
+    position: absolute;
+    top: -36px;
+    transform: translateX(-50%);
+    background: #2563eb;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+/* Tooltip arrow */
+.tahun-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #2563eb transparent transparent transparent;
+}
+
+/* Container tambahan */
+.filter-extra {
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+
+.filter-extra.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.filter-extra.expanded {
+    max-height: 2000px;
+    opacity: 1;
+}
+
+/* Tombol modern */
+.filter-more-btn {
+    margin-top: 6px;
+    background: transparent;
+    border: none;
+    color: #2563eb;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.filter-more-btn i {
+    transition: transform 0.25s ease;
+}
+.filter-more-btn.expanded i {
+    transform: rotate(180deg);
 }

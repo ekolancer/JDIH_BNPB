@@ -19,7 +19,12 @@ class DokumenHukum extends Model
     use HasFactory, Notifiable;
 
     // Legacy fields hidden (keberadaannya tetap aman bila ada dalam DB lama)
-    protected $hidden = ['jenisDok', 'singkatar'];
+    protected $hidden = ['jenisDok', 'singkatan'];
+
+    protected $appends = [
+        'jenis_dokumen_label',
+        'bidang_hukum_label',
+    ];
 
     protected $fillable = [
         'tipeDok',
@@ -156,7 +161,7 @@ class DokumenHukum extends Model
     }
 
     /***************************************************************
-     *  UID OFFICIAL FORMAT BPHN: PERKA/BNPB/01/2024
+     *  UID FORMAT: PERKA/BNPB/01/2024
      ***************************************************************/
     public function generateDocumentUid(): void
     {
@@ -309,41 +314,12 @@ class DokumenHukum extends Model
         return $this->tipeDok === 'Monografi' ? 'Cover' : 'Baca';
     }
 
-    /***************************************************************
-     *  QUERY HELPERS / SCOPES / AGGREGATIONS
-     ***************************************************************/
     /**
-     * Hitung jumlah dokumen per tipeDok (Peraturan/Monografi/Artikel/Putusan).
-     *
-     * @return array
+     * Route key menggunakan slug
      */
-    public static function countByType(): array
+    public function getRouteKeyName()
     {
-        $result = self::select('tipeDok', DB::raw('COUNT(*) as total'))
-            ->groupBy('tipeDok')
-            ->pluck('total', 'tipeDok')
-            ->toArray();
-
-        $types = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-        return array_merge(array_fill_keys($types, 0), $result);
-    }
-
-    /**
-     * Ambil dokumen terbaru (option limit dan tipe)
-     */
-    public static function getLatest($limit = null, $tipeDok = 'Peraturan')
-    {
-        $q = self::query()->when($tipeDok, fn($q) => $q->where('tipeDok', $tipeDok));
-        return $limit ? $q->orderBy('created_at', 'desc')->take($limit)->get() : $q->orderBy('created_at', 'desc')->get();
-    }
-
-    /**
-     * Ambil dokumen terpopuler berdasarkan view_count
-     */
-    public static function getMostViewed($limit = null, $tipeDok = null)
-    {
-        $q = self::query()->when($tipeDok, fn($q) => $q->where('tipeDok', $tipeDok));
-        return $limit ? $q->orderBy('view_count', 'desc')->take($limit)->get() : $q->orderBy('view_count', 'desc')->get();
+        return 'slug';
     }
 
     /**
@@ -377,12 +353,49 @@ class DokumenHukum extends Model
         return $uniqueValues;
     }
 
+    /***************************************************************
+     *  QUERY HELPERS / SCOPES / AGGREGATIONS
+     ***************************************************************/
     /**
-     * Route key menggunakan slug
+     * Hitung jumlah dokumen per tipeDok (Peraturan/Monografi/Artikel/Putusan).
+     *
+     * @return array
      */
-    public function getRouteKeyName()
+    public static function countByType(): array
     {
-        return 'slug';
+        $result = self::select('tipeDok', DB::raw('COUNT(*) as total'))
+            ->groupBy('tipeDok')
+            ->pluck('total', 'tipeDok')
+            ->toArray();
+
+        $types = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
+        return array_merge(array_fill_keys($types, 0), $result);
+    }
+
+    /**
+     * Ambil dokumen terbaru (option limit dan tipe)
+     */
+    public function scopeLatestPeraturan(Builder $query, int $limit = 4)
+    {
+        return $query
+            ->where('tipeDok', 'Peraturan')
+            ->where('status', 'BERLAKU')
+            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->orderByDesc('tglPengundangan')
+            ->limit($limit);
+    }
+
+    /**
+     * Ambil dokumen terpopuler berdasarkan view_count
+     */
+    public function scopeMostViewedPeraturan(Builder $query, int $limit = 8)
+    {
+        return $query
+            ->where('tipeDok', 'Peraturan')
+            ->where('status', 'BERLAKU')
+            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->orderByDesc('view_count')
+            ->limit($limit);
     }
 
     /**
@@ -431,5 +444,110 @@ class DokumenHukum extends Model
         }
 
         return $data;
+    }
+
+    public function scopeApplyFilters(Builder $query, array $filters): void
+    {
+        $query->when(
+            $filters['judul'] ?? null,
+            fn($q, $v) => $q->where('judul', 'like', "%{$v}%")
+        );
+
+        $query->when(
+            $filters['nomor'] ?? null,
+            fn($q, $v) => $q->where('nomor', 'like', "%{$v}%")
+        );
+
+        $query->when(
+            $filters['tahun'] ?? null,
+            fn($q, $v) => $q->where('tahun', $v)
+        );
+
+        $query->when(
+            $filters['tipeDok'] ?? null,
+            fn($q, $v) => $q->where('tipeDok', $v)
+        );
+
+        $query->when(
+            $filters['ref_jenis_dokumen_id'] ?? [],
+            fn($q, $v) => $q->whereIn('ref_jenis_dokumen_id', $v)
+        );
+
+        $query->when(
+            $filters['ref_bidang_hukum_id'] ?? [],
+            fn($q, $v) => $q->whereIn('ref_bidang_hukum_id', $v)
+        );
+
+        $query->when(
+            $filters['status'] ?? [],
+            fn($q, $v) => $q->whereIn('status', $v)
+        );
+
+        $query->when(
+            $filters['subjek'] ?? [],
+            fn($q, $v) =>
+            $q->whereHas(
+                'subjekRef',
+                fn($sq) => $sq->whereIn('ref_subjek.id', $v)
+            )
+        );
+    }
+
+    /* ==========================================================
+     *  QUERY SCOPES — SORTING
+     * ========================================================*/
+    public function scopeApplySorting(Builder $query, string $sortBy): void
+    {
+        match ($sortBy) {
+            'popular' => $query->orderByDesc('view_count'),
+            default   => $query->orderByDesc('tahun')->orderByDesc('nomor'),
+        };
+    }
+
+    /***************************************************************
+     *  ACCESSORS (UNTUK FRONTEND)
+     ***************************************************************/
+    /***************************************************************
+     *  ACCESSOR: jenis_dokumen_label
+     *
+     *  CATATAN PENTING:
+     *  - Atribut `jenis_dokumen_label` BUKAN kolom database
+     *  - Atribut ini dihasilkan oleh method:
+     *      getJenisDokumenLabelAttribute()
+     *  - Laravel otomatis mengubah:
+     *      JenisDokumenLabel -> jenis_dokumen_label (snake_case)
+     *  - Digunakan untuk FRONTEND (Blade / API)
+     *  - Frontend TIDAK BOLEH mengakses relasi `jenisDokumen` langsung
+     ***************************************************************/
+    public function getJenisDokumenLabelAttribute(): string
+    {
+        return $this->jenisDokumen
+            ? " {$this->jenisDokumen->nama}"
+            : '-';
+    }
+
+    public function getJenisDokumenSingkatanAttribute(): string
+    {
+        return $this->jenisDokumen
+            ? strtoupper($this->jenisDokumen->singkatan)
+            : '-';
+    }
+
+    /***************************************************************
+     *  ACCESSOR: bidang_hukum_label
+     *
+     *  CATATAN PENTING:
+     *  - Atribut `bidang_hukum_label` BUKAN kolom database
+     *  - Atribut ini dihasilkan oleh method:
+     *      getBidangHukumLabelAttribute()
+     *  - Laravel otomatis mengubah:
+     *      BidangHukumLabel -> bidang_hukum_label (snake_case)
+     *  - Digunakan untuk FRONTEND (Blade / API)
+     *  - Frontend TIDAK BOLEH mengakses relasi `bidangHukumRef` langsung
+     ***************************************************************/
+
+    public function getBidangHukumLabelAttribute(): string
+    {
+        return $this->bidangHukumRef?->nama ?? '-';
     }
 }
