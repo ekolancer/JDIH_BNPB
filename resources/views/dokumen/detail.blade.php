@@ -187,7 +187,7 @@
                                 @if($label === 'Subjek' && $value instanceof \Illuminate\Support\Collection)
                                 @forelse($value as $subjek)
                                 <a href="{{ url('/dokumen', ['subjek' => $subjek->nama]) }}"
-                                    class="modern-badge me-1 text-decoration-none">
+                                    class="modern-badge me-1 text-decoration-none text-capitalize">
                                     <i class="fas fa-tag"></i> {{ $subjek->nama }}
                                 </a>
                                 @empty
@@ -197,7 +197,7 @@
                                 {{-- BIDANG HUKUM (ref + link filter) --}}
                                 @elseif($label === 'Bidang Hukum' && $value instanceof \Illuminate\Database\Eloquent\Model)
                                 <a href="{{ url('/dokumen', ['bidang' => $value->nama]) }}"
-                                    class="modern-badge me-1 text-decoration-none">
+                                    class="modern-badge me-1 text-decoration-none text-capitalize">
                                     <i class="fas fa-tag"></i>{{ $value->nama }}
                                 </a>
 

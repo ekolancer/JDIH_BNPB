@@ -55,18 +55,18 @@ class DokumenController extends Controller
                 'Jenis Dokumen'        => $dokumen->jenisDokumen,            // ref
                 // 'Singkatan'            => $dokumen->jenisDokumen?->singkatan,
                 'Judul'                => $dokumen->judul,
-                'Tajuk Entri Utama'    => $dokumen->teuBadan,
                 'Nomor'                => $dokumen->nomor,
-                'Tahun Terbit'         => $dokumen->tahun,
+                'Tahun'         => $dokumen->tahun,
+                'Tajuk Entri Utama'    => $dokumen->teuBadan,
                 'Bidang Hukum'         => $dokumen->bidangHukumRef,           // ref
                 'Subjek'               => $dokumen->subjekRef,               // ref many
+                // 'Penandatangan'        => $dokumen->penandatangan,
+                'Tanggal Penetapan'    => $dokumen->tgl_penetapan_formatted ?? '—',
+                'Tanggal Pengundangan' => $dokumen->tgl_pengundangan_formatted ?? '—',
+                'Tempat Terbit'        => $dokumen->tempat,
                 'Sumber'               => $dokumen->sumber,
                 'Bahasa'               => $dokumen->bahasa,
                 'Lokasi'               => $dokumen->lokasi,
-                'Penandatangan'        => $dokumen->penandatangan,
-                'Tempat Terbit'        => $dokumen->tempat,
-                'Tanggal Penetapan'    => $dokumen->tgl_penetapan_formatted ?? '—',
-                'Tanggal Pengundangan' => $dokumen->tgl_pengundangan_formatted ?? '—',
             ],
 
             // 'breadcrumbs' => [
