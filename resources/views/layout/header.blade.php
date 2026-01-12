@@ -127,8 +127,23 @@
                                     aria-describedby="button-addon2"
                                     name="judul"
                                     value="{{ request('judul') }}">
-                                <button class="btn btn-warning" type="submit" id="button-addon2">
-                                    <i class="fas fa-search"></i>
+                                <button class="tombol_search_adv" type="submit" id="button-addon2">
+                                    <div class="svg-wrapper-1">
+                                        <div class="svg-wrapper">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                width="24"
+                                                height="24"
+                                                aria-hidden="true">
+                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <span>Cari</span>
                                 </button>
                             </div>
 
@@ -144,7 +159,7 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
-                                            <select class="form-select" id="documentForm" name="ref_jenis_dokumen_id">
+                                            <select class="form-select" id="documentForm" name="bentuk">
                                                 <option value="">Bentuk Dokumen</option>
                                                 @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
                                                 <option value="{{ $id }}" {{ request('ref_jenis_dokumen_id') == $id ? 'selected' : '' }}>
@@ -162,9 +177,9 @@
                                             <input type="number"
                                                 class="form-control"
                                                 id="documentNumber"
-                                                name="nomor"
+                                                name="no"
                                                 placeholder="Nomor"
-                                                value="{{ request('nomor') }}">
+                                                value="{{ request('no') }}">
                                         </div>
                                     </div>
 
@@ -184,8 +199,23 @@
 
                                 <!-- Submit Button -->
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search"></i> Cari
+                                    <button class="tombol_search_adv" type="submit">
+                                        <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    width="24"
+                                                    height="24"
+                                                    aria-hidden="true">
+                                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                                    <path
+                                                        fill="currentColor"
+                                                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Cari</span>
                                     </button>
                                 </div>
                             </div>
