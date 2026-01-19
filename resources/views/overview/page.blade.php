@@ -75,12 +75,6 @@
 
             <div class="p-5 bg-white rounded-4 shadow-sm" style="min-height: 600px;">
 
-                {{-- TITLE --}}
-                <h2 class="fw-bold text-primary mb-4" style="font-size: 1.5rem;">
-                    {{ strtoupper($page->title) }}
-                </h2>
-
-
                 {{-- FAQ MODE --}}
                 @if ($slug === 'faq')
 
@@ -120,7 +114,7 @@
                 {{-- NORMAL PAGE CONTENT --}}
                 @else
 
-                    <div class="mt-3" style="font-size: 1.05rem; line-height: 1.75;">
+                    <div class="mt-3" style="font-size: 1.05rem; line-height: 1.75;" font-family="Georgia, serif;">
                         {!! $page->content !!}
                     </div>
 
