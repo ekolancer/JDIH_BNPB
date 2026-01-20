@@ -324,8 +324,12 @@
                 </div>
             </div>
 
+            @php
+            $bolehDownload = $dokumen->status !== 'TIDAK BERLAKU';
+            @endphp
+
+            @if($bolehDownload)
             <div>
-                <!-- Lampiran Full Text -->
                 <div class="file-info flex-grow-1">
                     <a href="{{ route('dokumen.unduhLampiran', $dokumen->slug) }}" target="_self" style="text-decoration: none">
                         <button class="btnDL w-100 d-flex justify-content-between align-items-center" type="button">
@@ -344,6 +348,7 @@
                     </a>
                 </div>
             </div>
+            @endif
             @endif
 
             @if($dokumen->tipeDok === 'Monografi')

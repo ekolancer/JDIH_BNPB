@@ -25,7 +25,6 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use Carbon\Carbon;
 use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
-use FilipFonal\FilamentLogManager\FilamentLogManager;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -49,10 +48,6 @@ class WebminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-                \App\Filament\Pages\SystemMonitoring::class, // Dashboard custom untuk Pulse
-            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([])
             ->brandLogo(asset('img/logo_jdih.png'))
@@ -92,7 +87,6 @@ class WebminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
-                FilamentLogManager::make(),
                 AuthUIEnhancerPlugin::make()
                     ->showEmptyPanelOnMobile(false)
                     ->formPanelPosition('right')
