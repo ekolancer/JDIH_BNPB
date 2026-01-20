@@ -363,13 +363,78 @@ body {
     /* Hover effect */
 }
 
-/* Modal Dialog */
-.modal-dialog {
-    max-width: 70%;
-    /* Adjust the width of the modal */
-    height: 100%;
-    /* Adjust the height of the modal */
-    margin: 1.75rem auto;
+/* ===============================
+   MODAL LAMPIRAN MODERN
+================================ */
+
+.lampiran-modal .modal-content {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    border: none;
+}
+
+/* HEADER */
+.lampiran-header {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    padding: 14px 20px;
+    border-bottom: none;
+}
+
+.lampiran-header i {
+    font-size: 18px;
+}
+
+/* BODY */
+.lampiran-body {
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+/* PREVIEW CONTAINER */
+.lampiran-preview {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* PDF */
+.lampiran-frame {
+    width: 100%;
+    height: 75vh;
+    border: none;
+    background: #eaeaea;
+}
+
+/* IMAGE */
+.lampiran-image {
+    max-width: 100%;
+    max-height: 75vh;
+    display: block;
+    margin: auto;
+    padding: 20px;
+}
+
+/* FALLBACK */
+.lampiran-fallback {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.lampiran-fallback i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #adb5bd;
+}
+
+/* MOBILE ADJUSTMENT */
+@media (max-width: 576px) {
+    .lampiran-frame {
+        height: 60vh;
+    }
 }
 
 /* Custom Alert */
