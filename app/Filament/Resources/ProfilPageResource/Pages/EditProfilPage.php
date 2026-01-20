@@ -30,6 +30,6 @@ class EditProfilPage extends EditRecord
             ->title('Edit successfully')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Data berhasil diupdate.');
+            ->body('Profil berhasil diupdate.');
     }
 }

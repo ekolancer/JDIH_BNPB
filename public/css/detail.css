@@ -378,7 +378,7 @@ body {
 .lampiran-header {
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: #fff;
-    padding: 14px 20px;
+    padding: 10px 10px;
     border-bottom: none;
 }
 
@@ -389,7 +389,7 @@ body {
 /* BODY */
 .lampiran-body {
     background: #f4f6f9;
-    padding: 20px;
+    padding: 5px;
 }
 
 /* PREVIEW CONTAINER */

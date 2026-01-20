@@ -14,7 +14,7 @@
                         </div>
                         <div class="footer-social-icon">
                             <span>Follow us</span>
-                            <a href="https://www.facebook.com/infobnpb" target="_blank"><i class="fab fa-facebook-f facebook-bg"></i></a>
+                            <a href="https://www.facebook.com/InfoBencanaBNPB" target="_blank"><i class="fab fa-facebook-f facebook-bg"></i></a>
                             <a href="https://twitter.com/BNPB_Indonesia" target="_blank"><i class="fab fa-twitter twitter-bg"></i></a>
                             <a href="https://www.instagram.com/bnpb_indonesia/" target="_blank"><i class="fab fa-instagram instagram-bg"></i></a>
                             <a href="https://www.youtube.com/user/BNPBIndonesia/" target="_blank"><i class="fab fa-youtube youtube-bg"></i></a>

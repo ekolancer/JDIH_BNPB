@@ -30,6 +30,6 @@ class EditFaq extends EditRecord
             ->title('Edit successfully')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Data berhasil diupdate.');
+            ->body('FAQ berhasil diupdate.');
     }
 }

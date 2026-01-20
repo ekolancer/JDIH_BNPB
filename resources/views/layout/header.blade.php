@@ -149,7 +149,7 @@
 
                             <!-- Optional Advanced Search Button -->
                             <button class="btn btn-secondary" type="button" id="advanced-search-toggle">
-                                <i class="fas fa-filter"></i> Pencairan Lanjutan
+                                <i class="fas fa-filter"></i> Pencarian Lanjutan
                             </button>
 
                             <!-- Advanced Filters (Hidden by Default) -->
