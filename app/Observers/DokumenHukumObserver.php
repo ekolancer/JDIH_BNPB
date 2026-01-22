@@ -2,106 +2,118 @@
 
 namespace App\Observers;
 
-use App\Models\User;
 use App\Models\DokumenHukum;
+use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DokumenHukumObserver
 {
     /**
-     * Helper untuk mendeteksi user yang sedang login.
-     * Jika tidak ada user (CLI / Tinker), return null agar observer skip notifikasi.
+     * Ambil user yang sedang login (pelaku aksi).
+     * Return null jika CLI / Seeder / Queue.
      */
-    private function actor()
+    private function actor(): ?User
     {
-        return Auth::user() ?? null;
+        return Auth::user();
     }
 
     /**
-     * Handle the DokumenHukum "created" event.
+     * Ambil penerima notifikasi.
+     * Default: semua user
+     * (mudah difilter ke role tertentu)
      */
-    public function created(DokumenHukum $dokumenHukum): void
+    private function recipients()
     {
-        $user = $this->actor();
+        return User::query()->get();
+    }
 
-        // Jika update berasal dari CLI/Tinker, skip notifikasi
-        if (!$user) {
-            Log::info("Dokumen created via CLI/Tinker", [
-                'id'    => $dokumenHukum->id,
-                'judul' => $dokumenHukum->judul,
+    /**
+     * Helper kirim notifikasi + logging
+     */
+    private function notify(
+        DokumenHukum $dokumen,
+        string $actionText, // contoh: "berhasil diperbarui"
+        string $type = 'success',
+        array $extraLog = []
+    ): void {
+        $actor = $this->actor();
+
+        if (!$actor) {
+            Log::info('Dokumen event tanpa user (CLI/Seeder)', [
+                'dokumen_id' => $dokumen->id,
+                'action'     => $actionText,
             ]);
             return;
         }
 
-        Notification::make()
-            ->title("{$dokumenHukum->tipeDok} berhasil ditambahkan")
-            ->body("Judul: {$dokumenHukum->judul} oleh {$user->name}")
-            ->success()
-            ->sendToDatabase($user);
+        $recipients = $this->recipients();
 
-        Log::info("Dokumen created", [
-            'id'    => $dokumenHukum->id,
-            'judul' => $dokumenHukum->judul,
-            'oleh'  => $user->name,
-        ]);
+        DB::afterCommit(function () use (
+            $dokumen,
+            $actor,
+            $recipients,
+            $actionText,
+            $type,
+            $extraLog
+        ) {
+            foreach ($recipients as $recipient) {
+                Notification::make()
+                    ->title("{$dokumen->tipeDok} {$actionText} oleh {$actor->name}")
+                    ->body("Judul: {$dokumen->judul}")
+                    ->{$type}()
+                    ->sendToDatabase($recipient);
+            }
+
+            Log::info('Notifikasi dokumen terkirim', array_merge([
+                'dokumen_id'   => $dokumen->id,
+                'actor_id'     => $actor->id,
+                'actor_name'   => $actor->name,
+                'recipients'   => $recipients->pluck('id')->toArray(),
+                'action'       => $actionText,
+            ], $extraLog));
+        });
     }
 
     /**
-     * Handle the DokumenHukum "updated" event.
+     * Created
      */
-    public function updated(DokumenHukum $dokumenHukum): void
+    public function created(DokumenHukum $dokumen): void
     {
-        $user = $this->actor();
-
-        if (!$user) {
-            Log::info("Dokumen updated via CLI/Tinker", [
-                'id'    => $dokumenHukum->id,
-                'judul' => $dokumenHukum->judul,
-            ]);
-            return;
-        }
-
-        Notification::make()
-            ->title("{$dokumenHukum->tipeDok} berhasil diperbarui")
-            ->body("Judul: {$dokumenHukum->judul} oleh {$user->name}")
-            ->success()
-            ->sendToDatabase($user);
-
-        Log::info("Dokumen updated", [
-            'id'    => $dokumenHukum->id,
-            'judul' => $dokumenHukum->judul,
-            'oleh'  => $user->name,
-            'changes' => $dokumenHukum->getChanges(),
-        ]);
+        $this->notify(
+            $dokumen,
+            'berhasil ditambahkan'
+        );
     }
 
     /**
-     * Handle the DokumenHukum "deleted" event.
+     * Updated
      */
-    public function deleted(DokumenHukum $dokumenHukum): void
+    public function updated(DokumenHukum $dokumen): void
     {
-        $user = $this->actor();
-
-        if (!$user) {
-            Log::warning("Dokumen deleted via CLI/Tinker", [
-                'id'    => $dokumenHukum->id,
-                'judul' => $dokumenHukum->judul,
-            ]);
+        if (empty($dokumen->getChanges())) {
             return;
         }
 
-        Notification::make()
-            ->title("{$dokumenHukum->tipeDok} berhasil dihapus")
-            ->body("Judul: {$dokumenHukum->judul} oleh {$user->name}")
-            ->danger()
-            ->sendToDatabase($user);
+        $this->notify(
+            $dokumen,
+            'berhasil diperbarui',
+            'success',
+            ['changes' => $dokumen->getChanges()]
+        );
+    }
 
-        Log::warning("Dokumen deleted", [
-            'id'    => $dokumenHukum->id,
-            'judul' => $dokumenHukum->judul,
-            'oleh'  => $user->name,
-        ]);
+    /**
+     * Deleted
+     */
+    public function deleted(DokumenHukum $dokumen): void
+    {
+        $this->notify(
+            $dokumen,
+            'berhasil dihapus',
+            'danger'
+        );
     }
 }
