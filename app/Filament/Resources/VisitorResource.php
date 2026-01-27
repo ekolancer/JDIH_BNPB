@@ -48,14 +48,14 @@ class VisitorResource extends Resource
             // 🧩 Kolom Ringan & Optimal
             ->columns([
                 TextColumn::make('ip_address')
-                    ->label('IP Address')
+                    ->label('IP ADDRESS')
                     ->searchable()
                     ->copyable()
                     ->alignment(Alignment::Left)
                     ->disabledClick(),
 
                 TextColumn::make('path')
-                    ->label('Path')
+                    ->label('PATH')
                     ->limit(35)
                     ->alignment(Alignment::Center)
                     ->tooltip(fn($state) => $state)
@@ -63,7 +63,7 @@ class VisitorResource extends Resource
                     ->disabledClick(),
 
                 BadgeColumn::make('country')
-                    ->label('Country')
+                    ->label('COUNTRY')
                     ->colors([
                         'success' => fn($state): bool => strtolower($state) === 'indonesia',
                         'gray' => fn($state): bool => strtolower($state) !== 'indonesia',
@@ -72,14 +72,14 @@ class VisitorResource extends Resource
                     ->disabledClick(),
 
                 TextColumn::make('city')
-                    ->label('City')
+                    ->label('CITY')
                     ->alignment(Alignment::Center)
                     ->default('-')
                     ->limit(20)
                     ->disabledClick(),
 
                 IconColumn::make('suspicious')
-                    ->label('Suspicious')
+                    ->label('SUSPICIOUS')
                     ->boolean()
                     ->trueIcon('heroicon-o-shield-exclamation')
                     ->alignment(Alignment::Center)
@@ -89,7 +89,7 @@ class VisitorResource extends Resource
                     ->disabledClick(),
 
                 TextColumn::make('visited_at')
-                    ->label('Visited')
+                    ->label('VISITED AT')
                     ->dateTime('d M Y H:i')
                     ->alignment(Alignment::Center)
                     ->disabledClick(),

@@ -113,19 +113,19 @@ class InfografisResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('judul')
-                    ->label('Judul')
+                    ->label('JUDUL')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable(),
                 ImageColumn::make('gambar')
-                    ->label('Gambar')
+                    ->label('GAMBAR')
                     ->disk('public')
                     ->visibility('public')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center),
                 TextColumn::make('tag')
-                    ->label('Tag')
+                    ->label('TAG')
                     ->badge()
                     ->formatStateUsing(fn($state) => $state ?? 'Tidak ada data')
                     ->alignment(Alignment::Center)
@@ -133,7 +133,7 @@ class InfografisResource extends Resource
                     ->wrap()
                     ->searchable(),
                 ToggleColumn::make('status')
-                    ->label('Draft / Published')
+                    ->label('DRAFT / PUBLISHED')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->onColor('success') // Hijau untuk "Publikasi"

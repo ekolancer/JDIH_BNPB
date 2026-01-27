@@ -76,22 +76,22 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama User')
+                    ->label('USERNAME')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('email')
-                    ->label('Email User')
+                    ->label('EMAIL')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('roles.name')
-                    ->label('Roles')
+                    ->label('ROLES')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('updated_at')
-                    ->label('Update at')
+                    ->label('UPDATE')
                     ->timezone('Asia/Jakarta')
                     ->date('j M Y')
                     ->alignment(Alignment::Center)

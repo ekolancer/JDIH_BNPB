@@ -68,13 +68,13 @@ class ProfilPageResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Judul')
+                    ->label('JUDUL')
                     ->searchable()
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('slug')
-                    ->label('Slug')->alignment(Alignment::Center)
+                    ->label('SLUG')->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('updated_at')

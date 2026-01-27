@@ -143,20 +143,20 @@ class BeritaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('judul')
-                    ->label('Judul')
+                    ->label('JUDUL')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable(),
                 TextColumn::make('kategori')
-                    ->label('Kategori')
+                    ->label('KATEGORI')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->disableClick() // Menonaktifkan clickable pada list table
                     ->searchable(),
                 TextColumn::make('tag')
-                    ->label('Tag')
+                    ->label('TAG')
                     ->badge()
                     ->formatStateUsing(fn($state) => $state ?? 'Tidak ada data')
                     ->alignment(Alignment::Center)
@@ -164,13 +164,13 @@ class BeritaResource extends Resource
                     ->wrap()
                     ->searchable(),
                 TextColumn::make('penulis')
-                    ->label('Penulis')
+                    ->label('PENULIS')
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->wrap()
                     ->searchable(),
                 ToggleColumn::make('status')
-                    ->label('Status')
+                    ->label('STATUS')
                     ->onColor('success') // Hijau untuk "Publikasi"
                     ->offColor('danger') // Merah untuk "Draft"
                     ->onIcon('heroicon-o-check') // Ikon untuk Published

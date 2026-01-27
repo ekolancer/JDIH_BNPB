@@ -65,20 +65,20 @@ class RefJenisDokumenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Jenis Dokumen')
+                    ->label('JENIS DOKUMEN')
                     ->searchable()
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table,
 
                 Tables\Columns\TextColumn::make('singkatan')
-                    ->label('Singkatan')
+                    ->label('SINGKATAN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
                 Tables\Columns\ToggleColumn::make('is_active')
-                    ->label('Aktif')
+                    ->label('AKTIF / TIDAK AKTIF')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->onColor('success') // Hijau untuk "Publikasi"

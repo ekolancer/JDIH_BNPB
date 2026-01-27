@@ -63,7 +63,7 @@ class FaqResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('question')
-                    ->label('Pertanyaan')
+                    ->label('PERTANYAAN')
                     ->searchable()
                     ->limit(40)
                     ->alignment(Alignment::Start)
@@ -72,7 +72,7 @@ class FaqResource extends Resource
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
                 TextColumn::make('sort_order')
-                    ->label('Urutan')
+                    ->label('URUTAN')
                     ->sortable()
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
