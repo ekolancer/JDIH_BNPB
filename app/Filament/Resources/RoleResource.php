@@ -116,8 +116,11 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('filament-shield::filament-shield.column.updated_at'))
-                    ->dateTime()
+                    ->label('Update at')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
             ])

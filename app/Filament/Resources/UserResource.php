@@ -91,10 +91,12 @@ class UserResource extends Resource
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('updated_at')
-                    ->label('Last Update')
+                    ->label('Update at')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->dateTime(),
+                    ->disableClick(), // Menonaktifkan clickable pada list table
 
             ])
             ->filters([

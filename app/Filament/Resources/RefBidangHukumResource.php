@@ -48,7 +48,7 @@ class RefBidangHukumResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable()
-                    ->alignment(Alignment::Center)
+                    ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\ToggleColumn::make('is_active')
@@ -65,8 +65,9 @@ class RefBidangHukumResource extends Resource
                     })
                     ->disableClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('UPDATE')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
@@ -81,11 +82,11 @@ class RefBidangHukumResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                        ->modalHeading('Edit Infografis'),
+                        ->modalHeading('Edit Bidang Hukum'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
-                    ->label('Actions')
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

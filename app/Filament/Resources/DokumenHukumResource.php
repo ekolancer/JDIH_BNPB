@@ -386,6 +386,13 @@ class DokumenHukumResource extends Resource
                         'TIDAK BERLAKU' => 'danger',
                     })
                     ->disabledClick(), // Menonaktifkan clickable pada list table
+                TextColumn::make('updated_at')
+                    ->label('UPDATE')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

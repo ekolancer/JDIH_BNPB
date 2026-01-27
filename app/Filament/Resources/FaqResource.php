@@ -15,6 +15,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Support\Enums\VerticalAlignment;
 use Filament\Support\Enums\Alignment;
+use Filament\Tables\Actions\ActionGroup;
 
 class FaqResource extends Resource
 {
@@ -78,8 +79,9 @@ class FaqResource extends Resource
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
                 TextColumn::make('updated_at')
-                    ->label('Update Terakhir')
-                    ->dateTime('d M Y')
+                    ->label('UPDATE')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
@@ -90,7 +92,13 @@ class FaqResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->modalHeading('Edit FAQ'),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Aksi'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -45,9 +45,9 @@ class BeritaResource extends Resource
     protected static ?string $label = 'Berita';
 
     protected static ?string $slug = 'berita';
-    
+
     protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -179,6 +179,13 @@ class BeritaResource extends Resource
                         // Simpan perubahan ke database setelah konversi
                         $record->save();
                     }),
+                TextColumn::make('updated_at')
+                    ->label('UPDATE')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
+                    ->alignment(Alignment::Center)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disableClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
                 //

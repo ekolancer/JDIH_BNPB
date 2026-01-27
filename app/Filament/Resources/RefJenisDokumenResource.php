@@ -92,9 +92,9 @@ class RefJenisDokumenResource extends Resource
                     ->disableClick(), // Menonaktifkan clickable pada list table
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Updated')
-                    ->dateTime('d M Y - H:i')
-                    ->sortable()
+                    ->label('UPDATE')
+                    ->timezone('Asia/Jakarta')
+                    ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->disableClick(), // Menonaktifkan clickable pada list table
@@ -110,11 +110,11 @@ class RefJenisDokumenResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                        ->modalHeading('Edit Infografis'),
+                        ->modalHeading('Edit Jenis Dokumen'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->button()
-                    ->label('Actions')
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
