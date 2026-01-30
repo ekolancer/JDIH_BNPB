@@ -26,11 +26,11 @@ class ProfilPageResource extends Resource
 
     protected static ?string $navigationGroup = 'Features';
 
-    protected static ?string $navigationLabel = 'Profil Website';
+    protected static ?string $navigationLabel = 'Profile Website';
 
-    protected static ?string $pluralLabel = 'Profil Website';
+    protected static ?string $pluralLabel = 'Profile Website';
 
-    protected static ?string $label = 'Profil';
+    protected static ?string $label = 'Profile';
 
     public static function getNavigationSort(): ?int
     {

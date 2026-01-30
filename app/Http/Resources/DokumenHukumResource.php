@@ -17,7 +17,7 @@ class DokumenHukumResource extends JsonResource
         $baseUrl = config('app.url', 'http://jdih.bnpb.go.id');
 
         return [
-            'idData' => $this->document_uid,
+            'idData' => $this->id,
             'tahun_pengundangan' => $this->tahun,
             'tanggal_pengundangan' => $this->tglPengundangan,
             'jenis' => $this->jenisDokumen?->nama,
