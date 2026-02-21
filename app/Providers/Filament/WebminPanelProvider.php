@@ -38,6 +38,7 @@ class WebminPanelProvider extends PanelProvider
             ->id('webmin')
             ->path('webmin')
             ->login(Login::class)
+            ->passwordReset()
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
