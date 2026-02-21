@@ -120,6 +120,91 @@
         width: 130%;
         border-radius: 0 10px 10px 0;
     }
+
+    /* ================= PDF OVERLAY FIXED ================= */
+
+    .pdf-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(3px);
+
+        display: none;
+        /* PASTI none saat load */
+        align-items: center;
+        justify-content: center;
+
+        z-index: 99999;
+    }
+
+    .pdf-overlay.active {
+        display: flex;
+        /* hanya aktif saat dibuka */
+    }
+
+    .pdf-container {
+        width: 80%;
+        height: 85%;
+        background: #1e1e1e;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+        position: relative;
+    }
+
+    .pdf-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .pdf-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 100000;
+    }
+
+    .pdf-close:hover {
+        background: red;
+    }
+
+    #toolbarContainer {
+        background: #2c2f36 !important;
+    }
+
+    /* ================= MOBILE FULLSCREEN MODE ================= */
+
+    @media (max-width: 768px) {
+
+        .pdf-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .pdf-overlay {
+            backdrop-filter: none;
+            background: #000;
+        }
+
+        .pdf-close {
+            top: 10px;
+            right: 10px;
+            width: 38px;
+            height: 38px;
+            font-size: 18px;
+        }
+
+    }
 </style>
 
 <!-- Section List Biru -->
@@ -163,7 +248,9 @@
                         <!-- Tombol Baca -->
                         @if($dokumen->tipeDok !== 'Artikel')
                         <span class="ms-auto bg-primary text-white px-3 py-2 d-inline-block">
-                            <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal" data-bs-target="#lampiranModal">
+                            <a href="javascript:void(0)"
+                                onclick="openPdf('{{ asset('storage/'.$dokumen->lampiran) }}')"
+                                class="text-white text-decoration-none">
                                 <i class="fas fa-book-open-reader me-1"></i> {{ $buttonText }}
                             </a>
                         </span>
@@ -370,17 +457,37 @@
 
 @endsection
 
-<script>
-    function openSharePopup(url, title) {
-        const width = 600;
-        const height = 400;
-        const left = (screen.width - width) / 2;
-        const top = (screen.height - height) / 2;
+<div id="pdfOverlay" class="pdf-overlay">
+    <div class="pdf-container">
+        <button class="pdf-close" onclick="closePdf()">
+            <i class="fas fa-times"></i>
+        </button>
 
-        window.open(
-            url,
-            title,
-            `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-        );
+        <iframe id="pdfFrame"></iframe>
+    </div>
+</div>
+
+<!-- Script untuk PDF Viewer dengan PDF.js -->
+<script>
+    function openPdf(fileUrl) {
+        const viewerUrl = "/pdfjs/web/viewer.html?file=" + encodeURIComponent(fileUrl);
+
+        const overlay = document.getElementById('pdfOverlay');
+        const frame = document.getElementById('pdfFrame');
+
+        frame.src = viewerUrl;
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePdf() {
+        const overlay = document.getElementById('pdfOverlay');
+        const frame = document.getElementById('pdfFrame');
+
+        overlay.classList.remove('active');
+        frame.src = '';
+
+        document.body.style.overflow = 'auto';
     }
 </script>
