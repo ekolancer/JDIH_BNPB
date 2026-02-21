@@ -25,6 +25,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use Carbon\Carbon;
 use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
+use FilamentGoogleAnalyticsPlugin\FilamentGoogleAnalyticsPlugin;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -90,6 +91,7 @@ class WebminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+                \BezhanSalleh\FilamentGoogleAnalytics\FilamentGoogleAnalyticsPlugin::make(),
                 AuthUIEnhancerPlugin::make()
                     ->showEmptyPanelOnMobile(false)
                     ->formPanelPosition('right')
