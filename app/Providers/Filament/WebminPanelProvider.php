@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use Filament\Pages;
 use Filament\Panel;
-use Filament\Widgets;
+use App\Filament\Pages\Settings;
 use Filament\PanelProvider;
 use App\Filament\Auth\Login;
 use Filament\Support\Colors\Color;
@@ -25,7 +25,9 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use Carbon\Carbon;
 use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
-use FilamentGoogleAnalyticsPlugin\FilamentGoogleAnalyticsPlugin;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Filament\Navigation\MenuItem;
 
 class WebminPanelProvider extends PanelProvider
 {
@@ -92,6 +94,8 @@ class WebminPanelProvider extends PanelProvider
                         'sm' => 2,
                     ]),
                 \BezhanSalleh\FilamentGoogleAnalytics\FilamentGoogleAnalyticsPlugin::make(),
+                FilamentEditProfilePlugin::make()
+                    ->shouldRegisterNavigation(false),
                 AuthUIEnhancerPlugin::make()
                     ->showEmptyPanelOnMobile(false)
                     ->formPanelPosition('right')
@@ -108,6 +112,12 @@ class WebminPanelProvider extends PanelProvider
                     ->withoutTimeLeft()                             // Disable the time left
                     ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
                     ->timeLeftText('')
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Edit Profile')
+                    ->url(fn(): string => EditProfilePage::getUrl())
+                    ->icon('heroicon-m-user-circle'),
             ])
             ->navigationGroups([
                 'Main Menu',

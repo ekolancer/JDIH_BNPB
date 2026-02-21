@@ -12,6 +12,7 @@ return [
         'color' => 'success',
         'exclude' => [
             //App\Filament\Resources\UserResource::class,
+            App\Filament\Resources\VisitorResource::class,
         ],
     ],
 

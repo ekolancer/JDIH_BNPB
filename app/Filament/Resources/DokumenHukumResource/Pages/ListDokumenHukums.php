@@ -41,4 +41,11 @@ class ListDokumenHukums extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Putusan')),
         ];
     }
+
+    public function setPage($page, $pageName = 'page'): void
+    {
+        parent::setPage($page, $pageName);
+
+        $this->dispatch('scroll-to-top');
+    }
 }

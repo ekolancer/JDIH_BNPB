@@ -14,6 +14,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use App\View\Composers\BreadcrumbComposer;
 
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\HtmlString;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -43,5 +47,13 @@ class AppServiceProvider extends ServiceProvider
 
         // View composer untuk breadcrumbs dinamis
         View::composer('partials.breadcrumbs', BreadcrumbComposer::class);
+
+        // Register Filament render hook for scroll-to-top functionality
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SCRIPTS_AFTER,
+            fn(): string => new HtmlString(
+                '<script>document.addEventListener("scroll-to-top", () => window.scrollTo(0, 0))</script>'
+            ),
+        );
     }
 }
