@@ -24,6 +24,9 @@ class DokumenHukum extends Model
     protected $appends = [
         'jenis_dokumen_label',
         'bidang_hukum_label',
+        'file_tersedia',
+        'download_allowed',
+        'created_at_formatted',
     ];
 
     protected $fillable = [
@@ -291,22 +294,32 @@ class DokumenHukum extends Model
         return $this->tglPengundangan ? Carbon::parse($this->tglPengundangan)->translatedFormat('d F Y') : null;
     }
 
-    public function getLampiranSizeAttribute()
+    public function getLampiranSizeAttribute(): array
     {
-        $path = storage_path("app/public/{$this->lampiran}");
-        if (!file_exists($path)) return ['kb' => 0, 'mb' => 0];
+        if (!$this->lampiran || !Storage::disk('public')->exists($this->lampiran)) {
+            return ['kb' => 0, 'mb' => 0];
+        }
 
-        $kb = filesize($path) / 1024;
-        return ['kb' => round($kb, 2), 'mb' => round($kb / 1024, 2)];
+        $kb = Storage::disk('public')->size($this->lampiran) / 1024;
+
+        return [
+            'kb' => round($kb, 2),
+            'mb' => round($kb / 1024, 2)
+        ];
     }
 
-    public function getAbstrakSizeAttribute()
+    public function getAbstrakSizeAttribute(): array
     {
-        $path = storage_path("app/public/{$this->abstrak}");
-        if (!file_exists($path)) return ['kb' => 0, 'mb' => 0];
+        if (!$this->abstrak || !Storage::disk('public')->exists($this->abstrak)) {
+            return ['kb' => 0, 'mb' => 0];
+        }
 
-        $kb = filesize($path) / 1024;
-        return ['kb' => round($kb, 2), 'mb' => round($kb / 1024, 2)];
+        $kb = Storage::disk('public')->size($this->abstrak) / 1024;
+
+        return [
+            'kb' => round($kb, 2),
+            'mb' => round($kb / 1024, 2)
+        ];
     }
 
     public function getButtonTextAttribute(): string
@@ -549,5 +562,86 @@ class DokumenHukum extends Model
     public function getBidangHukumLabelAttribute(): string
     {
         return $this->bidangHukumRef?->nama ?? '-';
+    }
+
+    /***************************************************************
+     *  ACCESSOR: DOWNLOAD & FILE HELPERS (DETAIL BLADE SAFE)
+     ***************************************************************/
+
+    public function getDownloadAllowedAttribute(): bool
+    {
+        return $this->status !== 'TIDAK BERLAKU';
+    }
+
+    public function getLampiranExistsAttribute(): bool
+    {
+        if (!$this->lampiran) {
+            return false;
+        }
+
+        return Storage::disk('public')->exists($this->lampiran);
+    }
+
+    public function getFileTersediaAttribute(): bool
+    {
+        if (!$this->download_allowed) {
+            return false;
+        }
+
+        if (!$this->lampiran_exists) {
+            return false;
+        }
+
+        return ($this->lampiran_size['kb'] ?? 0) > 0;
+    }
+
+    public function getCreatedAtFormattedAttribute(): string
+    {
+        return $this->created_at
+            ? $this->created_at->locale('id')->translatedFormat('d F Y')
+            : '-';
+    }
+
+    public function getPdfViewUrlAttribute(): ?string
+    {
+        if (!$this->file_tersedia) {
+            return null;
+        }
+
+        return route('dokumen.view', $this->slug);
+    }
+
+    public function getIsMonografiAttribute(): bool
+    {
+        return $this->tipeDok === 'Monografi';
+    }
+
+    public function getIsArtikelAttribute(): bool
+    {
+        return $this->tipeDok === 'Artikel';
+    }
+    public function getCoverImageUrlAttribute(): string
+    {
+        if ($this->lampiran_exists) {
+            return Storage::url($this->lampiran);
+        }
+
+        return asset('img/noimage.png');
+    }
+    public function getFileExtensionAttribute(): ?string
+    {
+        return $this->lampiran
+            ? strtolower(pathinfo($this->lampiran, PATHINFO_EXTENSION))
+            : null;
+    }
+
+    public function getIsPdfAttribute(): bool
+    {
+        return $this->file_extension === 'pdf';
+    }
+
+    public function getIsImageAttribute(): bool
+    {
+        return in_array($this->file_extension, ['jpg', 'jpeg', 'png', 'webp']);
     }
 }

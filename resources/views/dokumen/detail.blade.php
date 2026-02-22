@@ -3,24 +3,6 @@
 @section('content')
 
 <style>
-    .social-share {
-        position: fixed;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        z-index: 1000;
-    }
-
-    .social-share .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-    }
-
     /* Modern Badge Styles */
     .modern-badge {
         display: inline-flex;
@@ -65,60 +47,6 @@
         margin-right: 6px;
         font-size: 12px;
         opacity: 0.9;
-    }
-
-    /* ======================================================= */
-    /* From Uiverse.io by stlyash */
-    .redes {
-        position: fixed;
-        top: 50%;
-        left: 0;
-        width: 80px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        z-index: 1000;
-    }
-
-    .redes a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 40px;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .redes a svg {
-        width: 30px;
-        fill: #ffffff;
-    }
-
-    .redes .whatsapp {
-        background-color: #25D366;
-        border-radius: 0 0 10px 0;
-    }
-
-    .redes .instagram {
-        background: linear-gradient(45deg, #833ab4, #fd1d1d, #f56040);
-        border-radius: 0 10px 0 0;
-    }
-
-    .redes .telegram {
-        background-color: #0088cc;
-    }
-
-    .redes .twitter {
-        background-color: #000000;
-    }
-
-    .redes .facebook {
-        background-color: #006aff;
-    }
-
-    .redes a:hover {
-        width: 130%;
-        border-radius: 0 10px 10px 0;
     }
 
     /* ================= PDF OVERLAY FIXED ================= */
@@ -232,7 +160,7 @@
                     <div class="d-flex text-muted justify-content mt-2">
                         <!-- Created At -->
                         <span class="bg-info text-dark px-3 py-2 d-inline-block">
-                            <i class="fas fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($dokumen->created_at)->locale('id')->translatedFormat('d F Y') }}
+                            <i class="fas fa-calendar-alt me-1"></i> {{ $dokumen->created_at_formatted }}
                         </span>
 
                         <!-- View Count -->
@@ -246,12 +174,16 @@
                         </span>
 
                         <!-- Tombol Baca -->
-                        @if($dokumen->tipeDok !== 'Artikel')
+                        @if($dokumen->file_tersedia)
                         <span class="ms-auto bg-primary text-white px-3 py-2 d-inline-block">
+
                             <a href="javascript:void(0)"
-                                onclick="openPdf('{{ asset('storage/'.$dokumen->lampiran) }}')"
+                                onclick="openFile('{{ $dokumen->pdf_view_url }}', '{{ $dokumen->file_extension }}')"
                                 class="text-white text-decoration-none">
-                                <i class="fas fa-book-open-reader me-1"></i> {{ $buttonText }}
+
+                                <i class="fas fa-book-open-reader me-1"></i>
+                                {{ $dokumen->button_text }}
+
                             </a>
                         </span>
                         @endif
@@ -310,78 +242,63 @@
                     </tbody>
                 </table>
 
-                <!-- Tombol Aksi -->
-                <div class="d-flex justify-content">
-                    <!-- Tombol Kembali -->
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">Kembali</a>
+                {{-- ACTION BAR --}}
+                <div class="action-bar mt-4">
 
-                    <!-- Menampilkan Komponen Livewire -->
-                    @livewire('media-file', ['dokumenId' => $dokumen->id])
+                    <div class="back-wrapper">
+                        <!-- Tombol Kembali -->
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">Kembali</a>
 
-                </div>
+                        <!-- Menampilkan Komponen Livewire -->
+                        @livewire('media-file', ['dokumenId' => $dokumen->id])
+                    </div>
 
-                <!-- Tombol Social Share Upgrade -->
-                <div class="redes">
-                    <a class="instagram" href="https://www.instagram.com/create/story/?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Instagram'); return false;">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="#ffffff"
-                            viewBox="0,0,550,550"
-                            width="25px"
-                            height="25px"
-                            fill-rule="nonzero">
-                            <path
-                                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
-                        </svg>
-                    </a>
+                    <div class="share-wrapper">
+                        <span class="share-label">Bagikan Dokumen:</span>
 
-                    <a class="twitter" href="https://twitter.com/intent/tweet?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Twitter'); return false;">
-                        <svg
-                            fill="white"
-                            class="svgIcon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="25px"
-                            height="25px"
-                            viewBox="0 0 564 564">
-                            <path
-                                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
-                        </svg>
-                    </a>
+                        <div class="share-icons">
 
-                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Facebook'); return false;">
-                        <svg
-                            class="icon icons8-Facebook-Filled"
-                            viewBox="0 0 50 50"
-                            height="25px"
-                            width="25px"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M40,0H10C4.486,0,0,4.486,0,10v30c0,5.514,4.486,10,10,10h30c5.514,0,10-4.486,10-10V10C50,4.486,45.514,0,40,0z M39,17h-3 c-2.145,0-3,0.504-3,2v3h6l-1,6h-5v20h-7V28h-3v-6h3v-3c0-4.677,1.581-8,7-8c2.902,0,6,1,6,1V17z"></path>
-                        </svg>
-                    </a>
+                            {{-- X / Twitter --}}
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(Request::fullUrl()) }}"
+                                onclick="openSharePopup(this.href, 'Twitter'); return false;"
+                                class="share-btn twitter"
+                                data-tooltip="Bagikan ke X">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18.244 2H21l-6.561 7.506L22 22h-6.828l-5.34-7.01L3.9 22H1l7.024-8.027L2 2h6.828l4.83 6.337L18.244 2z" />
+                                </svg>
+                            </a>
 
-                    <a class="telegram" href="https://t.me/share/url?url={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'Telegram'); return false;">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            class="telegram">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.414 7.343l-1.82 8.575c-.138.62-.504.77-1.022.479l-2.835-2.09-1.364 1.315c-.15.148-.278.273-.571.273l.206-2.977 5.416-4.901c.236-.21-.051-.326-.366-.118l-6.693 4.226-2.892-.905c-.627-.196-.637-.627.131-.923l11.261-4.35c.522-.188.975.126.807.92z" />
-                        </svg>
-                    </a>
+                            {{-- Facebook --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}"
+                                onclick="openSharePopup(this.href, 'Facebook'); return false;"
+                                class="share-btn facebook"
+                                data-tooltip="Bagikan ke Facebook">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M22 12A10 10 0 1 0 10.5 21.95V14.89H7.9V12h2.6V9.8c0-2.57 1.53-3.99 3.88-3.99 1.12 0 2.29.2 2.29.2v2.5h-1.29c-1.27 0-1.67.79-1.67 1.6V12h2.84l-.45 2.89h-2.39v7.06A10 10 0 0 0 22 12z" />
+                                </svg>
+                            </a>
 
-                    <a class="whatsapp" href="https://api.whatsapp.com/send?text={{ urlencode(Request::fullUrl()) }}" onclick="openSharePopup(this.href, 'WhatsApp'); return false;">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="25"
-                            height="25"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            class="whatsapp">
-                            <path d="M12.02 2C6.48 2 2 6.48 2 12.02c0 2.046.55 3.996 1.594 5.704L2 22l4.376-1.552A10.03 10.03 0 0 0 12.02 22C17.564 22 22 17.524 22 12.02S17.564 2 12.02 2zm0 18c-1.766 0-3.49-.495-4.964-1.428l-.355-.225-2.59.917.893-2.538-.27-.412A7.988 7.988 0 0 1 4 12.02C4 7.598 7.598 4 12.02 4S20 7.598 20 12.02C20 16.424 16.414 20 12.02 20zm5.47-6.628l-.003-.002c-.098-.049-1.377-.677-1.591-.755-.213-.078-.368-.098-.523.098-.155.196-.597.755-.732.91-.135.156-.27.176-.493.049a6.512 6.512 0 0 1-1.914-1.18 7.048 7.048 0 0 1-1.31-1.597c-.135-.235-.014-.362.103-.49.106-.117.237-.306.354-.459a1.692 1.692 0 0 0 .213-.402c.067-.137.034-.255-.017-.353-.049-.098-.523-1.255-.718-1.722-.189-.455-.383-.394-.523-.402a1.394 1.394 0 0 0-.437.049c-.144.05-.524.205-.716.352-.196.156-.747.732-.747 1.785 0 1.053.764 2.067.871 2.214.106.147 1.503 2.294 3.644 3.216.51.22.907.353 1.22.453.512.162.978.14 1.344.085.41-.062 1.377-.563 1.571-1.109.195-.546.195-1.012.137-1.109-.058-.097-.21-.156-.44-.274z" />
-                        </svg>
-                    </a>
+                            {{-- Telegram --}}
+                            <a href="https://t.me/share/url?url={{ urlencode(Request::fullUrl()) }}"
+                                onclick="openSharePopup(this.href, 'Telegram'); return false;"
+                                class="share-btn telegram"
+                                data-tooltip="Bagikan ke Telegram">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M9.04 15.5l-.38 5.34c.54 0 .77-.23 1.05-.51l2.52-2.41 5.22 3.82c.96.53 1.64.25 1.9-.89l3.45-16.2c.32-1.49-.54-2.08-1.47-1.73L1.59 9.73c-1.44.56-1.42 1.36-.25 1.72l5.43 1.69L19.5 5.8c.59-.37 1.13-.16.69.21" />
+                                </svg>
+                            </a>
+
+                            {{-- WhatsApp --}}
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode(Request::fullUrl()) }}"
+                                onclick="openSharePopup(this.href, 'WhatsApp'); return false;"
+                                class="share-btn whatsapp"
+                                data-tooltip="Bagikan ke WhatsApp">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.15 1.6 5.96L0 24l6.32-1.65a11.84 11.84 0 0 0 5.74 1.46h.01c6.56 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.45-8.43z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -395,7 +312,7 @@
                 <div class="content text-uppercase">{{ $dokumen->tipeDok }}</div>
             </div>
 
-            @if($dokumen->tipeDok !== 'Monografi' && $dokumen->tipeDok !== 'Artikel')
+            @if(!$dokumen->is_monografi && !$dokumen->is_artikel)
             <!-- Singkatan -->
             <div class="card-status">
                 <div class="header text-uppercase">Singkatan</div>
@@ -411,45 +328,78 @@
                 </div>
             </div>
 
-            @php
-            $bolehDownload = $dokumen->status !== 'TIDAK BERLAKU';
-            @endphp
+            {{-- ================= DOWNLOAD SECTION ================= --}}
+            @if($dokumen->download_allowed)
 
-            @if($bolehDownload)
             <div>
                 <div class="file-info flex-grow-1">
-                    <a href="{{ route('dokumen.unduhLampiran', $dokumen->slug) }}" target="_self" style="text-decoration: none">
+
+                    @if($dokumen->file_tersedia)
+                    <a href="{{ route('dokumen.unduhLampiran', $dokumen->slug) }}"
+                        target="_self"
+                        class="text-decoration-none">
+
                         <button class="btnDL w-100 d-flex justify-content-between align-items-center" type="button">
+
+                            {{-- ICON --}}
                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
-                                <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z" fill="white"></path>
+                                <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z" fill="white" />
                             </svg>
+
+                            {{-- TEXT --}}
                             <span>DOWNLOAD</span>
+
+                            {{-- SIZE --}}
                             <span class="fw-light small">
-                                @if($lampiranSizeInKb < 1000)
-                                    ({{ number_format($lampiranSizeInKb) }}) KB
+                                @if($dokumen->lampiran_size['kb'] < 1000)
+                                    ({{ number_format($dokumen->lampiran_size['kb']) }}) KB
                                     @else
-                                    {{ number_format($lampiranSizeInMb, 2) }} MB
+                                    {{ number_format($dokumen->lampiran_size['mb'], 2) }} MB
                                     @endif
                                     </span>
+
                         </button>
                     </a>
+                    @else
+                    {{-- Jika file tidak tersedia --}}
+                    <div class="btnDLdisabled w-100 d-flex justify-content-between align-items-center" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <g clip-path="url(#clip0_429_11057)">
+                                    <path d="M5.63604 5.63598C4.00736 7.26466 3 9.51466 3 11.9999C3 16.9705 7.02944 20.9999 12 20.9999C14.4853 20.9999 16.7353 19.9926 18.364 18.3639M5.63604 5.63598C7.26472 4.0073 9.51472 2.99994 12 2.99994C16.9706 2.99994 21 7.02938 21 11.9999C21 14.4852 19.9926 16.7352 18.364 18.3639M5.63604 5.63598L18.364 18.3639" stroke="#ff0000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_429_11057">
+                                        <rect width="24" height="24" fill="white"></rect>
+                                    </clipPath>
+                                </defs>
+                            </g>
+                        </svg>
+                        <span>Dokumen tidak tersedia</span>
+                    </div>
+                    @endif
+
                 </div>
             </div>
-            @endif
+
             @endif
 
-            @if($dokumen->tipeDok === 'Monografi')
+
+
+            {{-- ================= MONOGRAFI COVER ================= --}}
+            @if($dokumen->is_monografi)
+
             <div class="file-card">
                 <div class="header">COVER BUKU</div>
                 <hr>
+
                 <div class="d-flex justify-content-center align-items-center">
-                    @php
-                    $fileExists = $dokumen->lampiran && file_exists(public_path('storage/' . $dokumen->lampiran));
-                    $imagePath = $fileExists ? Storage::url($dokumen->lampiran) : asset('img/noimage.png');
-                    @endphp
-                    <img src="{{ $imagePath }}" alt="Cover Buku" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <img src="{{ $dokumen->cover_image_url }}" alt="Cover Buku" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 </div>
             </div>
+            @endif
             @endif
         </div>
     </div>
@@ -469,25 +419,47 @@
 
 <!-- Script untuk PDF Viewer dengan PDF.js -->
 <script>
-    function openPdf(fileUrl) {
-        const viewerUrl = "/pdfjs/web/viewer.html?file=" + encodeURIComponent(fileUrl);
+    function openFile(fileUrl, extension) {
 
         const overlay = document.getElementById('pdfOverlay');
-        const frame = document.getElementById('pdfFrame');
+        const container = document.querySelector('.pdf-container');
 
-        frame.src = viewerUrl;
+        container.innerHTML = `
+        <button class="pdf-close" onclick="closeFile()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+
+        if (extension === 'pdf') {
+
+            const iframe = document.createElement('iframe');
+            iframe.src = "/pdfjs/web/viewer.html?file=" + encodeURIComponent(fileUrl);
+            container.appendChild(iframe);
+
+        } else if (['jpg', 'jpeg', 'png', 'webp'].includes(extension)) {
+
+            const img = document.createElement('img');
+            img.src = fileUrl;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            img.style.background = "#000";
+            container.appendChild(img);
+
+        } else {
+            container.innerHTML += "<p style='color:white;text-align:center'>File tidak dapat ditampilkan</p>";
+        }
 
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
-    function closePdf() {
+    function closeFile() {
         const overlay = document.getElementById('pdfOverlay');
-        const frame = document.getElementById('pdfFrame');
+        const container = document.querySelector('.pdf-container');
 
         overlay.classList.remove('active');
-        frame.src = '';
-
+        container.innerHTML = "";
         document.body.style.overflow = 'auto';
     }
 </script>

@@ -46,6 +46,7 @@ Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');
 Route::get('/download-lampiran/{slug}', [DokumenController::class, 'unduhLampiran'])->name('dokumen.unduhLampiran');
+Route::get('/dokumen/view/{dokumen:slug}', [DokumenController::class, 'fileView'])->name('dokumen.view');
 Route::get('/download-abstrak/{slug}', [DokumenController::class, 'unduhAbstrak'])->name('dokumen.unduhAbstrak');
 
 //Route Berita

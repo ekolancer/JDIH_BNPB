@@ -139,4 +139,10 @@ class DokumenController extends Controller
             'Expires' => '0'
         ]);
     }
+    public function fileView(DokumenHukum $dokumen)
+    {
+        abort_if(!$dokumen->file_tersedia, 404);
+
+        return response()->file(storage_path('app/public/' . $dokumen->lampiran));
+    }
 }

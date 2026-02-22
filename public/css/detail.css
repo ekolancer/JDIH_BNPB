@@ -151,7 +151,7 @@ body {
     text-transform: uppercase;
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item::before {
     content: "/";
     /* Use custom separator for the breadcrumb */
 }
@@ -311,6 +311,28 @@ body {
     height: 60%;
 }
 
+.btnDLdisabled {
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 12px 20px;
+    color: white;
+    background: rgb(103, 92, 156);
+    border: none;
+    box-shadow: 0 0.7em 1.5em -0.5em rgba(59, 48, 78, 0.527);
+    letter-spacing: 0.05em;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.btnDLdisabled svg {
+    margin-right: 8px;
+    width: 25px;
+}
+
 /* Navbar Custom */
 .navbar-custom {
     background-color: #0052cc;
@@ -347,7 +369,7 @@ body {
     /* Give space from the navbar/hero */
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item::before {
     content: "›";
     /* Use custom separator for the breadcrumb */
 }
@@ -452,14 +474,15 @@ body {
 /* Wrapper */
 .filter-sidebar {
     background: #ffffff;
-    border: 2px solid #d4d4d4; /* garis lebih tebal */
+    border: 2px solid #d4d4d4;
+    /* garis lebih tebal */
     border-radius: 16px;
     padding: 16px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 /* Header filter lebih kontras */
-.filter-sidebar > .d-flex:first-child {
+.filter-sidebar>.d-flex:first-child {
     padding-bottom: 10px;
     border-bottom: 2px solid #e5e7eb;
     margin-bottom: 14px;
@@ -485,9 +508,11 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
 .filter-item:hover {
     background: #eef2ff;
 }
+
 .filter-item.active {
     background: #e0ecff;
     border-left: 4px solid #2563eb;
@@ -526,10 +551,12 @@ body {
     overflow: hidden;
     transition: max-height 0.25s ease, opacity 0.2s ease;
 }
+
 .filter-collapse.collapsed {
     max-height: 0;
     opacity: 0;
 }
+
 .filter-collapse.expanded {
     max-height: 800px;
     opacity: 1;
@@ -570,6 +597,7 @@ body {
     align-items: center;
     gap: 6px;
 }
+
 .filter-chip button {
     background: none;
     border: none;
@@ -643,9 +671,123 @@ body {
     gap: 6px;
     cursor: pointer;
 }
+
 .filter-more-btn i {
     transition: transform 0.25s ease;
 }
+
 .filter-more-btn.expanded i {
     transform: rotate(180deg);
+}
+
+/* ================= ACTION BAR ================= */
+
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Share wrapper */
+.share-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.share-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+/* Share icons */
+.share-icons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Circle buttons */
+.share-btn {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.share-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.share-btn svg path {
+    fill: #fff !important;
+}
+
+/* Colors */
+.twitter {
+    background: #000;
+}
+
+.facebook {
+    background: #1877f2;
+}
+
+.telegram {
+    background: #0088cc;
+}
+
+.whatsapp {
+    background: #25D366;
+}
+
+/* Hover effect */
+.share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Tooltip */
+.share-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 55px;
+    background: #222;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: 0.2s ease;
+    pointer-events: none;
+}
+
+.share-btn:hover::after {
+    opacity: 1;
+}
+
+/* Responsive Social Share Buttons */
+@media (max-width: 768px) {
+
+    .action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .share-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .share-icons {
+        justify-content: flex-start;
+    }
 }
