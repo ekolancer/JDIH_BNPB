@@ -90,10 +90,370 @@
     </div>
 </footer>
 <!-- Copyright End -->
+
+<!-- Accessibility Trigger -->
+<button id="a11y-trigger" class="fab-btn" aria-label="Buka Aksesibilitas">
+
+    <svg viewBox="0 0 512 512" class="fab-icon" xmlns="http://www.w3.org/2000/svg">
+        <path d="M256,112a56,56,0,1,1,56-56A56.06,56.06,0,0,1,256,112Z"></path>
+        <path d="M432,112.8l-.45.12h0l-.42.13c-1,.28-2,.58-3,.89-18.61,5.46-108.93,30.92-172.56,30.92-59.13,0-141.28-22-167.56-29.47a73.79,73.79,0,0,0-8-2.58c-19-5-32,14.3-32,31.94,0,17.47,15.7,25.79,31.55,31.76v.28l95.22,29.74c9.73,3.73,12.33,7.54,13.6,10.84,4.13,10.59.83,31.56-.34,38.88l-5.8,45L150.05,477.44q-.15.72-.27,1.47l-.23,1.27h0c-2.32,16.15,9.54,31.82,32,31.82,19.6,0,28.25-13.53,32-31.94h0s28-157.57,42-157.57,42.84,157.57,42.84,157.57h0c3.75,18.41,12.4,31.94,32,31.94,22.52,0,34.38-15.74,32-31.94-.21-1.38-.46-2.74-.76-4.06L329,301.27l-5.79-45c-4.19-26.21-.82-34.87.32-36.9a1.09,1.09,0,0,0,.08-.15c1.08-2,6-6.48,17.48-10.79l89.28-31.21a16.9,16.9,0,0,0,1.62-.52c16-6,32-14.3,32-31.93S451,107.81,432,112.8Z" />
+    </svg>
+
+</button>
+
+<!-- Accessibility Panel -->
+<aside id="a11y-panel" class="a11y-panel" aria-hidden="true">
+    <div class="a11y-header">
+        <div class="a11y-header-left">
+            <img src="/img/icon/accessibility.svg"
+                alt="accessibility icon"
+                class="a11y-icon">
+
+            <h3 class="a11y-title"
+                data-id="Aksesibilitas"
+                data-en="Accessibility">
+                Aksesibilitas
+            </h3>
+        </div>
+
+        <button id="a11y-close" class="a11y-close" aria-label="Tutup">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+                <path d="M6 6L18 18M18 6L6 18"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="a11y-language">
+        <button class="lang lang-id active">Indonesia</button>
+        <button class="lang lang-en">English</button>
+    </div>
+
+    <ul class="a11y-menu">
+        <li data-action="voice"
+            data-id="Moda Suara"
+            data-en="Voice Mode"
+            class="voice-item full-width loading">
+
+            <span class="icon">🔊</span>
+            <span class="label">Moda Suara</span>
+
+            <span class="voice-badge">
+                <span class="voice-dot"></span>
+                <span class="voice-text">Loading</span>
+            </span>
+
+        </li>
+
+        <li data-action="increase"
+            data-id="Perbesar Teks"
+            data-en="Increase Text">
+            <span class="icon">🔍</span>
+            <span class="label">Perbesar Teks</span>
+        </li>
+
+        <li data-action="decrease"
+            data-id="Perkecil Teks"
+            data-en="Decrease Text">
+            <span class="icon">🔎</span>
+            <span class="label">Perkecil Teks</span>
+        </li>
+
+        <li data-toggle="grayscale"
+            data-id="Skala Abu-Abu"
+            data-en="Grayscale">
+            <span class="icon">🎞</span>
+            <span class="label">Skala Abu-Abu</span>
+        </li>
+
+        <li data-toggle="readable"
+            data-id="Mudah Dibaca"
+            data-en="Readable Font">
+            <span class="icon">🅰</span>
+            <span class="label">Mudah dibaca</span>
+        </li>
+
+        <li data-toggle="contrast"
+            data-id="Kontras Tinggi"
+            data-en="High Contrast">
+            <span class="icon">🌓</span>
+            <span class="label">Kontras Tinggi</span>
+        </li>
+
+        <li data-action="reset"
+            data-id="Atur Ulang"
+            data-en="Reset">
+            <span class="icon">↺</span>
+            <span class="label">Atur Ulang</span>
+        </li>
+    </ul>
+</aside>
+
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
         class="fa fa-arrow-up"></i></a>
 </body>
+
+<!-- Accessibility Toggle Script -->
+<script>
+    const panel = document.getElementById("a11y-panel");
+    const trigger = document.getElementById("a11y-trigger");
+    const closeBtn = document.getElementById("a11y-close");
+
+    trigger.onclick = () => panel.classList.add("active");
+    closeBtn.onclick = () => panel.classList.remove("active");
+
+    let fontSize = 100;
+
+    document.querySelectorAll("[data-action]").forEach(item => {
+        item.addEventListener("click", () => {
+            const action = item.dataset.action;
+
+            if (action === "increase") {
+                fontSize += 10;
+                document.documentElement.style.fontSize = fontSize + "%";
+            }
+
+            if (action === "decrease") {
+                fontSize -= 10;
+                document.documentElement.style.fontSize = fontSize + "%";
+            }
+
+            if (action === "reset") {
+                document.documentElement.className = "";
+                document.documentElement.style.fontSize = "100%";
+            }
+        });
+    });
+
+    document.querySelectorAll("[data-toggle]").forEach(item => {
+        item.addEventListener("click", () => {
+            const toggle = item.dataset.toggle;
+
+            if (toggle === "dark")
+                document.documentElement.classList.toggle("theme-dark");
+
+            if (toggle === "contrast")
+                document.documentElement.classList.toggle("theme-contrast");
+
+            if (toggle === "light")
+                document.documentElement.classList.remove("theme-dark");
+
+            if (toggle === "grayscale")
+                document.documentElement.classList.toggle("grayscale");
+
+            if (toggle === "readable")
+                document.documentElement.classList.toggle("readable");
+
+            if (toggle === "align")
+                document.documentElement.classList.toggle("align");
+        });
+    });
+</script>
+
+<!-- Script untuk Bahasa Toggle -->
+<script>
+    document.querySelectorAll('.a11y-language button').forEach(btn => {
+
+        btn.addEventListener('click', function() {
+
+            // Toggle active state
+            document.querySelectorAll('.a11y-language button')
+                .forEach(b => b.classList.remove('active'));
+
+            this.classList.add('active');
+
+            const lang = this.classList.contains('lang-en') ? 'en' : 'id';
+
+            // Toggle menu items
+            document.querySelectorAll('.a11y-menu li').forEach(item => {
+                const label = item.querySelector('.label');
+                label.textContent = item.dataset[lang];
+            });
+
+            // Toggle title
+            const title = document.querySelector('.a11y-title');
+            title.textContent = title.dataset[lang];
+
+        });
+
+    });
+</script>
+
+<!-- text to speech -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        if (!("speechSynthesis" in window)) {
+            console.log("Speech API tidak didukung browser.");
+            return;
+        }
+
+        const voiceItem = document.querySelector('[data-action="voice"]');
+        if (!voiceItem) return;
+
+        const voiceText = voiceItem.querySelector('.voice-text');
+
+        let voiceEnabled = false;
+        let voicesReady = false;
+        let hoverTimeout = null;
+        let currentElement = null;
+
+        /* ================================
+           STATUS HANDLER
+        ================================= */
+
+        function setLoading() {
+            voiceItem.classList.add("loading");
+            voiceItem.classList.remove("ready", "active");
+            voiceText.textContent = "Loading";
+        }
+
+        function setReady() {
+            voiceItem.classList.remove("loading");
+            voiceItem.classList.add("ready");
+            voiceText.textContent = "Ready";
+            voicesReady = true;
+        }
+
+        function setActive() {
+            voiceItem.classList.add("active");
+            voiceText.textContent = "On";
+        }
+
+        function setInactive() {
+            voiceItem.classList.remove("active");
+            voiceText.textContent = "Ready";
+        }
+
+        /* ================================
+           CHECK VOICES READY
+        ================================= */
+
+        function checkVoices() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                setReady();
+            } else {
+                setLoading();
+            }
+        }
+
+        speechSynthesis.onvoiceschanged = checkVoices;
+
+        // initial check (Chrome sometimes delayed)
+        setTimeout(checkVoices, 500);
+
+        /* ================================
+           WARM UP ENGINE (IMPORTANT)
+        ================================= */
+
+        function warmUp() {
+            const dummy = new SpeechSynthesisUtterance("");
+            speechSynthesis.speak(dummy);
+            speechSynthesis.cancel();
+        }
+
+        /* ================================
+           TOGGLE VOICE MODE
+        ================================= */
+
+        voiceItem.addEventListener("click", function() {
+
+            if (!voicesReady) return;
+
+            voiceEnabled = !voiceEnabled;
+
+            speechSynthesis.cancel();
+            speechSynthesis.resume();
+
+            if (voiceEnabled) {
+                setActive();
+                warmUp();
+            } else {
+                setInactive();
+                stopSpeaking();
+            }
+        });
+
+        /* ================================
+           SPEAK FUNCTION (STABLE)
+        ================================= */
+
+        function speakText(text) {
+
+            speechSynthesis.cancel();
+            speechSynthesis.resume();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            const voices = speechSynthesis.getVoices();
+            const indoVoice = voices.find(v =>
+                v.lang && v.lang.toLowerCase().includes("id")
+            );
+
+            if (indoVoice) {
+                utterance.voice = indoVoice;
+                utterance.lang = indoVoice.lang;
+            } else {
+                utterance.lang = "id-ID";
+            }
+
+            utterance.rate = 1;
+            utterance.pitch = 1;
+
+            speechSynthesis.speak(utterance);
+        }
+
+        function stopSpeaking() {
+            speechSynthesis.cancel();
+
+            if (currentElement) {
+                currentElement.classList.remove("voice-reading");
+                currentElement = null;
+            }
+        }
+
+        /* ================================
+           HOVER LISTENER (SMOOTH MODE)
+        ================================= */
+
+        document.body.addEventListener("mouseover", function(e) {
+
+            if (!voiceEnabled) return;
+
+            const target = e.target;
+
+            if (!target) return;
+
+            // Jangan baca panel accessibility
+            if (target.closest("#a11y-panel")) return;
+
+            const text = target.innerText?.trim();
+
+            if (!text || text.length < 5) return;
+
+            clearTimeout(hoverTimeout);
+
+            hoverTimeout = setTimeout(() => {
+
+                currentElement = target;
+                currentElement.classList.add("voice-reading");
+
+                speakText(text);
+
+            }, 400);
+        });
+
+        document.body.addEventListener("mouseout", function() {
+            clearTimeout(hoverTimeout);
+            stopSpeaking();
+        });
+
+    });
+</script>
 
 <script>
     window.addEventListener('show-lampiran-modal', event => {

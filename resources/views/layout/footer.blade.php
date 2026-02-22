@@ -104,7 +104,17 @@
 <!-- Accessibility Panel -->
 <aside id="a11y-panel" class="a11y-panel" aria-hidden="true">
     <div class="a11y-header">
-        <h2 class="a11y-title">Sarana</h2>
+        <div class="a11y-header-left">
+            <img src="/img/icon/accessibility.svg"
+                alt="accessibility icon"
+                class="a11y-icon">
+
+            <h3 class="a11y-title"
+                data-id="Aksesibilitas"
+                data-en="Accessibility">
+                Aksesibilitas
+            </h3>
+        </div>
 
         <button id="a11y-close" class="a11y-close" aria-label="Tutup">
             <svg viewBox="0 0 24 24" width="18" height="18">
@@ -117,16 +127,24 @@
     </div>
 
     <div class="a11y-language">
-        <button class="lang active">Indonesia</button>
-        <button class="lang">Inggris</button>
+        <button class="lang lang-id active">Indonesia</button>
+        <button class="lang lang-en">English</button>
     </div>
 
     <ul class="a11y-menu">
         <li data-action="voice"
             data-id="Moda Suara"
-            data-en="Voice Mode">
+            data-en="Voice Mode"
+            class="voice-item full-width loading">
+
             <span class="icon">🔊</span>
             <span class="label">Moda Suara</span>
+
+            <span class="voice-badge">
+                <span class="voice-dot"></span>
+                <span class="voice-text">Loading</span>
+            </span>
+
         </li>
 
         <li data-action="increase"
@@ -151,17 +169,10 @@
         </li>
 
         <li data-toggle="readable"
-            data-id="Tulisan Dapat Dibaca"
+            data-id="Mudah Dibaca"
             data-en="Readable Font">
             <span class="icon">🅰</span>
-            <span class="label">Tulisan Dapat Dibaca</span>
-        </li>
-
-        <li data-toggle="underline"
-            data-id="Garis Bawahi Tautan"
-            data-en="Underline Links">
-            <span class="icon">🔗</span>
-            <span class="label">Garis Bawahi Tautan</span>
+            <span class="label">Mudah dibaca</span>
         </li>
 
         <li data-toggle="contrast"
@@ -614,9 +625,6 @@
             if (toggle === "readable")
                 document.documentElement.classList.toggle("readable");
 
-            if (toggle === "underline")
-                document.documentElement.classList.toggle("underline");
-
             if (toggle === "align")
                 document.documentElement.classList.toggle("align");
         });
@@ -635,19 +643,17 @@
 
             this.classList.add('active');
 
-            const isEnglish = this.textContent.trim() === 'Inggris';
+            const lang = this.classList.contains('lang-en') ? 'en' : 'id';
 
+            // Toggle menu items
             document.querySelectorAll('.a11y-menu li').forEach(item => {
-
                 const label = item.querySelector('.label');
-
-                if (isEnglish) {
-                    label.textContent = item.dataset.en;
-                } else {
-                    label.textContent = item.dataset.id;
-                }
-
+                label.textContent = item.dataset[lang];
             });
+
+            // Toggle title
+            const title = document.querySelector('.a11y-title');
+            title.textContent = title.dataset[lang];
 
         });
 
@@ -659,63 +665,124 @@
     document.addEventListener("DOMContentLoaded", function() {
 
         if (!("speechSynthesis" in window)) {
-            console.log("Speech API tidak didukung browser ini.");
+            console.log("Speech API tidak didukung browser.");
             return;
         }
 
+        const voiceItem = document.querySelector('[data-action="voice"]');
+        if (!voiceItem) return;
+
+        const voiceText = voiceItem.querySelector('.voice-text');
+
         let voiceEnabled = false;
+        let voicesReady = false;
         let hoverTimeout = null;
-        let currentUtterance = null;
         let currentElement = null;
-        let availableVoices = [];
 
-        const voiceBtn = document.querySelector('[data-action="voice"]');
+        /* ================================
+           STATUS HANDLER
+        ================================= */
 
-        /* =============================
-           LOAD VOICES (Chrome Fix)
-        ============================== */
-
-        function loadVoices() {
-            availableVoices = speechSynthesis.getVoices();
+        function setLoading() {
+            voiceItem.classList.add("loading");
+            voiceItem.classList.remove("ready", "active");
+            voiceText.textContent = "Loading";
         }
 
-        speechSynthesis.onvoiceschanged = loadVoices;
-        loadVoices();
+        function setReady() {
+            voiceItem.classList.remove("loading");
+            voiceItem.classList.add("ready");
+            voiceText.textContent = "Ready";
+            voicesReady = true;
+        }
 
-        /* =============================
+        function setActive() {
+            voiceItem.classList.add("active");
+            voiceText.textContent = "On";
+        }
+
+        function setInactive() {
+            voiceItem.classList.remove("active");
+            voiceText.textContent = "Ready";
+        }
+
+        /* ================================
+           CHECK VOICES READY
+        ================================= */
+
+        function checkVoices() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                setReady();
+            } else {
+                setLoading();
+            }
+        }
+
+        speechSynthesis.onvoiceschanged = checkVoices;
+
+        // initial check (Chrome sometimes delayed)
+        setTimeout(checkVoices, 500);
+
+        /* ================================
+           WARM UP ENGINE (IMPORTANT)
+        ================================= */
+
+        function warmUp() {
+            const dummy = new SpeechSynthesisUtterance("");
+            speechSynthesis.speak(dummy);
+            speechSynthesis.cancel();
+        }
+
+        /* ================================
            TOGGLE VOICE MODE
-        ============================== */
+        ================================= */
 
-        voiceBtn.addEventListener("click", function() {
+        voiceItem.addEventListener("click", function() {
+
+            if (!voicesReady) return;
+
             voiceEnabled = !voiceEnabled;
-            this.classList.toggle("active");
 
-            if (!voiceEnabled) stopSpeaking();
+            speechSynthesis.cancel();
+            speechSynthesis.resume();
+
+            if (voiceEnabled) {
+                setActive();
+                warmUp();
+            } else {
+                setInactive();
+                stopSpeaking();
+            }
         });
 
-        /* =============================
-           SPEAK FUNCTION
-        ============================== */
+        /* ================================
+           SPEAK FUNCTION (STABLE)
+        ================================= */
 
         function speakText(text) {
 
-            stopSpeaking();
+            speechSynthesis.cancel();
+            speechSynthesis.resume();
 
-            currentUtterance = new SpeechSynthesisUtterance(text);
+            const utterance = new SpeechSynthesisUtterance(text);
 
-            const indoVoice = availableVoices.find(v =>
-                v.lang.toLowerCase().includes("id")
+            const voices = speechSynthesis.getVoices();
+            const indoVoice = voices.find(v =>
+                v.lang && v.lang.toLowerCase().includes("id")
             );
 
             if (indoVoice) {
-                currentUtterance.voice = indoVoice;
-                currentUtterance.lang = indoVoice.lang;
+                utterance.voice = indoVoice;
+                utterance.lang = indoVoice.lang;
+            } else {
+                utterance.lang = "id-ID";
             }
 
-            currentUtterance.rate = 1;
-            currentUtterance.pitch = 1;
+            utterance.rate = 1;
+            utterance.pitch = 1;
 
-            speechSynthesis.speak(currentUtterance);
+            speechSynthesis.speak(utterance);
         }
 
         function stopSpeaking() {
@@ -727,9 +794,9 @@
             }
         }
 
-        /* =============================
-           HOVER LISTENER
-        ============================== */
+        /* ================================
+           HOVER LISTENER (SMOOTH MODE)
+        ================================= */
 
         document.body.addEventListener("mouseover", function(e) {
 
@@ -746,6 +813,8 @@
 
             if (!text || text.length < 5) return;
 
+            clearTimeout(hoverTimeout);
+
             hoverTimeout = setTimeout(() => {
 
                 currentElement = target;
@@ -754,7 +823,6 @@
                 speakText(text);
 
             }, 400);
-
         });
 
         document.body.addEventListener("mouseout", function() {
