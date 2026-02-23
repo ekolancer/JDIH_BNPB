@@ -205,7 +205,9 @@
                                 {{-- SUBJEK (many to many + link filter) --}}
                                 @if($label === 'Subjek' && $value instanceof \Illuminate\Support\Collection)
                                 @forelse($value as $subjek)
-                                <a href="{{ url('/dokumen', ['subjek' => $subjek->nama]) }}"
+                                <a href="{{ route('list-doc', [
+                                        'subjek' => $subjek->id
+                                ]) }}"
                                     class="modern-badge me-1 text-decoration-none text-capitalize">
                                     <i class="fas fa-tag"></i>
                                     {{ \Illuminate\Support\Str::title($subjek->nama) }}
@@ -216,7 +218,9 @@
 
                                 {{-- BIDANG HUKUM (ref + link filter) --}}
                                 @elseif($label === 'Bidang Hukum' && $value instanceof \Illuminate\Database\Eloquent\Model)
-                                <a href="{{ url('/dokumen', ['bidang' => $value->nama]) }}"
+                                <a href="{{ route('list-doc', [
+                                        'bidang' => $value->id
+                                ]) }}"
                                     class="modern-badge me-1 text-decoration-none text-capitalize">
                                     <i class="fas fa-tag"></i>{{ $value->nama }}
                                 </a>

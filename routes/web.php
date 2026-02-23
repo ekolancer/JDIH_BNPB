@@ -12,9 +12,7 @@ use App\Models\Faq;
 use App\Models\ProfilPage;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/dokumen', function () {
-    return view('dokumen.list-doc');
-})->name('list-doc');
+Route::get('/dokumen', function () {return view('dokumen.list-doc');})->name('list-doc');
 
 Route::get('/profil/{slug}', function ($slug) {
 
@@ -41,7 +39,7 @@ Route::get('/profil/{slug}', function ($slug) {
     ]);
 });
 
-// Route Dokumen Hukum
+// Route Dokumen Hukum From Navbar
 Route::get('dokumen/{tipeDok}/{slug}', [DokumenController::class, 'show'])
     ->where('tipeDok', 'Peraturan|Monografi|Artikel|Putusan')
     ->name('dokumen.detail');
