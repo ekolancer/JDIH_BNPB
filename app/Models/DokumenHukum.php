@@ -84,6 +84,14 @@ class DokumenHukum extends Model
         );
     }
 
+    /**
+     * Alias for compatibility. Some legacy code refers to subjekHukum().
+     */
+    public function subjekHukum()
+    {
+        return $this->subjekRef();
+    }
+
     /***************************************************************
      *  EVENT MODEL (CREATING + UPDATING + DELETED)
      ***************************************************************/

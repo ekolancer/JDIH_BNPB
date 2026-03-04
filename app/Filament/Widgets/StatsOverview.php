@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\DokumenHukum;
-use App\Models\Visitor;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
@@ -31,9 +30,6 @@ class StatsOverview extends BaseWidget
         // --- 3️⃣ Jumlah total unduhan ---
         $downloadCount = DB::table('dokumen_hukums')->sum('download_count');
 
-        // --- 4️⃣ Jumlah pengunjung unik total ---
-        $uniqueVisitors = Visitor::distinct('ip_address')->count('ip_address');
-
         // 📊 Ambil data 14 hari terakhir agar bisa bandingkan minggu ke minggu
         $downloadsByDate = DB::table('dokumen_hukums')
             ->selectRaw('DATE(updated_at) as date, SUM(download_count) as total')
@@ -42,25 +38,26 @@ class StatsOverview extends BaseWidget
             ->orderBy('date')
             ->pluck('total', 'date');
 
-        $visitorsByDate = Visitor::selectRaw('DATE(created_at) as date, COUNT(DISTINCT ip_address) as total')
-            ->where('created_at', '>=', now()->subDays(14))
-            ->groupBy('date')
-            ->orderBy('date')
-            ->pluck('total', 'date');
-
         // 🧮 Hitung 7 hari terakhir vs minggu sebelumnya
         $downloadsThisWeek = $downloadsByDate->slice(-7)->sum();
         $downloadsLastWeek = $downloadsByDate->slice(0, -7)->sum();
-        $visitorsThisWeek = $visitorsByDate->slice(-7)->sum();
-        $visitorsLastWeek = $visitorsByDate->slice(0, -7)->sum();
 
         // 📈 Persentase perubahan
         $downloadChange = $this->calcPercentageChange($downloadsLastWeek, $downloadsThisWeek);
-        $visitorChange = $this->calcPercentageChange($visitorsLastWeek, $visitorsThisWeek);
 
         // 🔢 Data chart (7 hari terakhir)
         $downloadsChart = array_pad($downloadsByDate->slice(-7)->values()->toArray(), 7, 0);
-        $visitorsChart = array_pad($visitorsByDate->slice(-7)->values()->toArray(), 7, 0);
+
+        // 🧠 Metadata Health Score
+        $healthScoreData = cache()->remember(
+            'metadata_health_score',
+            now()->addMinutes(10),
+            fn() => $this->calculateHealthScore()
+        );
+
+        $healthScore = $healthScoreData['score'];
+        $healthTrend = $healthScoreData['trend'];
+        $healthChart = $healthScoreData['chart'];
 
         return [
             // 📘 Total Dokumen
@@ -84,12 +81,14 @@ class StatsOverview extends BaseWidget
                 ->color($downloadChange >= 0 ? 'success' : 'danger')
                 ->chart($downloadsChart),
 
-            // 👥 Pengunjung Unik (dengan tren minggu ini)
-            Stat::make('Pengunjung Unik', number_format($uniqueVisitors))
-                ->description(($visitorChange >= 0 ? 'Naik ' : 'Turun ') . abs($visitorChange) . '% dari minggu lalu')
-                ->descriptionIcon($visitorChange >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
-                ->color($visitorChange >= 0 ? 'success' : 'danger')
-                ->chart($visitorsChart),
+            // 🧠 Metadata Health Score
+            Stat::make('Health Score', $healthScore . '%')
+                ->description(($healthTrend >= 0 ? 'Naik ' : 'Turun ') . abs($healthTrend) . '% dari minggu lalu')
+                ->descriptionIcon($healthTrend >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
+                ->color(
+                    $healthScore >= 80 ? 'success' : ($healthScore >= 60 ? 'warning' : 'danger')
+                )
+                ->chart($healthChart),
         ];
     }
 
@@ -119,5 +118,99 @@ class StatsOverview extends BaseWidget
         if ($old === 0 && $new === 0) return 0;
         if ($old === 0) return 100;
         return (int) round((($new - $old) / $old) * 100);
+    }
+
+    /**
+     * Hitung Metadata Health Score
+     */
+    protected function calculateHealthScore(): array
+    {
+        $total = DokumenHukum::count();
+
+        if ($total === 0) {
+            return [
+                'score' => 0,
+                'trend' => 0,
+                'chart' => [0, 0, 0, 0, 0, 0, 0],
+            ];
+        }
+
+        $docs = DokumenHukum::withCount('subjekRef')->get();
+
+        $totalScore = 0;
+
+        foreach ($docs as $doc) {
+            $score = 0;
+
+            // ✅ Ada File (50%)
+            if (!empty($doc->lampiran) && Storage::disk('public')->exists(ltrim($doc->lampiran, '/'))) {
+                $score += 50;
+            }
+
+            // ✅ Ada Abstrak (25%)
+            if (!empty($doc->abstrak)) {
+                $score += 25;
+            }
+
+            // ✅ Subjek Hukum >= 2 (25%)
+            if ($doc->subjek_ref_count >= 2) {
+                $score += 25;
+            }
+
+            $totalScore += $score;
+        }
+
+        $finalScore = (int) round($totalScore / $total);
+
+        // --- Trend 7 hari terakhir ---
+        $thisWeek = DokumenHukum::where('created_at', '>=', now()->subDays(7))
+            ->withCount('subjekRef')
+            ->get();
+
+        $lastWeek = DokumenHukum::whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+            ->withCount('subjekRef')
+            ->get();
+
+        $thisScore = $this->averageHealth($thisWeek);
+        $lastScore = $this->averageHealth($lastWeek);
+
+        $trend = $this->calcPercentageChange($lastScore, $thisScore);
+
+        // Simple static chart (7 points)
+        $chart = array_fill(0, 7, $finalScore);
+
+        return [
+            'score' => $finalScore,
+            'trend' => $trend,
+            'chart' => $chart,
+        ];
+    }
+
+    // Hitung rata-rata health score untuk koleksi dokumen tertentu
+    protected function averageHealth($collection): int
+    {
+        if ($collection->count() === 0) return 0;
+
+        $totalScore = 0;
+
+        foreach ($collection as $doc) {
+            $score = 0;
+
+            if (!empty($doc->lampiran) && Storage::disk('public')->exists(ltrim($doc->lampiran, '/'))) {
+                $score += 50;
+            }
+
+            if (!empty($doc->abstrak)) {
+                $score += 25;
+            }
+
+            if ($doc->subjek_ref_count >= 2) {
+                $score += 25;
+            }
+
+            $totalScore += $score;
+        }
+
+        return (int) round($totalScore / $collection->count());
     }
 }
