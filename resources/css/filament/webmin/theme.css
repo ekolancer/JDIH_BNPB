@@ -501,3 +501,73 @@ footer {
     border-color: rgba(220, 38, 38, 0.35);
     color: #ef4444;
 }
+
+/* ===== Executive Stats Style ===== */
+
+.fi-wi-widget {
+    border-radius: 12px !important;
+}
+
+/* Card Container */
+.fi-wi-widget .fi-wi-stats-overview-stat {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Left Accent Border */
+.fi-wi-widget .fi-wi-stats-overview-stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 12px 0 0 12px;
+    background: #3b82f6; /* default blue */
+}
+
+/* Label */
+.fi-wi-widget .fi-wi-stats-overview-stat-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em;
+    color: #6b7280 !important;
+}
+
+/* Value */
+.fi-wi-widget .fi-wi-stats-overview-stat-value {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+}
+
+/* Progress Container */
+.fi-wi-widget .fi-wi-stats-overview-stat-chart {
+    margin-top: 12px !important;
+}
+
+/* Replace tiny chart with progress bar */
+.fi-wi-widget .fi-wi-stats-overview-stat-chart canvas {
+    display: none !important;
+}
+
+.fi-wi-widget .fi-wi-stats-overview-stat-chart::after {
+    content: "";
+    display: block;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+    margin-top: 6px;
+}
+
+/* Hover effect */
+.fi-wi-widget .fi-wi-stats-overview-stat:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08) !important;
+}
