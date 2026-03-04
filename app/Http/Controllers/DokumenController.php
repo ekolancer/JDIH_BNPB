@@ -86,28 +86,42 @@ class DokumenController extends Controller
      * @param int $dokumenId
      * @return \Illuminate\Http\Response
      */
-    public function unduhLampiran($slug)
+    public function unduhLampiran(Request $request, string $slug)
     {
-        // Cari dokumen berdasarkan ID
         $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
-        // Mendapatkan path file
-        $filePath = public_path('storage/' . $dokumen->lampiran);
+        // 1. Check authorization
+        if (!$dokumen->download_allowed) {
+            abort(403, 'Dokumen tidak dapat diunduh');
+        }
 
-        // Mengecek apakah file ada
-        if (!file_exists($filePath)) {
+        // 2. Validate file exists di storage
+        if (!$dokumen->lampiran_exists) {
             abort(404, 'File tidak ditemukan');
         }
 
-        // Increment download_count di database tanpa memperhatikan cache
-        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count', 1);
+        // 3. Use Storage facade (amannya)
+        $filePath = storage_path('app/public/' . $dokumen->lampiran);
+        return response()->download(
+            $filePath,
+            $this->sanitizeFilename($dokumen->judul) . '.' . $dokumen->file_extension,
+            ['Content-Type' => $this->getMimeType($dokumen->file_extension)]
+        );
+    }
 
-        // Mengembalikan file untuk diunduh
-        return response()->download($filePath, null, [
-            'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => '0'
-        ]);
+    private function sanitizeFilename(string $filename): string
+    {
+        return preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
+    }
+
+    private function getMimeType(string $extension): string
+    {
+        return match ($extension) {
+            'pdf' => 'application/pdf',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            default => 'application/octet-stream',
+        };
     }
 
     /**
