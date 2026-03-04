@@ -2,11 +2,38 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title class="text-uppercase">{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}</title>
-    <meta property="og:title" content="{{ $dokumen['judul'] }}">
-    
+    {{-- BASIC SEO --}}
+    <title>
+        {{ $dokumen->jenis_dokumen_singkatan }}
+        Nomor {{ $dokumen->nomor }}
+        Tahun {{ $dokumen->tahun }} - JDIH BNPB
+    </title>
+
+    <meta name="description"
+        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
+
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- OPEN GRAPH --}}
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title"
+        content="{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}">
+    <meta property="og:description"
+        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
+    <!-- <meta property="og:image"
+        content="{{ $dokumen->lampiran_exists ? asset('storage/'.$dokumen->lampiran) : asset('img/default-share.jpg') }}"> -->
+    <meta property="og:site_name" content="JDIH BNPB">
+
+    {{-- TWITTER CARD --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title"
+        content="{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}">
+    <meta name="twitter:description"
+        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
+    <meta name="twitter:image"
+        content="{{ $dokumen->lampiran_exists ? asset('storage/'.$dokumen->lampiran) : asset('img/default-share.jpg') }}">
+
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +55,7 @@
 
     <!-- Livewire Stylesheet -->
     <livewire:styles />
-    
+
 </head>
 
 <body>
