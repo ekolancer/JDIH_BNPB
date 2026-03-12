@@ -4,89 +4,89 @@ namespace App\Filament\Widgets;
 
 use App\Models\DokumenHukum;
 use Filament\Widgets\ChartWidget;
+use Filament\Support\RawJs;
 
 class PeraturanChart extends ChartWidget
 {
     protected static ?string $heading = 'Status Peraturan Perundang-undangan';
+
     protected static ?int $sort = 3;
-    protected static ?string $maxHeight = '260px';
+    
+    protected static ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
-        $berlakuCount = DokumenHukum::where('status', 'BERLAKU')->count();
-        $tidakBerlakuCount = DokumenHukum::where('status', 'TIDAK BERLAKU')->count();
-        $total = $berlakuCount + $tidakBerlakuCount;
+        $berlaku      = DokumenHukum::where('status', 'BERLAKU')->count();
+        $tidakBerlaku = DokumenHukum::where('status', 'TIDAK BERLAKU')->count();
 
         return [
             'labels' => [
-                "Berlaku ({$berlakuCount})",
-                "Tidak Berlaku ({$tidakBerlakuCount})",
+                "Berlaku ({$berlaku})",
+                "Tidak Berlaku ({$tidakBerlaku})",
             ],
             'datasets' => [
                 [
-                    'label' => 'Status Peraturan',
-                    'data' => [$berlakuCount, $tidakBerlakuCount],
-                    'backgroundColor' => ['#4CAF50', '#F44336'],
-                    'hoverOffset' => 8,
-                    'borderWidth' => 0,
+                    'data'                => [$berlaku, $tidakBerlaku],
+                    'backgroundColor'     => ['#4CAF50', '#F44336'],
+                    'hoverBackgroundColor' => ['#43A047', '#E53935'],
+                    'hoverOffset'         => 10,
+                    'borderWidth'         => 0,
                 ],
             ],
-            'total' => $total,
         ];
     }
 
     protected function getType(): string
     {
-        return 'doughnut';
+        return 'pie';
     }
 
     protected function getOptions(): array
     {
         return [
-            'cutout' => '70%', // Besar lubang tengah
-            'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'labels' => [
-                        'font' => [
-                            'size' => 12,
-                        ],
-                    ],
-                ],
-                'tooltip' => [
-                    'enabled' => true,
-                    'callbacks' => [
-                        'label' => fn($ctx) => $ctx->label,
-                    ],
-                ],
-            ],
-            // Hilangkan sumbu X dan Y
             'scales' => [
                 'x' => ['display' => false],
                 'y' => ['display' => false],
             ],
-            // Gunakan plugin inline (bekerja di Filament v3)
-            'onHover' => null,
-            'animation' => [
-                'onComplete' => function ($chart) {
-                    $ctx = $chart->ctx;
-                    $width = $chart->width;
-                    $height = $chart->height;
-                    $total = $chart->config->_config['data']['total'] ?? 0;
-                    $ctx->save();
-
-                    $fontSize = (min($width, $height) / 100) * 5;
-                    $ctx->font = "bold {$fontSize}px Poppins";
-                    $ctx->fillStyle = '#333';
-                    $ctx->textBaseline = 'middle';
-                    $text = "Total: {$total}";
-                    $textX = ($width - $ctx->measureText($text)->width) / 2;
-                    $textY = $height / 2;
-                    $ctx->fillText($text, $textX, $textY);
-
-                    $ctx->restore();
-                },
+            'plugins' => [
+                'legend' => [
+                    'position' => 'left',
+                    'align'    => 'center',
+                    'labels'   => [
+                        'padding'         => 14,
+                        'usePointStyle'   => true,
+                        'pointStyle'      => 'rect',
+                        'pointStyleWidth' => 9,
+                        'font'            => ['size' => 11],
+                    ],
+                ],
+                'tooltip' => [
+                    'enabled' => true,
+                ],
             ],
         ];
+    }
+
+    // Gunakan extraJsOptions hanya untuk:
+    // 1. Override maintainAspectRatio (tidak bisa dari PHP)
+    // 2. Custom tooltip agar tidak double
+    protected function extraJsOptions(): ?RawJs
+    {
+        return RawJs::make(<<<'JS'
+        {
+            maintainAspectRatio: true,
+            aspectRatio: 1.8,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        // Tampilkan label saja tanpa value (sudah ada di label)
+                        label: function(context) {
+                            return ' ' + context.label;
+                        }
+                    }
+                }
+            }
+        }
+        JS);
     }
 }

@@ -22,9 +22,11 @@ class ExecutiveStats extends Widget
     public function getStats(): array
     {
         $totalDocs = DokumenHukum::count();
+
         $download = DB::table('dokumen_hukums')->sum('download_count');
 
         $healthScore = $this->calculateHealthScore();
+
         $grade = match (true) {
             $healthScore >= 90 => 'A',
             $healthScore >= 75 => 'B',
@@ -36,29 +38,29 @@ class ExecutiveStats extends Widget
 
         return [
             [
-                'label' => 'TOTAL DOKUMEN',
+                'label' => 'TOTAL' . "\n" . 'DOKUMEN',
                 'value' => number_format($totalDocs),
                 'color' => 'blue',
-                'icon' => 'heroicon-o-clipboard-document-check',
+                'icon' => 'heroicon-o-square-3-stack-3d',
             ],
             [
-                'label' => 'TOTAL UNDUHAN',
+                'label' => 'TOTAL' . "\n" . 'UNDUHAN',
                 'value' => number_format($download),
                 'color' => 'cyan',
                 'icon' => 'heroicon-o-cloud-arrow-down',
             ],
             [
-                'label' => 'DOKUMEN BELUM LENGKAP',
+                'label' => 'DOKUMEN' . "\n" . 'BELUM LENGKAP',
                 'value' => $problemDocs,
                 'color' => 'amber',
                 'icon' => 'heroicon-o-clipboard-document',
                 'progress' => min(100, round(($problemDocs / max(1, $totalDocs)) * 100)),
             ],
             [
-                'label' => 'HEALTH SCORE',
+                'label' => 'METADATA' . "\n" . 'HEALTH SCORE',
                 'value' => $grade,
                 'color' => 'green',
-                'icon' => 'heroicon-o-check-badge',
+                'icon' => 'heroicon-o-star',
                 'progress' => $healthScore,
             ],
         ];
