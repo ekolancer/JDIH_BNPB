@@ -13,7 +13,7 @@ class MostViewedDoc extends BaseWidget
 {
     protected static ?string $heading = 'Top 5 Dokumen Hukum Dilihat';
     
-    protected static ?int $sort = 6;
+    protected static ?int $sort = 5;
 
     public function table(Table $table): Table
     {

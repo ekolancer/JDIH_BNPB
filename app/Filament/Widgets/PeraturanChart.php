@@ -8,7 +8,7 @@ use Filament\Widgets\ChartWidget;
 class PeraturanChart extends ChartWidget
 {
     protected static ?string $heading = 'Status Peraturan Perundang-undangan';
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 3;
     protected static ?string $maxHeight = '260px';
 
     protected function getData(): array
