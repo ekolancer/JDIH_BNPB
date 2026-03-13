@@ -3,49 +3,106 @@
 
 <head>
     <meta charset="utf-8">
-    <title>JDIH - 403 Forbidden Access</title>
+    <title>JDIH - 403 Access Denied</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/lightbox/css/lightbox.min.css" rel="stylesheet') }}">
-
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --accent: #ef4444;
+            --bg: #0b0e14;
+        }
+
         body {
-            font-family: 'Poppins';
+            background: var(--bg);
+            color: #fff;
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
+            opacity: 0.5;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        /* Animasi Black Hole */
+        .black-hole {
+            width: 120px;
+            height: 120px;
+            background: #000;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 0 40px 10px var(--accent), inset 0 0 20px var(--accent);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            to {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 6rem;
+            margin: 0;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+
+        p {
+            color: #94a3b8;
+            max-width: 400px;
+            margin: 15px auto 30px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent);
         }
     </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-8 text-center">
-        <div class="mb-6">
-            <img
-                src="{{ asset('img/403.jpg') }}"
-                alt="Forbidden Access Illustration"
-                class="mx-auto w-48 h-48 object-cover rounded-lg shadow-lg transition-transform duration-300 hover:scale-105" />
-        </div>
-        <h1 class="text-3xl font-bold mb-2 text-gray-800">Forbidden Access</h1>
-        <p class="text-gray-600 mb-6">
-            You do not have permission to access this page.
-        </p>
-        <a
-            href="/"
-            class="inline-block bg-red-600 text-white font-semibold px-6 py-3 rounded-md shadow-md hover:bg-red-700 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-red-300">Go Back Home</a>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="black-hole"></div>
+        <h1>403</h1>
+        <h2>AREA TERLARANG</h2>
+        <p>Sensor keamanan kami mendeteksi Anda mencoba memasuki cakrawala peristiwa tanpa izin. Harap segera kembali ke rute aman.</p>
+        <a href="/" class="btn">Kembali ke Pangkalan</a>
     </div>
 </body>
 

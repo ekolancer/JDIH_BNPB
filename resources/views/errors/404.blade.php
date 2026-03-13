@@ -5,130 +5,193 @@
     <meta charset="utf-8">
     <title>JDIH - 404 Page Not Found</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('lib/lightbox/css/lightbox.min.css" rel="stylesheet') }}">
-
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
     <style>
-        /* From Uiverse.io by zjssun */
-        .button {
-            position: relative;
-            padding: 10px 22px;
-            border-radius: 6px;
-            border: none;
+        :root {
+            --primary: #818cf8;
+            --bg: #0b0e14;
+        }
+
+        body {
+            background: var(--bg);
             color: #fff;
-            cursor: pointer;
-            background-color: #ef8200;
-            transition: all 0.2s ease;
-            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
 
-        .button:active {
-            transform: scale(0.96);
-        }
-
-        .button:before,
-        .button:after {
+        /* Animasi Bintang */
+        .stars {
             position: absolute;
-            content: "";
-            width: 150%;
-            left: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            transform: translateX(-50%);
-            z-index: -1000;
-            background-repeat: no-repeat;
+            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
+            z-index: 0;
         }
 
-        .button:hover:before {
-            top: -70%;
-            background-image: radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, transparent 20%, #ef8200 20%, transparent 30%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, transparent 10%, #ef8200 15%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%);
-            background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-                10% 10%, 18% 18%;
-            background-position: 50% 120%;
-            animation: greentopBubbles 0.6s ease;
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
         }
 
-        @keyframes greentopBubbles {
+        /* Ikon Sedih di atas 404 */
+        .sad-svg {
+            width: 60px;
+            height: 60px;
+            fill: var(--primary);
+            margin-bottom: -10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Bulan dan Roket */
+        .space-scene {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .moon {
+            width: 100px;
+            height: 100px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            margin: 20px auto;
+        }
+
+        .rocket {
+            position: absolute;
+            font-size: 3rem;
+            top: 0;
+            left: 0;
+            animation: rocket-fly 4s ease-in-out infinite;
+        }
+
+        @keyframes rocket-fly {
             0% {
-                background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-                    40% 90%, 55% 90%, 70% 90%;
+                transform: translate(-20px, 80px) rotate(-45deg);
             }
 
             50% {
-                background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-                    50% 50%, 65% 20%, 90% 30%;
+                transform: translate(100px, -20px) rotate(-45deg);
             }
 
             100% {
-                background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-                    50% 40%, 65% 10%, 90% 20%;
-                background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+                transform: translate(-20px, 80px) rotate(-45deg);
             }
         }
 
-        .button:hover::after {
-            bottom: -70%;
-            background-image: radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, transparent 10%, #ef8200 15%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%),
-                radial-gradient(circle, #ef8200 20%, transparent 20%);
-            background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-            background-position: 50% 0%;
-            animation: greenbottomBubbles 0.6s ease;
-        }
+        @keyframes float {
 
-        @keyframes greenbottomBubbles {
-            0% {
-                background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-                    70% -10%, 70% 0%;
+            0%,
+            100% {
+                transform: translateY(0);
             }
 
             50% {
-                background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-                    105% 0%;
+                transform: translateY(-15px);
             }
+        }
 
-            100% {
-                background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-                    110% 10%;
-                background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+        h1 {
+            font-size: 7rem;
+            margin: 0;
+            color: var(--primary);
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-box {
+            width: 100%;
+            max-width: 300px;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 10px;
+            margin: 25px auto;
+            overflow: hidden;
+        }
+
+        .bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: fill 10s linear forwards;
+        }
+
+        @keyframes fill {
+            to {
+                width: 100%;
             }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--primary);
         }
     </style>
 </head>
 
 <body>
-    <!-- Content 404 Start -->
-    <div class="text-center py-5">
-        <img src="{{ asset('img/404.png') }}" alt="404 Error" class="img-fluid" style="max-width: 30%; height: 20%;">
-        <h2 class="mt-4">Oops! Halaman Tidak Ditemukan</h2>
-        <p class="mb-4">Maaf, halaman yang Anda cari tidak ditemukan. Coba kembali ke halaman utama.</p>
-        <a href="/" class="button">Kembali ke Halaman Utama</a>
+    <div class="stars"></div>
+    <div class="container">
+        <svg class="sad-svg" viewBox="0 0 24 24">
+            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3.5-9.5c.83 0 1.5-.67 1.5-1.5S9.33 7.5 8.5 7.5 7 8.17 7 9s.67 1.5 1.5 1.5zm7 0c.83 0 1.5-.67 1.5-1.5S16.17 7.5 15.33 7.5s-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM12 14c2.33 0 4.31 1.46 5.11 3.5H6.89c.8-2.04 2.78-3.5 5.11-3.5z" />
+        </svg>
+
+        <h1>404</h1>
+
+        <div class="space-scene">
+            <div class="moon"></div>
+            <div class="rocket">🚀</div>
+        </div>
+
+        <p>Waduh! Koordinat salah. Anda tersesat di luar angkasa.</p>
+
+        <div class="progress-box">
+            <div class="bar"></div>
+        </div>
+        <p style="font-size: 0.9rem; color: #64748b;">Mendarat di Bumi dalam <span id="timer">10</span> detik...</p>
+
+        <a href="/" class="btn">Kembali Sekarang</a>
     </div>
-    <!-- Content 404 End -->
+
+    <script>
+        let count = 10;
+        const timer = document.getElementById('timer');
+        setInterval(() => {
+            count--;
+            if (count >= 0) timer.innerText = count;
+            if (count === 0) window.location.href = "/";
+        }, 1000);
+    </script>
 </body>
 
 </html>

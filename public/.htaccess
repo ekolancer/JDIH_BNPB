@@ -1,28 +1,73 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
 
-    RewriteEngine On
+Options -Indexes -MultiViews
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteEngine On
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+####################################
+# HIDE DOT FILES (RETURN 404)
+####################################
 
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+# Block access to hidden files (.env, .git, .htaccess, dll)
+RewriteRule (^|/)\. - [R=404,L]
 
-    RewriteEngine On
-    RewriteRule ^test\.html$ - [L]
-    RewriteCond %{REQUEST_URI} ^/storage/
-    RewriteRule ^storage/(.*)$ storage/$1 [L]
-    RewriteRule ^storage/(.*)$ /storage/app/public/$1 [L]
+####################################
+# HANDLE AUTHORIZATION HEADER
+####################################
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+####################################
+# REMOVE TRAILING SLASH
+####################################
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+
+####################################
+# LARAVEL FRONT CONTROLLER
+####################################
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+
+####################################
+# BLOCK SENSITIVE FILES
+####################################
+
+RewriteRule ^composer\.(json|lock)$ - [R=404,L]
+RewriteRule ^artisan$ - [R=404,L]
+
+####################################
+# BLOCK WEBSHELL EXECUTION
+####################################
+
+# Prevent PHP execution inside storage
+RewriteRule ^storage/.*\.(php|phtml|php3|php4|php5|phar)$ - [F,L]
+
+# Block common webshell names
+RewriteRule (shell|cmd|backdoor|wso|c99)\.php - [F,L]
+
+</IfModule>
+
+####################################
+# SECURITY HEADERS
+####################################
+
+<IfModule mod_headers.c>
+
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-Content-Type-Options "nosniff"
+Header set X-XSS-Protection "1; mode=block"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set X-Permitted-Cross-Domain-Policies "none"
+
+#Redirect Error ErrorDocument
+ErrorDocument 404 /error_pages/404.html
+ErrorDocument 403 /error_pages/403.html
+ErrorDocument 503 /error_pages/503.html
 
 </IfModule>
