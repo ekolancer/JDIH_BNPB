@@ -561,10 +561,10 @@
             Pemeliharaan Terjadwal
         </div>
 
-        <h1>Sistem Sedang<br>Diperbarui</h1>
+        <h1><strong>Maaf atas ketidaknyamanannya.</strong> <br> Saat ini kami sedang melakukan pemeliharaan rutin untuk meningkatkan kualitas layanan dan keamanan sistem. <br>Kami akan segera kembali dalam waktu dekat. Terima kasih atas kesabaran Anda.</h1>
 
         <p class="desc">
-            <strong>Maaf atas ketidaknyamanannya.</strong> <br> Saat ini kami sedang melakukan pemeliharaan rutin untuk meningkatkan kualitas layanan dan keamanan sistem. <br>Kami akan segera kembali dalam waktu dekat. Terima kasih atas kesabaran Anda.
+            <strong>Terima kasih atas kesabaran Anda.</strong> 
         </p>
 
         <div class="btn-row">
