@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>503 — Service Unavailable</title>
-    <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <meta http-equiv="refresh" content="300">
+    <title>Pemeliharaan Sistem — JDIH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *,
         *::before,
@@ -16,15 +17,13 @@
         }
 
         :root {
-            --void: #030508;
-            --deep: #060c18;
-            --blue-core: #0ea5e9;
-            --blue-dim: #0369a1;
-            --blue-glow: #38bdf8;
-            --teal: #14b8a6;
-            --warn: #f59e0b;
-            --ice: #e0f2fe;
-            --muted: #475569;
+            --void: #03020a;
+            --teal-core: #14b8a6;
+            --teal-glow: #2dd4bf;
+            --teal-dim: #0d9488;
+            --gold: #f59e0b;
+            --ice: #e2e8f0;
+            --muted: #64748b;
             --text: #94a3b8;
         }
 
@@ -34,67 +33,26 @@
             height: 100%;
             background: var(--void);
             color: var(--ice);
-            font-family: 'Space Mono', monospace;
+            font-family: 'Syne', sans-serif;
             overflow: hidden;
         }
 
-        /* Glitch overlay */
-        body::before {
+        body::after {
             content: '';
             position: fixed;
             inset: 0;
-            background: repeating-linear-gradient(0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(14, 165, 233, 0.012) 2px,
-                    rgba(14, 165, 233, 0.012) 4px);
-            z-index: 200;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px,
+                    rgba(20, 184, 166, 0.013) 3px, rgba(20, 184, 166, 0.013) 4px);
             pointer-events: none;
-            animation: glitchScan 10s linear infinite;
+            z-index: 300;
         }
 
-        @keyframes glitchScan {
-            0% {
-                opacity: 1;
-            }
-
-            49% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.7;
-                transform: translateY(-3px);
-            }
-
-            51% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            89% {
-                opacity: 1;
-            }
-
-            90% {
-                opacity: 0.8;
-                transform: translateX(2px);
-            }
-
-            91% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Canvas */
-        #bg {
+        #cosmos {
             position: fixed;
             inset: 0;
             z-index: 0;
         }
 
-        /* Nebulas — blue/teal theme */
         .nebula {
             position: fixed;
             border-radius: 50%;
@@ -104,775 +62,539 @@
         }
 
         .nb1 {
-            width: 800px;
+            width: 900px;
             height: 600px;
-            background: radial-gradient(ellipse, rgba(14, 165, 233, 0.15), transparent 70%);
+            background: radial-gradient(ellipse, rgba(20, 184, 166, 0.14), transparent 70%);
             top: -200px;
             left: -200px;
-            animation: nb1d 22s ease-in-out infinite alternate;
+            animation: nb1 24s ease-in-out infinite alternate;
         }
 
         .nb2 {
-            width: 600px;
+            width: 700px;
             height: 500px;
-            background: radial-gradient(ellipse, rgba(20, 184, 166, 0.12), transparent 70%);
-            bottom: -150px;
-            right: -100px;
-            animation: nb2d 28s ease-in-out infinite alternate;
+            background: radial-gradient(ellipse, rgba(245, 158, 11, 0.09), transparent 70%);
+            bottom: -180px;
+            right: -150px;
+            animation: nb2 30s ease-in-out infinite alternate;
         }
 
         .nb3 {
-            width: 400px;
-            height: 300px;
-            background: radial-gradient(ellipse, rgba(56, 189, 248, 0.08), transparent 70%);
-            top: 50%;
-            left: 50%;
-            animation: nb3d 16s ease-in-out infinite alternate;
+            width: 500px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(99, 102, 241, 0.1), transparent 70%);
+            top: 30%;
+            left: 45%;
+            animation: nb3 20s ease-in-out infinite alternate;
         }
 
-        @keyframes nb1d {
+        @keyframes nb1 {
             to {
-                transform: translate(70px, 60px);
+                transform: translate(80px, 60px);
             }
         }
 
-        @keyframes nb2d {
+        @keyframes nb2 {
             to {
                 transform: translate(-60px, -50px);
             }
         }
 
-        @keyframes nb3d {
+        @keyframes nb3 {
             to {
-                transform: translate(-40px, 30px);
+                transform: translate(-50px, 40px);
             }
         }
 
-        /* Scene */
-        .scene {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            gap: 70px;
-            padding: 40px;
+        .brk {
+            position: fixed;
+            width: 28px;
+            height: 28px;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.3;
         }
 
-        /* Space station illustration */
-        .station-wrap {
-            position: relative;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Slow tumble of the broken station */
-        .station-svg {
-            width: 300px;
-            animation: tumbleSlow 12s linear infinite;
-            filter:
-                drop-shadow(0 0 20px rgba(14, 165, 233, 0.3)) drop-shadow(0 0 40px rgba(14, 165, 233, 0.1));
-        }
-
-        @keyframes tumbleSlow {
-            0% {
-                transform: rotate(0deg) translateY(0);
-            }
-
-            25% {
-                transform: rotate(4deg) translateY(-8px);
-            }
-
-            50% {
-                transform: rotate(0deg) translateY(-14px);
-            }
-
-            75% {
-                transform: rotate(-4deg) translateY(-8px);
-            }
-
-            100% {
-                transform: rotate(0deg) translateY(0);
-            }
-        }
-
-        /* Debris particles floating around */
-        .debris {
-            position: absolute;
-            border-radius: 2px;
-            background: rgba(14, 165, 233, 0.5);
-            animation: debrisFloat linear infinite;
-        }
-
-        @keyframes debrisFloat {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.6;
-            }
-
-            100% {
-                transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
-                opacity: 0;
-            }
-        }
-
-        /* Electric spark effect */
-        .spark {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: var(--warn);
-            box-shadow: 0 0 6px var(--warn);
-            animation: sparkFly linear infinite;
-        }
-
-        @keyframes sparkFly {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(var(--sx), var(--sy)) scale(0);
-                opacity: 0;
-            }
-        }
-
-        /* Distress beacon ring */
-        .beacon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border-radius: 50%;
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            transform: translate(-50%, -50%);
-            animation: beaconPulse 3s ease-out infinite;
-        }
-
-        .beacon:nth-child(2) {
-            animation-delay: 1s;
-        }
-
-        .beacon:nth-child(3) {
-            animation-delay: 2s;
-        }
-
-        @keyframes beaconPulse {
-            0% {
-                width: 20px;
-                height: 20px;
-                opacity: 0.8;
-            }
-
-            100% {
-                width: 320px;
-                height: 320px;
-                opacity: 0;
-            }
-        }
-
-        /* Right panel */
-        .info-panel {
-            max-width: 480px;
-        }
-
-        /* Status pill */
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(14, 165, 233, 0.08);
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            border-radius: 100px;
-            padding: 6px 18px 6px 12px;
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: var(--blue-glow);
-            text-transform: uppercase;
-            margin-bottom: 22px;
-        }
-
-        .pill-anim {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--warn);
-            animation: pillBlink 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pillBlink {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
-                background: var(--warn);
-            }
-
-            50% {
-                box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
-                background: #fcd34d;
-            }
-        }
-
-        /* Error number */
-        .err-num {
-            font-family: 'Russo One', sans-serif;
-            font-size: clamp(80px, 12vw, 128px);
-            line-height: 0.9;
-            position: relative;
-            margin-bottom: 10px;
-        }
-
-        .err-num span {
-            display: inline-block;
-            color: transparent;
-            -webkit-text-stroke: 2px var(--blue-core);
-            text-stroke: 2px var(--blue-core);
-            filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.5));
-            animation: numGlitch 7s ease-in-out infinite;
-        }
-
-        .err-num .solid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            -webkit-text-stroke: 0;
-            color: var(--blue-core);
-            opacity: 0.15;
-        }
-
-        @keyframes numGlitch {
-
-            0%,
-            80%,
-            100% {
-                transform: translate(0);
-                filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.5));
-            }
-
-            82% {
-                transform: translate(-4px, 2px);
-                filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.6));
-                color: var(--warn);
-                -webkit-text-stroke-color: var(--warn);
-            }
-
-            84% {
-                transform: translate(4px, -2px);
-            }
-
-            86% {
-                transform: translate(0);
-                filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.5));
-                color: var(--blue-core);
-                -webkit-text-stroke-color: var(--blue-core);
-            }
-        }
-
-        .err-sub {
-            font-size: 12px;
-            letter-spacing: 5px;
-            color: rgba(14, 165, 233, 0.5);
-            text-transform: uppercase;
-            margin-bottom: 26px;
-        }
-
-        /* Description */
-        .desc {
-            font-family: 'Space Mono', monospace;
-            font-size: 14px;
-            color: var(--text);
-            line-height: 2;
-            margin-bottom: 28px;
-            max-width: 420px;
-        }
-
-        .desc strong {
-            color: var(--ice);
-        }
-
-        /* System status panel */
-        .sys-panel {
-            background: rgba(14, 165, 233, 0.04);
-            border: 1px solid rgba(14, 165, 233, 0.15);
-            border-radius: 6px;
-            padding: 18px 22px;
-            margin-bottom: 32px;
-            max-width: 420px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sys-panel::before {
+        .brk::before,
+        .brk::after {
             content: '';
             position: absolute;
+            background: var(--teal-core);
+        }
+
+        .brk::before {
+            width: 100%;
+            height: 1.5px;
             top: 0;
             left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--blue-core), transparent);
-            animation: scanLine 3s linear infinite;
         }
 
-        @keyframes scanLine {
-            0% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scaleX(0);
-                opacity: 0;
-            }
-        }
-
-        .sys-title {
-            font-size: 10px;
-            letter-spacing: 3px;
-            color: rgba(14, 165, 233, 0.4);
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .sys-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(14, 165, 233, 0.06);
-            font-size: 12px;
-        }
-
-        .sys-row:last-child {
-            border-bottom: none;
-        }
-
-        .sys-key {
-            color: var(--muted);
-        }
-
-        .sys-val {
-            font-weight: 700;
-        }
-
-        .v-off {
-            color: #f87171;
-        }
-
-        .v-warn {
-            color: var(--warn);
-            animation: valBlink 2s step-end infinite;
-        }
-
-        .v-ok {
-            color: #4ade80;
-        }
-
-        @keyframes valBlink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        /* Countdown */
-        .countdown-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .countdown-label {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: rgba(14, 165, 233, 0.4);
-            text-transform: uppercase;
-        }
-
-        .countdown {
-            font-size: 13px;
-            color: var(--warn);
-            letter-spacing: 2px;
-        }
-
-        /* Progress bar */
-        .prog-bar {
-            height: 3px;
-            background: rgba(14, 165, 233, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 28px;
-            max-width: 420px;
-        }
-
-        .prog-fill {
+        .brk::after {
+            width: 1.5px;
             height: 100%;
-            background: linear-gradient(to right, var(--teal), var(--blue-core), var(--blue-glow));
-            border-radius: 2px;
-            animation: progAnim 8s ease-in-out infinite alternate;
-            box-shadow: 0 0 8px var(--blue-core);
+            top: 0;
+            left: 0;
         }
 
-        @keyframes progAnim {
-            0% {
-                width: 8%;
-            }
-
-            100% {
-                width: 68%;
-            }
+        .brk-tl {
+            top: 16px;
+            left: 16px;
         }
 
-        /* Buttons */
-        .btn-row {
-            display: flex;
-            gap: 14px;
+        .brk-tr {
+            top: 16px;
+            right: 16px;
+            transform: scaleX(-1);
         }
 
-        .btn {
-            padding: 13px 26px;
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.25s;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
+        .brk-bl {
+            bottom: 16px;
+            left: 16px;
+            transform: scaleY(-1);
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 50%, transparent 100%);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+        .brk-br {
+            bottom: 16px;
+            right: 16px;
+            transform: scale(-1);
         }
 
-        .btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--blue-dim), var(--blue-core));
-            color: white;
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 0 35px rgba(14, 165, 233, 0.6), 0 4px 16px rgba(0, 0, 0, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--blue-glow);
-            border: 1px solid rgba(14, 165, 233, 0.25);
-        }
-
-        .btn-ghost:hover {
-            background: rgba(14, 165, 233, 0.08);
-            border-color: var(--blue-core);
-            transform: translateY(-2px);
-        }
-
-        /* HUD */
         .hud {
             position: fixed;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
-            letter-spacing: 2px;
-            color: rgba(14, 165, 233, 0.2);
+            letter-spacing: 1.5px;
+            color: rgba(20, 184, 166, 0.22);
             pointer-events: none;
             z-index: 50;
             line-height: 1.9;
+            text-transform: uppercase;
         }
 
         .hud-tl {
-            top: 16px;
+            top: 18px;
             left: 20px;
         }
 
         .hud-tr {
-            top: 16px;
+            top: 18px;
             right: 20px;
             text-align: right;
         }
 
         .hud-bl {
-            bottom: 16px;
+            bottom: 18px;
             left: 20px;
         }
 
         .hud-br {
-            bottom: 16px;
+            bottom: 18px;
             right: 20px;
             text-align: right;
         }
 
-        /* Corner crosshairs */
-        .cross {
-            position: fixed;
-            z-index: 50;
-            pointer-events: none;
-            opacity: 0.25;
+        .scene {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 24px;
+            text-align: center;
         }
 
-        .cross::before,
-        .cross::after {
+        /* Satellite */
+        .satellite-wrap {
+            position: relative;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .satellite-svg {
+            width: 160px;
+            animation: satelliteOrbit 10s ease-in-out infinite;
+            filter: drop-shadow(0 0 18px rgba(20, 184, 166, 0.35));
+        }
+
+        @keyframes satelliteOrbit {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+
+            50% {
+                transform: translateY(-18px) rotate(0deg);
+            }
+
+            75% {
+                transform: translateY(-10px) rotate(-2deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        .signal-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            transform: translate(-50%, -50%);
+            animation: signalExpand 3s ease-out infinite;
+            pointer-events: none;
+        }
+
+        .signal-ring:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .signal-ring:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes signalExpand {
+            0% {
+                width: 40px;
+                height: 40px;
+                opacity: 0.8;
+            }
+
+            100% {
+                width: 220px;
+                height: 220px;
+                opacity: 0;
+            }
+        }
+
+        .gear-anim {
+            animation: gearSpin 4s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes gearSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ant-blink {
+            animation: antBlink 1.2s ease-in-out infinite;
+        }
+
+        @keyframes antBlink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(20, 184, 166, 0.08);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+            border-radius: 100px;
+            padding: 5px 16px 5px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            color: var(--teal-glow);
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: badgePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(245, 158, 11, 0);
+            }
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 46px);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #e2e8f0 30%, var(--teal-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subhead {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: rgba(20, 184, 166, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .desc {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.9;
+            max-width: 460px;
+            margin-bottom: 40px;
+            border-left: 2px solid rgba(20, 184, 166, 0.25);
+            padding-left: 18px;
+            text-align: left;
+        }
+
+        .desc strong {
+            color: var(--ice);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 26px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        .btn-primary {
+            background: rgba(20, 184, 166, 0.12);
+            color: var(--teal-glow);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(20, 184, 166, 0.2);
+            border-color: var(--teal-core);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.15);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .btn-ghost:hover {
+            color: var(--ice);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .shoot {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .shoot::after {
             content: '';
             position: absolute;
-            background: var(--blue-core);
-        }
-
-        .cross::before {
-            width: 20px;
-            height: 1px;
-            top: 4px;
-            left: 0;
-        }
-
-        .cross::after {
-            width: 1px;
-            height: 20px;
             top: 0;
-            left: 4px;
+            right: 0;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.7), transparent);
+            transform: rotate(180deg);
         }
 
-        .cross-tl {
-            top: 14px;
-            left: 14px;
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            animation: particleFloat linear infinite;
         }
 
-        .cross-tr {
-            top: 14px;
-            right: 14px;
-            transform: scaleX(-1);
-        }
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
 
-        .cross-bl {
-            bottom: 14px;
-            left: 14px;
-            transform: scaleY(-1);
-        }
+            10% {
+                opacity: 0.7;
+            }
 
-        .cross-br {
-            bottom: 14px;
-            right: 14px;
-            transform: scale(-1);
+            90% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <canvas id="bg"></canvas>
+    <canvas id="cosmos"></canvas>
     <div class="nebula nb1"></div>
     <div class="nebula nb2"></div>
     <div class="nebula nb3"></div>
 
-    <!-- Crosshairs -->
-    <div class="cross cross-tl"></div>
-    <div class="cross cross-tr"></div>
-    <div class="cross cross-bl"></div>
-    <div class="cross cross-br"></div>
+    <div class="brk brk-tl"></div>
+    <div class="brk brk-tr"></div>
+    <div class="brk brk-bl"></div>
+    <div class="brk brk-br"></div>
 
-    <!-- HUD -->
     <div class="hud hud-tl">
-        <div>SYSTEM // JDIH-SERVER</div>
-        <div>NODE // ALPHA-7</div>
-        <div id="ts">UTC // --:--:--</div>
+        <div>JDIH // SISTEM INFORMASI</div>
+        <div>MODE // MAINTENANCE</div>
     </div>
     <div class="hud hud-tr">
-        <div>STATUS // UNAVAILABLE</div>
-        <div>UPTIME // 00:00:00</div>
-        <div id="load">LOAD // ---</div>
+        <div>STATUS // SCHEDULED</div>
+        <div id="hud-time">UTC // --:--:--</div>
     </div>
     <div class="hud hud-bl">
-        <div>ERR // HTTP 503</div>
-        <div>RETRY // SCHEDULED</div>
+        <div>PAGE AUTO-REFRESH // 5 MIN</div>
     </div>
     <div class="hud hud-br">
-        <div>BACKUP // OFFLINE</div>
-        <div>ETA // CALCULATING</div>
+        <div>TEAM // ON SITE</div>
     </div>
 
     <div class="scene">
 
-        <!-- Broken space station -->
-        <div class="station-wrap">
+        <div class="satellite-wrap">
+            <div class="signal-ring"></div>
+            <div class="signal-ring"></div>
+            <div class="signal-ring"></div>
 
-            <!-- Distress beacon -->
-            <div class="beacon"></div>
-            <div class="beacon"></div>
-            <div class="beacon"></div>
-
-            <!-- Space station SVG -->
-            <svg class="station-svg" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                <!-- Tilt the whole station slightly (damaged) -->
-                <g transform="rotate(-12, 150, 150)">
-
-                    <!-- Central hub -->
-                    <circle cx="150" cy="150" r="45" fill="#0c2a3d" stroke="#0ea5e9" stroke-width="1.5" />
-                    <circle cx="150" cy="150" r="35" fill="#071e2d" stroke="rgba(14,165,233,0.4)" stroke-width="1" />
-                    <!-- Hub detail rings -->
-                    <circle cx="150" cy="150" r="20" fill="none" stroke="rgba(14,165,233,0.2)" stroke-width="1" stroke-dasharray="4 4" />
-                    <!-- Hub window -->
-                    <circle cx="150" cy="150" r="12" fill="#1a4a6e" stroke="rgba(56,189,248,0.6)" stroke-width="1" />
-                    <circle cx="147" cy="147" r="5" fill="rgba(56,189,248,0.3)" />
-
-                    <!-- Left solar panel arm -->
-                    <rect x="30" y="145" width="75" height="10" rx="3" fill="#0c2a3d" stroke="#0ea5e9" stroke-width="1" />
-                    <!-- Left panel array (intact) -->
-                    <rect x="18" y="120" width="30" height="60" rx="2" fill="#071e2d" stroke="rgba(14,165,233,0.6)" stroke-width="1" />
-                    <line x1="18" y1="135" x2="48" y2="135" stroke="rgba(14,165,233,0.4)" stroke-width="1" />
-                    <line x1="18" y1="150" x2="48" y2="150" stroke="rgba(14,165,233,0.4)" stroke-width="1" />
-                    <line x1="18" y1="165" x2="48" y2="165" stroke="rgba(14,165,233,0.4)" stroke-width="1" />
-                    <line x1="33" y1="120" x2="33" y2="180" stroke="rgba(14,165,233,0.3)" stroke-width="1" />
-                    <!-- Panel glow -->
-                    <rect x="18" y="120" width="30" height="60" rx="2" fill="rgba(14,165,233,0.06)" />
-
-                    <!-- Right solar panel arm (BROKEN/bent) -->
-                    <path d="M 195 148 L 252 138 L 258 148 L 252 158 L 195 158 Z"
-                        fill="#0c2a3d" stroke="#0ea5e9" stroke-width="1" opacity="0.8" />
-                    <!-- Right panel (cracked, tilted) -->
-                    <g transform="rotate(25, 268, 138)">
-                        <rect x="250" y="108" width="28" height="58" rx="2"
-                            fill="#071e2d" stroke="rgba(14,165,233,0.4)" stroke-width="1" opacity="0.7" />
-                        <!-- Crack lines -->
-                        <line x1="250" y1="108" x2="278" y2="166" stroke="rgba(245,158,11,0.5)" stroke-width="1.5" />
-                        <line x1="260" y1="108" x2="252" y2="140" stroke="rgba(245,158,11,0.3)" stroke-width="1" />
-                    </g>
-
-                    <!-- Top module -->
-                    <rect x="135" y="68" width="30" height="40" rx="4" fill="#0c2a3d" stroke="rgba(14,165,233,0.5)" stroke-width="1" />
-                    <rect x="140" y="74" width="20" height="12" rx="2" fill="#1a3a5c" stroke="rgba(56,189,248,0.4)" stroke-width="1" />
-                    <!-- Antenna (bent) -->
-                    <path d="M 150 68 L 148 50 L 158 40" stroke="rgba(14,165,233,0.6)" stroke-width="1.5" fill="none" />
-                    <circle cx="158" cy="40" r="3" fill="var(--warn)" opacity="0.8">
-                        <animate attributeName="opacity" values="0.8;0.1;0.8" dur="1.2s" repeatCount="indefinite" />
-                    </circle>
-
-                    <!-- Bottom thruster module -->
-                    <rect x="132" y="192" width="36" height="30" rx="4" fill="#0c2a3d" stroke="rgba(14,165,233,0.4)" stroke-width="1" />
-                    <!-- Thruster exhaust (flickering) -->
-                    <ellipse cx="150" cy="228" rx="10" ry="5" fill="rgba(56,189,248,0.2)">
-                        <animate attributeName="ry" values="5;8;3;6;5" dur="0.8s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.3;0.6;0.2;0.5;0.3" dur="0.8s" repeatCount="indefinite" />
-                    </ellipse>
-
-                    <!-- Damage sparks -->
-                    <circle cx="220" cy="140" r="3" fill="var(--warn)">
-                        <animate attributeName="opacity" values="1;0;1;0;0;1" dur="0.6s" repeatCount="indefinite" />
-                        <animate attributeName="r" values="3;5;2;4;3" dur="0.6s" repeatCount="indefinite" />
-                    </circle>
-                    <circle cx="200" cy="155" r="2" fill="#fbbf24">
-                        <animate attributeName="opacity" values="0;1;0;0;1;0" dur="0.9s" repeatCount="indefinite" />
-                    </circle>
-
-                    <!-- Orbit ring around station -->
-                    <ellipse cx="150" cy="150" rx="80" ry="25"
-                        stroke="rgba(14,165,233,0.12)" stroke-width="1"
-                        fill="none" stroke-dasharray="6 4"
-                        transform="rotate(-20, 150, 150)" />
-
+            <svg class="satellite-svg" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="68" width="44" height="24" rx="3" fill="#0a1f2e" stroke="#14b8a6" stroke-width="1.2" />
+                <line x1="8" y1="76" x2="52" y2="76" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="8" y1="82" x2="52" y2="82" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="8" y1="88" x2="52" y2="88" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="22" y1="68" x2="22" y2="92" stroke="rgba(20,184,166,0.25)" stroke-width="1" />
+                <line x1="36" y1="68" x2="36" y2="92" stroke="rgba(20,184,166,0.25)" stroke-width="1" />
+                <rect x="8" y="68" width="44" height="24" rx="3" fill="rgba(20,184,166,0.07)" />
+                <rect x="50" y="77" width="18" height="6" rx="2" fill="#0d2a3a" stroke="rgba(20,184,166,0.4)" stroke-width="1" />
+                <rect x="56" y="56" width="48" height="48" rx="6" fill="#0a1929" stroke="#14b8a6" stroke-width="1.5" />
+                <rect x="64" y="64" width="32" height="32" rx="4" fill="#061420" stroke="rgba(20,184,166,0.3)" stroke-width="1" />
+                <g class="gear-anim" style="transform-origin: 80px 80px;">
+                    <circle cx="80" cy="80" r="10" fill="none" stroke="rgba(20,184,166,0.5)" stroke-width="1.5" />
+                    <circle cx="80" cy="80" r="4" fill="rgba(20,184,166,0.3)" />
+                    <line x1="80" y1="67" x2="80" y2="72" stroke="rgba(20,184,166,0.5)" stroke-width="2" />
+                    <line x1="80" y1="88" x2="80" y2="93" stroke="rgba(20,184,166,0.5)" stroke-width="2" />
+                    <line x1="67" y1="80" x2="72" y2="80" stroke="rgba(20,184,166,0.5)" stroke-width="2" />
+                    <line x1="88" y1="80" x2="93" y2="80" stroke="rgba(20,184,166,0.5)" stroke-width="2" />
+                    <line x1="70.5" y1="70.5" x2="74" y2="74" stroke="rgba(20,184,166,0.4)" stroke-width="1.5" />
+                    <line x1="86" y1="86" x2="89.5" y2="89.5" stroke="rgba(20,184,166,0.4)" stroke-width="1.5" />
+                    <line x1="89.5" y1="70.5" x2="86" y2="74" stroke="rgba(20,184,166,0.4)" stroke-width="1.5" />
+                    <line x1="74" y1="86" x2="70.5" y2="89.5" stroke="rgba(20,184,166,0.4)" stroke-width="1.5" />
                 </g>
+                <rect x="92" y="77" width="18" height="6" rx="2" fill="#0d2a3a" stroke="rgba(20,184,166,0.4)" stroke-width="1" />
+                <rect x="108" y="68" width="44" height="24" rx="3" fill="#0a1f2e" stroke="#14b8a6" stroke-width="1.2" />
+                <line x1="108" y1="76" x2="152" y2="76" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="108" y1="82" x2="152" y2="82" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="108" y1="88" x2="152" y2="88" stroke="rgba(20,184,166,0.35)" stroke-width="1" />
+                <line x1="122" y1="68" x2="122" y2="92" stroke="rgba(20,184,166,0.25)" stroke-width="1" />
+                <line x1="136" y1="68" x2="136" y2="92" stroke="rgba(20,184,166,0.25)" stroke-width="1" />
+                <rect x="108" y="68" width="44" height="24" rx="3" fill="rgba(20,184,166,0.07)" />
+                <line x1="80" y1="56" x2="80" y2="36" stroke="rgba(20,184,166,0.5)" stroke-width="1.5" />
+                <line x1="80" y1="36" x2="68" y2="24" stroke="rgba(20,184,166,0.4)" stroke-width="1" />
+                <line x1="80" y1="36" x2="92" y2="24" stroke="rgba(20,184,166,0.4)" stroke-width="1" />
+                <circle class="ant-blink" cx="68" cy="24" r="3" fill="#f59e0b" />
+                <circle class="ant-blink" cx="92" cy="24" r="3" fill="#14b8a6" style="animation-delay:0.6s" />
+                <rect x="72" y="104" width="16" height="10" rx="2" fill="#061420" stroke="rgba(20,184,166,0.3)" stroke-width="1" />
+                <ellipse cx="80" cy="118" rx="6" ry="4" fill="rgba(20,184,166,0.2)">
+                    <animate attributeName="ry" values="4;7;3;5;4" dur="0.9s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;0.7;0.2;0.5;0.3" dur="0.9s" repeatCount="indefinite" />
+                </ellipse>
             </svg>
-
-            <!-- Floating debris -->
-            <div class="debris" style="width:6px;height:3px;top:30%;left:20%;--tx:40px;--ty:-30px;--rot:90deg;animation-duration:4s;animation-delay:0s;"></div>
-            <div class="debris" style="width:4px;height:4px;top:60%;left:75%;--tx:-35px;--ty:25px;--rot:180deg;animation-duration:5s;animation-delay:1s;border-radius:50%;"></div>
-            <div class="debris" style="width:8px;height:2px;top:20%;left:65%;--tx:20px;--ty:40px;--rot:120deg;animation-duration:6s;animation-delay:2s;"></div>
-            <div class="debris" style="width:3px;height:3px;top:75%;left:30%;--tx:-20px;--ty:-35px;--rot:60deg;animation-duration:4.5s;animation-delay:0.5s;border-radius:50%;"></div>
-            <div class="debris" style="width:5px;height:2px;top:40%;left:80%;--tx:-30px;--ty:-20px;--rot:200deg;animation-duration:7s;animation-delay:1.5s;"></div>
-
-            <!-- Sparks -->
-            <div class="spark" style="top:42%;left:63%;--sx:20px;--sy:-15px;animation-duration:0.8s;animation-delay:0s;"></div>
-            <div class="spark" style="top:45%;left:65%;--sx:-15px;--sy:20px;animation-duration:1s;animation-delay:0.3s;background:#38bdf8;box-shadow:0 0 6px #38bdf8;"></div>
-            <div class="spark" style="top:48%;left:60%;--sx:18px;--sy:12px;animation-duration:0.7s;animation-delay:0.6s;"></div>
         </div>
 
-        <!-- Info panel -->
-        <div class="info-panel">
-
-            <div class="status-pill">
-                <div class="pill-anim"></div>
-                SERVER TIDAK TERSEDIA
-            </div>
-
-            <div class="err-num">
-                <span>503</span>
-                <span class="solid" aria-hidden="true">503</span>
-            </div>
-            <div class="err-sub">SERVICE UNAVAILABLE</div>
-
-            <p class="desc">
-                Stasiun server galaksi kami mengalami <strong>kendala sistem</strong>.<br>
-                Tim insinyur luar angkasa sedang bekerja keras untuk memulihkan layanan.<br>
-                Mohon coba kembali dalam beberapa saat.
-            </p>
-
-            <div class="prog-bar">
-                <div class="prog-fill"></div>
-            </div>
-
-            <div class="sys-panel">
-                <div class="sys-title">⚡ Diagnostik Sistem</div>
-                <div class="sys-row">
-                    <span class="sys-key">Web Server</span>
-                    <span class="sys-val v-off">OFFLINE</span>
-                </div>
-                <div class="sys-row">
-                    <span class="sys-key">Database</span>
-                    <span class="sys-val v-warn">RECOVERING</span>
-                </div>
-                <div class="sys-row">
-                    <span class="sys-key">Cache Layer</span>
-                    <span class="sys-val v-off">OFFLINE</span>
-                </div>
-                <div class="sys-row">
-                    <span class="sys-key">Backup Node</span>
-                    <span class="sys-val v-warn">STANDBY</span>
-                </div>
-                <div class="sys-row">
-                    <span class="sys-key">CDN</span>
-                    <span class="sys-val v-ok">ONLINE</span>
-                </div>
-            </div>
-
+        <div class="badge">
+            <div class="badge-dot"></div>
+            Pemeliharaan Terjadwal
         </div>
+
+        <h1>Sistem Sedang<br>Diperbarui</h1>
+        <div class="subhead">Scheduled Maintenance // JDIH</div>
+
+        <p class="desc">
+            @if(isset($exception) && $exception->getMessage())
+            {!! $exception->getMessage() !!}
+            @else
+            Kami sedang melakukan <strong>pembaruan dan pemeliharaan sistem</strong> untuk
+            meningkatkan performa dan keamanan layanan JDIH.<br><br>
+            Mohon bersabar, sistem akan kembali online dalam waktu dekat.
+            @endif
+        </p>
+
+        <div class="btn-row">
+            <a href="javascript:location.reload()" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10" />
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                </svg>
+                Muat Ulang
+            </a>
+            <a href="mailto:admin@jdih.go.id" class="btn btn-ghost">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Hubungi Admin
+            </a>
+        </div>
+
     </div>
 
     <script>
-        // Star canvas
-        const canvas = document.getElementById('bg');
+        const canvas = document.getElementById('cosmos');
         const ctx = canvas.getContext('2d');
 
         function resize() {
@@ -887,11 +609,10 @@
         }, () => ({
             x: Math.random() * innerWidth,
             y: Math.random() * innerHeight,
-            r: Math.random() * 1.6,
+            r: Math.random() * 1.5,
             a: 0.2 + Math.random() * 0.7,
-            sp: 0.002 + Math.random() * 0.007,
-            ph: Math.random() * Math.PI * 2,
-            blue: Math.random() > 0.7
+            sp: 0.002 + Math.random() * 0.006,
+            ph: Math.random() * Math.PI * 2
         }));
 
         let t = 0;
@@ -899,33 +620,52 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
                 const alpha = s.a * (0.5 + 0.5 * Math.sin(t * s.sp + s.ph));
-                const r = s.blue ? `rgba(56,189,248,${alpha})` : `rgba(224,242,254,${alpha * 0.7})`;
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                ctx.fillStyle = r;
+                ctx.fillStyle = `rgba(224,242,254,${alpha})`;
                 ctx.fill();
             });
             t++;
             requestAnimationFrame(draw);
         })();
 
-        // HUD clock
+        function pad(n) {
+            return String(n).padStart(2, '0');
+        }
         setInterval(() => {
             const now = new Date();
-            document.getElementById('ts').textContent =
-                `UTC // ${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}:${String(now.getUTCSeconds()).padStart(2,'0')}`;
-            document.getElementById('load').textContent =
-                `LOAD // ${(Math.random() * 0.3 + 0.05).toFixed(2)}`;
+            document.getElementById('hud-time').textContent =
+                'UTC // ' + pad(now.getUTCHours()) + ':' + pad(now.getUTCMinutes()) + ':' + pad(now.getUTCSeconds());
         }, 1000);
 
-        // Countdown timer (fake — counts down from 8:30, then resets)
-        let total = 510;
-        setInterval(() => {
-            total = total > 0 ? total - 1 : 510;
-            const m = String(Math.floor(total / 60)).padStart(2, '0');
-            const s = String(total % 60).padStart(2, '0');
-            document.getElementById('cd').textContent = `${m}:${s}`;
-        }, 1000);
+        function shoot() {
+            const el = document.createElement('div');
+            el.className = 'shoot';
+            const ang = 15 + Math.random() * 25;
+            el.style.cssText = `top:${Math.random()*60}%;left:${Math.random()*80}%;transform:rotate(${ang}deg)`;
+            document.body.appendChild(el);
+            el.animate([{
+                    transform: `rotate(${ang}deg) translate(0,0)`,
+                    opacity: 1
+                },
+                {
+                    transform: `rotate(${ang}deg) translate(280px,0)`,
+                    opacity: 0
+                }
+            ], {
+                duration: 700,
+                easing: 'ease-in'
+            }).onfinish = () => el.remove();
+        }
+        setInterval(shoot, 3000 + Math.random() * 2000);
+
+        ['#14b8a6', '#2dd4bf', '#f59e0b', '#0d9488'].forEach((c, i) => {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const sz = 2 + Math.random() * 3;
+            p.style.cssText = `width:${sz}px;height:${sz}px;background:${c};left:${10+i*22}%;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*8}s;opacity:0.4`;
+            document.body.appendChild(p);
+        });
     </script>
 </body>
 
