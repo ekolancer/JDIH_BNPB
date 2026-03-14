@@ -11,11 +11,8 @@ use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Tabs;
 use Filament\Tables\Actions\Action;
-use App\Imports\DokumenHukumsImport;
 use App\Models\RefBidangHukum;
 use App\Models\RefSubjek;
-
-use Maatwebsite\Excel\Facades\Excel;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
 use Filament\Forms\Components\Section;
@@ -33,10 +30,8 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\VerticalAlignment;
-use App\Filament\Imports\DokumenHukumImporter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
 use App\Filament\Resources\DokumenHukumResource\RelationManagers;
@@ -463,41 +458,6 @@ class DokumenHukumResource extends Resource
             ->headerActions([
                 CreateAction::make()
                     ->label('Add Document'),
-                Action::make('importDokumenHukum')
-                    ->label('Import Data')
-                    ->color('primary')
-                    ->icon('heroicon-o-document-arrow-up')
-                    ->form([
-                        FileUpload::make('attachment'),
-                    ])
-                    ->action(function (array $data) {
-                        $file = public_path('storage/' . $data['attachment']);
-
-                        Excel::import(new DokumenHukumsImport, $file);
-
-                        Notification::make()
-                            ->title('Data Imported')
-                            ->success()
-                            ->send();
-                    }),
-
-                // Tambahkan action untuk download format Excel
-                Action::make('downloadTemplate')
-                    ->label('Download Format Excel')
-                    ->color('primary')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->action(function () {
-                        $filePath = public_path('templates/import.xlsx');
-
-                        if (file_exists($filePath)) {
-                            return response()->download($filePath);
-                        }
-
-                        Notification::make()
-                            ->title('Template File Not Found')
-                            ->danger()
-                            ->send();
-                    }),
             ])
             ->groups([
                 Tables\Grouping\Group::make('jenisDok')
