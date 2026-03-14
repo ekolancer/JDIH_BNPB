@@ -562,16 +562,9 @@
         </div>
 
         <h1>Sistem Sedang<br>Diperbarui</h1>
-        <div class="subhead">Scheduled Maintenance // JDIH</div>
 
         <p class="desc">
-            @if(isset($exception) && $exception->getMessage())
-            {!! $exception->getMessage() !!}
-            @else
-            Kami sedang melakukan <strong>pembaruan dan pemeliharaan sistem</strong> untuk
-            meningkatkan performa dan keamanan layanan JDIH.<br><br>
-            Mohon bersabar, sistem akan kembali online dalam waktu dekat.
-            @endif
+            <strong>Maaf atas ketidaknyamanannya.</strong> <br> Saat ini kami sedang melakukan pemeliharaan rutin untuk meningkatkan kualitas layanan dan keamanan sistem. <br>Kami akan segera kembali dalam waktu dekat. Terima kasih atas kesabaran Anda.
         </p>
 
         <div class="btn-row">
@@ -579,13 +572,6 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10" />
                     <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                </svg>
-                Muat Ulang
-            </a>
-            <a href="mailto:admin@jdih.go.id" class="btn btn-ghost">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
                 </svg>
                 Hubungi Admin
             </a>
