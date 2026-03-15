@@ -13,6 +13,9 @@ use App\Models\ProfilPage;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dokumen', function () {return view('dokumen.list-doc');})->name('list-doc');
+Route::get('/dokumen/{tipeDok?}', function ($tipeDok) {
+    return view('dokumen.list-doc', compact('tipeDok'));
+})->name('dokumen.tipe');
 
 Route::get('/profil/{slug}', function ($slug) {
 

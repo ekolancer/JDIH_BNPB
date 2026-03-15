@@ -69,12 +69,6 @@ class DokumenController extends Controller
                 'Lokasi'               => $dokumen->lokasi,
             ],
 
-            // 'breadcrumbs' => [
-            //     ['label' => 'Dokumen Hukum', 'url' => route('list-doc')],
-            //     ['label' => $dokumen->jenisDokumen?->nama ?? 'Dokumen', 'url' => route('list-doc') . '?ref_jenis_dokumen_id=' . $dokumen->ref_jenis_dokumen_id],
-            //     ['label' => Str::limit($dokumen->judul, 50), 'url' => ''],
-            // ],
-
             'buttonText' => $dokumen->button_text,
         ]);
     }

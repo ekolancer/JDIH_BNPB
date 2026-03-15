@@ -104,7 +104,7 @@
         <!-- Hero Image Section -->
         <div class="hero-image text-center text-white">
             <div class="overlay position-absolute w-100 h-100"></div>
-            <div class="container py-5">
+            <div class="container pt-5">
                 <!-- Breadcrumbs -->
                 @include('partials.breadcrumbs')
             </div>

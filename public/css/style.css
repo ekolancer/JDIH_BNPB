@@ -758,6 +758,7 @@ body {
     }
 }
 
+/* Hero Image Section */
 .hero-image {
     background-image: url("/img/headerhero.webp");
     background-size: cover;
@@ -769,55 +770,6 @@ body {
 .hero-image .container {
     z-index: 2;
 }
-
-.title-bread {
-    padding-top: 80px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    /* Tambahkan bayangan teks */
-    font-weight: bold;
-    /* Tambahkan font tebal untuk mempertegas */
-}
-
-.breadcrumb-item a {
-    color: #ffffff;
-    /* Warna link breadcrumb */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    /* Tambahkan bayangan teks */
-    font-weight: bold;
-    /* Pertegas tulisan */
-}
-
-.breadcrumb-item a:hover {
-    text-decoration: underline;
-}
-
-.breadcrumb-item.active {
-    color: #ffc107;
-    /* Warna breadcrumb aktif */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    /* Bayangan teks */
-    font-weight: bold;
-    /* Pertegas tulisan */
-}
-
-/*** Carousel Hero Header End ***/
-
-/*** Single Page Hero Header Start ***/
-.bg-breadcrumb {
-    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)),
-        url(../img/breadcrumb-bg.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    padding: 150px 0 50px 0;
-}
-
-.bg-breadcrumb .breadcrumb-item a {
-    color: var(--bs-white) !important;
-}
-
-/*** Single Page Hero Header End ***/
 
 /* Container Section */
 .stats {

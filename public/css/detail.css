@@ -3,13 +3,93 @@ body {
     /* Memberikan jarak dengan footer */
 }
 
-.container-detail {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 30px;
-    /* Jarak kontainer dengan elemen lainnya */
+/* ******Breadcrumb****** */
+/* --- Global Breadcrumb Component --- */
+:root {
+    --br-accent: #f0ad00;
+    /* Warna Emas */
+    --br-white: #ffffff;
+    --br-white-dim: rgba(255, 255, 255, 0.75);
+    --br-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Container Utama */
+.breadcrumb-section {
+    background: transparent;
+    padding: 80px 0;
+    /* Padding seimbang untuk hero background */
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Judul Halaman di Atas Breadcrumb */
+.title-bread {
+    font-family: 'Inter', sans-serif;
+    color: var(--br-white);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-shadow: var(--br-shadow);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+/* Reset Bootstrap Breadcrumb */
+.breadcrumb {
+    background: transparent;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Link & Text */
+.breadcrumb-item,
+.breadcrumb-item a {
+    color: var(--br-white-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Hover Effect */
+.breadcrumb-item a:hover {
+    color: var(--br-accent);
+    transform: translateY(-2px);
+    display: inline-block;
+}
+
+/* Pemisah (Separator) - Menggunakan Dot agar lebih elegan dari 'X' */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "•";
+    color: rgba(255, 255, 255, 0.4);
+    padding: 0 12px;
+    font-weight: bold;
+}
+
+/* State Aktif */
+.breadcrumb-item.active {
+    color: var(--br-white);
+    font-weight: 700;
+}
+
+/* Ikon Rumah/Home */
+.breadcrumb-item i {
+    margin-right: 5px;
+    font-size: 0.85rem;
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+    .breadcrumb-section {
+        padding: 50px 0;
+    }
+
+    .title-bread {
+        font-size: 1.8rem;
+    }
 }
 
 /* ******Style Table****** */
@@ -124,36 +204,12 @@ body {
     margin-top: 20px;
 }
 
-/* ******Breadcrumb****** */
+/* ******File Title Section****** */
 .file-title-section {
     background-color: #0d6efd;
     padding: 2px 0;
     text-align: center;
     margin-bottom: 30px;
-}
-
-.breadcrumb {
-    background-color: transparent;
-    padding: 0;
-    font-size: 18px;
-    margin-top: 20px;
-    /* Give space from the navbar/hero */
-}
-
-.breadcrumb-item a {
-    color: white;
-    text-decoration: none;
-}
-
-.breadcrumb-item.active {
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-    content: "/";
-    /* Use custom separator for the breadcrumb */
 }
 
 /* Gaya untuk gambar dengan rounded edges dan shadow */
@@ -334,6 +390,7 @@ body {
         font-size: 13px;
     }
 }
+
 /* Button Download End */
 
 /* Button Download Disabled (Jika dokumen tidak tersedia) */
@@ -453,29 +510,6 @@ body {
     background-color: #f8f9fa;
 }
 
-/* Styling for Breadcrumb */
-.breadcrumb {
-    background-color: transparent;
-    margin-top: 20px;
-    /* Give space from the navbar/hero */
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-    content: "›";
-    /* Use custom separator for the breadcrumb */
-}
-
-.breadcrumb-item a {
-    color: white;
-    /* Link color */
-    text-decoration: none;
-}
-
-.breadcrumb-item a:hover {
-    text-decoration: underline;
-    /* Hover effect */
-}
-
 /* ===============================
    MODAL LAMPIRAN MODERN
 ================================ */
@@ -573,7 +607,7 @@ body {
 }
 
 /* Header filter lebih kontras */
-.filter-sidebar > .d-flex:first-child {
+.filter-sidebar>.d-flex:first-child {
     padding-bottom: 10px;
     border-bottom: 2px solid #e5e7eb;
     margin-bottom: 14px;

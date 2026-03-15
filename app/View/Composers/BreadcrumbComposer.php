@@ -4,6 +4,7 @@ namespace App\View\Composers;
 
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class BreadcrumbComposer
 {
@@ -13,32 +14,48 @@ class BreadcrumbComposer
         $breadcrumbs = [];
         $url = '';
 
-        foreach ($segments as $segment) {
+        // Daftar akronim agar tidak otomatis menjadi Capitalize (tetap Uppercase)
+        $acronyms = ['faq', 'jdih', 'bnpb'];
+
+        foreach ($segments as $index => $segment) {
             $url .= '/' . $segment;
+
+            // Logika Penamaan Segment
+            if ($segment === 'dokumen') {
+                $name = 'Produk Hukum';
+            } elseif (in_array(strtolower($segment), $acronyms)) {
+                $name = strtoupper($segment);
+            } else {
+                // Mengubah 'peraturan-pemerintah' menjadi 'Peraturan Pemerintah'
+                $name = Str::title(str_replace('-', ' ', $segment));
+            }
+
             $breadcrumbs[] = [
-                'name' => ucfirst(str_replace('-', ' ', $segment)),
+                'name' => $name,
                 'url' => url($url)
             ];
         }
 
-        // Ambil nama controller saat ini
-        $currentController = Route::current() ? class_basename(Route::current()->controller) : null;
+        $view->with([
+            'breadcrumbs' => $breadcrumbs,
+            'pageTitle' => $this->determinePageTitle($segments)
+        ]);
+    }
 
-        // Tentukan judul berdasarkan controller
-        $titles = [
-            'DokumenController' => 'PRODUK HUKUM',
-            'DashboardController' => 'PROFILE JDIH'
-        ];
-        
-        // Jika route adalah 'list-doc', set pageTitle menjadi 'Produk Hukum'
-        if (Route::currentRouteName() == 'list-doc') {
-            $titles[$currentController] = 'PRODUK HUKUM';
+    private function determinePageTitle($segments)
+    {
+        $routeName = Route::currentRouteName();
+
+        // Jika berada di halaman detail dokumen (segmen ke-3 ada)
+        if ($routeName === 'dokumen.detail' || count($segments) >= 3) {
+            return 'DETAIL DOKUMEN';
         }
-        
-        // Gunakan judul sesuai controller, jika tidak ditemukan pakai "Publikasi"
-        $pageTitle = isset($titles[$currentController]) ? $titles[$currentController] : 'INFORMASI HUKUM';
 
+        // Jika berada di list tipe dokumen (segmen ke-2 ada)
+        if ($routeName === 'dokumen.tipe' || count($segments) === 2) {
+            return strtoupper(str_replace('-', ' ', $segments[1] ?? 'PRODUK HUKUM'));
+        }
 
-        $view->with(compact('breadcrumbs', 'pageTitle'));
+        return 'PRODUK HUKUM';
     }
 }
