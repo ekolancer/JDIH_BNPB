@@ -482,16 +482,6 @@ body {
 
 /* Button Download Disabled End */
 
-/* Navbar Custom */
-.navbar-custom {
-    background-color: #0052cc;
-    padding: 10px 20px;
-}
-
-.navbar-custom .navbar-brand,
-.navbar-custom .nav-link {
-    color: white;
-}
 
 /* Search Bar */
 .search-bar {
@@ -502,13 +492,6 @@ body {
 /* Button Group Custom */
 .btn-group-custom {
     margin-top: 10px;
-}
-
-/* Prevent navbar from overlapping the hero section */
-.hero-section {
-    padding-top: 120px;
-    /* Adjust to the height of the navbar */
-    background-color: #f8f9fa;
 }
 
 /* ===============================

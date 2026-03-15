@@ -63,54 +63,82 @@
     <!-- Navbar & Hero Start -->
     <div class="container-fluid position-relative p-0">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-            <a href="/" class="navbar-brand d-flex hero-items-center">
-                <img src="{{ asset('img/jdihn.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <img src="{{ asset('img/BNPB.png') }}" alt="Logo" class="me-3"> <!-- menambahkan margin-end untuk jarak -->
-                <div class="d-flex flex-column">
-                    <h5 class="mb-0 text-justify">Jaringan Dokumentasi dan Informasi Hukum</h5> <!-- menghilangkan margin bawah -->
-                    <h5 class="mb-0 text-justify">Badan Nasional Penanggulangan Bencana</h5> <!-- menghilangkan margin bawah -->
-                </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="/" class="nav-item nav-link active">Beranda</a>
-                    <!-- Dropdown Dokumen Hukum dengan Livewire -->
-                    <livewire:dropdown-dokumen />
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
-                            <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
+        <div class="container-fluid position-relative p-0">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom px-4 px-lg-5">
+                <a href="/" class="navbar-brand">
+                    <div class="logo-container d-flex">
+                        <div class="logo-box">
+                            <img src="{{ asset('img/jdihn.png') }}" alt="Logo JDIH" class="logo-img">
+                        </div>
+                        <div class="logo-divider"></div>
+                        <div class="logo-box">
+                            <img src="{{ asset('img/BNPB.png') }}" alt="Logo BNPB" class="logo-img">
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
-                            <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
-                            <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
-                            <a href="/profil/faq" class="dropdown-item">FAQ</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <!-- Navbar End -->
 
-        <!-- Hero Image Section -->
-        <div class="hero-section hero-compact">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="row align-items-center">
-                    <div class="col-12">
-                        <nav aria-label="breadcrumb">
-                            @include('partials.breadcrumbs')
-                        </nav>
+                    <div class="brand-text ms-3 d-none d-sm-flex flex-column">
+                        <span class="brand-title">JDIH BNPB</span>
+                        <span class="brand-subtitle">Badan Nasional Penanggulangan Bencana</span>
+                    </div>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0">
+                        <a href="/" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+
+                        <livewire:dropdown-dokumen />
+
+                        <div class="nav-item dropdown hover-dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Informasi Hukum</a>
+                            <div class="dropdown-menu border-0 shadow-lg">
+                                <a href="{{ route('berita.index') }}" class="dropdown-item">Berita</a>
+                                <a href="{{ route('infografis.index') }}" class="dropdown-item">Infografis</a>
+                            </div>
+                        </div>
+
+                        <div class="nav-item dropdown hover-dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
+                            <div class="dropdown-menu border-0 shadow-lg">
+                                <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
+                                <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
+                                <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="/profil/faq" class="dropdown-item">FAQ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <!-- Hero Image Section -->
+            <div class="hero-section hero-compact">
+                <div class="hero-overlay"></div>
+                <div class="container hero-content">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <nav aria-label="breadcrumb">
+                                @include('partials.breadcrumbs')
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+
+
+            <script>
+                window.addEventListener('scroll', function() {
+                    const nav = document.querySelector('.navbar-custom');
+                    if (window.scrollY > 50) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                });
+            </script>
