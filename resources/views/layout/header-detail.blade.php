@@ -102,10 +102,15 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Section -->
-        <div class="hero-image text-center text-white">
-            <div class="overlay position-absolute w-100 h-100"></div>
-            <div class="container pt-5">
-                <!-- Breadcrumbs -->
-                @include('partials.breadcrumbs')
+        <div class="hero-section hero-compact">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            @include('partials.breadcrumbs')
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>

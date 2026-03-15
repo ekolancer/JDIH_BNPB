@@ -3,7 +3,6 @@
 namespace App\View\Composers;
 
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class BreadcrumbComposer
@@ -12,27 +11,38 @@ class BreadcrumbComposer
     {
         $segments = request()->segments();
         $breadcrumbs = [];
-        $url = '';
+        $currentPath = '';
 
-        // Daftar akronim agar tidak otomatis menjadi Capitalize (tetap Uppercase)
         $acronyms = ['faq', 'jdih', 'bnpb'];
 
         foreach ($segments as $index => $segment) {
-            $url .= '/' . $segment;
-
-            // Logika Penamaan Segment
-            if ($segment === 'dokumen') {
-                $name = 'Produk Hukum';
-            } elseif (in_array(strtolower($segment), $acronyms)) {
-                $name = strtoupper($segment);
-            } else {
-                // Mengubah 'peraturan-pemerintah' menjadi 'Peraturan Pemerintah'
+            // Logika khusus untuk Produk Hukum (Urutan Segmen ke-2)
+            // Route: /dokumen/{tipe}/{slug}
+            if ($segments[0] === 'dokumen' && $index === 1) {
+                // Jangan tambahkan ke path URL, tapi buat URL dengan Query String
                 $name = Str::title(str_replace('-', ' ', $segment));
+                $url = url('/dokumen?tipeDok=' . Str::studly($segment));
+
+                // Update currentPath agar segment selanjutnya (slug) 
+                // tetap mengarah ke path /dokumen/Peraturan/slug
+                $currentPath .= '/' . $segment;
+            } else {
+                $currentPath .= '/' . $segment;
+                $url = url($currentPath);
+
+                // Labeling logic
+                if ($segment === 'dokumen') {
+                    $name = 'Produk Hukum';
+                } elseif (in_array(strtolower($segment), $acronyms)) {
+                    $name = strtoupper($segment);
+                } else {
+                    $name = Str::title(str_replace('-', ' ', $segment));
+                }
             }
 
             $breadcrumbs[] = [
                 'name' => $name,
-                'url' => url($url)
+                'url' => $url
             ];
         }
 
@@ -44,18 +54,11 @@ class BreadcrumbComposer
 
     private function determinePageTitle($segments)
     {
-        $routeName = Route::currentRouteName();
-
-        // Jika berada di halaman detail dokumen (segmen ke-3 ada)
-        if ($routeName === 'dokumen.detail' || count($segments) >= 3) {
-            return 'DETAIL DOKUMEN';
-        }
-
-        // Jika berada di list tipe dokumen (segmen ke-2 ada)
-        if ($routeName === 'dokumen.tipe' || count($segments) === 2) {
-            return strtoupper(str_replace('-', ' ', $segments[1] ?? 'PRODUK HUKUM'));
-        }
-
-        return 'PRODUK HUKUM';
+        $firstSegment = $segments[0] ?? '';
+        return match ($firstSegment) {
+            'dokumen'               => 'PRODUK HUKUM',
+            'berita', 'infografis'  => 'INFORMASI HUKUM',
+            default                 => 'INFORMASI PUBLIK',
+        };
     }
 }

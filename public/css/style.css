@@ -667,108 +667,117 @@ body {
     font-weight: bold;
 }
 
-/* From Uiverse.io by adamgiebl */
-.tombol_search_adv {
-    font-family: inherit;
-    font-size: 15px;
-    background: #13357b;
-    color: white;
-    padding: 0.7em 1em;
-    padding-left: 0.9em;
-    display: flex;
-    align-items: center;
-    border: none;
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.tombol_search_adv span {
-    display: block;
-    margin-left: 0.3em;
-    transition: all 0.3s ease-in-out;
-}
-
-.tombol_search_adv svg {
-    display: block;
-    transform-origin: center center;
-    transition: transform 0.3s ease-in-out;
-}
-
-.tombol_search_adv:hover .svg-wrapper {
-    animation: fly-1 0.6s ease-in-out infinite alternate;
-}
-
-.tombol_search_adv:hover svg {
-    transform: translateX(1.2em) rotate(45deg) scale(1.1);
-}
-
-.tombol_search_adv:hover span {
-    transform: translateX(5em);
-}
-
-.tombol_search_adv:active {
-    transform: scale(0.95);
-}
-
-@keyframes fly-1 {
-    from {
-        transform: translateY(0.1em);
-    }
-
-    to {
-        transform: translateY(-0.1em);
-    }
-}
-
-.input-group {
-    margin-bottom: 30px;
-}
-
-.input-group .form-control {
-    border-radius: 5px;
-    padding-left: 20px;
-    padding-right: 15px;
-}
-
-.input-group .btn {
-    border-radius: 50px;
-    padding: 10px 20px;
-}
-
-.filter-section .form-group {
-    margin-bottom: 15px;
-}
-
-.filter-section .form-select,
-.filter-section .form-control {
-    border-radius: 10px;
-}
-
-.filter-section {
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
-@media (max-width: 767px) {
-    .filter-section {
-        display: block;
-    }
-}
-
-/* Hero Image Section */
-.hero-image {
+/* =====================================================
+   HERO IMAGE BASE STYLES - Diterapkan untuk semua varian hero (main & compact)
+   ===================================================== */
+.hero-section {
+    position: relative;
     background-image: url("/img/headerhero.webp");
     background-size: cover;
     background-position: center;
-    height: 35vh;
-    position: relative;
+    background-attachment: fixed;
+    /* Efek Parallax */
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
 }
 
-.hero-image .container {
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.5); */
+    /* Overlay dipertegas agar teks terbaca */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
     z-index: 2;
+    width: 100%;
+}
+
+/* --- Varian 1: Hero Main (Index/Halaman Utama) --- */
+.hero-main {
+    min-height: 60vh;
+    padding: 80px 0;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    /* Font responsif otomatis */
+    font-weight: 800;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    color: #F1F5F9;
+}
+
+/* --- Varian 2: Hero Compact (Detail/List) --- */
+.hero-compact {
+    min-height: 120px;
+    /* Dikurangi dari 200px */
+    padding: 20px 0;
+    /* Padding lebih rapat */
+    background-image: url("/img/headerhero.webp");
+    background-size: cover;
+    /* Geser posisi gambar agar bagian 'meja/timbangan' lebih terlihat meski tipis */
+    background-position: center 40%;
+    background-attachment: scroll;
+}
+
+/* Overlay yang lebih gelap sedikit agar kontras dengan teks putih */
+.hero-compact .hero-overlay {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+}
+
+/* Styling Search Bar (Tetap seperti milik Anda) */
+.search-group-main {
+    border-radius: 50px;
+    overflow: hidden;
+    background: white;
+    padding: 8px;
+}
+
+.search-group-main .form-control {
+    border: none;
+    padding-left: 25px;
+}
+
+.btn-search-hero {
+    border-radius: 40px !important;
+    padding: 10px 30px;
+}
+
+.advanced-filters {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    .hero-main {
+        min-height: 50vh;
+        padding: 60px 0;
+    }
+
+    .hero-compact {
+        min-height: 100px;
+        /* Lebih tipis lagi di HP */
+        padding: 15px 0;
+    }
+
+    .search-group-main {
+        border-radius: 15px;
+    }
+
+    .btn-search-hero span {
+        display: none;
+        /* Hanya icon di HP */
+    }
 }
 
 /* Container Section */

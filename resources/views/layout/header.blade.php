@@ -110,113 +110,37 @@
         <!-- Navbar End -->
 
         <!-- Hero Image Start -->
-        <div class="hero-image-container" style="background-image: url('img/headerhero.webp'); background-size: cover; background-position: center; height: 70vh; position: relative;">
-            <div class="container h-100 d-flex justify-content-center hero-items-center">
-                <div class="row w-100">
-                    <div class="col-12 text-center">
-                        <p style="font-weight: bold;">
-                        <h1 style="font: size 60px; color:white;">Cari dokumen hukum disini.</h1>
-                        </p>
-                        <!-- resources/views/index.blade.php -->
-                        <form method="GET" action="{{ route('list-doc') }}" class="search-form">
-                            <div class="input-group mb-3 w-75 mx-auto">
-                                <input type="text"
-                                    class="form-control"
-                                    placeholder="Cari dokumen hukum..."
-                                    aria-label="Search"
-                                    aria-describedby="button-addon2"
-                                    name="judul"
-                                    value="{{ request('judul') }}">
-                                <button class="tombol_search_adv" type="submit" id="button-addon2">
-                                    <div class="svg-wrapper-1">
-                                        <div class="svg-wrapper">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                width="24"
-                                                height="24"
-                                                aria-hidden="true">
-                                                <path fill="none" d="M0 0h24v24H0z"></path>
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <span>Cari</span>
+        <div class="hero-section hero-main">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content pt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10 col-xl-8 text-center">
+                        <h1 class="hero-title">Cari Dokumen Hukum</h1>
+
+                        <form method="GET" action="{{ route('list-doc') }}" class="search-form mt-4">
+                            <div class="input-group search-group-main shadow-lg">
+                                <input type="text" class="form-control" placeholder="Masukkan judul atau kata kunci..." name="judul" value="{{ request('judul') }}">
+                                <button class="btn btn-primary btn-search-hero" type="submit">
+                                    <i class="fas fa-search me-2"></i> <span>Cari</span>
                                 </button>
                             </div>
 
-                            <!-- Optional Advanced Search Button -->
-                            <button class="btn btn-secondary" type="button" id="advanced-search-toggle">
-                                <i class="fas fa-filter"></i> Pencarian Lanjutan
+                            <button class="btn btn-link text-white mt-2" type="button" id="advanced-search-toggle">
+                                <i class="fas fa-filter me-1"></i> Pencarian Lanjutan
                             </button>
 
-                            <!-- Advanced Filters (Hidden by Default) -->
-                            <div class="advanced-filters mt-3" style="display: none;">
-                                <div class="row">
-                                    <!-- Bentuk Dokumen -->
-                                    <div class="col-md-4 mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
-                                            <select class="form-select" id="documentForm" name="bentuk">
-                                                <option value="">Bentuk Dokumen</option>
-                                                @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
-                                                <option value="{{ $id }}" {{ request('ref_jenis_dokumen_id') == $id ? 'selected' : '' }}>
-                                                    {{ $nama }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                            <div class="advanced-filters p-4 mt-3" style="display: none;">
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <select class="form-select" name="bentuk">
+                                            <option value="">Bentuk Dokumen</option>
+                                            @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
+                                            <option value="{{ $id }}">{{ $nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-
-                                    <!-- Nomor -->
-                                    <div class="col-md-4 mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-sort-numeric-up"></i></span>
-                                            <input type="number"
-                                                class="form-control"
-                                                id="documentNumber"
-                                                name="no"
-                                                placeholder="Nomor"
-                                                value="{{ request('no') }}">
-                                        </div>
-                                    </div>
-
-                                    <!-- Tahun -->
-                                    <div class="col-md-4 mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                            <input type="number"
-                                                class="form-control"
-                                                id="documentYear"
-                                                name="tahun"
-                                                placeholder="Tahun"
-                                                value="{{ request('tahun') }}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="d-flex justify-content-center">
-                                    <button class="tombol_search_adv" type="submit">
-                                        <div class="svg-wrapper-1">
-                                            <div class="svg-wrapper">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 24 24"
-                                                    width="24"
-                                                    height="24"
-                                                    aria-hidden="true">
-                                                    <path fill="none" d="M0 0h24v24H0z"></path>
-                                                    <path
-                                                        fill="currentColor"
-                                                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <span>Cari</span>
-                                    </button>
+                                    <div class="col-md-4"><input type="number" class="form-control" name="no" placeholder="Nomor"></div>
+                                    <div class="col-md-4"><input type="number" class="form-control" name="tahun" placeholder="Tahun"></div>
                                 </div>
                             </div>
                         </form>
