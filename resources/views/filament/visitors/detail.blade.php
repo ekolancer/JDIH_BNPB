@@ -23,7 +23,7 @@
 
 <div class="p-6 space-y-6 rounded-xl
     bg-gray-50 text-gray-800
-    dark:bg-[var(--c-primary-dark)] dark:text-[var(--c-text)]
+    dark:bg-[var(--c-card)] dark:text-[var(--c-text)]
     shadow-sm animate-fade-in">
 
     {{-- Header --}}

@@ -18,7 +18,7 @@ Route::get('/profil/{slug}', function ($slug) {
 
     // Jika halaman FAQ
     if ($slug === 'faq') {
-        return view('overview.page', [
+        return view('components.overview.page', [
             'slug' => $slug,
             'page' => (object)[
                 'title' => 'FAQ',
@@ -32,7 +32,7 @@ Route::get('/profil/{slug}', function ($slug) {
     // Halaman biasa dari tabel profil_pages
     $page = ProfilPage::where('slug', $slug)->firstOrFail();
 
-    return view('overview.page', [
+    return view('components.overview.page', [
         'page' => $page,
         'slug' => $slug,
         'faqs' => [],
