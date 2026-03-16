@@ -54,106 +54,47 @@
 <!-- Peraturan Terbaru -->
 <div class="container my-5" data-aos="fade-up" data-aos-offset="300" data-aos-duration="2000">
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-primary">Highlight Peraturan</h4>
         <a href="{{ route('list-doc', ['tipeDok' => 'peraturan']) }}" class="btn btn-outline-primary btn-sm">Lihat Semua Peraturan</a>
-    </div>
+    </div> -->
 
-    <!-- Tabs -->
-    <ul class="nav nav-tabs border-0 mb-4">
-        <li class="nav-item">
-            <button class="nav-link active rounded-top" data-bs-toggle="tab" data-bs-target="#brs">
-                <i class="fas fa-sync-alt me-2"></i>Terkini
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link rounded-top" data-bs-toggle="tab" data-bs-target="#tabel">
-                <i class="far fa-star me-1"></i>Populer
-            </button>
-        </li>
-    </ul>
-
-    <!-- Tab Content -->
-    <div class="tab-content">
-        <!-- Tab Terkini -->
-        <div class="tab-pane fade show active" id="brs">
-            <div class="row g-4">
-                @foreach ($data['peraturanTerbaru'] as $peraturan)
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="card shadow-sm border-0 h-100">
-                        <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex hero-items-center">
-                            <!-- Kolom Jenis Peraturan -->
-                            <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase" style="font-size: 0.9rem;">
-                                    {{ $peraturan->jenis_dokumen_singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
-                                </h6>
-                            </div>
-                        </div>
-
-                        <!-- Body Card -->
-                        <div class="card-body">
-                            <p class="text-muted small text-justify" style="text-align: justify;">
-                                {{ Str::limit(strip_tags($peraturan->judul), 100, '...') ?? 'Tidak ada deskripsi.' }}
-                            </p>
-                        </div>
-
-                        <!-- Footer Card -->
-                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center p-2">
-                            <!-- Informasi tambahan -->
-                            <small class="text-muted">
-                                <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->locale('id')->translatedFormat('d F Y') }}
-                            </small>
-                            <!-- Tombol aksi -->
-                            <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye me-1"></i>Lihat
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
+    <div class="highlight-section py-5">
+        <div class="container text-center mb-5">
+            <h2 class="fw-bold text-dark mb-2">Highlight Peraturan</h2>
+            <div class="header-line mx-auto"></div>
         </div>
 
-        <!-- Tab Populer -->
-        <div class="tab-pane fade" id="tabel">
-            <div class="row g-4">
-                @foreach ($data['peraturanPopuler'] as $peraturan)
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="card shadow-sm border-0 h-100">
-                        <!-- Header Card -->
-                        <div class="card-header bg-primary d-flex hero-items-center">
-                            <!-- Kolom Jenis Peraturan -->
-                            <div class="col text-start">
-                                <h6 class="text-light fw-bold mb-0 text-truncate text-uppercase" style="font-size: 0.9rem;">
-                                    {{ $peraturan->singkatan }} No {{ $peraturan->nomor }} Tahun {{ $peraturan->tahun }}
-                                </h6>
-                            </div>
-                        </div>
+        <div class="container">
+            <div class="d-flex justify-content-center mb-5">
+                <ul class="nav nav-pills custom-pills p-1 bg-light rounded-pill shadow-sm" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#brs">
+                            <i class="fas fa-bolt me-2"></i>Terkini
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#tabel">
+                            <i class="fas fa-fire me-2"></i>Populer
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
-                        <!-- Body Card -->
-                        <div class="card-body">
-                            <p class="text-muted small text-justify" style="text-align: justify;">
-                                {{ Str::limit(strip_tags($peraturan->judul), 100, '...') ?? 'Tidak ada deskripsi.' }}
-                            </p>
-                        </div>
-
-                        <!-- Footer Card -->
-                        <div class="card-footer bg-light border-top d-flex justify-content-between align-items-center p-2">
-                            <!-- Informasi tambahan -->
-                            <small class="text-muted">
-                                <i class="far fa-calendar-alt me-1"></i>
-                                {{ \Carbon\Carbon::parse($peraturan->created_at)->locale('id')->translatedFormat('d F Y') }}
-                            </small>
-                            <!-- Tombol aksi -->
-                            <a href="{{ route('dokumen.detail', ['tipeDok' => $peraturan->tipeDok, 'slug' => $peraturan->slug]) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye me-1"></i>Lihat
-                            </a>
-                        </div>
+            <div class="tab-content mt-2" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="brs" role="tabpanel">
+                    <div class="row g-4 pt-3"> @foreach ($data['peraturanTerbaru'] as $peraturan)
+                        @include('partials.peraturan-card', ['item' => $peraturan])
+                        @endforeach
                     </div>
                 </div>
-                @endforeach
+                <div class="tab-pane fade" id="tabel" role="tabpanel">
+                    <div class="row g-4 pt-3">
+                        @foreach ($data['peraturanPopuler'] as $peraturan)
+                        @include('partials.peraturan-card', ['item' => $peraturan])
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
