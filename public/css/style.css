@@ -409,147 +409,204 @@ body {
 
 /*** Topbar End ***/
 
-/* --- 1. Base Navbar Style --- */
+/* --- 1. Base Navbar & Glassmorphism Logic --- */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-blur: 12px;
+    --primary-color: #0d6efd;
+}
+
 .navbar-custom {
     position: fixed;
-    width: 100%;
+    /* Memastikan tetap menempel di atas */
     top: 0;
-    left: 0;
-    background: transparent !important;
+    width: 100%;
+    z-index: 9999;
+    /* Angka tinggi agar tidak tertutup konten/hero section */
     transition: all 0.4s ease-in-out;
-    padding: 15px 0;
-    z-index: 1050;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    /* Awalnya transparan */
 }
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
-}
-
+/* Kondisi saat sudah scroll (melewati Hero) */
 .navbar-custom.scrolled {
-    background: rgba(255, 255, 255, 0.98) !important;
-    backdrop-filter: blur(10px);
-    padding: 8px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border-bottom: none;
+    background: rgba(255, 255, 255, 0.8) !important;
+    /* Warna putih transparan */
+    backdrop-filter: blur(15px);
+    /* Efek blur kaca */
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    /* Navbar mengecil sedikit saat scroll agar lebih rapi */
 }
 
-/* --- 2. Logo Control (Agar Benar & Proporsional) --- */
-.logo-container {
-    height: 50px;
-    /* Tinggi dasar container */
+/* --- 2. Hover Pills Effect --- */
+.navbar-nav .nav-link {
+    position: relative;
+    padding: 8px 20px !important;
+    margin: 0 5px;
+    border-radius: 50px;
+    /* Bentuk Pill */
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid transparent;
 }
 
-.logo-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+/* Efek Glass saat Hover di Kondisi Transparent (Top) */
+.navbar-custom:not(.scrolled) .nav-link:hover,
+.navbar-custom:not(.scrolled) .nav-link.active {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    color: #fff !important;
 }
 
-.logo-img {
-    max-height: 100%;
-    /* Mengikuti tinggi container */
-    width: auto;
-    /* Menjaga aspek rasio asli */
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+/* Efek Glass saat Hover di Kondisi Scrolled */
+.navbar-custom.scrolled .nav-link:hover,
+.navbar-custom.scrolled .nav-link.active {
+    background: rgba(13, 110, 253, 0.1);
+    /* Warna biru muda transparan */
+    color: var(--primary-color) !important;
+    border: 1px solid rgba(13, 110, 253, 0.1);
 }
 
-.logo-divider {
-    width: 1.5px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.4);
-    margin: 0 15px;
-}
-
-.navbar-custom.scrolled .logo-divider {
-    background: #dddddd;
-}
-
-/* --- 3. Hover Dropdown Logic --- */
+/* --- 3. Refaktor Dropdown Glassmorphism --- */
 @media (min-width: 992px) {
-    .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
     .dropdown-menu {
         display: block;
         opacity: 0;
         visibility: hidden;
-        transform: translateY(10px);
+        transform: translateY(15px);
         transition: all 0.3s ease;
-        border-top: 3px solid #0d6efd !important;
-        /* Aksen warna biru di atas */
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 12px;
+        margin-top: 10px !important;
+    }
+
+    .nav-item.dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
     }
 }
 
-/* --- 4. Custom Dropdown Styling --- */
-.dropdown-menu {
-    padding: 10px;
-    border-radius: 8px;
-}
-
 .dropdown-item {
-    padding: 8px 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: 0.2s;
+    border-radius: 10px;
+    padding: 10px 18px;
+    transition: all 0.2s ease;
 }
 
 .dropdown-item:hover {
-    background-color: #f8f9fa;
-    color: #0d6efd;
-    padding-left: 25px;
-    /* Efek geser dikit saat hover */
+    background: var(--primary-color);
+    color: white !important;
+    transform: translateX(5px);
 }
 
-/* --- 5. Teks Brand --- */
+/* --- 4. Brand & Logo (Tetap Sesuai Struktur) --- */
+/* --- Perbaikan Container Navbar Brand --- */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    /* Menjaga logo dan teks sejajar vertikal di tengah */
+    text-decoration: none;
+}
+
+/* --- Kunci Ukuran Logo (PENTING) --- */
+.logo-container {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    /* Tinggi maksimal seluruh logo */
+    flex-shrink: 0;
+    /* Mencegah logo gepeng saat layar menyempit */
+}
+
+.logo-box {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 100%;
+    /* Gambar akan selalu setinggi 45px */
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-divider {
+    width: 1.5px;
+    height: 28px;
+    /* Lebih pendek dari logo agar elegan */
+    background: rgba(255, 255, 255, 0.4);
+    margin: 0 12px;
+}
+
+/* --- Brand Text (Di samping Logo ke-2) --- */
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 12px;
+    /* Jarak dari logo kedua ke teks */
+    border-left: none;
+    /* Pastikan tidak ada border tak sengaja */
+}
+
 .brand-title {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.1rem;
-    line-height: 1;
-    letter-spacing: 0.5px;
+    line-height: 1.1;
+    margin: 0;
 }
 
 .brand-subtitle {
-    font-size: 0.75rem;
-    opacity: 0.8;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.1;
+    margin-top: 2px;
+    opacity: 0.9;
 }
 
-/* Warna Teks Berdasarkan Kondisi */
+/* Warna saat Scrolled */
+.navbar-custom.scrolled .logo-divider {
+    background: #ccc;
+}
+
 .navbar-custom .nav-link,
-.navbar-custom .brand-title {
+.navbar-custom .brand-title,
+.navbar-custom .brand-subtitle {
     color: white !important;
 }
 
 .navbar-custom.scrolled .nav-link,
-.navbar-custom.scrolled .brand-title {
-    color: #333 !important;
+.navbar-custom.scrolled .brand-title,
+.navbar-custom.scrolled .brand-subtitle {
+    color: #2d3436 !important;
 }
 
-.navbar-custom.scrolled .nav-link.active {
-    color: #0d6efd !important;
-}
-
-/* Responsive HP */
+/* --- 5. Responsive Mobile --- */
 @media (max-width: 991px) {
-    .navbar-custom {
-        background: white !important;
+    .navbar-collapse {
+        background: white;
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
-    .nav-link,
-    .brand-title {
+    .nav-link {
         color: #333 !important;
+        margin: 5px 0;
     }
 
-    .logo-container {
-        height: 40px;
+    .navbar-custom:not(.scrolled) {
+        /* Opsional: beri sedikit bg agar logo putih terlihat di mobile jika bg hero terang */
     }
 }
 

@@ -1,9 +1,5 @@
-<style>
-    
-</style>
-
 <section class="breadcrumb-section">
-    <div class="container">
+    <div class="container pt-5">
         <h1 class="title-bread display-5 fw-bold">{{ $pageTitle }}</h1>
 
         <nav aria-label="breadcrumb">

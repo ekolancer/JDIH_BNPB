@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="brand-text ms-3 d-none d-sm-flex flex-column">
-                    <span class="brand-title">JDIH BNPB</span>
+                    <span class="brand-title">Jaringan Dokumentasi dan Informasi Hukum</span>
                     <span class="brand-subtitle">Badan Nasional Penanggulangan Bencana</span>
                 </div>
             </a>
@@ -188,17 +188,6 @@
                     input.name = ''; // Remove name attribute so it's not sent
                 }
             });
-        });
-    </script>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('.navbar-custom');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
         });
     </script>
 

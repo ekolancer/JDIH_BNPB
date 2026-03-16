@@ -144,7 +144,7 @@
 <div class="container mt-5">
     <div class="row align-items-start">
         <!-- Detail Container -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-5">
             <div class="container-detail shadow-lg p-4 bg-white rounded">
                 <div class="title-section mb-3">
                     <h2 class="fw-bold text-primary">

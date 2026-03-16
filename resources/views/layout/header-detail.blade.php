@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="brand-text ms-3 d-none d-sm-flex flex-column">
-                        <span class="brand-title">JDIH BNPB</span>
+                        <span class="brand-title">Jaringan Dokumentasi dan Informasi Hukum</span>
                         <span class="brand-subtitle">Badan Nasional Penanggulangan Bencana</span>
                     </div>
                 </a>
@@ -130,15 +130,29 @@
                 </div>
             </div>
 
-
-
             <script>
-                window.addEventListener('scroll', function() {
-                    const nav = document.querySelector('.navbar-custom');
-                    if (window.scrollY > 50) {
-                        nav.classList.add('scrolled');
+                document.getElementById('advanced-search-toggle').addEventListener('click', function() {
+                    var filters = document.querySelector('.advanced-filters');
+                    if (filters.classList.contains('show')) {
+                        filters.classList.remove('show');
+                        setTimeout(() => {
+                            filters.style.display = 'none'; // Set display none after transition
+                        }, 500); // Waktu yang sama dengan durasi transisi
                     } else {
-                        nav.classList.remove('scrolled');
+                        filters.style.display = 'block'; // Set display block before adding class
+                        setTimeout(() => {
+                            filters.classList.add('show');
+                        }, 200); // Delay singkat untuk memicu transisi
                     }
+                });
+
+                // Remove empty inputs from form submission
+                document.querySelector('.search-form').addEventListener('submit', function(e) {
+                    const inputs = this.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        if (!input.value || input.value === '') {
+                            input.name = ''; // Remove name attribute so it's not sent
+                        }
+                    });
                 });
             </script>
