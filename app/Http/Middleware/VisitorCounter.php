@@ -117,7 +117,7 @@ class VisitorCounter
     {
         return str_starts_with($ip, '127.')
             || str_starts_with($ip, '192.168.')
-            || str_starts_with($ip, '10.')
+            || str_starts_with($ip, '10.224.')
             || $ip === '::1';
     }
 

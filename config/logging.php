@@ -139,6 +139,12 @@ return [
             'level' => 'info',
         ],
 
+        'security' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/security.log'),
+            'level' => 'warning',
+        ],
+
     ],
 
 ];
