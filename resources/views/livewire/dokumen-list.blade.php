@@ -139,7 +139,7 @@
                     @forelse ($results as $result)
                     <div class="col-12 mb-4">
                         <div class="card doc-card border-0 shadow-sm">
-                            <div class="card-body p-4">
+                            <div class="card-body p-2">
                                 <div class="row align-items-center">
 
                                     <div class="col-auto">
