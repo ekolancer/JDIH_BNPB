@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DokumenHukum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\SeoHelper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
@@ -22,24 +23,28 @@ class DokumenController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show($tipeDok, $slug)
     {
+        // ✅ Validasi tipe dokumen
         $validTypes = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-        if (!in_array($tipeDok, $validTypes)) {
-            abort(404);
-        }
 
-        // Ambil dokumen + relasi referensi
+        abort_unless(in_array($tipeDok, $validTypes), 404);
+
+        // ✅ Ambil dokumen + relasi
         $dokumen = DokumenHukum::with([
             'jenisDokumen',
             'bidangHukumRef',
             'subjekRef',
         ])->findBySlug($tipeDok, $slug)->firstOrFail();
 
-        // Update view_count tanpa trigger observer
+        // ✅ Increment view tanpa trigger observer
         DB::table('dokumen_hukums')
             ->where('id', $dokumen->id)
             ->increment('view_count');
+
+        // ✅ Generate SEO (INI YANG BARU 🔥)
+        $seo = SeoHelper::meta($dokumen);
 
         return view('dokumen.detail', [
             'dokumen' => $dokumen,
@@ -50,17 +55,15 @@ class DokumenController extends Controller
             'abstrakSizeInKb'  => $dokumen->abstrak_size['kb'],
             'abstrakSizeInMb'  => $dokumen->abstrak_size['mb'],
 
-            // 🔥 METADATA SUDAH BERBASIS REF TABLE
+            // metadata
             'metadata' => [
-                'Jenis Dokumen'        => $dokumen->jenisDokumen,            // ref
-                // 'Singkatan'            => $dokumen->jenisDokumen?->singkatan,
+                'Jenis Dokumen'        => $dokumen->jenisDokumen,
                 'Judul'                => $dokumen->judul,
                 'Nomor'                => $dokumen->nomor,
-                'Tahun'         => $dokumen->tahun,
+                'Tahun'                => $dokumen->tahun,
                 'Tajuk Entri Utama'    => $dokumen->teuBadan,
-                'Bidang Hukum'         => $dokumen->bidangHukumRef,           // ref
-                'Subjek'               => $dokumen->subjekRef,               // ref many
-                // 'Penandatangan'        => $dokumen->penandatangan,
+                'Bidang Hukum'         => $dokumen->bidangHukumRef,
+                'Subjek'               => $dokumen->subjekRef,
                 'Tanggal Penetapan'    => $dokumen->tgl_penetapan_formatted ?? '—',
                 'Tanggal Pengundangan' => $dokumen->tgl_pengundangan_formatted ?? '—',
                 'Tempat Terbit'        => $dokumen->tempat,
@@ -70,6 +73,9 @@ class DokumenController extends Controller
             ],
 
             'buttonText' => $dokumen->button_text,
+
+            // 🔥 KIRIM SEO KE BLADE
+            'seo' => $seo,
         ]);
     }
 

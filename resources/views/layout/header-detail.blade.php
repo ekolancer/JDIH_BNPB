@@ -3,36 +3,32 @@
 
 <head>
     {{-- BASIC SEO --}}
-    <title>
-        {{ $dokumen->jenis_dokumen_singkatan }}
-        Nomor {{ $dokumen->nomor }}
-        Tahun {{ $dokumen->tahun }} - JDIH BNPB
-    </title>
+    <title>{{ $seo['title'] }}</title>
 
-    <meta name="description"
-        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
+    <meta name="description" content="{{ $seo['description'] }}">
+    <link rel="canonical" href="{{ $seo['url'] }}">
 
-    <link rel="canonical" href="{{ url()->current() }}">
-
-    {{-- OPEN GRAPH --}}
+    <!-- ===================== -->
+    <!-- OPEN GRAPH (WA, FB, Telegram) -->
+    <!-- ===================== -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title"
-        content="{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}">
-    <meta property="og:description"
-        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
-    <!-- <meta property="og:image"
-        content="{{ $dokumen->lampiran_exists ? asset('storage/'.$dokumen->lampiran) : asset('img/default-share.jpg') }}"> -->
+    <meta property="og:title" content="{{ $seo['title'] }}">
+    <meta property="og:description" content="{{ $seo['description'] }}">
+    <meta property="og:url" content="{{ $seo['url'] }}">
+    <meta property="og:image" content="{{ $seo['image'] }}">
     <meta property="og:site_name" content="JDIH BNPB">
 
-    {{-- TWITTER CARD --}}
+    <!-- wajib biar stabil -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- ===================== -->
+    <!-- TWITTER (X) -->
+    <!-- ===================== -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title"
-        content="{{ $dokumen->jenis_dokumen_singkatan }} Nomor {{ $dokumen->nomor }} Tahun {{ $dokumen->tahun }}">
-    <meta name="twitter:description"
-        content="{{ Str::limit(strip_tags($dokumen->abstrak ?? $dokumen->judul), 160) }}">
-    <meta name="twitter:image"
-        content="{{ $dokumen->lampiran_exists ? asset('storage/'.$dokumen->lampiran) : asset('img/default-share.jpg') }}">
+    <meta name="twitter:title" content="{{ $seo['title'] }}">
+    <meta name="twitter:description" content="{{ $seo['description'] }}">
+    <meta name="twitter:image" content="{{ $seo['image'] }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
