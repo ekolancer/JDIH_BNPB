@@ -1,4 +1,6 @@
-/*** Spinner Start ***/
+/* =====================================================
+   SPINNER ANIMATION
+   ===================================================== */
 body {
     font-family: "Poppins";
 }
@@ -18,23 +20,6 @@ body {
     opacity: 1;
 }
 
-/*** Spinner End ***/
-
-.back-to-top {
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    display: flex;
-    width: 45px;
-    height: 45px;
-    align-items: center;
-    justify-content: center;
-    transition: 0.5s;
-    z-index: 99;
-}
-
-/* HTML: <div class="loader"></div> */
-/* From Uiverse.io by Nawsome */
 .pl {
     width: 6em;
     height: 6em;
@@ -254,6 +239,23 @@ body {
     }
 }
 
+/* =====================================================
+   BACK TO TOP & BUTTONS & SECTION TITLE
+     Diterapkan untuk semua halaman (main & detail)
+   ===================================================== */
+.back-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    width: 45px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    z-index: 99;
+}
+
 /*** Button Start ***/
 .btn {
     font-weight: 600;
@@ -357,59 +359,14 @@ body {
     border: 1px solid var(--bs-primary) !important;
 }
 
-/*** Filter Tabs ***/
-.advanced-filters {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    /* Transisi untuk efek opacity */
-    border: 2px solid rgba(128, 128, 128, 0.4);
-    /* Border abu-abu transparan */
-    border-radius: 5px;
-    /* Sudut border yang membulat */
-    padding: 15px;
-    /* Padding di dalam border */
-    margin-top: 10px;
-    /* Jarak atas dari elemen sebelumnya */
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Warna latar belakang putih */
-}
+/* =====================================================
+   ADVANCED FILTERS & TOPBAR
+   ===================================================== */
 
-.advanced-filters.show {
-    display: block;
-    opacity: 1;
-    /* Menampilkan dengan opacity */
-}
 
-/*** Topbar Start ***/
-.fixed-top .container {
-    transition: 0.5s;
-}
-
-.topbar {
-    padding: 2px 10px 2px 20px;
-    background: var(--bs-primary) !important;
-}
-
-.topbar a,
-.topbar a i {
-    transition: 0.5s;
-}
-
-.topbar a:hover,
-.topbar a i:hover {
-    color: var(--bs-secondary) !important;
-}
-
-@media (max-width: 768px) {
-    .topbar {
-        display: none;
-    }
-}
-
-/*** Topbar End ***/
-
-/* --- 1. Base Navbar & Glassmorphism Logic --- */
+/* =====================================================
+   NAVBAR & HOVER PILLS EFFECT
+   ===================================================== */
 :root {
     --glass-bg: rgba(255, 255, 255, 0.15);
     --glass-border: rgba(255, 255, 255, 0.3);
@@ -610,90 +567,9 @@ body {
     }
 }
 
-/*** Carousel Hero Header Start ***/
-.carousel-header .carousel-control-prev,
-.carousel-header .carousel-control-next {
-    background: transparent;
-}
-
-.carousel-header .carousel-control-prev .carousel-control-prev-icon {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    padding: 25px 30px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 50px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 50px;
-    background-size: 60% 60%;
-}
-
-.carousel-header .carousel-control-next .carousel-control-next-icon {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    padding: 25px 30px;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 0;
-    background-size: 60% 60%;
-}
-
-.carousel-header .carousel .carousel-indicators li,
-.carousel-header .carousel .carousel-indicators li,
-.carousel-header .carousel .carousel-indicators li {
-    opacity: 0;
-}
-
-.carousel-header .carousel-inner .carousel-item {
-    position: relative;
-    min-height: 100vh;
-}
-
-.carousel-header .carousel-inner .carousel-item img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.carousel-header .carousel-inner .carousel-item .carousel-caption {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    padding-top: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    background-size: cover;
-}
-
-@media (max-width: 768px) {
-
-    .carousel-header .carousel-inner .carousel-item img,
-    .carousel-header .carousel-inner .carousel-item .carousel-caption {
-        height: 700px;
-        margin-top: -100px;
-    }
-
-    .carousel-header {
-        height: 700px !important;
-    }
-
-    .carousel-header .carousel-control-prev .carousel-control-prev-icon,
-    .carousel-header .carousel-control-next .carousel-control-next-icon {
-        opacity: 50;
-    }
-}
-
-/* Search Widget Start */
+/* =====================================================
+   SEARCH BAR & ADVANCED FILTERS
+   ===================================================== */
 .search-container {
     display: flex;
     justify-content: center;
@@ -714,6 +590,55 @@ body {
 .search-box h1 {
     color: #13357b;
     font-weight: bold;
+}
+
+.advanced-filters {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    /* Transisi untuk efek opacity */
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    /* Border abu-abu transparan */
+    border-radius: 5px;
+    /* Sudut border yang membulat */
+    padding: 15px;
+    /* Padding di dalam border */
+    margin-top: 10px;
+    /* Jarak atas dari elemen sebelumnya */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Warna latar belakang putih */
+}
+
+.advanced-filters.show {
+    display: block;
+    opacity: 1;
+    /* Menampilkan dengan opacity */
+}
+
+/*** Topbar Start ***/
+.fixed-top .container {
+    transition: 0.5s;
+}
+
+.topbar {
+    padding: 2px 10px 2px 20px;
+    background: var(--bs-primary) !important;
+}
+
+.topbar a,
+.topbar a i {
+    transition: 0.5s;
+}
+
+.topbar a:hover,
+.topbar a i:hover {
+    color: var(--bs-secondary) !important;
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        display: none;
+    }
 }
 
 /* =====================================================
@@ -1312,7 +1237,9 @@ body {
     width: 30px;
 }
 
-/*** Explore Tour Start ***/
+/* =====================================================
+   INFOGARIS STYLES
+   ===================================================== */
 .owl-carousel .card {
     transition: transform 0.3s ease-in-out;
 }
@@ -1471,8 +1398,6 @@ body {
         /* 1 slide per baris */
     }
 }
-
-/* Swiper Carousel Infografis End */
 
 /*** Tour Booking Start ***/
 .counters .counter-item {
@@ -2397,4 +2322,127 @@ html.align p {
 .voice-item.loading {
     opacity: 0.6;
     pointer-events: none;
+}
+
+/* =====================================================
+   CARD LIST STYLES - CLEAN ENTERPRISE VERSION
+   ===================================================== */
+/* --- Document Card Refactoring --- */
+
+.doc-card {
+    border-radius: 30px;
+    /* Sangat melingkar */
+    background: #ffffff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 0, 0, 0.03) !important;
+}
+
+.doc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+    border-color: #0d6efd40 !important;
+}
+
+/* Icon Box Style */
+.icon-box {
+    width: 85px;
+    height: 85px;
+    background: #f8faff;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.doc-card:hover .icon-box {
+    background: #eef4ff;
+    transform: rotate(-5deg);
+}
+
+/* Badge & Typography */
+.badge-type {
+    background: #eef4ff;
+    color: #0d6efd;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    text-decoration: UPPERCASE;
+    letter-spacing: 0.5px;
+}
+
+.doc-title {
+    color: #2d3436;
+    font-size: 1.15rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.doc-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #636e72;
+    text-align: justify;
+}
+
+/* Metadata Info */
+.doc-meta span {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+/* Custom Detail Button */
+.btn-detail {
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-detail:hover {
+    background: #0056b3;
+    color: #fff;
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+/* Custom Warning Alert */
+.alert-soft-warning {
+    background-color: #fffbeb;
+    color: #92400e;
+}
+
+/* Responsivitas Mobile */
+@media (max-width: 768px) {
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+    }
+
+    .doc-title {
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .doc-excerpt {
+        text-align: center;
+    }
+
+    .doc-meta {
+        justify-content: center;
+    }
+
+    .doc-action {
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-detail {
+        width: 100%;
+    }
 }

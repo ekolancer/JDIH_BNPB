@@ -104,9 +104,10 @@
 <section id="stats" class="stats section light-background py-5">
     <div class="container-fluid py-5">
         <div class="container">
-            <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Informasi Hukum</p>
-                <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Infografis.</h2>
+            <div class="text-center mb-5">
+                <h6 class="text-primary fw-bold text-uppercase tracking-wider" data-aos="fade-up">Informasi Hukum</h6>
+                <h2 class="fw-bold text-dark display-5" data-aos="fade-up" data-aos-delay="100">Infografis</h2>
+                <div class="header-line mx-auto"></div>
             </div>
             <!-- Swiper Container -->
             <div class="swiper-container position-relative" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
@@ -137,11 +138,11 @@
     <!-- Infografis Hukum End -->
 
     <!-- Berita Hukum Start-->
-    <div class="news-section py-5">
+    <div class="news-section light-background py-5">
         <div class="container position-relative">
             <div class="text-center mb-5">
                 <h6 class="text-primary fw-bold text-uppercase tracking-wider" data-aos="fade-up">Informasi Hukum</h6>
-                <h2 class="fw-bold text-dark display-5" data-aos="fade-up" data-aos-delay="100">Berita Terbaru</h2>
+                <h2 class="fw-bold text-dark display-5" data-aos="fade-up" data-aos-delay="100">Berita</h2>
                 <div class="header-line mx-auto"></div>
             </div>
 

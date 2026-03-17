@@ -136,98 +136,77 @@
             <!-- List Dokumen -->
             <div wire:loading.remove>
                 <div class="row">
-
                     @forelse ($results as $result)
-                    <div class="col-12 mb-3">
-                        <!-- Card Dokumen -->
-                        <div class="card shadow-lg border-0 zoom-card">
-                            <div class="card-body">
+                    <div class="col-12 mb-4">
+                        <div class="card doc-card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
 
-                                <!-- Header -->
-                                <div class="d-flex justify-content-between align-items-center">
-
-                                    <!-- Ikon File -->
-                                    <div class="align-items-center pb-3 mt-0 me-3">
-                                        <img src="/img/icon/allDoc.png"
-                                            alt="Dokumen"
-                                            height="50"
-                                            width="45">
+                                    <div class="col-auto">
+                                        <div class="icon-box">
+                                            <img src="/img/icon/allDoc.png" alt="Icon" class="img-fluid">
+                                        </div>
                                     </div>
 
-                                    <!-- Tipe Dokumen & Judul -->
-                                    <div class="d-flex flex-column w-100">
+                                    <div class="col mt-3 mt-md-0">
+                                        <div class="d-flex flex-column">
+                                            <div class="mb-1">
+                                                <span class="badge badge-type rounded-pill">
+                                                    {{ $result->tipeDok }}
+                                                </span>
+                                            </div>
+                                            <h5 class="doc-title fw-bold mb-2">
+                                                @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
+                                                {{ $result->jenis_dokumen_singkatan }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
+                                                @else
+                                                {{ $result->judul }}
+                                                @endif
+                                            </h5>
+                                            <p class="doc-excerpt text-muted mb-3">
+                                                {{ \Illuminate\Support\Str::limit($result->judul ?? 'Tidak ada deskripsi.', 150) }}
+                                            </p>
+                                        </div>
 
-                                        <h5 class="card-title text-primary fw-bold mb-0 text-uppercase text-start">
-                                            @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
-                                            {{ $result->jenis_dokumen_singkatan }}
-                                            Nomor {{ $result->nomor }}
-                                            Tahun {{ $result->tahun }}
-                                            @else
-                                            {{ $result->judul }}
-                                            @endif
-                                        </h5>
+                                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 border-top gap-3">
+                                            <div class="doc-meta d-flex flex-wrap gap-3">
+                                                <span class="small text-muted">
+                                                    <i class="far fa-calendar-alt text-primary me-1"></i>
+                                                    {{ \Carbon\Carbon::parse($result->created_at)->locale('id')->translatedFormat('d M Y') }}
+                                                </span>
+                                                <span class="small text-muted">
+                                                    <i class="far fa-eye text-primary me-1"></i>
+                                                    {{ number_format($result->view_count) }} Dilihat
+                                                </span>
+                                                <span class="small text-muted">
+                                                    <i class="far fa-download text-primary me-1"></i>
+                                                    {{ number_format($result->download_count) }} Diunduh
+                                                </span>
+                                            </div>
 
-                                        <p class="card-text mb-3 text-muted text-justify"
-                                            style="hyphens: auto; word-wrap: break-word;">
-                                            {{ \Illuminate\Support\Str::limit($result->judul ?? 'Tidak ada deskripsi.', 150) }}
-                                        </p>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="card-footer bg-light border-top">
-                                <div class="d-flex justify-content-between hero-items-center">
-
-                                    <!-- Informasi tambahan -->
-                                    <div>
-                                        <small class="text-muted me-3">
-                                            <i class="far fa-calendar-alt me-1"></i>
-                                            {{ \Carbon\Carbon::parse($result->created_at)
-                                        ->locale('id')
-                                        ->translatedFormat('d F Y') }}
-                                        </small>
-
-                                        <small class="text-muted me-3">
-                                            <i class="far fa-eye me-1"></i>
-                                            {{ number_format($result->view_count) }} Dilihat
-                                        </small>
-
-                                        <small class="text-muted">
-                                            <i class="far fa-download me-1"></i>
-                                            {{ number_format($result->download_count) }} Diunduh
-                                        </small>
-                                    </div>
-
-                                    <!-- Tombol aksi -->
-                                    <div class="d-flex">
-                                        <a href="{{ route('dokumen.detail', [
-                                        'tipeDok' => $result->tipeDok,
-                                        'slug'    => $result->slug
-                                    ]) }}"
-                                            class="btn btn-primary btn-sm me-2">
-                                            <i class="fas fa-eye me-2"></i>Detail
-                                        </a>
+                                            <div class="doc-action">
+                                                <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}"
+                                                    class="btn btn-detail rounded-pill px-4 shadow-sm">
+                                                    Detail <i class="fas fa-arrow-right ms-2"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     @empty
                     <div class="col-12">
-                        <div class="alert alert-warning text-center">
+                        <div class="alert alert-soft-warning rounded-4 border-0 text-center py-4">
+                            <i class="fas fa-search mb-2 d-block fs-3"></i>
                             Tidak ada dokumen hukum ditemukan.
                         </div>
                     </div>
                     @endforelse
-
                 </div>
 
-                <!-- Pagination -->
-                <div class="d-flex justify-content-center mt-4">
+                <div class="d-flex justify-content-center mt-5">
                     {{ $results->links('pagination::simple-modern') }}
                 </div>
             </div>
