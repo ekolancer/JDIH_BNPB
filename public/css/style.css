@@ -904,6 +904,25 @@ body {
     background: linear-gradient(135deg, #dc3545, #f07585);
 }
 
+/* Styling Tombol Lihat */
+.btn-view-modern {
+    background: #0d6efd;
+    color: #fff !important;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-view-modern:hover {
+    background: #0056b3;
+    transform: translateX(3px);
+    /* Efek geser kecil ke kanan */
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
 /* Feature Box Statistik Dokumen 2 Start */
 .sectionClass {
     padding: 20px 0px 50px 0px;

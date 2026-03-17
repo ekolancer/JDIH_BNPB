@@ -50,8 +50,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/detail.css') }}?v={{ filemtime(public_path('css/detail.css')) }}" rel="stylesheet">
 
     <!-- Livewire Stylesheet -->
     <livewire:styles />
