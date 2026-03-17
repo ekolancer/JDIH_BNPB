@@ -102,7 +102,7 @@
 
 <!-- Infografis Berita -->
 <section id="stats" class="stats section light-background py-5">
-    <div class="container-fluid pt-5 pb-1">
+    <div class="container-fluid py-5">
         <div class="container">
             <div class="mx-auto text-center mb-4" style="max-width: 800px;">
                 <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Informasi Hukum</p>
@@ -137,36 +137,44 @@
     <!-- Infografis Hukum End -->
 
     <!-- Berita Hukum Start-->
-    <div class="container-fluid packages pt-5">
-        <div class="container">
-            <div class="mx-auto text-center mb-4" style="max-width: 800px;">
-                <p class="text-muted" data-aos="zoom-in" data-aos-offset="300" data-aos-duration="500">Informasi Hukum</p>
-                <h2 class="counters-title fw-bold" data-aos="zoom-in" data-aos-duration="800">Berita.</h2>
+    <div class="news-section py-5">
+        <div class="container position-relative">
+            <div class="text-center mb-5">
+                <h6 class="text-primary fw-bold text-uppercase tracking-wider" data-aos="fade-up">Informasi Hukum</h6>
+                <h2 class="fw-bold text-dark display-5" data-aos="fade-up" data-aos-delay="100">Berita Terbaru</h2>
+                <div class="header-line mx-auto"></div>
             </div>
-            <div class="packages-carousel owl-carousel shadow-lg" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine" data-aos-duration="500">
+
+            <div class="news-carousel owl-carousel owl-theme" data-aos="fade-up" data-aos-delay="200">
                 @foreach($data['berita'] as $item)
-                <div class="packages-item">
-                    <div class="packages-img">
-                        <img src="{{ asset('storage/'.$item->gambar) }}" class="img-fluid w-100 rounded-top" alt="Image">
-                        <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute"
-                            style="width: 100%; bottom: 0; left: 0; z-index: 5;">
-                            <small class="flex-fill text-center border-end py-2">{{ Str::limit(strip_tags($item->judul), 50) }}</small>
+                {{-- Slide Item --}}
+                <div class="news-card-wrapper p-2 h-100">
+                    <div class="news-card d-flex flex-column h-100">
+                        <div class="news-img-container">
+                            <img src="{{ $item->gambar && Storage::disk('public')->exists($item->gambar) ? asset('storage/'.$item->gambar) : asset('img/noimage.png') }}"
+                                class="news-img"
+                                alt="{{ $item->judul }}">
+                            <div class="news-category">{{ $item->kategori }}</div>
                         </div>
-                        <div class="packages-price py-2 px-4">{{ $item->kategori }}</div>
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <small><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}</small>
-                        </div>
-                        <div class="p-4 pb-4 pt-4">
-                            <small class="text-uppercase">{{ Str::limit(strip_tags($item->konten), 100) }}</small>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="{{ route('berita.show', $item->slug) }}" class="btn-hover btn text-white py-2 px-4">Read More</a>
+
+                        <div class="news-body bg-white p-4 d-flex flex-column flex-grow-1">
+                            <div class="mb-3">
+                                <small class="text-muted"><i class="far fa-calendar-alt me-2 text-primary"></i>{{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d M Y') }}</small>
                             </div>
-                            <div class="col-6 text-end px-0">
-                                <a class="btn-hover btn text-white py-2 px-4"><i class="fas fa-eye me-2"></i> {{ $item->view_count }} dilihat</a>
+
+                            <h5 class="news-title mb-3">
+                                {{ Str::limit(strip_tags($item->judul), 60) }}
+                            </h5>
+
+                            <p class="news-excerpt text-muted mb-4">
+                                {{ Str::limit(strip_tags($item->konten), 150) }}
+                            </p>
+
+                            <div class="news-footer d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                                <a href="{{ route('berita.show', $item->slug) }}" class="btn-read-more fw-bold text-primary small text-decoration-none">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <small class="text-muted"><i class="far fa-eye me-1"></i> {{ $item->view_count }}</small>
                             </div>
                         </div>
                     </div>

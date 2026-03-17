@@ -71,34 +71,32 @@
         },
     });
 
-    // packages carousel
-    $(".packages-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        center: false,
-        dots: false,
-        loop: true,
-        margin: 25,
-        nav: true,
-        navText: [
-            '<i class="bi bi-arrow-left"></i>',
-            '<i class="bi bi-arrow-right"></i>',
-        ],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1,
+    // news carousel
+    $(document).ready(function () {
+        $(".news-carousel").owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 5000,
+            smartSpeed: 1000,
+            loop: true,
+            margin: 25,
+            nav: false, // Mematikan tombol navigasi
+            dots: true, // Tetap aktifkan dots untuk navigasi visual
+            mouseDrag: true, // Mengaktifkan geser dengan mouse
+            touchDrag: true, // Mengaktifkan geser dengan sentuhan jari
+            responsiveClass: true,
+            responsive: {
+                0: {
+                    items: 1,
+                    margin: 15,
+                },
+                768: {
+                    items: 2,
+                },
+                1200: {
+                    items: 3,
+                },
             },
-            768: {
-                items: 2,
-            },
-            992: {
-                items: 2,
-            },
-            1200: {
-                items: 3,
-            },
-        },
+        });
     });
 
     // testimonial carousel
