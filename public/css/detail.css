@@ -3,97 +3,10 @@ body {
     /* Memberikan jarak dengan footer */
 }
 
-/* ******Breadcrumb****** */
-/* --- Global Breadcrumb Component --- */
-:root {
-    --br-accent: #f0ad00;
-    /* Warna Emas */
-    --br-white: #ffffff;
-    --br-white-dim: rgba(255, 255, 255, 0.75);
-    --br-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
-}
-
-/* Container Utama */
-.breadcrumb-section {
-    background: transparent;
-    padding: 80px 0;
-    /* Padding seimbang untuk hero background */
-    text-align: center;
-    position: relative;
-    z-index: 2;
-}
-
-/* Judul Halaman di Atas Breadcrumb */
-.title-bread {
-    font-family: 'Inter', sans-serif;
-    color: var(--br-white);
-    text-transform: uppercase;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-shadow: var(--br-shadow);
-    margin-bottom: 15px;
-    line-height: 1.2;
-}
-
-/* Reset Bootstrap Breadcrumb */
-.breadcrumb {
-    background: transparent;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-}
-
-/* Link & Text */
-.breadcrumb-item,
-.breadcrumb-item a,
-.breadcrumb-item i {
-    color: var(--br-white-dim);
-    text-decoration: none;
-    font-size: 1 rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Hover Effect */
-.breadcrumb-item a:hover {
-    color: var(--br-accent);
-    transform: translateY(-2px);
-    display: inline-block;
-}
-
-/* Pemisah (Separator) - Menggunakan Dot agar lebih elegan dari 'X' */
-.breadcrumb-item+.breadcrumb-item::before {
-    content: "➤";
-    color: rgba(255, 255, 255, 0.4);
-    padding: 0 12px;
-    font-weight: bold;
-}
-
-/* State Aktif */
-.breadcrumb-item.active {
-    color: var(--br-white);
-    font-weight: 700;
-}
-
-/* Ikon Rumah/Home */
-.breadcrumb-item i {
-    margin-right: 5px;
-    font-size: 0.85rem;
-}
-
-/* Responsive Fix */
-@media (max-width: 768px) {
-    .breadcrumb-section {
-        padding: 50px 0;
-    }
-
-    .title-bread {
-        font-size: 1.8rem;
-    }
-}
-
-/* ******Style Table****** */
+/* ============================================================
+   TABLE DETAIL – STYLES FOR DOCUMENT DETAILS TABLE
+   ============================================================ */
+   
 .table-striped th:not(.table-primary) {
     font-weight: normal;
     /* Non-bold selain header judul */
@@ -235,8 +148,9 @@ body {
     /* Shadow lebih dalam saat hover */
 }
 
-/* Style Detail Berita */
-/* --- Berita Detail Section --- */
+/* ============================================================
+   BERITA DETAIL – MAIN CONTENT STYLES
+   ============================================================ */
 .berita-detail-wrapper {
     background-color: #f8f9fa;
     padding: 3rem 0;
@@ -304,7 +218,9 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Sidebar Terpopuler */
+/* ============================================================
+   BERITA DETAIL – POPULAR NEWS CARD
+   ============================================================ */
 .berita-popular-card {
     border-radius: 25px;
     border: none;
@@ -433,8 +349,9 @@ body {
     /* Tanggal dengan warna abu-abu */
 }
 
-/* Download Button Dokumen */
-/* From Uiverse.io by vinodjangid07 */
+/* ============================================================
+   BUTTON DOWNLOAD – STYLED DOWNLOAD BUTTON
+   ============================================================ */
 .btnDL {
     display: flex;
     align-items: center;
@@ -515,8 +432,6 @@ body {
         font-size: 13px;
     }
 }
-
-/* Button Download End */
 
 /* Button Download Disabled (Jika dokumen tidak tersedia) */
 .btnDLdisabled {
@@ -699,226 +614,9 @@ body {
     color: #333;
 }
 
-/* ******Filter Sidebar CSS****** */
-/* ===============================
-   FILTER SIDEBAR – ELEGANT UI
-================================ */
-
-/* Wrapper */
-.filter-sidebar {
-    background: #ffffff;
-    border: 2px solid #d4d4d4;
-    /* garis lebih tebal */
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-}
-
-/* Header filter lebih kontras */
-.filter-sidebar>.d-flex:first-child {
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 14px;
-}
-
-/* Section title */
-.filter-title {
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #6b7280;
-    margin-bottom: 8px;
-}
-
-/* Item */
-.filter-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.filter-item:hover {
-    background: #eef2ff;
-}
-
-.filter-item.active {
-    background: #e0ecff;
-    border-left: 4px solid #2563eb;
-}
-
-/* Checkbox */
-.filter-item input[type="checkbox"] {
-    transform: scale(1.15);
-    margin-right: 8px;
-}
-
-/* Label */
-.filter-item label {
-    margin: 0;
-    cursor: pointer;
-}
-
-/* Count badge */
-.filter-count {
-    font-size: 0.7rem;
-    background: #2563eb;
-    color: #fff;
-    padding: 3px 8px;
-    border-radius: 5px;
-}
-
-/* Divider */
-.filter-divider {
-    height: 2px;
-    background: #e5e7eb;
-    margin: 14px 0;
-}
-
-/* Expand animation */
-.filter-collapse {
-    overflow: hidden;
-    transition:
-        max-height 0.25s ease,
-        opacity 0.2s ease;
-}
-
-.filter-collapse.collapsed {
-    max-height: 0;
-    opacity: 0;
-}
-
-.filter-collapse.expanded {
-    max-height: 800px;
-    opacity: 1;
-}
-
-/* Toggle */
-.filter-toggle {
-    font-size: 0.8rem;
-    color: #2563eb;
-    background: none;
-    border: none;
-    padding: 4px 0;
-    cursor: pointer;
-}
-
-/* Apply button */
-.filter-apply {
-    margin-top: 8px;
-}
-
-/* ===============================
-   ACTIVE FILTER CHIPS
-================================ */
-.filter-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.filter-chip {
-    background: #e0ecff;
-    color: #1e40af;
-    border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.filter-chip button {
-    background: none;
-    border: none;
-    color: #1e40af;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* ===============================
-   SLIDER TAHUN TOOLTIP
-================================ */
-.tahun-slider-wrapper {
-    position: relative;
-    margin-top: 8px;
-}
-
-.tahun-tooltip {
-    position: absolute;
-    top: -36px;
-    transform: translateX(-50%);
-    background: #2563eb;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-}
-
-/* Tooltip arrow */
-.tahun-tooltip::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
-    border-style: solid;
-    border-color: #2563eb transparent transparent transparent;
-}
-
-/* Container tambahan */
-.filter-extra {
-    overflow: hidden;
-    transition:
-        max-height 0.3s ease,
-        opacity 0.25s ease;
-}
-
-.filter-extra.collapsed {
-    max-height: 0;
-    opacity: 0;
-}
-
-.filter-extra.expanded {
-    max-height: 2000px;
-    opacity: 1;
-}
-
-/* Tombol modern */
-.filter-more-btn {
-    margin-top: 6px;
-    background: transparent;
-    border: none;
-    color: #2563eb;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-}
-
-.filter-more-btn i {
-    transition: transform 0.25s ease;
-}
-
-.filter-more-btn.expanded i {
-    transform: rotate(180deg);
-}
-
-/* ================= ACTION BAR ================= */
-
+/* ============================================================
+   SHARE BUTTONS – SOCIAL MEDIA ACTION BAR
+   ============================================================ */
 .action-bar {
     display: flex;
     justify-content: space-between;

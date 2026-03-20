@@ -1,316 +1,299 @@
 <div>
-    <div class="row">
+    <div class="list-doc__wrap">
 
-        {{-- ======================================================
+        {{-- ══════════════════════════════════════════
              SIDEBAR FILTER
-        ======================================================= --}}
-        <div class="col-md-4 mb-3">
+        ══════════════════════════════════════════ --}}
+        <div>
             <x-dokumen.filter-sidebar
                 :filters="$filters"
                 :availableFilters="$availableFilters"
                 :filterCounts="$filterCounts" />
         </div>
 
-        {{-- ======================================================
-             LIST DOKUMEN
-        ======================================================= --}}
-        <div class="col-md-8">
+        {{-- ══════════════════════════════════════════
+             MAIN CONTENT
+        ══════════════════════════════════════════ --}}
+        <div class="list-doc__main">
 
-            {{-- Header hasil --}}
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            {{-- Header hasil & sort --}}
+            <div class="list-doc__header">
                 <div>
-                    <strong>Ditemukan {{ number_format($numResults) }} hasil</strong>
-                    <div class="text-muted small">
-                        Dalam {{ $queryTime }} detik
+                    <div class="list-doc__result-count">
+                        {{ number_format($numResults) }} dokumen ditemukan
+                    </div>
+                    <div class="list-doc__query-time">
+                        dalam {{ $queryTime }} detik
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn btn-outline-primary btn-sm dropdown-toggle"
-                        data-bs-toggle="dropdown">
-                        {{ $sortBy === 'latest' ? 'Terbaru' : 'Populer' }}
+                    <button type="button"
+                        class="list-doc__sort-btn dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        data-bs-offset="0,6"
+                        aria-expanded="false">
+                        <i class="fa fa-sort-amount-down"></i>
+                        <span id="ld-sort-label">
+                            {{ $sortBy === 'latest' ? 'Terbaru' : 'Populer' }}
+                        </span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu list-doc__dropdown-menu">
                         <li>
-                            <a href="#" class="dropdown-item"
+                            <a class="dropdown-item list-doc__dropdown-item
+                                {{ $sortBy === 'latest' ? 'active' : '' }}"
+                                href="#"
                                 wire:click.prevent="updateSortBy('latest')">
-                                Terbaru
+                                <i class="fa fa-clock"></i> Terbaru
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="dropdown-item"
+                            <a class="dropdown-item list-doc__dropdown-item
+                                {{ $sortBy === 'popular' ? 'active' : '' }}"
+                                href="#"
                                 wire:click.prevent="updateSortBy('popular')">
-                                Populer
+                                <i class="fa fa-fire"></i> Populer
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            {{-- ACTIVE FILTER CHIPS --}}
+            {{-- Active filter chips --}}
             @if(collect($filters)->flatten()->filter()->count())
-            <div class="filter-chips">
+            <div class="list-doc__chips">
 
-                {{-- Judul --}}
                 @if(filled($filters['judul']))
-                <div class="filter-chip">
+                <span class="list-doc__chip">
                     Judul: "{{ $filters['judul'] }}"
-                    <button wire:click="removeFilter('judul')">×</button>
-                </div>
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('judul')">×</button>
+                </span>
                 @endif
 
-                {{-- Nomor --}}
                 @if(filled($filters['nomor']))
-                <div class="filter-chip">
-                    Nomor: {{ $filters['nomor'] }}
-                    <button wire:click="removeFilter('nomor')">×</button>
-                </div>
+                <span class="list-doc__chip">
+                    No. {{ $filters['nomor'] }}
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('nomor')">×</button>
+                </span>
                 @endif
 
-                {{-- Tahun --}}
                 @if(filled($filters['tahun']))
-                <div class="filter-chip">
-                    Tahun: {{ $filters['tahun'] }}
-                    <button wire:click="removeFilter('tahun')">×</button>
-                </div>
+                <span class="list-doc__chip">
+                    {{ $filters['tahun'] }}
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('tahun')">×</button>
+                </span>
                 @endif
 
-                {{-- Jenis Dokumen --}}
                 @foreach($filters['ref_jenis_dokumen_id'] as $id)
-                @php
-                $jenis = $availableFilters['jenis_dokumen']->firstWhere('id', $id);
-                @endphp
+                @php $jenis = $availableFilters['jenis_dokumen']->firstWhere('id', $id); @endphp
                 @if($jenis)
-                <div class="filter-chip">
+                <span class="list-doc__chip">
                     {{ $jenis->singkatan }}
-                    <button wire:click="removeFilter('ref_jenis_dokumen_id', {{ $id }})">×</button>
-                </div>
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('ref_jenis_dokumen_id', {{ $id }})">×</button>
+                </span>
                 @endif
                 @endforeach
 
-                {{-- Bidang Hukum --}}
                 @foreach($filters['ref_bidang_hukum_id'] as $id)
-                @php
-                $bidang = $availableFilters['bidang_hukum']->firstWhere('id', $id);
-                @endphp
+                @php $bidang = $availableFilters['bidang_hukum']->firstWhere('id', $id); @endphp
                 @if($bidang)
-                <div class="filter-chip">
+                <span class="list-doc__chip">
                     {{ $bidang->nama }}
-                    <button wire:click="removeFilter('ref_bidang_hukum_id', {{ $id }})">×</button>
-                </div>
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('ref_bidang_hukum_id', {{ $id }})">×</button>
+                </span>
                 @endif
                 @endforeach
 
-                {{-- Subjek --}}
                 @foreach($filters['subjek'] as $id)
-                @php
-                $subjek = $availableFilters['subjek']->firstWhere('id', $id);
-                @endphp
+                @php $subjek = $availableFilters['subjek']->firstWhere('id', $id); @endphp
                 @if($subjek)
-                <div class="filter-chip">
+                <span class="list-doc__chip">
                     {{ $subjek->nama }}
-                    <button wire:click="removeFilter('subjek', {{ $id }})">×</button>
-                </div>
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('subjek', {{ $id }})">×</button>
+                </span>
                 @endif
                 @endforeach
 
-                {{-- Status --}}
                 @foreach($filters['status'] as $status)
-                <div class="filter-chip">
-                    Status: {{ ucfirst(strtolower($status)) }}
-                    <button wire:click="removeFilter('status', '{{ $status }}')">×</button>
-                </div>
+                <span class="list-doc__chip">
+                    {{ ucfirst(strtolower($status)) }}
+                    <button class="list-doc__chip-close"
+                        wire:click="removeFilter('status', '{{ $status }}')">×</button>
+                </span>
                 @endforeach
 
             </div>
             @endif
 
-
-            <!-- Loading Spinner -->
-            <div wire:loading.delay
-                class="alert alert-info text-center custom-alert"
-                style="font-size: 1.2rem; padding: 20px;">
-                <i class="fa fa-spinner fa-spin"></i> Please wait, loading...
+            {{-- Loading --}}
+            <div wire:loading.delay class="list-doc__loading">
+                <i class="fa fa-spinner fa-spin"></i>
+                <span>Memuat dokumen...</span>
             </div>
 
-            <!-- List Dokumen -->
+            {{-- List dokumen --}}
             <div wire:loading.remove>
-                <div class="row">
-                    @forelse ($results as $result)
-                    <div class="col-12 mb-4">
-                        <div class="card doc-card border-0 shadow-sm">
-                            <div class="card-body p-2">
-                                <div class="row align-items-center">
 
-                                    <div class="col-auto">
-                                        <div class="icon-box">
-                                            <img src="/img/icon/allDoc.png" alt="Icon" class="img-fluid">
-                                        </div>
-                                    </div>
+                @forelse ($results as $result)
+                <div class="list-doc__card">
 
-                                    <div class="col mt-3 mt-md-0">
-                                        <div class="d-flex flex-column">
-                                            <div class="mb-1">
-                                                <span class="badge badge-type rounded-pill">
-                                                    {{ $result->tipeDok }}
-                                                </span>
-                                            </div>
-                                            <h5 class="doc-title fw-bold mb-2">
-                                                @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
-                                                {{ $result->jenis_dokumen_singkatan }} Nomor {{ $result->nomor }} Tahun {{ $result->tahun }}
-                                                @else
-                                                {{ $result->judul }}
-                                                @endif
-                                            </h5>
-                                            <p class="doc-excerpt text-muted mb-3">
-                                                {{ \Illuminate\Support\Str::limit($result->judul ?? 'Tidak ada deskripsi.', 150) }}
-                                            </p>
-                                        </div>
+                    {{-- Icon --}}
+                    <div class="list-doc__icon">
+                        <img src="/img/icon/allDoc.png" alt="Dokumen">
+                    </div>
 
-                                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 border-top gap-3">
-                                            <div class="doc-meta d-flex flex-wrap gap-3">
-                                                <span class="small text-muted">
-                                                    <i class="far fa-calendar-alt text-primary me-1"></i>
-                                                    {{ \Carbon\Carbon::parse($result->created_at)->locale('id')->translatedFormat('d M Y') }}
-                                                </span>
-                                                <span class="small text-muted">
-                                                    <i class="far fa-eye text-primary me-1"></i>
-                                                    {{ number_format($result->view_count) }} Dilihat
-                                                </span>
-                                                <span class="small text-muted">
-                                                    <i class="far fa-download text-primary me-1"></i>
-                                                    {{ number_format($result->download_count) }} Diunduh
-                                                </span>
-                                            </div>
+                    {{-- Content --}}
+                    <div class="list-doc__card-body">
 
-                                            <div class="doc-action">
-                                                <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}"
-                                                    class="btn btn-detail rounded-pill px-4 shadow-sm">
-                                                    Detail <i class="fas fa-arrow-right ms-2"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                        {{-- Badge row: tipe + status --}}
+                        <div class="list-doc__badge-row">
+                            @php
+                            $tipeLabel = match($result->tipeDok) {
+                            'Peraturan' => 'Peraturan Perundang-Undangan',
+                            'Putusan' => 'Putusan',
+                            'Monografi' => 'Monografi',
+                            'Artikel' => 'Artikel',
+                            default => $result->tipeDok,
+                            };
+                            $statusVal = strtoupper($result->status ?? '');
+                            $isBerlaku = $statusVal === 'BERLAKU';
+                            @endphp
 
-                                </div>
+                            <span class="list-doc__badge-type">
+                                {{ $tipeLabel }}
+                            </span>
+
+                            @if($statusVal)
+                            <span class="list-doc__badge-status
+                                {{ $isBerlaku ? 'list-doc__badge-status--berlaku' : 'list-doc__badge-status--tidak' }}">
+                                <span class="list-doc__badge-dot"></span>
+                                {{ $isBerlaku ? 'Berlaku' : 'Tidak Berlaku' }}
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="list-doc__card-title">
+                            @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
+                            {{ $result->jenis_dokumen_singkatan }}
+                            Nomor {{ $result->nomor }}
+                            Tahun {{ $result->tahun }}
+                            @else
+                            {{ $result->judul }}
+                            @endif
+                        </div>
+
+                        <div class="list-doc__card-excerpt">
+                            {{ \Illuminate\Support\Str::limit($result->judul ?? 'Tidak ada deskripsi.', 250) }}
+                        </div>
+
+                        <div class="list-doc__card-footer">
+                            <div class="list-doc__meta">
+                                <span class="list-doc__meta-item">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ \Carbon\Carbon::parse($result->created_at)->locale('id')->translatedFormat('d M Y') }}
+                                </span>
+                                <span class="list-doc__meta-item">
+                                    <i class="far fa-eye"></i>
+                                    {{ number_format($result->view_count) }}
+                                </span>
+                                <span class="list-doc__meta-item">
+                                    <i class="far fa-download"></i>
+                                    {{ number_format($result->download_count) }}
+                                </span>
                             </div>
-                        </div>
-                    </div>
-                    @empty
-                    <div class="col-12">
-                        <div class="alert alert-soft-warning rounded-4 border-0 text-center py-4">
-                            <i class="fas fa-search mb-2 d-block fs-3"></i>
-                            Tidak ada dokumen hukum ditemukan.
-                        </div>
-                    </div>
-                    @endforelse
-                </div>
 
-                <div class="d-flex justify-content-center mt-5">
+                            <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}"
+                                class="list-doc__btn-detail">
+                                Detail <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                @empty
+                <div class="list-doc__empty">
+                    <i class="fas fa-search"></i>
+                    <p>Tidak ada dokumen hukum ditemukan.</p>
+                </div>
+                @endforelse
+
+                <div class="list-doc__pagination">
                     {{ $results->links('pagination::simple-modern') }}
                 </div>
-            </div>
-        </div>
-    </div>
+
+            </div>{{-- end wire:loading.remove --}}
+
+        </div>{{-- end main --}}
+    </div>{{-- end wrap --}}
 </div>
 
-<!-- Script untuk slider tahun -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const slider = document.getElementById('tahunSlider');
-        const output = document.getElementById('tahunValue');
-
-        if (slider && output) {
-            output.textContent = slider.value || '—';
-            slider.oninput = () => output.textContent = slider.value;
-        }
-    });
-</script>
-
-<!-- Script untuk scroll ke atas -->
-<script>
-    window.addEventListener('scroll-to-top', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-</script>
-
-<!-- script untuk refresh URL ketika filter diterapkan -->
-<script>
-    window.addEventListener('update-url', event => {
-        console.log("Update URL Event Triggered:", event.detail);
-        console.log("Filters Data:", event.detail.filters);
-
-        const newUrl = event.detail.filters ? '?' + event.detail.filters : window.location.pathname;
-        window.history.replaceState({}, '', newUrl);
-    });
-</script>
-
-<!-- Script untuk menampilkan lebih banyak filter -->
-<script>
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.filter-more-btn');
-        if (!btn) return;
-
-        const group = btn.closest('.filter-group');
-        const extra = group.querySelector('.filter-extra');
-        const label = btn.querySelector('.label');
-
-        const expanded = extra.classList.contains('expanded');
-        const extraCount = btn.dataset.extra;
-
-        extra.classList.toggle('expanded', !expanded);
-        extra.classList.toggle('collapsed', expanded);
-
-        btn.classList.toggle('expanded', !expanded);
-        label.textContent = expanded ? `+${extraCount} lainnya` : 'Tutup';
-    });
-</script>
-
-{{-- Script untuk filter sidebar --}}
+{{-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════════ --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.filter-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const key = btn.dataset.toggle;
-                document.querySelectorAll('.more-' + key)
-                    .forEach(el => el.classList.toggle('d-none'));
+
+        // ── Slider tahun ──────────────────────────────────────
+        const slider = document.getElementById('ld-tahun-slider');
+        const valEl = document.getElementById('ld-tahun-val');
+
+        function updateSlider() {
+            if (!slider || !valEl) return;
+            const min = +slider.min || 1990;
+            const max = +slider.max || new Date().getFullYear();
+            const val = +slider.value;
+            const pct = ((val - min) / (max - min)) * 100;
+            slider.style.setProperty('--slider-pct', pct + '%');
+            valEl.textContent = val;
+        }
+
+        if (slider) {
+            updateSlider();
+            slider.addEventListener('input', updateSlider);
+        }
+
+        // ── More/collapse toggle ──────────────────────────────
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.list-doc__filter-more-btn');
+            if (!btn) return;
+
+            const targetId = btn.dataset.target;
+            const extra = document.getElementById(targetId);
+            const label = btn.querySelector('.list-doc__more-label');
+            const icon = btn.querySelector('i');
+            const count = btn.dataset.extra;
+
+            if (!extra) return;
+
+            const expanded = extra.classList.contains('expanded');
+            extra.classList.toggle('expanded', !expanded);
+            btn.classList.toggle('expanded', !expanded);
+
+            if (icon) icon.style.transform = expanded ? '' : 'rotate(180deg)';
+            if (label) label.textContent = expanded ? `+${count} lainnya` : 'Tutup';
+        });
+
+        // ── Scroll to top on pagination ───────────────────────
+        window.addEventListener('scroll-to-top', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
-    });
-</script>
 
-{{-- Script untuk tooltip slider tahun --}}
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const slider = document.getElementById('tahunSlider');
-        const tooltip = document.getElementById('tahunTooltip');
-
-        if (!slider || !tooltip) return;
-
-        const updateTooltip = () => {
-            const value = slider.value;
-            const min = slider.min;
-            const max = slider.max;
-
-            const percent = (value - min) / (max - min);
-            const sliderWidth = slider.offsetWidth;
-
-            tooltip.style.left = `${percent * sliderWidth}px`;
-            tooltip.textContent = value;
-        };
-
-        slider.addEventListener('input', () => {
-            tooltip.style.opacity = 1;
-            updateTooltip();
+        // ── URL update ────────────────────────────────────────
+        window.addEventListener('update-url', e => {
+            const newUrl = e.detail.filters ?
+                '?' + e.detail.filters :
+                window.location.pathname;
+            window.history.replaceState({}, '', newUrl);
         });
 
-        slider.addEventListener('mouseleave', () => {
-            tooltip.style.opacity = 0;
-        });
-
-        updateTooltip();
     });
 </script>

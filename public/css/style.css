@@ -239,6 +239,97 @@ body {
     }
 }
 
+/* ============================================================
+   BREADCRUMB – HERO BANNER WITH TRANSPARENT BACKGROUND
+   ============================================================ */
+:root {
+    --br-accent: #f0ad00;
+    /* Warna Emas */
+    --br-white: #ffffff;
+    --br-white-dim: rgba(255, 255, 255, 0.75);
+    --br-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Container Utama */
+.breadcrumb-section {
+    background: transparent;
+    padding: 80px 0;
+    /* Padding seimbang untuk hero background */
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Judul Halaman di Atas Breadcrumb */
+.title-bread {
+    font-family: 'Inter', sans-serif;
+    color: var(--br-white);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-shadow: var(--br-shadow);
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+/* Reset Bootstrap Breadcrumb */
+.breadcrumb {
+    background: transparent;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Link & Text */
+.breadcrumb-item,
+.breadcrumb-item a,
+.breadcrumb-item i {
+    color: var(--br-white-dim);
+    text-decoration: none;
+    font-size: 1 rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Hover Effect */
+.breadcrumb-item a:hover {
+    color: var(--br-accent);
+    transform: translateY(-2px);
+    display: inline-block;
+}
+
+/* Pemisah (Separator) - Menggunakan Dot agar lebih elegan dari 'X' */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "➤";
+    color: rgba(255, 255, 255, 0.4);
+    padding: 0 12px;
+    font-weight: bold;
+}
+
+/* State Aktif */
+.breadcrumb-item.active {
+    color: var(--br-white);
+    font-weight: 700;
+}
+
+/* Ikon Rumah/Home */
+.breadcrumb-item i {
+    margin-right: 5px;
+    font-size: 0.85rem;
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+    .breadcrumb-section {
+        padding: 50px 0;
+    }
+
+    .title-bread {
+        font-size: 1.8rem;
+    }
+}
+
 /* =====================================================
    BACK TO TOP & BUTTONS & SECTION TITLE
      Diterapkan untuk semua halaman (main & detail)
@@ -328,41 +419,6 @@ body {
 .btn-hover:hover {
     color: var(--bs-secondary) !important;
 }
-
-/*** Section Title Start ***/
-.section-title {
-    position: relative;
-    display: inline-block;
-    text-transform: uppercase;
-    color: var(--bs-primary);
-}
-
-.section-title::before {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    margin-right: -50px;
-    border: 1px solid var(--bs-primary) !important;
-}
-
-.section-title::after {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    margin-left: -50px;
-    border: 1px solid var(--bs-primary) !important;
-}
-
-/* =====================================================
-   ADVANCED FILTERS & TOPBAR
-   ===================================================== */
-
 
 /* =====================================================
    NAVBAR & HOVER PILLS EFFECT
@@ -465,7 +521,6 @@ body {
 }
 
 /* --- 4. Brand & Logo (Tetap Sesuai Struktur) --- */
-/* --- Perbaikan Container Navbar Brand --- */
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -561,10 +616,6 @@ body {
         color: #333 !important;
         margin: 5px 0;
     }
-
-    .navbar-custom:not(.scrolled) {
-        /* Opsional: beri sedikit bg agar logo putih terlihat di mobile jika bg hero terang */
-    }
 }
 
 /* =====================================================
@@ -615,7 +666,57 @@ body {
     /* Menampilkan dengan opacity */
 }
 
-/*** Topbar Start ***/
+.search-group-main {
+    border-radius: 50px;
+    overflow: hidden;
+    background: white;
+    padding: 8px;
+}
+
+.search-group-main .form-control {
+    border: none;
+    padding-left: 25px;
+}
+
+.btn-search-hero {
+    border-radius: 40px !important;
+    padding: 10px 30px;
+}
+
+.advanced-filters {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    .hero-main {
+        min-height: 50vh;
+        padding: 60px 0;
+    }
+
+    .hero-compact {
+        min-height: 100px;
+        /* Lebih tipis lagi di HP */
+        padding: 15px 0;
+    }
+
+    .search-group-main {
+        border-radius: 15px;
+    }
+
+    .btn-search-hero span {
+        display: none;
+        /* Hanya icon di HP */
+    }
+}
+
+/* =====================================================
+   TOPBAR AND NAVBAR INTERACTION STYLES
+     Diterapkan untuk semua halaman (main & detail)
+   ===================================================== */
 .fixed-top .container {
     transition: 0.5s;
 }
@@ -707,54 +808,6 @@ body {
     background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
 }
 
-/* Styling Search Bar (Tetap seperti milik Anda) */
-.search-group-main {
-    border-radius: 50px;
-    overflow: hidden;
-    background: white;
-    padding: 8px;
-}
-
-.search-group-main .form-control {
-    border: none;
-    padding-left: 25px;
-}
-
-.btn-search-hero {
-    border-radius: 40px !important;
-    padding: 10px 30px;
-}
-
-.advanced-filters {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* --- RESPONSIVE ADJUSTMENTS --- */
-@media (max-width: 768px) {
-    .hero-main {
-        min-height: 50vh;
-        padding: 60px 0;
-    }
-
-    .hero-compact {
-        min-height: 100px;
-        /* Lebih tipis lagi di HP */
-        padding: 15px 0;
-    }
-
-    .search-group-main {
-        border-radius: 15px;
-    }
-
-    .btn-search-hero span {
-        display: none;
-        /* Hanya icon di HP */
-    }
-}
-
 /* --- Global Style --- */
 
 .header-line {
@@ -783,7 +836,9 @@ body {
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
 }
 
-/* --- Card Peraturan (Fix Terpotong) --- */
+/* =====================================================
+   CARD PERATURAN LIST STYLES
+   ===================================================== */
 .card-peraturan {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border-radius: 16px !important;
@@ -876,12 +931,6 @@ body {
     padding: 50px 0;
 }
 
-.section-title {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 15px;
-}
-
 .text-muted {
     font-size: 1rem;
     color: #666;
@@ -904,7 +953,9 @@ body {
     background: linear-gradient(135deg, #dc3545, #f07585);
 }
 
-/* Styling Tombol Lihat */
+/* =====================================================
+   VIEW BUTTON MODERN STYLES
+   ===================================================== */
 .btn-view-modern {
     background: #0d6efd;
     color: #fff !important;
@@ -923,7 +974,9 @@ body {
     box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
 }
 
-/* Feature Box Statistik Dokumen 2 Start */
+/* =====================================================
+   COUNTER STATISTIK DOCUMENT
+   ===================================================== */
 .sectionClass {
     padding: 20px 0px 50px 0px;
     position: relative;
@@ -1041,7 +1094,9 @@ body {
 
 /* Feature Box Statistik Dokumen 2 End */
 
-/*** Highlight Dokumen Peraturan Start ***/
+/* =====================================================
+   HIGHLIGH DOKUMEN PERATURAN STYLES
+===================================================== */
 .icon-container {
     width: 80px;
     /* Ukuran kontainer ikon */
@@ -1418,7 +1473,9 @@ body {
     }
 }
 
-/*** Tour Booking Start ***/
+/* =====================================================
+   COUNTER EFFECTS
+===================================================== */
 .counters .counter-item {
     display: flex;
     align-items: center;
@@ -1506,207 +1563,9 @@ body {
 
 /*** Tour Booking end ***/
 
-/*** Travel Guide Start ***/
-.guide .guide-item .guide-img {
-    position: relative;
-}
-
-.guide .guide-item .guide-img .guide-icon {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-bottom: -50px;
-    display: flex;
-    justify-content: center;
-    border: 1px solid var(--bs-primary);
-    background: var(--bs-light);
-    z-index: 9;
-}
-
-.guide .guide-item .guide-img .guide-img-efects {
-    position: relative;
-    overflow: hidden;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-}
-
-.guide .guide-item .guide-img .guide-img-efects::after {
-    content: "";
-    width: 100%;
-    height: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: 0.5s;
-}
-
-.guide .guide-item:hover .guide-img-efects::after {
-    height: 100%;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    background: rgba(19, 53, 123, 0.5);
-}
-
-.guide .guide-item .guide-img-efects img {
-    transition: 0.5s;
-}
-
-.guide .guide-item:hover .guide-img-efects img {
-    transform: scale(1.1);
-}
-
-.guide .guide-item .guide-title {
-    position: relative;
-    background: var(--bs-light);
-    transition: 0.5s;
-}
-
-.guide .guide-item .guide-title::after {
-    content: "";
-    width: 100%;
-    height: 0;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    transition: 0.5s;
-}
-
-.guide .guide-item:hover .guide-title::after {
-    height: 100%;
-    background: var(--bs-primary) !important;
-    color: var(--bs-white);
-}
-
-.guide .guide-item .guide-title .guide-title-inner,
-.guide .guide-item:hover .guide-title .guide-title-inner h4 {
-    transition: 0.5s;
-}
-
-.guide .guide-item:hover .guide-title .guide-title-inner {
-    position: relative;
-    color: var(--bs-white) !important;
-    z-index: 2;
-}
-
-.guide .guide-item:hover .guide-title .guide-title-inner h4 {
-    color: var(--bs-white);
-}
-
-/*** Travel Guide End ***/
-
-/*** Blog Start ***/
-.blog .blog-item .blog-img {
-    position: relative;
-}
-
-.blog .blog-item .blog-img .blog-info {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    background: rgba(255, 255, 255, 0.2);
-    color: var(--bs-white);
-}
-
-.blog .blog-item .blog-img .blog-img-inner {
-    position: relative;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-}
-
-.blog .blog-item .blog-img .blog-img-inner .blog-icon {
-    position: absolute;
-    width: 100%;
-    height: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.5s;
-}
-
-.blog .blog-item .blog-img .blog-img-inner .blog-icon a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: 0.5s;
-}
-
-.blog .blog-item .blog-img:hover .blog-img-inner .blog-icon a {
-    opacity: 1;
-}
-
-.blog .blog-item .blog-img:hover .blog-img-inner .blog-icon {
-    height: 100%;
-    background: rgba(19, 53, 123, 0.6);
-    opacity: 1;
-}
-
-.blog .blog-item .blog-img .blog-img-inner {
-    overflow: hidden;
-}
-
-.blog .blog-item .blog-img .blog-img-inner img {
-    transition: 0.5s;
-}
-
-.blog .blog-item .blog-img:hover .blog-img-inner img {
-    transform: scale(1.2);
-}
-
-/*** Blog End ***/
-
-/*** Subscribe Start ***/
-.subscribe {
-    background: linear-gradient(rgba(19, 53, 123, 0.6), rgba(19, 53, 123, 0.6)),
-        url(../img/subscribe-img.jpg);
-    background-attachment: fixed;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.subscribe .subscribe-title {
-    position: relative;
-    display: inline-block;
-    text-transform: uppercase;
-    color: var(--bs-white);
-}
-
-.subscribe .subscribe-title::before {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    margin-right: -50px;
-    border: 1px solid var(--bs-white) !important;
-}
-
-.subscribe .subscribe-title::after {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    margin-left: -50px;
-    border: 1px solid var(--bs-white) !important;
-}
-
-/*** Subscribe End ***/
-
-/*** Footer Start ***/
+/* =====================================================
+   FOOTER STYLES
+===================================================== */
 ul {
     margin: 0px;
     padding: 0px;
@@ -1914,7 +1773,9 @@ ul {
 
 /*** copyright end ***/
 
-/* Survey Style */
+/* =====================================================
+   SURVEY RATING
+===================================================== */
 .circle-container {
     position: relative;
     width: 100%;
@@ -2054,9 +1915,9 @@ ul {
     display: block;
 }
 
-/* =============================
-   MODERN STICKY PANEL
-============================= */
+/* =====================================================
+   ACCESSIBILITY FUNCTION PANEL
+===================================================== */
 
 .a11y-panel {
     position: fixed;
@@ -2341,127 +2202,4 @@ html.align p {
 .voice-item.loading {
     opacity: 0.6;
     pointer-events: none;
-}
-
-/* =====================================================
-   CARD LIST STYLES - CLEAN ENTERPRISE VERSION
-   ===================================================== */
-/* --- Document Card Refactoring --- */
-
-.doc-card {
-    border-radius: 30px;
-    /* Sangat melingkar */
-    background: #ffffff;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(0, 0, 0, 0.03) !important;
-}
-
-.doc-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
-    border-color: #0d6efd40 !important;
-}
-
-/* Icon Box Style */
-.icon-box {
-    width: 85px;
-    height: 85px;
-    background: #f8faff;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    transition: all 0.3s ease;
-}
-
-.doc-card:hover .icon-box {
-    background: #eef4ff;
-    transform: rotate(-5deg);
-}
-
-/* Badge & Typography */
-.badge-type {
-    background: #eef4ff;
-    color: #0d6efd;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 6px 16px;
-    text-decoration: UPPERCASE;
-    letter-spacing: 0.5px;
-}
-
-.doc-title {
-    color: #2d3436;
-    font-size: 1.15rem;
-    line-height: 1.4;
-    text-transform: uppercase;
-}
-
-.doc-excerpt {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #636e72;
-    text-align: justify;
-}
-
-/* Metadata Info */
-.doc-meta span {
-    display: inline-flex;
-    align-items: center;
-    font-weight: 500;
-}
-
-/* Custom Detail Button */
-.btn-detail {
-    background: #0d6efd;
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.85rem;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.btn-detail:hover {
-    background: #0056b3;
-    color: #fff;
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
-}
-
-/* Custom Warning Alert */
-.alert-soft-warning {
-    background-color: #fffbeb;
-    color: #92400e;
-}
-
-/* Responsivitas Mobile */
-@media (max-width: 768px) {
-    .icon-box {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 15px;
-    }
-
-    .doc-title {
-        text-align: center;
-        font-size: 1rem;
-    }
-
-    .doc-excerpt {
-        text-align: center;
-    }
-
-    .doc-meta {
-        justify-content: center;
-    }
-
-    .doc-action {
-        width: 100%;
-        text-align: center;
-    }
-
-    .btn-detail {
-        width: 100%;
-    }
 }

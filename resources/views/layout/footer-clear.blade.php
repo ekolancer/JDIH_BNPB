@@ -63,15 +63,6 @@
                                 <li><i class="fas fa-envelope me-2"></i> jdih@bnpb.go.id</li>
                             </ul>
                         </div>
-                        <!-- <div class="footer-widget-heading pt-4">
-                            <h3>Subscribe</h3>
-                        </div>
-                        <div class="subscribe-form">
-                            <form action="#">
-                                <input type="text" placeholder="Email Address">
-                                <button><i class="fab fa-telegram-plane"></i></button>
-                            </form>
-                        </div> -->
                     </div>
                 </div>
             </div>
