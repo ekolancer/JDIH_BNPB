@@ -46,8 +46,18 @@ class DokumenController extends Controller
         // ✅ Generate SEO (INI YANG BARU 🔥)
         $seo = SeoHelper::meta($dokumen);
 
+        // Mapping tipedok
+        $tipeDokLabel = match ($tipeDok) {
+            'Peraturan' => 'Peraturan Perundang-Undangan',
+            'Monografi' => 'Monografi Hukum',
+            'Artikel'   => 'Artikel Hukum',
+            'Putusan'   => 'Putusan Pengadilan',
+            default     => $tipeDok,
+        };
+
         return view('dokumen.detail', [
             'dokumen' => $dokumen,
+            'tipeDokLabel' => $tipeDokLabel,
 
             // ukuran file
             'lampiranSizeInKb' => $dokumen->lampiran_size['kb'],
