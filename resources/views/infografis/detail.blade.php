@@ -2,7 +2,7 @@
 
 <!-- push css halaman detail infografis -->
 @push('styles')
-<link href="{{ asset('css/detail-info.css') }}?v={{ filemtime(public_path('css/detail-info.css')) }}" rel="stylesheet">
+<link href="{{ asset('css/detail-page/info.css') }}?v={{ filemtime(public_path('css/detail-page/info.css')) }}" rel="stylesheet">
 @endpush
 
 @section('content')

@@ -3,7 +3,7 @@
 <!-- push css halaman detail berita -->
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<link href="{{ asset('css/detail-news.css') }}?v={{ filemtime(public_path('css/detail-news.css')) }}" rel="stylesheet">
+<link href="{{ asset('css/detail-page/berita.css') }}?v={{ filemtime(public_path('css/detail-page/berita.css')) }}" rel="stylesheet">
 @endpush
 
 @section('content')

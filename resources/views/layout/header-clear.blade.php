@@ -25,7 +25,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}" rel="stylesheet">
-    <link href="{{ asset('css/list-doc.css') }}?v={{ filemtime(public_path('css/list-doc.css')) }}" rel="stylesheet">
+    <!-- pull css dari masing-masing halaman -->
+    @stack('styles')
 
     <!-- Livewire Stylesheet -->
     <livewire:styles />

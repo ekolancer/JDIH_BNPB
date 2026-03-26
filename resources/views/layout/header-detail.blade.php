@@ -50,8 +50,6 @@
 
     <!-- pull css detail halaman masing-masing -->
     @stack('styles')
-    <!-- Livewire Stylesheet -->
-    <!-- <livewire:styles /> -->
 
 </head>
 

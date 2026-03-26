@@ -1,0 +1,195 @@
+/* ============================================================
+   INFOGRAPHIC LIST PREMIUM UI/UX (GALLERY MODE)
+   ============================================================ */
+
+.infographic-list-wrapper {
+    --info-primary: #0f172a;
+    --info-bg: #f8fafc;
+    --info-border: #e2e8f0;
+    --info-text: #334155;
+    --info-text-muted: #64748b;
+    --info-accent: #2563eb;
+
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--info-bg);
+    min-height: 100vh;
+}
+
+/* --- Hero Section --- */
+.info-list-hero {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--info-border);
+    margin-bottom: 40px;
+}
+
+.info-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: var(--info-accent);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #bfdbfe;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--info-primary);
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* --- Card Styles --- */
+.info-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid var(--info-border);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+/* --- Image & Thumbnail Wrap --- */
+.info-card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    /* Mengunci rasio agar semua card tingginya sama */
+    overflow: hidden;
+    background-color: #f1f5f9;
+    border-bottom: 1px solid var(--info-border);
+}
+
+.info-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    /* Fokus memotong gambar ke bagian atas/judul infografis */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-card:hover .info-card-img {
+    transform: scale(1.05);
+    /* Efek zoom halus saat di-hover */
+}
+
+/* --- Hover Overlay --- */
+.info-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.info-card:hover .info-card-overlay {
+    opacity: 1;
+}
+
+.btn-view {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.info-card:hover .btn-view {
+    transform: translateY(0);
+}
+
+/* --- Text Content --- */
+.info-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.info-card-meta {
+    font-size: 0.8rem;
+    color: var(--info-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--info-primary);
+    line-height: 1.4;
+    margin: 0;
+    /* Limit ke 2 baris agar tinggi card tetap rapi */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.info-card:hover .info-card-title {
+    color: var(--info-accent);
+}
+
+/* --- Pagination Customization --- */
+.info-pagination .pagination {
+    margin-bottom: 0;
+}
+
+.info-pagination .page-link {
+    color: var(--info-text);
+    border: none;
+    border-radius: 8px;
+    margin: 0 4px;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+.info-pagination .page-item.active .page-link {
+    background-color: var(--info-primary);
+    color: white;
+}
+
+.info-pagination .page-link:hover {
+    background-color: #f1f5f9;
+}
+
+/* --- Responsive Layout Adjustments --- */
+@media (max-width: 576px) {
+    .info-list-hero {
+        padding: 30px 15px !important;
+        margin-bottom: 24px;
+    }
+
+    .info-card-img-wrap {
+        aspect-ratio: 1 / 1;
+        /* Agak lebih kotak di HP agar tidak terlalu panjang */
+    }
+}
