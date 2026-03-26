@@ -47,7 +47,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}" rel="stylesheet">
-    <link href="{{ asset('css/detail.css') }}?v={{ filemtime(public_path('css/detail.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/detail-doc.css') }}?v={{ filemtime(public_path('css/detail-doc.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/detail-news.css') }}?v={{ filemtime(public_path('css/detail-news.css')) }}" rel="stylesheet">
 
     <!-- Livewire Stylesheet -->
     <livewire:styles />

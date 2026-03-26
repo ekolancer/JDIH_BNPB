@@ -5,168 +5,94 @@ namespace App\Http\Controllers;
 use App\Models\DokumenHukum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Helpers\SeoHelper;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use App\Helpers\SeoHelper;
 
 class DokumenController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan detail dokumen hukum
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-
     public function show($tipeDok, $slug)
     {
-        // ✅ Validasi tipe dokumen
+        // 1. Validasi tipe dokumen menggunakan abort_unless (lebih clean)
         $validTypes = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
+        abort_unless(in_array($tipeDok, $validTypes), 404, 'Tipe dokumen tidak valid');
 
-        abort_unless(in_array($tipeDok, $validTypes), 404);
+        // 2. Ambil dokumen menggunakan query scope yang sudah ada di Model
+        $dokumen = DokumenHukum::with(['jenisDokumen', 'bidangHukumRef', 'subjekRef'])
+            ->findBySlug($tipeDok, $slug)
+            ->firstOrFail();
 
-        // ✅ Ambil dokumen + relasi
-        $dokumen = DokumenHukum::with([
-            'jenisDokumen',
-            'bidangHukumRef',
-            'subjekRef',
-        ])->findBySlug($tipeDok, $slug)->firstOrFail();
+        // 3. Increment view tanpa trigger event observer / updated_at (Best Practice)
+        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('view_count');
 
-        // ✅ Increment view tanpa trigger observer
-        DB::table('dokumen_hukums')
-            ->where('id', $dokumen->id)
-            ->increment('view_count');
-
-        // ✅ Generate SEO (INI YANG BARU 🔥)
-        $seo = SeoHelper::meta($dokumen);
-
-        // Mapping tipedok
-        $tipeDokLabel = match ($tipeDok) {
-            'Peraturan' => 'Peraturan Perundang-Undangan',
-            'Monografi' => 'Monografi Hukum',
-            'Artikel'   => 'Artikel Hukum',
-            'Putusan'   => 'Putusan Pengadilan',
-            default     => $tipeDok,
-        };
-
+        // 4. Return ke view. 
+        // Variabel yang dikirim jauh lebih sedikit karena Blade dapat langsung memanggil 
+        // accessor dari Model (misal: $dokumen->tipe_dok_label, $dokumen->metadata)
         return view('dokumen.detail', [
-            'dokumen' => $dokumen,
-            'tipeDokLabel' => $tipeDokLabel,
-
-            // ukuran file
-            'lampiranSizeInKb' => $dokumen->lampiran_size['kb'],
-            'lampiranSizeInMb' => $dokumen->lampiran_size['mb'],
-            'abstrakSizeInKb'  => $dokumen->abstrak_size['kb'],
-            'abstrakSizeInMb'  => $dokumen->abstrak_size['mb'],
-
-            // metadata
-            'metadata' => [
-                'Jenis Dokumen'        => $dokumen->jenisDokumen,
-                'Judul'                => $dokumen->judul,
-                'Nomor'                => $dokumen->nomor,
-                'Tahun'                => $dokumen->tahun,
-                'Tajuk Entri Utama'    => $dokumen->teuBadan,
-                'Bidang Hukum'         => $dokumen->bidangHukumRef,
-                'Subjek'               => $dokumen->subjekRef,
-                'Tanggal Penetapan'    => $dokumen->tgl_penetapan_formatted ?? '—',
-                'Tanggal Pengundangan' => $dokumen->tgl_pengundangan_formatted ?? '—',
-                'Tempat Terbit'        => $dokumen->tempat,
-                'Sumber'               => $dokumen->sumber,
-                'Bahasa'               => $dokumen->bahasa,
-                'Lokasi'               => $dokumen->lokasi,
-            ],
-
-            'buttonText' => $dokumen->button_text,
-
-            // 🔥 KIRIM SEO KE BLADE
-            'seo' => $seo,
+            'dokumen'  => $dokumen,
+            'metadata' => $dokumen->metadata, // Memanggil getMetadataAttribute() dari Model
+            'tipeDokLabel' => $dokumen->tipe_dok_label,
+            'seo'      => SeoHelper::meta($dokumen),
         ]);
     }
 
-
     /**
-     * Unduh file lampiran
-     *
-     * @param int $dokumenId
-     * @return \Illuminate\Http\Response
+     * Unduh file lampiran utama
      */
-    public function unduhLampiran(Request $request, string $slug)
+    public function unduhLampiran($slug)
     {
         $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
-        // 1. Check authorization
-        if (!$dokumen->download_allowed) {
-            abort(403, 'Dokumen tidak dapat diunduh');
-        }
+        // 1. Validasi akses dan ketersediaan file menggunakan Accessor Model
+        abort_unless($dokumen->download_allowed, 403, 'Dokumen tidak dapat diunduh');
+        abort_unless($dokumen->lampiran_exists, 404, 'File fisik tidak ditemukan');
 
-        // 2. Validate file exists di storage
-        if (!$dokumen->lampiran_exists) {
-            abort(404, 'File tidak ditemukan');
-        }
+        // 2. Increment download count
+        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count');
 
-        // 3. Use Storage facade (amannya)
-        $filePath = storage_path('app/public/' . $dokumen->lampiran);
-        return response()->download(
-            $filePath,
-            $this->sanitizeFilename($dokumen->judul) . '.' . $dokumen->file_extension,
-            ['Content-Type' => $this->getMimeType($dokumen->file_extension)]
-        );
-    }
+        // 3. Format nama file agar rapi (misal: peraturan-nomor-1-tahun-2024.pdf)
+        $filename = basename($dokumen->lampiran);
 
-    private function sanitizeFilename(string $filename): string
-    {
-        return preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
-    }
-
-    private function getMimeType(string $extension): string
-    {
-        return match ($extension) {
-            'pdf' => 'application/pdf',
-            'jpg', 'jpeg' => 'image/jpeg',
-            'png' => 'image/png',
-            default => 'application/octet-stream',
-        };
+        // 4. Gunakan Storage::download (Otomatis handle MimeType & Headers)
+        return Storage::disk('public')->download($dokumen->lampiran, $filename);
     }
 
     /**
      * Unduh file abstrak
-     *
-     * @param int $dokumenId
-     * @return \Illuminate\Http\Response
      */
     public function unduhAbstrak($slug)
     {
-        // Cari dokumen berdasarkan ID
         $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
-        // Mendapatkan path file
-        $filePath = public_path('storage/' . $dokumen->abstrak);
+        // 1. Validasi eksistensi file menggunakan facade Storage
+        abort_unless($dokumen->abstrak && Storage::disk('public')->exists($dokumen->abstrak), 404, 'File abstrak tidak ditemukan');
 
-        // Mengecek apakah file ada
-        if (!file_exists($filePath)) {
-            abort(404, 'File tidak ditemukan');
-        }
+        // 2. Increment download count (Atau buat abstrak_download_count di tabel jika ingin dipisah)
+        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count');
 
-        // Increment download_count di database tanpa memperhatikan cache
-        DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('download_count', 1);
+        // 3. Format nama file
+        $extension = pathinfo($dokumen->abstrak, PATHINFO_EXTENSION);
+        $filename = 'Abstrak-' . Str::slug($dokumen->judul) . '.' . $extension;
 
-        // Mengembalikan file untuk diunduh
-        return response()->download($filePath, null, [
+        return Storage::disk('public')->download($dokumen->abstrak, $filename, [
             'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => '0'
+            'Pragma'        => 'no-cache',
+            'Expires'       => '0'
         ]);
     }
+
+    /**
+     * Pratinjau file langsung di browser (PDF Viewer)
+     */
     public function fileView(DokumenHukum $dokumen)
     {
-        abort_if(!$dokumen->file_tersedia, 404);
+        // Route Model Binding ($dokumen otomatis dicari berdasarkan slug sesuai getRouteKeyName di model)
+        abort_unless($dokumen->file_tersedia, 404, 'File tidak tersedia untuk dilihat');
 
-        return response()->file(storage_path('app/public/' . $dokumen->lampiran));
+        // Gunakan Storage::path untuk mendapatkan path absolute yang benar di berbagai OS
+        return response()->file(Storage::disk('public')->path($dokumen->lampiran));
     }
 }

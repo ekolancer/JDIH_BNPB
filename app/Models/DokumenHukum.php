@@ -220,6 +220,7 @@ class DokumenHukum extends Model
         // Ambil nama & singkatan dari master jenis dokumen
         $jenisNama   = $this->jenisDokumen->nama ?? '-';
         $singkatan   = $this->jenisDokumen->singkatan ?? '-';
+        $subjekHukum = $this->subjekRef;
 
         // Helper aman untuk tanggal
         $fmt = fn($t) =>
@@ -227,27 +228,23 @@ class DokumenHukum extends Model
 
         $base = [
             'Jenis Dokumen'     => $jenisNama,
-            'Singkatan'         => $singkatan,
             'Judul'             => $this->judul ?? '-',
-            'Tajuk Entri Utama' => $this->teuBadan ?? '-',
             'Nomor'             => $this->nomor ?? '-',
             'Tahun Terbit'      => $this->tahun ?? '-',
+            'Tajuk Entri Utama' => $this->teuBadan ?? '-',
+            'Bidang Hukum'      => $this->bidangHukumRef,
+            'Subjek'            => $subjekHukum ?? '-',
+            'Tanggal Penetapan'   => $fmt($this->tglPenetapan),
+            'Tanggal Pengundangan' => $fmt($this->tglPengundangan),
             'Tempat Terbit'     => $this->tempat ?? '-',
-            'Subjek'            => $this->subjek ?? '-',
             'Sumber'            => $this->sumber ?? '-',
             'Bahasa'            => $this->bahasa ?? '-',
             'Lokasi'            => $this->lokasi ?? '-',
-            'Bidang Hukum'      => $this->bidangHukum ?? '-',
             'Penandatangan'     => $this->penandatangan ?? '-',
         ];
 
         // Template per-tipe
         $templates = [
-            'Peraturan' => array_merge($base, [
-                'Tanggal Penetapan'   => $fmt($this->tglPenetapan),
-                'Tanggal Pengundangan' => $fmt($this->tglPengundangan),
-            ]),
-
             'Putusan' => array_merge($base, [
                 'Nomor Putusan'  => $this->nomor ?? '-',
                 'Tempat Peradilan' => $this->tempat ?? '-',
@@ -258,34 +255,31 @@ class DokumenHukum extends Model
             'Monografi' => [
                 'Jenis Dokumen'     => $jenisNama,
                 'Judul'             => $this->judul ?? '-',
-                'Tajuk Entri Utama' => $this->teuBadan ?? '-',
+                'Bidang Hukum'      => $this->bidangHukum ?? '-',
+                'Subjek'            => $this->subjek ?? '-',
                 'Tahun Terbit'      => $this->tahun ?? '-',
+                'Tajuk Entri Utama' => $this->teuBadan ?? '-',
                 'Tempat Terbit'     => $this->tempat ?? '-',
                 'Penerbit'          => $this->penerbit ?? '-',
-                'Nomor Panggil'     => $this->nomorPanggil ?? '-',
                 'Cetakan / Edisi'   => $this->cetakanEdisi ?? '-',
-                'Deskripsi Fisik'   => $this->deskripsiFisik ?? '-',
-                'Subjek'            => $this->subjek ?? '-',
                 'ISBN'              => $this->isbn ?? '-',
                 'Bahasa'            => $this->bahasa ?? '-',
                 'Lokasi'            => $this->lokasi ?? '-',
-                'Bidang Hukum'      => $this->bidangHukum ?? '-',
-                'Nomor Induk Buku'  => $this->nomorIndukBuku ?? '-',
             ],
 
             'Artikel' => [
                 'Jenis Dokumen'     => $jenisNama,
                 'Judul'             => $this->judul ?? '-',
                 'Tajuk Entri Utama' => $this->teuBadan ?? '-',
+                'Bidang Hukum'      => $this->bidangHukum ?? '-',
+                'Sumber'            => $this->sumber ?? '-',
                 'Tahun Terbit'      => $this->tahun ?? '-',
                 'Tempat Terbit'     => $this->tempat ?? '-',
                 'Penerbit'          => $this->penerbit ?? '-',
                 'Subjek'            => $this->subjek ?? '-',
-                'Sumber'            => $this->sumber ?? '-',
                 'Status'            => $this->status ?? '-',
                 'Bahasa'            => $this->bahasa ?? '-',
                 'Lokasi'            => $this->lokasi ?? '-',
-                'Bidang Hukum'      => $this->bidangHukum ?? '-',
             ],
         ];
 
@@ -575,6 +569,17 @@ class DokumenHukum extends Model
     /***************************************************************
      *  ACCESSOR: DOWNLOAD & FILE HELPERS (DETAIL BLADE SAFE)
      ***************************************************************/
+
+    public function getTipeDokLabelAttribute()
+    {
+        return match ($this->tipeDok) {
+            'Peraturan' => 'Peraturan Perundang-Undangan',
+            'Monografi' => 'Monografi Hukum',
+            'Artikel'   => 'Artikel Hukum',
+            'Putusan'   => 'Putusan Pengadilan',
+            default     => $this->tipeDok,
+        };
+    }
 
     public function getDownloadAllowedAttribute(): bool
     {
