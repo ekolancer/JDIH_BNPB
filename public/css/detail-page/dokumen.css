@@ -205,7 +205,11 @@
 }
 
 /* --- Exclusive Share Section --- */
+
+/* Base Button - Mendukung <a> dan <button> dengan seragam */
 .sidebar-share-compact .share-btn-sm {
+    position: relative;
+    /* Wajib agar Tooltip presisi di atas tombol */
     width: 40px;
     height: 40px;
     display: flex;
@@ -218,6 +222,11 @@
     text-decoration: none;
     border: 1px solid var(--doc-border);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Reset khusus untuk tag <button> */
+    padding: 0;
+    outline: none;
+    cursor: pointer;
 }
 
 .sidebar-share-compact .share-btn-sm:hover {
@@ -227,6 +236,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* --- Brand Hover Colors --- */
 .sidebar-share-compact .share-fb:hover {
     background-color: #1877F2;
 }
@@ -241,6 +251,48 @@
 
 .sidebar-share-compact .share-tg:hover {
     background-color: #229ED9;
+}
+
+/* Hover khusus untuk tombol Copy */
+.sidebar-share-compact .share-copy:hover {
+    background-color: #495057;
+    box-shadow: 0 4px 10px rgba(73, 80, 87, 0.3);
+}
+
+/* --- Universal Tooltip Bubble (Berlaku untuk semua tombol share) --- */
+.sidebar-share-compact .share-btn-sm::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #111;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.sidebar-share-compact .share-btn-sm:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* --- Copy Success State --- */
+.sidebar-share-compact .share-copy.success {
+    background-color: #198754;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.sidebar-share-compact .share-copy.success::after {
+    content: "Tersalin!";
+    background-color: #198754;
 }
 
 /* --- Sidebar Actions --- */

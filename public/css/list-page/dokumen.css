@@ -274,7 +274,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 8px;
+    padding: 10px 8px;
     border-radius: var(--ld-radius-sm);
     transition: background var(--ld-transition);
     cursor: pointer;

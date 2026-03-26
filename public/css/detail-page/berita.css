@@ -161,7 +161,11 @@
     text-transform: uppercase;
 }
 
+/* Base Button - Ditambahkan position: relative untuk Tooltip */
+/* Base Button - Ditambahkan reset untuk tag <button> dan position: relative untuk Tooltip */
 .news-share-section .share-btn {
+    position: relative;
+    /* Wajib agar tooltip posisinya akurat di atas tombol */
     width: 40px;
     height: 40px;
     display: flex;
@@ -172,6 +176,12 @@
     color: var(--news-text-main);
     text-decoration: none;
     transition: all 0.2s ease;
+
+    /* --- TAMBAHAN RESET UNTUK TAG <button> --- */
+    border: none;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
 }
 
 .news-share-section .share-btn:hover {
@@ -179,6 +189,7 @@
     color: white;
 }
 
+/* --- Brand Hover Colors --- */
 .news-share-section .share-fb:hover {
     background: #1877F2;
 }
@@ -193,6 +204,46 @@
 
 .news-share-section .share-tg:hover {
     background: #229ED9;
+}
+
+.news-share-section .share-copy:hover {
+    background: #495057;
+}
+
+/* --- Universal Tooltip Bubble (Berlaku untuk semua tombol .share-btn) --- */
+.news-share-section .share-btn::after {
+    content: attr(data-tooltip);
+    /* Mengambil teks dari HTML data-tooltip="..." */
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #111;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.news-share-section .share-btn:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* --- Copy Success State --- */
+.news-share-section .share-copy.success {
+    background: #198754;
+    color: white;
+}
+
+.news-share-section .share-copy.success::after {
+    content: "Tersalin!";
+    /* Mengubah teks tooltip saat berhasil */
+    background: #198754;
 }
 
 /* --- Sidebar & Sticky --- */

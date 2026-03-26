@@ -54,13 +54,53 @@
                         {!! $berita->konten_sanitized !!}
                     </div>
 
+                    @php
+                    $shareUrl = urlencode(url()->current());
+                    $shareTitle = urlencode($berita->judul ?? '');
+                    @endphp
                     <div class="news-share-section mt-5 border-top pt-4">
-                        <span class="share-label">Bagikan Berita:</span>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="share-btn share-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="share-btn share-x" title="X"><i class="fab fa-x-twitter"></i></a>
-                            <a href="#" class="share-btn share-wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                            <a href="#" class="share-btn share-tg" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                        <span class="share-label">Bagikan ke:</span>
+
+                        <div class="d-flex gap-2 mt-2">
+
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}"
+                                target="_blank" rel="noopener noreferrer"
+                                class="share-btn share-fb"
+                                data-tooltip="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+
+                            <a href="https://twitter.com/intent/tweet?text={{ $shareTitle }}&url={{ $shareUrl }}"
+                                target="_blank" rel="noopener noreferrer"
+                                class="share-btn share-x"
+                                data-tooltip="X">
+                                <i class="fab fa-x-twitter"></i>
+                            </a>
+
+                            <a href="https://api.whatsapp.com/send?text={{ $shareTitle }}%20{{ $shareUrl }}"
+                                target="_blank" rel="noopener noreferrer"
+                                class="share-btn share-wa"
+                                data-tooltip="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+
+                            <a href="https://t.me/share/url?url={{ $shareUrl }}&text={{ $shareTitle }}"
+                                target="_blank" rel="noopener noreferrer"
+                                class="share-btn share-tg"
+                                data-tooltip="Telegram">
+                                <i class="fab fa-telegram-plane"></i>
+                            </a>
+
+                            <!-- copy link button -->
+                            <button type="button"
+                                class="share-btn share-copy"
+                                id="copyBtn"
+                                data-tooltip="Salin link"
+                                onclick="copyLinkPremium(this)">
+
+                                <i class="fas fa-link"></i>
+                            </button>
+
                         </div>
                     </div>
 
@@ -105,4 +145,70 @@
         </div>
     </div>
 </div>
+
+<script>
+    function copyLinkPremium(button) {
+        const url = window.location.href;
+        const icon = button.querySelector('i');
+
+        navigator.clipboard.writeText(url).then(() => {
+
+            // Ubah icon
+            icon.classList.remove('fa-link');
+            icon.classList.add('fa-check');
+
+            // Ubah tooltip
+            button.setAttribute('data-tooltip', 'Disalin!');
+
+            // Tambah class success
+            button.classList.add('success');
+
+            // Toast kecil (optional subtle)
+            showToastPremium('Link berhasil disalin');
+
+            // Reset setelah 2 detik
+            setTimeout(() => {
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-link');
+                button.setAttribute('data-tooltip', 'Salin link');
+                button.classList.remove('success');
+            }, 2000);
+
+        }).catch(() => {
+            showToastPremium('Gagal menyalin link');
+        });
+    }
+
+    function showToastPremium(message) {
+        const toast = document.createElement('div');
+        toast.innerText = message;
+
+        toast.style.position = 'fixed';
+        toast.style.bottom = '30px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%) translateY(10px)';
+        toast.style.background = 'rgba(0,0,0,0.85)';
+        toast.style.color = '#fff';
+        toast.style.padding = '10px 16px';
+        toast.style.borderRadius = '999px';
+        toast.style.fontSize = '13px';
+        toast.style.opacity = '0';
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.zIndex = '9999';
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(10px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+</script>
+
 @endsection
