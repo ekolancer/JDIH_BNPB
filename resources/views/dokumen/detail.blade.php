@@ -1,5 +1,11 @@
 @extends('layout.app-detail')
 
+<!-- push css halaman detail dokumen -->
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ asset('css/detail-doc.css') }}?v={{ filemtime(public_path('css/detail-doc.css')) }}" rel="stylesheet">
+@endpush
+
 @section('content')
 
 <div class="doc-detail-wrapper">

@@ -1,51 +1,70 @@
-@extends('layout.app-clear')
+@extends('layout.app-detail')
+
+<!-- push css halaman detail infografis -->
+@push('styles')
+<link href="{{ asset('css/detail-info.css') }}?v={{ filemtime(public_path('css/detail-info.css')) }}" rel="stylesheet">
+@endpush
 
 @section('content')
-<!-- Section List Biru -->
-<section class="file-title-section">
-    <div class="container"></div>
-</section>
+<div class="infographic-detail-wrapper">
+    <div class="container mt-4 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
 
-<div class="container mt-3 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <div class="card shadow-lg border-0" style="display: inline-block;">
-                <!-- Header -->
-                <div class="card-header d-flex justify-content-between bg-primary text-white p-2">
-                    <div class="me-3 flex-shrink-0">
-                        <i class="far fa-calendar-alt me-1"></i>
-                        {{ \Carbon\Carbon::parse($infografis->created_at)->locale('id')->translatedFormat('d F Y') }}
-                    </div>
-                    <!-- <h5 class="fw-bold text-uppercase text-center mb-0 mx-3" style="flex: 1; overflow: hidden; text-overflow: ellipsis;">
-                        {{ $infografis->judul }}
-                    </h5> -->
-                    <div class="ms-3 flex-shrink-0">
-                        <i class="fas fa-eye me-1"></i> {{ $infografis->view_count }} Dilihat
-                    </div>
-                </div>
-
-                <!-- Gambar -->
-                <div class="card-body p-3 text-center">
-                    @if (!empty($infografis->gambar) && file_exists(public_path('storage/' . $infografis->gambar)))
-                        <img
-                            src="{{ asset('storage/' . $infografis->gambar) }}"
-                            class="img-fluid rounded shadow d-block mx-auto"
-                            alt="Gambar Infografis"
-                            style="height: auto; width: auto; max-width:100%; max-height:100vh; object-fit: contain;">
-                    @else
-                        <p class="text-center text-muted">Tidak ada gambar untuk ditampilkan.</p>
-                    @endif
-                </div>
-
-                <!-- Footer Navigation -->
-                <div class="d-flex justify-content-center mt-1 mb-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                <div class="mb-4">
+                    <a href="{{ url()->previous() }}" class="btn-back-clean">
+                        <i class="fas fa-arrow-left me-2"></i> Kembali
                     </a>
                 </div>
+
+                <header class="info-header text-center mb-0">
+                    <h1 class="info-title">
+                        {{ $infografis->judul_label }}
+                    </h1>
+
+                    <div class="info-meta">
+                        <span class="meta-item">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $infografis->tanggal_formatted }}
+                        </span>
+                        <span class="meta-separator d-none d-sm-inline">•</span>
+                        <span class="meta-item">
+                            <i class="fas fa-eye"></i>
+                            {{ $infografis->view_count_formatted }} Dilihat
+                        </span>
+                    </div>
+                </header>
+
+                <div class="info-share-top d-flex justify-content-center align-items-center gap-3 mb-4">
+                    <span class="share-label mb-0">Bagikan:</span>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="share-icon fb" title="Bagikan ke Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="share-icon x" title="Bagikan ke X"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" class="share-icon wa" title="Bagikan ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="share-icon tg" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    </div>
+                </div>
+
+                <figure class="info-image-container mb-5">
+                    @if ($infografis->image_url)
+                    <div class="image-wrapper shadow-xl">
+                        <img
+                            src="{{ $infografis->image_url }}"
+                            class="img-fluid info-img"
+                            alt="{{ $infografis->image_alt }}"
+                            loading="lazy">
+                    </div>
+                    @else
+                    <div class="empty-state shadow-sm">
+                        <i class="fas fa-image fa-4x mb-3 text-muted opacity-50"></i>
+                        <h5 class="fw-bold text-secondary">Belum Ada Infografis</h5>
+                        <p class="text-muted mb-0">Gambar untuk infografis ini belum tersedia.</p>
+                    </div>
+                    @endif
+                </figure>
+
             </div>
         </div>
     </div>
 </div>
-
 @endsection

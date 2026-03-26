@@ -1,14 +1,19 @@
 @extends('layout.app-detail')
 
-@section('content')
+<!-- push css halaman detail berita -->
+@push('styles')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ asset('css/detail-news.css') }}?v={{ filemtime(public_path('css/detail-news.css')) }}" rel="stylesheet">
+@endpush
+
+@section('content')
 
 <div class="news-detail-wrapper">
 
     <div class="news-topbar">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="{{ url()->previous() }}" class="news-btn-back">
-                <i class="fas fa-arrow-left me-2"></i> Kembali ke Daftar
+                <i class="fas fa-arrow-left me-2"></i> Kembali
             </a>
             <span class="news-breadcrumb-text d-none d-md-block">Berita & Informasi Hukum</span>
         </div>
@@ -84,14 +89,15 @@
                         </div>
                     </div>
 
-                    <div class="news-widget banner-widget text-white shadow-sm mt-4">
+                    <!-- Widget untuk Bantuan Hukum -->
+                    <!-- <div class="news-widget banner-widget text-white shadow-sm mt-4">
                         <div class="banner-icon mb-3">
                             <i class="fas fa-balance-scale"></i>
                         </div>
                         <h4 class="fw-bold mb-2">Butuh Bantuan Hukum?</h4>
                         <p class="mb-4 opacity-75" style="font-size: 0.9rem;">Akses layanan informasi dan dokumentasi hukum resmi dengan mudah melalui portal JDIH kami.</p>
                         <a href="#" class="btn btn-light fw-bold w-100 banner-btn">Ajukan Sekarang</a>
-                    </div>
+                    </div> -->
 
                 </div>
             </aside>

@@ -13,14 +13,19 @@ class SeoHelper
         return match ($type) {
 
             // =========================
-            // 📄 DOKUMEN (existing logic)
+            // 1. DOKUMEN HUKUM
             // =========================
             'DokumenHukum' => self::dokumen($data),
 
             // =========================
-            // 📰 BERITA (baru)
+            // 2. BERITA
             // =========================
             'Berita' => self::berita($data),
+
+            // =========================
+            // 3. INFOGRAFIS
+            // =========================
+            'Infografis' => self::infografis($data),
 
             // =========================
             // DEFAULT (fallback aman)
@@ -30,7 +35,7 @@ class SeoHelper
     }
 
     // =========================
-    // 📄 DOKUMEN (TIDAK DIUBAH)
+    // 1. DOKUMEN HUKUM
     // =========================
     private static function dokumen($dokumen)
     {
@@ -43,7 +48,7 @@ class SeoHelper
     }
 
     // =========================
-    // 📰 BERITA (OPTIMIZED)
+    // 2. BERITA (OPTIMIZED)
     // =========================
     private static function berita($berita)
     {
@@ -55,6 +60,22 @@ class SeoHelper
                 : asset('images/og_image.png'),
             'url' => url()->current(),
             'type' => 'article', // 🔥 tambahkan
+        ];
+    }
+
+    // =========================
+    // 3. INFOGRAFIS
+    // =========================
+    private static function infografis($infografis)
+    {
+        return [
+            'title' => "{$infografis->judul} - Infografis JDIH BNPB",
+            'description' => "Infografis hukum: {$infografis->judul}",
+            'image' => $infografis->gambar
+                ? asset('storage/' . $infografis->gambar)
+                : asset('images/og_image.png'),
+            'url' => url()->current(),
+            'type' => 'article',
         ];
     }
 

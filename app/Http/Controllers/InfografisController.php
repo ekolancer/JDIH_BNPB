@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Infografis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\SeoHelper;
 
 class InfografisController extends Controller
 {
@@ -20,18 +21,19 @@ class InfografisController extends Controller
 
     public function show(string $slug)
     {
-        // Mengambil data peraturan berdasarkan judul
         $infografis = Infografis::where('slug', $slug)->firstOrFail();
 
-        // Update view_count tanpa memicu event observer
-        DB::table('infografis')->where('id', $infografis->id)->increment('view_count');
+        // increment view
+        DB::table('infografis')
+            ->where('id', $infografis->id)
+            ->increment('view_count');
 
-        // Cek apakah gambar berupa array dan ambil gambar pertama
-        $gambarPertama = is_array($infografis->gambar) ? $infografis->gambar[0] : $infografis->gambar;
+        // 🔥 SEO CONNECT
+        $seo = SeoHelper::meta($infografis);
 
-        // Tentukan path file lampiran
-        $fileLampiranPath = storage_path('app/public/' . $gambarPertama);
-
-        return view('infografis.detail', compact('infografis'));
+        return view('infografis.detail', [
+            'infografis' => $infografis,
+            'seo' => $seo, // 🔥 WAJIB
+        ]);
     }
 }

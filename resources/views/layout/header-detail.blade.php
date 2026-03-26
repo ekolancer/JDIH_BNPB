@@ -47,11 +47,11 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}" rel="stylesheet">
-    <link href="{{ asset('css/detail-doc.css') }}?v={{ filemtime(public_path('css/detail-doc.css')) }}" rel="stylesheet">
-    <link href="{{ asset('css/detail-news.css') }}?v={{ filemtime(public_path('css/detail-news.css')) }}" rel="stylesheet">
 
+    <!-- pull css detail halaman masing-masing -->
+    @stack('styles')
     <!-- Livewire Stylesheet -->
-    <livewire:styles />
+    <!-- <livewire:styles /> -->
 
 </head>
 
