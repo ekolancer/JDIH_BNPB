@@ -2270,7 +2270,7 @@ progress {
     background-color: #fff;
     border-color: #899abd;
     outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(19, 53, 123, .25)
+    box-shadow: none;
 }
 
 .form-control::-webkit-date-and-time-value {

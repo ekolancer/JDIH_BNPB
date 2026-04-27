@@ -63,7 +63,7 @@ app/
   ├─ Filament/         # Resources, Pages, Auth (panel webmin)
   ├─ Http/Controllers/  # ApiController, DashboardController, DokumenController, BeritaController, InfografisController, SurveyController
   ├─ Http/Middleware/   # VisitorCounter, RestrictIpMiddleware
-  ├─ Livewire/          # DokumenList, ListDocSearch, MediaFile, DropdownDokumen
+  ├─ Livewire/          # DokumenList, MediaFile, DropdownDokumen
   └─ Models/            # DokumenHukum, Berita, Infografis, ProfilPage, Faq, Visitor, Survey, Ref*
 
 routes/

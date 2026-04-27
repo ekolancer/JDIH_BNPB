@@ -26,7 +26,7 @@ Referensi cepat: [composer.json](composer.json), [package.json](package.json)
 - `app/` — kode aplikasi utama
   - `Filament/` — sumber daya dan konfigurasi admin Filament (Pages, Resources, Widgets)
   - `Http/Controllers/` — controller aplikasi (lihat `DokumenController`, `ApiController`, `SurveyController`)
-  - `Livewire/` — komponen Livewire frontend (mis. `ListDocSearch`, `DokumenList`)
+  - `Livewire/` — komponen Livewire frontend (mis. `DokumenList`)
   - `Models/` — model Eloquent utama (mis. `DokumenHukum`, `User`, `RefJenisDokumen`, dll.)
   - `Observers/`, `Policies/`, `Providers/` — hooks, kebijakan akses, service providers
   - `Helpers/` — utilitas (mis. `SeoHelper.php`)
