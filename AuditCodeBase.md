@@ -58,14 +58,14 @@ File ini merupakan versi rename dari `audit.md` dan berisi temuan audit pada lev
 - **Naming Inconsistency**: `tipeDok` (camelCase) vs `ref_jenis_dokumen_id` (snake_case)
 
 ### 3. Database & Query
-- **Redundant Fields** di tabel `dokumen_hukums`: `jenisDok`, `singkatan`, `bidangHukum`
-- **Missing Database Indexes** untuk `view_count`, `download_count`, `tahun`, `status` (partially indexed)
-- **N+1 Query Potential** di `DokumenList` dengan multiple queries di `loadFilterCounts()`
+- **Redundant Fields** di tabel `dokumen_hukums`: `jenisDok`, `singkatan`, `bidangHukum` — **Mitigated** di kode aktif; kolom belum di-drop karena masih perlu migrasi data/backfill dan verifikasi schema produksi.
+- **Missing Database Indexes** untuk `view_count`, `download_count`, `tahun`, `status` (partially indexed) — **Done** via migration `2026_04_27_000001_add_performance_indexes_to_dokumen_hukums_table.php`.
+- **N+1 Query Potential** di `DokumenList` dengan multiple queries di `loadFilterCounts()` — **Mitigated**; count filter memakai subquery ID dokumen terfilter dan tidak lagi materialize semua ID via `pluck()`.
 
 ### 4. Security
-- **No Input Validation** di Controller (tidak ada Form Request di beberapa endpoint)
-- **File Path Traversal Risk** di download methods (mitigated in current code)
-- **No Authorization Policy Check** untuk download endpoint di backend (partial)
+- **No Input Validation** di Controller (tidak ada Form Request di beberapa endpoint) — **Mitigated** untuk endpoint metadata API, survey, detail dokumen, download lampiran/abstrak, dan file view.
+- **File Path Traversal Risk** di download methods — **Done**; download/view memvalidasi path relatif sebelum akses Storage/response file.
+- **No Authorization Policy Check** untuk download endpoint di backend — **Done**; `DokumenHukumPolicy::download()` dan `viewFile()` dipanggil dari controller.
 
 ### 5. Performance
 - **Tidak ada route caching** (repo-level)
@@ -91,18 +91,18 @@ Catatan: status diisi berdasarkan pemeriksaan cepat kode saat ini (refs disertak
 ### High
 - [x] Perbaiki file download vulnerability — Status: **Done**
   - Evidence: [app/Http/Controllers/DokumenController.php](app/Http/Controllers/DokumenController.php) menggunakan `Storage::disk('public')->download()` dan memeriksa accessor `download_allowed` & `lampiran_exists` di [app/Models/DokumenHukum.php](app/Models/DokumenHukum.php).
-- [~] Tambahkan backend authorization untuk download — Status: **Partial**
-  - Evidence: controller memeriksa `download_allowed` (status) tetapi tidak ada `Policy`/`Gate` khusus untuk role/permission enforcement. Rekomendasi: buat `DokumenHukumPolicy` dan panggil `authorize` atau middleware `can:`.
-- [~] Implementasi input validation (Form Request) — Status: **Partial**
-  - Evidence: `ApiController@index` sudah memanggil `$request->validate([...])`, namun endpoint download/show belum memakai `FormRequest` khusus. Rekomendasi: tambahkan `FormRequest` untuk upload/download endpoints.
+- [x] Tambahkan backend authorization untuk download — Status: **Done**
+  - Evidence: [app/Policies/DokumenHukumPolicy.php](app/Policies/DokumenHukumPolicy.php) memiliki `download()` dan `viewFile()`, dipanggil via `Gate::authorize()` di [app/Http/Controllers/DokumenController.php](app/Http/Controllers/DokumenController.php).
+- [x] Implementasi input validation (Form Request) — Status: **Done**
+  - Evidence: Form Request baru tersedia untuk metadata API, survey, detail dokumen, download dokumen, dan file view di folder [app/Http/Requests](app/Http/Requests).
 
 ### Medium
 - [ ] Refactor Visitor Middleware ke Queue — Status: **Not Done**
   - Evidence: [app/Http/Middleware/VisitorCounter.php](app/Http/Middleware/VisitorCounter.php) melakukan HTTP lookup (`Http::get`) dan `Visitor::create()` sinkron. Tidak ditemukan `app/Jobs/RecordVisitorJob` di kode produksi.
 - [ ] Mass Assignment hardening (`$fillable`) — Status: **Not Done**
   - Evidence: [app/Models/DokumenHukum.php](app/Models/DokumenHukum.php) memiliki banyak field di `$fillable`. Rekomendasi: kurangi `$fillable` atau gunakan `$guarded = ['id']` plus `FormRequest`.
-- [~] Missing DB Indexes — Status: **Partial**
-  - Evidence: beberapa indeks sudah ada (contoh `ref_jenis_dokumen_id` di migration), tetapi indeks rekomendasi untuk `view_count`, `download_count`, `tahun`, `status` belum ditambahkan. Rekomendasi: buat migration `add_missing_indexes`.
+- [x] Missing DB Indexes — Status: **Done**
+  - Evidence: migration [database/migrations/2026_04_27_000001_add_performance_indexes_to_dokumen_hukums_table.php](database/migrations/2026_04_27_000001_add_performance_indexes_to_dokumen_hukums_table.php) menambahkan index untuk `view_count`, `download_count`, `tahun`, `status`, composite `status,tahun`, dan `ref_bidang_hukum_id` bila belum ada.
 
 ### Low
 - [ ] SQL injection / performance with `like` filters — Status: **Needs Review**

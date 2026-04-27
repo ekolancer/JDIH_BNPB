@@ -189,15 +189,15 @@
                         <div class="list-doc__card-footer">
                             <div class="list-doc__meta">
                                 <span class="list-doc__meta-item">
-                                    <i class="far fa-calendar-alt"></i>
+                                    <i class="fas fa-calendar-alt"></i>
                                     {{ \Carbon\Carbon::parse($result->created_at)->locale('id')->translatedFormat('d M Y') }}
                                 </span>
                                 <span class="list-doc__meta-item">
-                                    <i class="far fa-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                     {{ number_format($result->view_count) }}
                                 </span>
                                 <span class="list-doc__meta-item">
-                                    <i class="far fa-download"></i>
+                                    <i class="fas fa-download"></i>
                                     {{ number_format($result->download_count) }}
                                 </span>
                             </div>

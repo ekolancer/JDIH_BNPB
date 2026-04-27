@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Dokumen\DownloadDokumenRequest;
+use App\Http\Requests\Dokumen\ShowDokumenRequest;
+use App\Http\Requests\Dokumen\ViewDokumenFileRequest;
 use App\Models\DokumenHukum;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,13 +17,8 @@ class DokumenController extends Controller
     /**
      * Menampilkan detail dokumen hukum
      */
-    public function show($tipeDok, $slug)
+    public function show(ShowDokumenRequest $request, $tipeDok, $slug)
     {
-        // 1. Validasi tipe dokumen menggunakan abort_unless (lebih clean)
-        $validTypes = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-        abort_unless(in_array($tipeDok, $validTypes), 404, 'Tipe dokumen tidak valid');
-
-        // 2. Ambil dokumen menggunakan query scope yang sudah ada di Model
         $dokumen = DokumenHukum::with(['jenisDokumen', 'bidangHukumRef', 'subjekRef'])
             ->findBySlug($tipeDok, $slug)
             ->firstOrFail();
@@ -42,12 +40,15 @@ class DokumenController extends Controller
     /**
      * Unduh file lampiran utama
      */
-    public function unduhLampiran($slug)
+    public function unduhLampiran(DownloadDokumenRequest $request, $slug)
     {
         $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
+        Gate::authorize('download', $dokumen);
+
         // 1. Validasi akses dan ketersediaan file menggunakan Accessor Model
         abort_unless($dokumen->download_allowed, 403, 'Dokumen tidak dapat diunduh');
+        abort_unless($this->isSafePublicStoragePath($dokumen->lampiran), 404, 'Path file tidak valid');
         abort_unless($dokumen->lampiran_exists, 404, 'File fisik tidak ditemukan');
 
         // 2. Increment download count
@@ -63,11 +64,14 @@ class DokumenController extends Controller
     /**
      * Unduh file abstrak
      */
-    public function unduhAbstrak($slug)
+    public function unduhAbstrak(DownloadDokumenRequest $request, $slug)
     {
         $dokumen = DokumenHukum::where('slug', $slug)->firstOrFail();
 
+        Gate::authorize('download', $dokumen);
+
         // 1. Validasi eksistensi file menggunakan facade Storage
+        abort_unless($this->isSafePublicStoragePath($dokumen->abstrak), 404, 'Path file abstrak tidak valid');
         abort_unless($dokumen->abstrak && Storage::disk('public')->exists($dokumen->abstrak), 404, 'File abstrak tidak ditemukan');
 
         // 2. Increment download count (Atau buat abstrak_download_count di tabel jika ingin dipisah)
@@ -87,12 +91,27 @@ class DokumenController extends Controller
     /**
      * Pratinjau file langsung di browser (PDF Viewer)
      */
-    public function fileView(DokumenHukum $dokumen)
+    public function fileView(ViewDokumenFileRequest $request, DokumenHukum $dokumen)
     {
+        Gate::authorize('viewFile', $dokumen);
+
         // Route Model Binding ($dokumen otomatis dicari berdasarkan slug sesuai getRouteKeyName di model)
+        abort_unless($this->isSafePublicStoragePath($dokumen->lampiran), 404, 'Path file tidak valid');
         abort_unless($dokumen->file_tersedia, 404, 'File tidak tersedia untuk dilihat');
 
         // Gunakan Storage::path untuk mendapatkan path absolute yang benar di berbagai OS
         return response()->file(Storage::disk('public')->path($dokumen->lampiran));
+    }
+
+    private function isSafePublicStoragePath(?string $path): bool
+    {
+        if (!$path) {
+            return false;
+        }
+
+        $normalized = str_replace('\\', '/', $path);
+
+        return !str_starts_with($normalized, '/')
+            && !preg_match('/(^|\/)\.\.(\/|$)/', $normalized);
     }
 }

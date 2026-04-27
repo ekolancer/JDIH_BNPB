@@ -51,7 +51,6 @@ class DokumenHukum extends Model
         'status',
         'bahasa',
         'lokasi',
-        'bidangHukum',
         'lampiran',
         'abstrak',
         'nomorIndukBuku',
@@ -255,8 +254,8 @@ class DokumenHukum extends Model
             'Monografi' => [
                 'Jenis Dokumen'     => $jenisNama,
                 'Judul'             => $this->judul ?? '-',
-                'Bidang Hukum'      => $this->bidangHukum ?? '-',
-                'Subjek'            => $this->subjek ?? '-',
+                'Bidang Hukum'      => $this->bidangHukumRef,
+                'Subjek'            => $subjekHukum ?? '-',
                 'Tahun Terbit'      => $this->tahun ?? '-',
                 'Tajuk Entri Utama' => $this->teuBadan ?? '-',
                 'Tempat Terbit'     => $this->tempat ?? '-',
@@ -271,12 +270,12 @@ class DokumenHukum extends Model
                 'Jenis Dokumen'     => $jenisNama,
                 'Judul'             => $this->judul ?? '-',
                 'Tajuk Entri Utama' => $this->teuBadan ?? '-',
-                'Bidang Hukum'      => $this->bidangHukum ?? '-',
+                'Bidang Hukum'      => $this->bidangHukumRef,
                 'Sumber'            => $this->sumber ?? '-',
                 'Tahun Terbit'      => $this->tahun ?? '-',
                 'Tempat Terbit'     => $this->tempat ?? '-',
                 'Penerbit'          => $this->penerbit ?? '-',
-                'Subjek'            => $this->subjek ?? '-',
+                'Subjek'            => $subjekHukum ?? '-',
                 'Status'            => $this->status ?? '-',
                 'Bahasa'            => $this->bahasa ?? '-',
                 'Lokasi'            => $this->lokasi ?? '-',
@@ -430,9 +429,8 @@ class DokumenHukum extends Model
         $groupableColumns = [
             'ref_jenis_dokumen_id',
             'penerbit',
-            'subjek',
             'status',
-            'bidangHukum',
+            'ref_bidang_hukum_id',
         ];
 
         $data = [];
@@ -446,6 +444,17 @@ class DokumenHukum extends Model
                 $mapped = [];
                 foreach ($rows as $r) {
                     $name = DB::table('ref_jenis_dokumen')->where('id', $r->ref_jenis_dokumen_id)->value('nama') ?? 'Tidak Diketahui';
+                    $mapped[$name] = $r->count;
+                }
+                $data[$column] = $mapped;
+            } elseif ($column === 'ref_bidang_hukum_id') {
+                $rows = $query->select('ref_bidang_hukum_id', DB::raw('COUNT(*) as count'))
+                    ->groupBy('ref_bidang_hukum_id')
+                    ->get();
+
+                $mapped = [];
+                foreach ($rows as $r) {
+                    $name = DB::table('ref_bidang_hukum')->where('id', $r->ref_bidang_hukum_id)->value('nama') ?? 'Tidak Diketahui';
                     $mapped[$name] = $r->count;
                 }
                 $data[$column] = $mapped;

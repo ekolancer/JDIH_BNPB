@@ -306,6 +306,7 @@ class DokumenList extends Component
             'nomor'  => $this->filters['nomor'] ?? null,
             'judul'  => $this->filters['judul'] ?? null,
             'status' => $this->filters['status'] ?? [],
+            'subjek' => $this->filters['subjek'] ?? [],
         ]));
 
         return Cache::remember(
@@ -317,8 +318,8 @@ class DokumenList extends Component
                 $baseQuery = DokumenHukum::query()
                     ->applyFilters($this->filters);
 
-                // Ambil ID dokumen yang relevan
-                $dokumenIds = $baseQuery->pluck('id');
+                $matchingDocumentIds = fn() => (clone $baseQuery)
+                    ->select('dokumen_hukums.id');
 
                 return [
 
@@ -327,7 +328,7 @@ class DokumenList extends Component
                     // ===============================
                     'jenis_dokumen' => DB::table('dokumen_hukums')
                         ->select('ref_jenis_dokumen_id', DB::raw('COUNT(*) as total'))
-                        ->whereIn('id', $dokumenIds)
+                        ->whereIn('id', $matchingDocumentIds())
                         ->groupBy('ref_jenis_dokumen_id')
                         ->pluck('total', 'ref_jenis_dokumen_id'),
 
@@ -336,7 +337,7 @@ class DokumenList extends Component
                     // ===============================
                     'bidang_hukum' => DB::table('dokumen_hukums')
                         ->select('ref_bidang_hukum_id', DB::raw('COUNT(*) as total'))
-                        ->whereIn('id', $dokumenIds)
+                        ->whereIn('id', $matchingDocumentIds())
                         ->groupBy('ref_bidang_hukum_id')
                         ->pluck('total', 'ref_bidang_hukum_id'),
 
@@ -345,7 +346,7 @@ class DokumenList extends Component
                     // ===============================
                     'subjek' => DB::table('dokumen_subjek')
                         ->select('subjek_id', DB::raw('COUNT(*) as total'))
-                        ->whereIn('dokumen_hukum_id', $dokumenIds)
+                        ->whereIn('dokumen_hukum_id', $matchingDocumentIds())
                         ->groupBy('subjek_id')
                         ->pluck('total', 'subjek_id'),
 
@@ -354,7 +355,7 @@ class DokumenList extends Component
                     // ===============================
                     'status' => DB::table('dokumen_hukums')
                         ->select('status', DB::raw('COUNT(*) as total'))
-                        ->whereIn('id', $dokumenIds) // <-- INI YANG MEMBUAT DINAMIS
+                        ->whereIn('id', $matchingDocumentIds())
                         ->whereNotNull('status')
                         ->groupBy('status')
                         ->pluck('total', 'status'),

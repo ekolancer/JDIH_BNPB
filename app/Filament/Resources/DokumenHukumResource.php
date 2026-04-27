@@ -97,13 +97,7 @@ class DokumenHukumResource extends Resource
                                                 modifyQueryUsing: fn($query) => $query->where('is_active', true)
                                             )
                                             ->preload()
-                                            ->live() // agar reactive
-                                            ->afterStateUpdated(function ($state, callable $set) {
-                                                if ($state) {
-                                                    $singkatan = \App\Models\RefJenisDokumen::find($state)?->singkatan;
-                                                    $set('singkatan', $singkatan);
-                                                }
-                                            })
+                                            ->live()
                                             ->createOptionForm([
                                                 Forms\Components\TextInput::make('nama')
                                                     ->label('Nama Jenis Dokumen')
@@ -124,8 +118,8 @@ class DokumenHukumResource extends Resource
                                             ]),
                                         TextInput::make('singkatan')
                                             ->label('Singkatan Jenis')
-                                            ->disabled() // user tidak bisa ubah
-                                            ->required()
+                                            ->dehydrated(false)
+                                            ->disabled()
                                             ->afterStateHydrated(function (callable $set, $get) {
                                                 if ($id = $get('ref_jenis_dokumen_id')) {
                                                     $set('singkatan', \App\Models\RefJenisDokumen::find($id)?->singkatan);
@@ -460,7 +454,7 @@ class DokumenHukumResource extends Resource
                     ->label('Add Document'),
             ])
             ->groups([
-                Tables\Grouping\Group::make('jenisDok')
+                Tables\Grouping\Group::make('jenisDokumen.nama')
                     ->label('Jenis Dokumen')
                     ->collapsible(),
             ])

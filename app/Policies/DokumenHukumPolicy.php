@@ -27,6 +27,21 @@ class DokumenHukumPolicy
     }
 
     /**
+     * Public download/read access is governed by document status and file
+     * availability. The controller still verifies the file exists before
+     * streaming it.
+     */
+    public function download(?User $user, DokumenHukum $dokumenHukum): bool
+    {
+        return $dokumenHukum->download_allowed;
+    }
+
+    public function viewFile(?User $user, DokumenHukum $dokumenHukum): bool
+    {
+        return $this->download($user, $dokumenHukum);
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool

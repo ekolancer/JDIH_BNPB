@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSurveyRequest;
 use App\Models\Survey;
-use Illuminate\Http\Request;
 
 class SurveyController extends Controller
 {
     // Function Simpan Rating
-    public function store(Request $request)
+    public function store(StoreSurveyRequest $request)
     {
-        // Validasi data
-        $validated = $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-        ]);
+        $validated = $request->validated();
 
         // Simpan data ke database
         Survey::create($validated);

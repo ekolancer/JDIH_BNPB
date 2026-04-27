@@ -1,7 +1,7 @@
 <div class="col-12 col-md-6 col-lg-3 mb-4">
     <div class="card card-peraturan h-100 border-0 shadow-sm">
         <div class="card-badge">
-            {{ $item->jenis_dokumen_singkatan ?? $item->singkatan }}
+            {{ $item->jenis_dokumen_singkatan }}
         </div>
 
         <div class="card-body pt-5 px-4 d-flex flex-column">

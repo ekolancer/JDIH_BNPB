@@ -22,6 +22,7 @@ class MostViewedDoc extends BaseWidget
         return $table
             ->query(
                 $model::query()
+                    ->with('jenisDokumen:id,nama,singkatan')
                     ->orderByDesc('view_count')
                     ->limit(5)
             )
@@ -29,9 +30,9 @@ class MostViewedDoc extends BaseWidget
                 TextColumn::make('judul')
                     ->label('Dokumen')
                     ->formatStateUsing(function ($state, $record) {
-                        return strtoupper("{$record->singkatan} No. {$record->nomor} Tahun {$record->tahun}");
+                        return strtoupper("{$record->jenis_dokumen_singkatan} No. {$record->nomor} Tahun {$record->tahun}");
                     })
-                    ->icon(fn($record) => match ($record->singkatan) {
+                    ->icon(fn($record) => match ($record->tipeDok) {
                         'Peraturan' => 'heroicon-o-scale',
                         'Putusan'    => 'heroicon-o-building-library',
                         default => 'heroicon-o-document-text', // fallback jika tidak cocok

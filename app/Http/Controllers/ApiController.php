@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DokumenHukumResource;
+use App\Http\Requests\MetadataApiRequest;
 use App\Models\DokumenHukum;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
@@ -13,20 +13,10 @@ class ApiController extends Controller
      * Endpoint API untuk sinkronisasi data ke sistem PUU.
      * Mengembalikan array JSON langsung (tanpa wrapper "data").
      */
-    public function index(Request $request)
+    public function index(MetadataApiRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'per_page'    => 'nullable|integer|min:1|max:100',
-                'page'        => 'nullable|integer|min:1',
-                'tipeDok'     => 'nullable|string|in:Peraturan,Monografi,Artikel,Putusan',
-                'tahun'       => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-                'judul'       => 'nullable|string|max:255',
-                'subjek'      => 'nullable|string|max:255',
-                'bidangHukum' => 'nullable|string|max:255',
-                'sort_by'     => 'nullable|string|in:id,tahun,judul,created_at',
-                'sort_order'  => 'nullable|string|in:asc,desc',
-            ]);
+            $validated = $request->validated();
 
             $query = DokumenHukum::query()
                 ->with([

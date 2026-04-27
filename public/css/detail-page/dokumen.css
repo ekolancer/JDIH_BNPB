@@ -30,9 +30,11 @@
 .doc-detail-card {
     background-color: var(--doc-surface);
     border-radius: 16px;
-    border: 1px solid var(--doc-border);
+    border: 2px solid;
     padding: 32px;
     transition: box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06); /* Shadow yang lebih lembut dan modern */
+    border-color: rgba(37, 99, 235, 0.3); /* Border dengan warna utama yang lebih terang */
 }
 
 .doc-detail-card.sticky-sidebar {

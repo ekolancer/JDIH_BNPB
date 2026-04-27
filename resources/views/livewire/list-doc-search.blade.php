@@ -54,7 +54,7 @@
                 <div class="list-doc__card-body">
 
                     <div class="list-doc__card-title">
-                        {{ $result->jenisDok }}
+                        {{ $result->jenis_dokumen_singkatan }}
                         Nomor {{ $result->nomor }}
                         Tahun {{ $result->tahun }}
                     </div>
@@ -66,11 +66,11 @@
                     <div class="list-doc__card-footer">
                         <div class="list-doc__meta">
                             <span class="list-doc__meta-item">
-                                <i class="far fa-eye"></i>
+                                <i class="fas fa-eye"></i>
                                 {{ $result->view_count }}x Tayang
                             </span>
                             <span class="list-doc__meta-item">
-                                <i class="far fa-download"></i>
+                                <i class="fas fa-download"></i>
                                 {{ $result->download_count }}x Unduh
                             </span>
                         </div>
