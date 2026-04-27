@@ -146,7 +146,7 @@
                                         <select class="form-select" name="bentuk">
                                             <option value="">Bentuk Dokumen</option>
                                             @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
-                                            <option value="{{ $id }}">{{ $nama }}</option>
+                                            <option value="{{ \Illuminate\Support\Str::slug($nama) }}">{{ $nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>

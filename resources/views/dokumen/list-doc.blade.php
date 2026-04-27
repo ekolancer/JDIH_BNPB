@@ -12,7 +12,7 @@
 </section>
 
 <div class="container mt-2" style="padding: 50px;">
-    <livewire:dokumen-list />
+    <livewire:dokumen-list :tipe-dok="$tipeDok ?? null" />
 </div>
 
 @endsection

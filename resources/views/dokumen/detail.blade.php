@@ -70,13 +70,13 @@
                                     @if($label === 'Subjek' && $value instanceof \Illuminate\Support\Collection)
                                     <div class="d-flex flex-wrap gap-2">
                                         @forelse($value as $subjek)
-                                        <a href="{{ route('list-doc', ['subjek' => $subjek->id]) }}" class="metadata-tag tag-primary">
+                                        <a href="{{ route('list-doc', ['subjek' => \Illuminate\Support\Str::slug($subjek->nama)]) }}" class="metadata-tag tag-primary">
                                             <i class="fas fa-tag me-1"></i> {{ $subjek->nama }}
                                         </a>
                                         @empty <span class="text-muted">—</span> @endforelse
                                     </div>
                                     @elseif($label === 'Bidang Hukum' && $value instanceof \Illuminate\Database\Eloquent\Model)
-                                    <a href="{{ route('list-doc', ['bidang' => $value->id]) }}" class="metadata-tag tag-info">
+                                    <a href="{{ route('list-doc', ['bidang' => \Illuminate\Support\Str::slug($value->nama)]) }}" class="metadata-tag tag-info">
                                         <i class="fas fa-gavel me-1"></i> {{ $value->nama }}
                                     </a>
                                     @elseif($label === 'Jenis Dokumen' && $value instanceof \Illuminate\Database\Eloquent\Model)

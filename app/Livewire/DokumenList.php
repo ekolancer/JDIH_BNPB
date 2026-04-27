@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\DokumenHukum;
@@ -56,12 +57,15 @@ class DokumenList extends Component
     /* ==========================================================
      *  MOUNT
      * ========================================================*/
-    public function mount()
+    public function mount(?string $tipeDok = null)
     {
+        $this->loadAvailableFilters();
+
         $query = $this->mapAliasToFilters(request()->query());
+        $query['tipeDok'] = $query['tipeDok'] ?? $tipeDok;
 
         $this->filters = array_merge($this->filters, $query);
-        $this->sortBy  = request()->query('sortBy', 'latest');
+        $this->sortBy  = request()->query('sort', request()->query('sortBy', 'latest'));
 
         foreach (['ref_jenis_dokumen_id', 'ref_bidang_hukum_id', 'subjek', 'status'] as $key) {
             if (!is_array($this->filters[$key])) {
@@ -71,11 +75,12 @@ class DokumenList extends Component
             }
         }
 
+        $this->normalizeSlugFiltersToIds();
+        $this->filters['tipeDok'] = $this->resolveTipeDok($this->filters['tipeDok']);
+
         if (!is_numeric($this->filters['tahun'])) {
             $this->filters['tahun'] = null;
         }
-
-        $this->loadAvailableFilters();
     }
 
     /* ==========================================================
@@ -101,7 +106,7 @@ class DokumenList extends Component
     private function loadAvailableFilters(): void
     {
         $this->availableFilters = Cache::remember(
-            'dokumen.available_filters.v3',
+            'dokumen.available_filters.v4',
             now()->addMinutes(30),
             fn() => [
                 'jenis_dokumen' => RefJenisDokumen::where('is_active', true)
@@ -126,6 +131,70 @@ class DokumenList extends Component
         );
     }
 
+    private function normalizeSlugFiltersToIds(): void
+    {
+        $this->filters['ref_jenis_dokumen_id'] = $this->resolveReferenceIds(
+            $this->filters['ref_jenis_dokumen_id'],
+            'jenis_dokumen'
+        );
+
+        $this->filters['ref_bidang_hukum_id'] = $this->resolveReferenceIds(
+            $this->filters['ref_bidang_hukum_id'],
+            'bidang_hukum'
+        );
+
+        $this->filters['subjek'] = $this->resolveReferenceIds(
+            $this->filters['subjek'],
+            'subjek'
+        );
+
+        $this->filters['status'] = $this->resolveStatuses($this->filters['status']);
+    }
+
+    private function resolveReferenceIds(array $values, string $filterKey): array
+    {
+        $options = collect($this->availableFilters[$filterKey] ?? []);
+
+        return collect($values)
+            ->map(function ($value) use ($options, $filterKey) {
+                if (is_numeric($value)) {
+                    return (int) $value;
+                }
+
+                return $options
+                    ->first(fn($option) => $this->referenceSlug($option, $filterKey) === $value)
+                    ?->id;
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private function resolveStatuses(array $values): array
+    {
+        $statuses = collect($this->availableFilters['status'] ?? []);
+
+        return collect($values)
+            ->map(function ($value) use ($statuses) {
+                return $statuses->first(fn($status) => Str::slug($status) === $value) ?? $value;
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private function resolveTipeDok(?string $value): string
+    {
+        if (!filled($value)) {
+            return '';
+        }
+
+        return collect(['Peraturan', 'Monografi', 'Artikel', 'Putusan'])
+            ->first(fn($type) => Str::slug($type) === Str::slug($value), $value);
+    }
+
     /* ==========================================================
      *  FILTER ACTIONS
      * ========================================================*/
@@ -138,8 +207,8 @@ class DokumenList extends Component
 
                 return [
                     $alias => is_array($value)
-                        ? implode(',', $value)
-                        : $value
+                        ? implode(',', $this->toUrlFilterValues($key, $value))
+                        : $this->toUrlFilterValue($key, $value)
                 ];
             })
             ->toArray();
@@ -149,6 +218,44 @@ class DokumenList extends Component
         $filtered['page']   = 1;
 
         return redirect()->to('/dokumen?' . Arr::query($filtered));
+    }
+
+    private function toUrlFilterValues(string $key, array $values): array
+    {
+        return collect($values)
+            ->map(fn($value) => $this->toUrlFilterValue($key, $value))
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    private function toUrlFilterValue(string $key, $value): string
+    {
+        return match ($key) {
+            'tipeDok' => Str::slug((string) $value),
+            'ref_jenis_dokumen_id' => $this->urlSlugById('jenis_dokumen', $value),
+            'ref_bidang_hukum_id' => $this->urlSlugById('bidang_hukum', $value),
+            'subjek' => $this->urlSlugById('subjek', $value),
+            'status' => Str::slug((string) $value),
+            default => (string) $value,
+        };
+    }
+
+    private function urlSlugById(string $filterKey, $id): string
+    {
+        $option = collect($this->availableFilters[$filterKey] ?? [])
+            ->firstWhere('id', (int) $id);
+
+        return $option ? $this->referenceSlug($option, $filterKey) : '';
+    }
+
+    private function referenceSlug($option, string $filterKey): string
+    {
+        $source = $filterKey === 'jenis_dokumen'
+            ? ($option->singkatan ?: $option->nama)
+            : $option->nama;
+
+        return Str::slug((string) $source);
     }
 
     public function resetFilters()
