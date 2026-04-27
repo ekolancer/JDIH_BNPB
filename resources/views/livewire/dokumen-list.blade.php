@@ -27,20 +27,30 @@
                     </div>
                 </div>
 
-                <div class="list-doc__sort-wrap" id="ld-sort-wrap">
+                <div class="list-doc__sort-wrap">
                     <button type="button"
                         class="list-doc__sort-btn"
-                        id="ld-sort-toggle"
                         aria-expanded="false">
                         <i class="fa fa-sort-amount-down"></i>
-                        <span id="ld-sort-label">
+                        <span>
                             {{ $sortBy === 'latest' ? 'Terbaru' : 'Populer' }}
                         </span>
                         <i class="fa fa-chevron-down list-doc__sort-caret"></i>
                     </button>
-                </div>
 
-                {{-- Menu dirender di body level via JS agar bebas dari stacking context --}}
+                    <div class="list-doc__sort-menu">
+                        <button type="button"
+                            class="list-doc__sort-option {{ $sortBy === 'latest' ? 'active' : '' }}"
+                            wire:click="updateSortBy('latest')">
+                            <i class="fa fa-clock"></i> Terbaru
+                        </button>
+                        <button type="button"
+                            class="list-doc__sort-option {{ $sortBy === 'popular' ? 'active' : '' }}"
+                            wire:click="updateSortBy('popular')">
+                            <i class="fa fa-fire"></i> Populer
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {{-- Active filter chips --}}
@@ -221,8 +231,6 @@
      SCRIPTS
 ══════════════════════════════════════════════════════════ --}}
 <script>
-    window.__ldSortComponentId = '{{ $this->getId() }}';
-
     document.addEventListener('DOMContentLoaded', () => {
 
         // ── Slider tahun ──────────────────────────────────────
@@ -261,95 +269,16 @@
             extra.classList.toggle('expanded', !expanded);
             btn.classList.toggle('expanded', !expanded);
 
+            if (targetId === 'ld-extra-subjek') {
+                const sidebarBody = btn.closest('.list-doc__sidebar-body');
+                sidebarBody?.classList.toggle('list-doc__sidebar-body--subjek-expanded', !expanded);
+            }
+
             if (icon) icon.style.transform = expanded ? '' : 'rotate(180deg)';
             if (label) label.textContent = expanded ? `+${count} lainnya` : 'Tutup';
         });
 
         // ── Custom sort dropdown (fixed + append to body) ─────
-        const sortWrap = document.getElementById('ld-sort-wrap');
-        const sortToggle = document.getElementById('ld-sort-toggle');
-
-        // Buat menu dan append ke body agar bebas dari stacking context
-        let sortMenu = document.getElementById('ld-sort-menu-portal');
-        if (!sortMenu) {
-            sortMenu = document.createElement('div');
-            sortMenu.id = 'ld-sort-menu-portal';
-            sortMenu.className = 'list-doc__sort-menu';
-            sortMenu.style.display = 'none';
-            sortMenu.innerHTML = `
-<button type="button" class="list-doc__sort-option" data-value="latest" data-label="Terbaru">
-    <i class="fa fa-clock"></i> Terbaru
-</button>
-<button type="button" class="list-doc__sort-option" data-value="popular" data-label="Populer">
-    <i class="fa fa-fire"></i> Populer
-</button>
-`;
-            document.body.appendChild(sortMenu);
-        }
-
-        // Tandai option yang aktif sesuai Livewire state
-        const currentSort = sortToggle?.querySelector('#ld-sort-label')?.textContent?.trim();
-        sortMenu.querySelectorAll('.list-doc__sort-option').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.label === currentSort);
-        });
-
-        function openSortMenu() {
-            if (!sortToggle) return;
-            const rect = sortToggle.getBoundingClientRect();
-            const menuW = 150;
-            let left = rect.right - menuW + window.scrollX;
-            if (left < 8) left = rect.left + window.scrollX;
-            sortMenu.style.top = (rect.bottom + window.scrollY + 6) + 'px';
-            sortMenu.style.left = left + 'px';
-            sortMenu.style.width = menuW + 'px';
-            sortMenu.style.display = 'block';
-            sortToggle.setAttribute('aria-expanded', 'true');
-            sortToggle.classList.add('active');
-        }
-
-        function closeSortMenu() {
-            sortMenu.style.display = 'none';
-            sortToggle?.setAttribute('aria-expanded', 'false');
-            sortToggle?.classList.remove('active');
-        }
-
-        if (sortToggle) {
-            sortToggle.addEventListener('click', e => {
-                e.stopPropagation();
-                sortMenu.style.display === 'block' ? closeSortMenu() : openSortMenu();
-            });
-        }
-
-        sortMenu.addEventListener('click', e => {
-            const btn = e.target.closest('.list-doc__sort-option');
-            if (!btn) return;
-            // Update label di tombol
-            const label = document.getElementById('ld-sort-label');
-            if (label) label.textContent = btn.dataset.label;
-            // Tandai active
-            sortMenu.querySelectorAll('.list-doc__sort-option')
-                .forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            closeSortMenu();
-            // Panggil method Livewire via component ID yang di-embed dari Blade
-            const value = btn.dataset.value;
-            if (window.Livewire && window.__ldSortComponentId) {
-                Livewire.find(window.__ldSortComponentId)?.call('updateSortBy', value);
-            }
-        });
-
-        document.addEventListener('click', e => {
-            if (!sortWrap?.contains(e.target) && !sortMenu?.contains(e.target)) {
-                closeSortMenu();
-            }
-        });
-
-        window.addEventListener('scroll', closeSortMenu, {
-            passive: true
-        });
-        window.addEventListener('resize', closeSortMenu, {
-            passive: true
-        });
         // ── Scroll to top on pagination ───────────────────────
         window.scrollTo({
             top: 0,

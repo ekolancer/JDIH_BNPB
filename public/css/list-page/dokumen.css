@@ -63,7 +63,7 @@
 
 .list-doc__sidebar {
     position: sticky;
-    top: 80px;
+    top: 70px;
     background: var(--ld-glass-bg);
     backdrop-filter: var(--ld-glass-blur);
     -webkit-backdrop-filter: var(--ld-glass-blur);
@@ -121,10 +121,26 @@
 /* Sidebar body */
 .list-doc__sidebar-body {
     padding: 14px 16px;
-    max-height: calc(100vh - 160px);
-    overflow-y: auto;
+    max-height: none;
+    min-height: 0;
+    overflow-y: visible;
     scrollbar-width: thin;
     scrollbar-color: var(--ld-divider) transparent;
+}
+
+.list-doc__sidebar-body--subjek-expanded {
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+}
+
+@media (max-width: 991px) {
+    .list-doc__sidebar {
+        position: static;
+    }
+
+    .list-doc__sidebar-body--subjek-expanded {
+        max-height: 80vh;
+    }
 }
 
 .list-doc__sidebar-body::-webkit-scrollbar {
@@ -323,9 +339,9 @@
 }
 
 .list-doc__filter-count {
-    font-size: 10px;
-    font-weight: 600;
-    background: rgba(148, 163, 184, 0.15);
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(77, 77, 77, 0.15);
     color: var(--ld-text-muted);
     border-radius: var(--ld-radius-pill);
     padding: 1px 7px;
@@ -348,6 +364,11 @@
 
 .list-doc__filter-extra.expanded {
     max-height: 600px;
+}
+
+.list-doc__sidebar-body--subjek-expanded #ld-extra-subjek.expanded {
+    max-height: none;
+    overflow: visible;
 }
 
 .list-doc__filter-more-btn {
@@ -433,6 +454,8 @@
 /* ── Header bar ─────────────────────────────────────────── */
 
 .list-doc__header {
+    position: relative;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -464,6 +487,7 @@
 
 .list-doc__sort-wrap {
     position: relative;
+    z-index: 110;
 }
 
 .list-doc__sort-btn {
@@ -499,8 +523,11 @@
 }
 
 .list-doc__sort-menu {
-    position: fixed;
-    /* fixed bukan absolute — bebas dari stacking context */
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: 150px;
+    display: none;
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -508,8 +535,25 @@
     border-radius: var(--ld-radius-md);
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
     padding: 6px;
-    z-index: 99999;
+    z-index: 120;
     animation: ld-dropdown-in 0.15s ease;
+}
+
+.list-doc__sort-wrap:hover .list-doc__sort-menu,
+.list-doc__sort-wrap:focus-within .list-doc__sort-menu {
+    display: block;
+}
+
+.list-doc__sort-wrap:hover .list-doc__sort-btn,
+.list-doc__sort-wrap:focus-within .list-doc__sort-btn {
+    background: var(--ld-primary);
+    color: #fff;
+    border-color: var(--ld-primary);
+}
+
+.list-doc__sort-wrap:hover .list-doc__sort-caret,
+.list-doc__sort-wrap:focus-within .list-doc__sort-caret {
+    transform: rotate(180deg);
 }
 
 @keyframes ld-dropdown-in {

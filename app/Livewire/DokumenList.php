@@ -106,7 +106,7 @@ class DokumenList extends Component
     private function loadAvailableFilters(): void
     {
         $this->availableFilters = Cache::remember(
-            'dokumen.available_filters.v4',
+            'dokumen.available_filters.v5',
             now()->addMinutes(30),
             fn() => [
                 'jenis_dokumen' => RefJenisDokumen::where('is_active', true)
@@ -117,8 +117,7 @@ class DokumenList extends Component
                     ->orderBy('nama')
                     ->get(['id', 'nama']),
 
-                'subjek' => RefSubjek::where('is_active', true)
-                    ->orderBy('nama')
+                'subjek' => RefSubjek::orderBy('nama')
                     ->get(['id', 'nama']),
 
                 'status' => DokumenHukum::select('status')
