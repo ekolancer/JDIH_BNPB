@@ -94,7 +94,6 @@ class WebminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
-                \BezhanSalleh\FilamentGoogleAnalytics\FilamentGoogleAnalyticsPlugin::make(),
                 FilamentEditProfilePlugin::make()
                     ->shouldRegisterNavigation(false),
                 AuthUIEnhancerPlugin::make()
@@ -127,9 +126,7 @@ class WebminPanelProvider extends PanelProvider
                 'Features',
                 'Systems',
             ])
-            ->resources([
-                config('filament-logger.activity_resource')
-            ])
+            ->resources([])
             ->renderHook(
                 'panels::footer',
                 fn() => view('filament.pages.action.footer')
