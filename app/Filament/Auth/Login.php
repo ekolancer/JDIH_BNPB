@@ -2,7 +2,6 @@
 
 namespace App\Filament\Auth;
 
-use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Auth\Pages\Login as AuthLogin;
@@ -12,40 +11,55 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
+use Filament\Support\Enums\Width;
+use Illuminate\Contracts\Support\Htmlable;
+
 
 class Login extends AuthLogin
 {
+   /**
+     * @var view-string
+     */
+    protected string $view = 'filament.pages.auth.login';
 
-    public function form(Schema $schema): Schema
+    protected Width|string|null $maxWidth = 'full';
+
+    protected array $extraBodyAttributes = [
+        'class' => 'fi-login-page',
+    ];
+
+    public function getTitle(): string | Htmlable
     {
-        $formSchema = [
-            $this->getLoginFormComponent(),
-            $this->getPasswordFormComponent(),
-            $this->getRememberFormComponent(),
-        ];
-
-        return $schema->schema($formSchema)->statePath('data');
+        return 'Login Admin';
     }
 
-    protected function getLoginFormComponent(): Component
+    public function hasLogo(): bool
+    {
+        return false;
+    }
+
+    protected function getEmailFormComponent(): Component
     {
         return TextInput::make('login')
             ->label('Username')
             ->required()
             ->autocomplete()
-            ->autofocus()
-            ->suffixIcon('heroicon-m-user-circle')
-            ->extraInputAttributes(['tabindex' => 1]);
+            ->autofocus();
     }
 
     protected function getCredentialsFromFormData(array $data): array
     {
-        $login_type = 'name';
-
         return [
-            $login_type => $data['login'],
-            'password'  => $data['password'],
+            'name'     => $data['login'],
+            'password' => $data['password'],
         ];
+    }
+
+    protected function throwFailureValidationException(): never
+    {
+        throw ValidationException::withMessages([
+            'data.login' => __('filament-panels::auth/pages/login.messages.failed'),
+        ]);
     }
 
     public function authenticate(): ?LoginResponse

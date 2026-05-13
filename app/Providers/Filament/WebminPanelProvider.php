@@ -32,6 +32,7 @@ class WebminPanelProvider extends PanelProvider
             ->default()
             ->id('webmin')
             ->path('webmin')
+            ->viteTheme('resources/css/filament/webmin/theme.css')
             ->login(Login::class)
             ->passwordReset()
             ->darkMode(true)

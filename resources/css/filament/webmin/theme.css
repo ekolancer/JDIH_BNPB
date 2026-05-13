@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+/* Import Modular Custom Styles */
+@import '../../glass-admin.css';
+@import '../../filament-login.css';
+/* @import '../../filament-dashboard-widgets.css'; */
+/* @import '../../filament-stats-overview.css'; */
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+@theme {
+    --font-heading: "Fira Code", monospace;
+    --font-body: "Fira Sans", sans-serif;
+    
+    --color-glass-white: rgba(255, 255, 255, 0.4);
+    --color-glass-black: rgba(15, 23, 42, 0.4);
+    --color-glass-border-white: rgba(255, 255, 255, 0.45);
+    --color-glass-border-black: rgba(30, 41, 59, 0.7);
+    
+    --radius-glass: 1.25rem;
+}
+
+@utility glass-effect {
+    @apply backdrop-blur-[var(--glass-blur)] bg-[var(--glass-bg)] border border-[var(--glass-border)] shadow-xl shadow-black/5;
+}
+
+@layer base {
+    :root {
+        --glass-blur: 16px;
+        --glass-bg: var(--color-glass-white);
+        --glass-border: var(--color-glass-border-white);
+    }
+
+    .dark {
+        --glass-blur: 16px;
+        --glass-bg: var(--color-glass-black);
+        --glass-border: var(--color-glass-border-black);
+    }
+
+    body {
+        @apply min-h-screen antialiased transition-colors duration-300;
+        font-family: var(--font-body) !important;
+        background: 
+            radial-gradient(circle at 10% 20%, rgba(73, 110, 220, 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
+            var(--color-slate-50);
+        background-attachment: fixed;
+    }
+
+    .dark body {
+        background: 
+            radial-gradient(circle at 10% 20%, rgba(73, 110, 220, 0.2) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
+            var(--color-slate-950);
+        background-attachment: fixed;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading) !important;
+    }
+
+    /* Layout Isolation for Sticky Sidebar */
+    .fi-layout {
+        @apply overflow-visible !h-auto min-h-screen;
+    }
+}
+
+@layer components {
+    /* Layout: Fixed Sidebar */
+    .fi-sidebar {
+        @apply glass-effect !shadow-none !fixed !top-[4.5rem] !left-3 !h-[calc(100vh-5.25rem)] !rounded-[var(--radius-glass)] z-20 transition-all duration-300;
+        border: 1.5px solid var(--glass-border) !important;
+        width: var(--sidebar-width);
+        background-color: var(--glass-bg) !important;
+        backdrop-filter: blur(28px) saturate(200%) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Adjust Main Content when sidebar is fixed */
+    .fi-main-ctn {
+        @apply transition-all duration-300;
+        padding-left: calc(var(--sidebar-width) + 0.75rem);
+    }
+
+    /* Handle collapsed state */
+    .fi-sidebar-collapsed .fi-main-ctn {
+        padding-left: 0;
+    }
+
+    /* Sidebar Navigation Scroll Area */
+    .fi-sidebar-nav {
+        @apply flex-1 overflow-y-auto overflow-x-hidden;
+        scrollbar-width: none;
+    }
+    .fi-sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Layout: Topbar */
+    .fi-topbar {
+        @apply !sticky !top-0 z-20;
+    }
+    .fi-topbar nav {
+        @apply glass-effect !rounded-[var(--radius-glass)] mt-3 mx-4 !border-white/10 !shadow-lg;
+    }
+
+    /* Cards & Sections */
+    .fi-section, 
+    .fi-card,
+    .fi-ta-content,
+    .fi-modal-window,
+    .fi-wi-stats-modern-container {
+        @apply glass-effect rounded-[var(--radius-glass)] transition-all duration-300 !bg-transparent !border-white/10;
+        background-color: var(--glass-bg) !important;
+        backdrop-filter: blur(var(--glass-blur)) !important;
+    }
+
+    .fi-modal-header,
+    .fi-modal-content,
+    .fi-modal-footer {
+        @apply !bg-white dark:!bg-black;
+    }
+
+    .fi-section:hover,
+    .fi-card:hover {
+        @apply shadow-2xl shadow-black/10 translate-y-[-2px] border-white/30;
+    }
+
+    /* Form Inputs */
+    .fi-fo-text-input,
+    .fi-fo-select,
+    .fi-fo-textarea {
+        @apply !bg-white/40 dark:!bg-black/20 !backdrop-blur-sm !border-white/20 focus:!ring-primary-500/50 transition-all rounded-xl;
+    }
+
+    /* Buttons */
+    .fi-btn {
+        @apply !rounded-xl transition-all duration-200 active:scale-95;
+    }
+
+    .fi-btn-color-primary {
+        @apply shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40;
+    }
+
+    /* Modern Stats & Dashboard Widgets Override */
+    .fi-wi-stats-modern-stat,
+    .fi-wi-modern-card,
+    .fi-wi-stats-modern-container,
+    .fi-wi-category__visual-panel,
+    .fi-wi-category__header-pill,
+    .fi-wi-category__summary-card,
+    .fi-wi-category__legend-item,
+    .fi-wi-overview {
+        @apply glass-effect !bg-transparent !border-white/10 !shadow-lg;
+        background-color: var(--glass-bg) !important;
+        backdrop-filter: blur(var(--glass-blur)) !important;
+    }
+
+    .fi-wi-overview {
+        @apply !bg-[var(--glass-bg)] !border-white/20;
+    }
+
+    /* Mobile Optimization */
+    @media (max-width: 1024px) {
+        .fi-sidebar {
+            @apply !fixed !m-0 !rounded-none !h-full;
+            z-index: 50;
+        }
+
+        .fi-topbar nav {
+            @apply !mx-2 !mt-2;
+        }
+
+        .fi-main {
+            @apply px-4 pb-10;
+        }
+        
+        .fi-wi-stats-modern-container {
+            @apply !flex-col;
+        }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-slate-300/50 dark:bg-slate-700/50 rounded-full backdrop-blur-md;
+    }
+}
