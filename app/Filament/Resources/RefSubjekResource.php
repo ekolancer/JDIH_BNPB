@@ -11,7 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Support\Enums\VerticalAlignment;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\Alignment;
 
 class RefSubjekResource extends Resource
@@ -60,7 +60,7 @@ class RefSubjekResource extends Resource
                     ->searchable()
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('AKTIF / TIDAK AKTIF')
@@ -74,7 +74,7 @@ class RefSubjekResource extends Resource
                         // Simpan perubahan ke database setelah konversi
                         $record->save();
                     })
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('UPDATE')
@@ -82,7 +82,7 @@ class RefSubjekResource extends Resource
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
             ])
             ->filters([
@@ -90,16 +90,16 @@ class RefSubjekResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make()
+                    \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit Subjek'),
-                    Tables\Actions\DeleteAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
                 ])
                     ->button()
                     ->label('Aksi')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -120,3 +120,4 @@ class RefSubjekResource extends Resource
         ];
     }
 }
+

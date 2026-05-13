@@ -11,10 +11,8 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\VerticalAlignment;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use App\Filament\Resources\VisitorResource\Pages;
-use Mohammadhprp\IPToCountryFlagColumn\Columns\IPToCountryFlagColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 
@@ -62,12 +60,10 @@ class VisitorResource extends Resource
                     ->searchable()
                     ->disabledClick(),
 
-                BadgeColumn::make('country')
+                TextColumn::make('country')
                     ->label('COUNTRY')
-                    ->colors([
-                        'success' => fn($state): bool => strtolower($state) === 'indonesia',
-                        'gray' => fn($state): bool => strtolower($state) !== 'indonesia',
-                    ])
+                    ->badge()
+                    ->color(fn($state): string => strtolower($state ?? '') === 'indonesia' ? 'success' : 'gray')
                     ->formatStateUsing(fn($state) => ucfirst($state ?? '-'))
                     ->disabledClick(),
 
@@ -121,7 +117,7 @@ class VisitorResource extends Resource
 
             // 🧭 Aksi
             ->actions([
-                Tables\Actions\ViewAction::make()
+                \Filament\Actions\ViewAction::make()
                     ->label('Detail')
                     ->modalHeading('Detail Kunjungan')
                     ->modalContent(fn($record) => view('filament.visitors.detail', ['visitor' => $record]))
@@ -129,8 +125,8 @@ class VisitorResource extends Resource
             ])
 
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make()
                         ->label('Hapus Terpilih')
                         ->requiresConfirmation(),
                 ]),
@@ -149,3 +145,4 @@ class VisitorResource extends Resource
         ];
     }
 }
+

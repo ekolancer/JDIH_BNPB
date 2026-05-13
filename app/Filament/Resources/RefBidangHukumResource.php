@@ -11,7 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Support\Enums\VerticalAlignment;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\Alignment;
 
 class RefBidangHukumResource extends Resource
@@ -51,7 +51,7 @@ class RefBidangHukumResource extends Resource
                     ->searchable()
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('AKTIF / TIDAK AKTIF')
                     ->alignment(Alignment::Center)
@@ -64,14 +64,14 @@ class RefBidangHukumResource extends Resource
                         // Simpan perubahan ke database setelah konversi
                         $record->save();
                     })
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('UPDATE')
                     ->timezone('Asia/Jakarta')
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
@@ -82,16 +82,16 @@ class RefBidangHukumResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make()
+                    \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit Bidang Hukum'),
-                    Tables\Actions\DeleteAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
                 ])
                     ->button()
                     ->label('Aksi')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -112,3 +112,4 @@ class RefBidangHukumResource extends Resource
         ];
     }
 }
+

@@ -3,40 +3,32 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Tables;
-use Filament\Forms\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Tabs;
-use Filament\Tables\Actions\Action;
-use App\Models\RefBidangHukum;
-use App\Models\RefSubjek;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Support\Enums\FontWeight;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Tabs\Tab;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Enums\FiltersLayout;
+use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Actions\CreateAction;
+use Filament\Actions\CreateAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\VerticalAlignment;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DokumenHukumResource\Pages;
 use App\Filament\Resources\DokumenHukumResource\RelationManagers;
-
-use function Laravel\Prompts\select;
 
 class DokumenHukumResource extends Resource
 {
@@ -381,7 +373,7 @@ class DokumenHukumResource extends Resource
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -425,7 +417,7 @@ class DokumenHukumResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\Action::make('detail')
+                    Action::make('detail')
                         ->label('Detail')
                         ->icon('heroicon-o-eye')
                         ->color('warning')
@@ -437,16 +429,16 @@ class DokumenHukumResource extends Resource
                             ['record' => $record]
                         ))
                         ->modalSubmitAction(false),
-                    Tables\Actions\EditAction::make()
+                    \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit Data'),
-                    Tables\Actions\DeleteAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
                 ])
                     ->button()
                     ->label('Aksi'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->headerActions([

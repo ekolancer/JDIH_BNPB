@@ -15,7 +15,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Support\Enums\VerticalAlignment;
 use Filament\Support\Enums\Alignment;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Actions\ActionGroup;
 
 class FaqResource extends Resource
 {
@@ -69,14 +69,14 @@ class FaqResource extends Resource
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
                     ->description(fn (Faq $record): string => str()->limit(strip_tags($record->answer), 60))
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
                 TextColumn::make('sort_order')
                     ->label('URUTAN')
                     ->sortable()
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
                 TextColumn::make('updated_at')
                     ->label('UPDATE')
@@ -84,7 +84,7 @@ class FaqResource extends Resource
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
             ->reorderable('sort_order') // Drag & Drop sorting
             ->defaultSort('sort_order')
@@ -93,16 +93,16 @@ class FaqResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make()
+                    \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit FAQ'),
-                    Tables\Actions\DeleteAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
                 ])
                     ->button()
                     ->label('Aksi'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -123,3 +123,5 @@ class FaqResource extends Resource
         ];
     }
 }
+
+

@@ -79,36 +79,36 @@ class UserResource extends Resource
                     ->label('USERNAME')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('email')
                     ->label('EMAIL')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('roles.name')
                     ->label('ROLES')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('updated_at')
                     ->label('UPDATE')
                     ->timezone('Asia/Jakarta')
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
 
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -120,3 +120,4 @@ class UserResource extends Resource
         ];
     }
 }
+

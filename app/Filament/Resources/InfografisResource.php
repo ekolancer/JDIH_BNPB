@@ -14,15 +14,15 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Wizard;
+use Filament\Schemas\Components\Wizard;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Facades\Blade;
-use Filament\Forms\Components\Fieldset;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -150,23 +150,23 @@ class InfografisResource extends Resource
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disableClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(), // Menonaktifkan clickable pada list table
             ])
             ->filters([
                 //
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make()
+                    \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit Infografis'),
-                    Tables\Actions\DeleteAction::make(),
+                    \Filament\Actions\DeleteAction::make(),
                 ])
                     ->button()
                     ->label('Aksi')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -187,3 +187,5 @@ class InfografisResource extends Resource
         ];
     }
 }
+
+
