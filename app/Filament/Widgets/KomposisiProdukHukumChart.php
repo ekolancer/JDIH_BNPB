@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class KomposisiProdukHukumChart extends ChartWidget
 {
-    protected static ?string $heading = 'Komposisi Produk Hukum';
+    protected ?string $heading = 'Komposisi Produk Hukum';
 
     protected static ?int $sort = 4;
     
-    protected static ?string $maxHeight = '300px';
+    protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {

@@ -6,7 +6,7 @@ use App\Filament\Resources\ProfilPageResource\Pages;
 use App\Filament\Resources\ProfilPageResource\RelationManagers;
 use App\Models\ProfilPage;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,9 +22,9 @@ class ProfilPageResource extends Resource
 {
     protected static ?string $model = ProfilPage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-computer-desktop';
 
-    protected static ?string $navigationGroup = 'Features';
+    protected static \UnitEnum|string|null $navigationGroup = 'Features';
 
     protected static ?string $navigationLabel = 'Profile Website';
 
@@ -37,9 +37,9 @@ class ProfilPageResource extends Resource
         return 1; // atau angka berapapun
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('title')
                     ->required()

@@ -8,11 +8,11 @@ use Filament\Support\RawJs;
 
 class PeraturanChart extends ChartWidget
 {
-    protected static ?string $heading = 'Status Peraturan Perundang-undangan';
+    protected ?string $heading = 'Status Peraturan Perundang-undangan';
 
     protected static ?int $sort = 3;
     
-    protected static ?string $maxHeight = '300px';
+    protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {

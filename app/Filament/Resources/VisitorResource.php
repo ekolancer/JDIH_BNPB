@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Models\Visitor;
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -22,11 +22,11 @@ class VisitorResource extends Resource
 {
     protected static ?string $model = Visitor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $pollingInterval = '10s'; // Refresh setiap 10 detik
 
-    protected static ?string $navigationGroup = 'Features';
+    protected static \UnitEnum|string|null $navigationGroup = 'Features';
 
     public static function getNavigationSort(): ?int
     {
@@ -37,9 +37,9 @@ class VisitorResource extends Resource
 
     protected static ?string $navigationLabel = 'Visitors Logs';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([]); // Tidak diperlukan
+        return $schema->schema([]); // Tidak diperlukan
     }
 
     public static function table(Table $table): Table

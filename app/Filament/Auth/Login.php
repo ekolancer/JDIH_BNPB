@@ -2,14 +2,13 @@
 
 namespace App\Filament\Auth;
 
-use Filament\Forms\Form;
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Component;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Auth\Login as AuthLogin;
+use Filament\Auth\Pages\Login as AuthLogin;
 use Illuminate\Validation\ValidationException;
-use Filament\Http\Responses\Auth\LoginResponse;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use DiogoGPinto\AuthUIEnhancer\Pages\Auth\Concerns\HasCustomLayout;
-use Afatmustafa\FilamentTurnstile\Forms\Components\Turnstile;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -19,22 +18,15 @@ class Login extends AuthLogin
 {
     use HasCustomLayout;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        $schema = [
+        $formSchema = [
             $this->getLoginFormComponent(),
             $this->getPasswordFormComponent(),
             $this->getRememberFormComponent(),
         ];
 
-        if (app()->environment('production')) {
-            $schema[] = Turnstile::make('turnstile')
-                ->theme('light')
-                ->size('normal')
-                ->language('en-US');
-        }
-
-        return $form->schema($schema)->statePath('data');
+        return $schema->schema($formSchema)->statePath('data');
     }
 
     protected function getLoginFormComponent(): Component

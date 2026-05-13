@@ -6,7 +6,7 @@ use App\Filament\Resources\RefBidangHukumResource\Pages;
 use App\Filament\Resources\RefBidangHukumResource\RelationManagers;
 use App\Models\RefBidangHukum;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,9 +18,9 @@ class RefBidangHukumResource extends Resource
 {
     protected static ?string $model = RefBidangHukum::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-link';
 
-    protected static ?string $navigationGroup = 'Metadata Referensi';
+    protected static \UnitEnum|string|null $navigationGroup = 'Metadata Referensi';
 
     protected static ?string $navigationLabel = 'Bidang Hukum';
 
@@ -28,9 +28,9 @@ class RefBidangHukumResource extends Resource
 
     protected static ?string $label = 'Bidang Hukum';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama')
                     ->required()

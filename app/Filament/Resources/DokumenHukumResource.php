@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Models\DokumenHukum;
 use Filament\Resources\Resource;
@@ -42,9 +42,9 @@ class DokumenHukumResource extends Resource
 {
     protected static ?string $model = DokumenHukum::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?string $navigationGroup = 'Main Menu';
+    protected static \UnitEnum|string|null $navigationGroup = 'Main Menu';
 
     protected static ?int $navigationSort = 1;
 
@@ -63,9 +63,9 @@ class DokumenHukumResource extends Resource
         return array_combine($years, $years); // Membuat opsi array untuk dropdown
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make('Section Document')
                     ->schema([

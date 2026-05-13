@@ -6,7 +6,7 @@ use App\Filament\Resources\FaqResource\Pages;
 use App\Filament\Resources\FaqResource\RelationManagers;
 use App\Models\Faq;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -21,7 +21,7 @@ class FaqResource extends Resource
 {
     protected static ?string $model = Faq::class;
 
-    protected static ?string $navigationGroup = 'Features';
+    protected static \UnitEnum|string|null $navigationGroup = 'Features';
 
     protected static ?string $navigationLabel = 'FAQ';
 
@@ -39,9 +39,9 @@ class FaqResource extends Resource
         return 2; // atau angka berapapun
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->schema([
             TextInput::make('question')
                 ->label('Pertanyaan')
                 ->required()

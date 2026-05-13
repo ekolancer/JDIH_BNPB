@@ -9,7 +9,7 @@ use App\Models\DokumenHukum;
 
 class ExecutiveStats extends Widget
 {
-    protected static string $view = 'filament.widgets.executive-stats';
+    protected string $view = 'filament.widgets.executive-stats';
 
     protected static ?int $sort = 1;
 

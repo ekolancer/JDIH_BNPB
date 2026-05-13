@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Berita;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use PhpParser\Node\Stmt\Label;
@@ -36,9 +36,9 @@ class BeritaResource extends Resource
 {
     protected static ?string $model = Berita::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-newspaper';
 
-    protected static ?string $navigationGroup = 'Main Menu';
+    protected static \UnitEnum|string|null $navigationGroup = 'Main Menu';
 
     protected static ?int $navigationSort = 3;
 
@@ -48,9 +48,9 @@ class BeritaResource extends Resource
 
     protected static ?string $navigationLabel = 'Berita'; // Memberikan Label Navigasi
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Metadata Utama')

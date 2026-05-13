@@ -7,7 +7,7 @@ use App\Models\RefJenisDokumen;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Resources\Resource;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -20,9 +20,9 @@ class RefJenisDokumenResource extends Resource
 {
     protected static ?string $model = RefJenisDokumen::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-link';
 
-    protected static ?string $navigationGroup = 'Metadata Referensi';
+    protected static \UnitEnum|string|null $navigationGroup = 'Metadata Referensi';
 
     protected static ?string $navigationLabel = 'Jenis Dokumen';
 
@@ -30,9 +30,9 @@ class RefJenisDokumenResource extends Resource
 
     protected static ?string $label = 'Jenis Dokumen';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('nama')
                     ->label('Nama Jenis Dokumen')
