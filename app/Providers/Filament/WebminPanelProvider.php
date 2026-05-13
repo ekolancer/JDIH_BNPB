@@ -4,10 +4,8 @@ namespace App\Providers\Filament;
 
 use Filament\Pages;
 use Filament\Panel;
-use App\Filament\Pages\Settings;
 use Filament\PanelProvider;
 use App\Filament\Auth\Login;
-use Filament\Support\Colors\Color;
 use App\Filament\Pages\HealthCheckResults;
 use App\Http\Middleware\RestrictIpMiddleware;
 use Filament\Http\Middleware\Authenticate;
@@ -36,17 +34,8 @@ class WebminPanelProvider extends PanelProvider
             ->path('webmin')
             ->login(Login::class)
             ->passwordReset()
-            ->colors([
-                'danger' => Color::Rose,
-                'gray' => Color::Gray,
-                'info' => Color::Blue,
-                'primary' => Color::hex('#496edc'),
-                'success' => Color::Emerald,
-                'warning' => Color::Orange,
-            ])
             ->darkMode(true)
             ->databaseNotifications()
-            ->viteTheme('resources/css/filament/webmin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -54,11 +43,8 @@ class WebminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([])
-            ->brandLogo(asset('img/logo_jdih.png'))
             ->brandName('JDIH BNPB')
-            ->brandLogoHeight('3,5rem')
             ->sidebarCollapsibleOnDesktop()
-            ->sidebarWidth('18rem')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -110,15 +96,6 @@ class WebminPanelProvider extends PanelProvider
                 'Features',
                 'Systems',
             ])
-            ->resources([])
-            ->renderHook(
-                'panels::footer',
-                fn() => view('filament.pages.action.footer')
-            )
-            ->renderHook(
-                'panels::global-search.before',
-                fn() => view('filament.pages.action.DateTime')
-            )
-            ->font('Poppins');
+            ->resources([]);
     }
 }
