@@ -13,7 +13,6 @@ use App\Http\Middleware\RestrictIpMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use DiogoGPinto\AuthUIEnhancer\AuthUIEnhancerPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
@@ -23,8 +22,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
-use Carbon\Carbon;
-use Niladam\FilamentAutoLogout\AutoLogoutPlugin;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Filament\Navigation\MenuItem;
@@ -96,22 +93,9 @@ class WebminPanelProvider extends PanelProvider
                     ]),
                 FilamentEditProfilePlugin::make()
                     ->shouldRegisterNavigation(false),
-                AuthUIEnhancerPlugin::make()
-                    ->showEmptyPanelOnMobile(false)
-                    ->formPanelPosition('right')
-                    ->formPanelWidth('30%')
-                    ->emptyPanelBackgroundImageOpacity('80%')
-                    ->formPanelBackgroundColor(Color::hex('#d5d2d2'))
-                    ->emptyPanelBackgroundImageUrl(asset('img/gBNPB.webp')),
                 FilamentSpatieLaravelHealthPlugin::make()
                     ->usingPage(HealthCheckResults::class)
                     ->authorize(fn(): bool => \Illuminate\Support\Facades\Auth::user()?->email === 'eko.lancer@gmail.com'),
-                AutoLogoutPlugin::make()
-                    ->color(Color::Emerald)                         // Set the color. Defaults to Zinc
-                    ->logoutAfter(Carbon::SECONDS_PER_MINUTE * 5)   // Logout the user after 5 minutes
-                    ->withoutTimeLeft()                             // Disable the time left
-                    ->timeLeftText('Oh no. Kicking you in...')      // Change the time left text
-                    ->timeLeftText('')
             ])
             ->userMenuItems([
                 MenuItem::make()

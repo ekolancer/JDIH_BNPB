@@ -8,7 +8,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Auth\Pages\Login as AuthLogin;
 use Illuminate\Validation\ValidationException;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
-use DiogoGPinto\AuthUIEnhancer\Pages\Auth\Concerns\HasCustomLayout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +15,6 @@ use Throwable;
 
 class Login extends AuthLogin
 {
-    use HasCustomLayout;
 
     public function form(Schema $schema): Schema
     {
