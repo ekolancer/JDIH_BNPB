@@ -617,7 +617,6 @@ Berikut output lengkap dari `php artisan route:list` (lingkungan pengembangan):
   GET|HEAD   webmin/faqs .................................................................................. filament.webmin.resources.faqs.index › App\Filament\Resources\FaqResource\Pages\ListFaqs
   GET|HEAD   webmin/faqs/create ......................................................................... filament.webmin.resources.faqs.create › App\Filament\Resources\FaqResource\Pages\CreateFaq
   GET|HEAD   webmin/faqs/{record}/edit ...................................................................... filament.webmin.resources.faqs.edit › App\Filament\Resources\FaqResource\Pages\EditFaq
-  GET|HEAD   webmin/filament-google-analytics-dashboard ........ filament.webmin.pages.filament-google-analytics-dashboard › BezhanSalleh\FilamentGoogleAnalytics › FilamentGoogleAnalyticsDashboard
   GET|HEAD   webmin/health-check-results ........................................................................ filament.webmin.pages.health-check-results › App\Filament\Pages\HealthCheckResults
   GET|HEAD   webmin/infografis ......................................................... filament.webmin.resources.infografis.index › App\Filament\Resources\InfografisResource\Pages\ListInfografis
   GET|HEAD   webmin/infografis/create ............................................... filament.webmin.resources.infografis.create › App\Filament\Resources\InfografisResource\Pages\CreateInfografis

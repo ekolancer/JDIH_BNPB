@@ -1,6 +1,6 @@
 # 🧭 Dokumentasi Setup Akses Panel Admin (Filament + Shield + Spatie)
 
-**Tujuan:** dokumentasi ini memuat langkah lengkap dari _install_ sampai Super Admin bisa login dengan semua hak akses di panel Filament (`webmin`). Termasuk varian masalah (guard mismatch, permission cache, Turnstile/anti-bot), cara verifikasi, seeder/command otomatis, dan troubleshooting terperinci.
+**Tujuan:** dokumentasi ini memuat langkah lengkap dari _install_ sampai Super Admin bisa login dengan semua hak akses di panel Filament (`webmin`). Termasuk varian masalah (guard mismatch, permission cache), cara verifikasi, seeder/command otomatis, dan troubleshooting terperinci.
 
 ---
 
@@ -143,59 +143,7 @@ Reset cache: `php artisan permission:cache-reset` & `php artisan optimize:clear`
 
 ---
 
-## 7️⃣ Turnstile / anti-bot (Cloudflare) — sumber gagal login di local
-
-Jika kamu menggunakan Turnstile (via package `afatmustafa/filament-turnstile`), validasi token diperlukan. Error yang umum di log:
-
-```
-The data.turnstile field is required.
-```
-
-**Penyebab lokal:**
-
--   Tidak ada site key / secret key di `.env`
--   Domain `localhost` tidak dikonfigurasi di Turnstile
--   Token tidak dihasilkan sehingga validator memblokir login _sebelum_ autentikasi
-
-**Solusi:**
-
--   Production: pastikan `TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY` di `.env` dan paket dikonfigurasi.
--   Development/local: nonaktifkan Turnstile atau jadikan kondisional.
-
-Contoh: aktifkan Turnstile hanya di production
-
-```php
-// di app/Filament/Auth/Login.php -> form()
-public function form(Form $form): Form
-{
-    $schema = [
-        $this->getLoginFormComponent(),
-        $this->getPasswordFormComponent(),
-        $this->getRememberFormComponent(),
-    ];
-
-    if (app()->environment('production')) {
-        $schema[] = Turnstile::make('turnstile')
-            ->theme('light')
-            ->size('normal')
-            ->language('en-US');
-    }
-
-    return $form->schema($schema)->statePath('data');
-}
-```
-
-Atau buat required false sementara:
-
-```php
-Turnstile::make('turnstile')->required(false)
-```
-
-> Setelah mengubah, clear cache `php artisan optimize:clear` dan reload.
-
----
-
-## 8️⃣ canAccessPanel() — implementasi yang direkomendasikan
+## 7️⃣ canAccessPanel() — implementasi yang direkomendasikan
 
 `App\Models\User::canAccessPanel(Panel $panel)` harus fleksibel: perbolehkan super*admin, cek role lain, dan/atau cek permission `access*{panelId}`.
 
@@ -258,7 +206,6 @@ Restart dev server (`php artisan serve`) jika perlu.
 
 1. **Login gagal — baca log**: `storage/logs/laravel.log`
 
-    - Jika ada _validation error_ `data.turnstile field is required` → Turnstile tidak mengirim token (lihat bagian 7).
     - Jika ada pesan `Anda tidak memiliki akses ke panel webmin` → cek canAccessPanel / permission `access_webmin`.
 
 2. **Cek user dan role** (Tinker):
@@ -308,9 +255,7 @@ Restart dev server (`php artisan serve`) jika perlu.
     php artisan optimize:clear
     ```
 
-7. **Periksa Turnstile**: jika development → nonaktifkan atau set `->required(false)`.
-
-8. **Periksa session/cookie path** jika login di browser berbeda environment (HTTP vs HTTPS, domain mismatch).
+7. **Periksa session/cookie path** jika login di browser berbeda environment (HTTP vs HTTPS, domain mismatch).
 
 ---
 
@@ -417,9 +362,8 @@ public function authenticate(): ?LoginResponse
 4. Tinker: `Role::findByName('super_admin')->syncPermissions(Permission::all())` ✅
 5. Pastikan `guard_name = 'web'` untuk role & permission ✅
 6. Tambahkan `->authGuard('web')` di `WebminPanelProvider` ✅
-7. Jika ada Turnstile: pastikan `.env` berisi `TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY`, atau nonaktifkan di lokal ✅
-8. `php artisan permission:cache-reset && php artisan optimize:clear` ✅
-9. Coba login di `/webmin/login` ✅
+7. `php artisan permission:cache-reset && php artisan optimize:clear` ✅
+8. Coba login di `/webmin/login` ✅
 
 ---
 
@@ -465,6 +409,5 @@ php artisan db:seed --class=SuperAdminSeeder
 
 ## 📚 Penutup & catatan
 
--   Di development, kasus Turnstile paling sering jadi penyebab login "gagal padahal password benar". Periksa log validasi terlebih dahulu.
 -   Produksi & local bisa beda konfigurasi (file config, env, versi package). Selalu bandingkan `config/filament-shield.php` & `config/auth.php` antara kedua environment.
 -   Bila ingin saya buatkan file `.md` siap unduh (atau command artisan otomatis `fix:superadmin-access`), bilang saja — saya buatkan.

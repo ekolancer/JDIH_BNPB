@@ -30,12 +30,12 @@ JDIH BNPB adalah aplikasi untuk menyimpan, mencari, dan mendistribusikan dokumen
 
 ## Technology Stack & Dependensi Utama
 
-- Backend: Laravel 11 (lihat `composer.json`, requirement `laravel/framework` ^11.9)
+- Backend: Laravel 12 (lihat `composer.json`, requirement `laravel/framework` ^12.0)
 - PHP: 8.2+
-- Admin: Filament 3.2 (+ beberapa plugin terpasang seperti Filament Shield, Filament Google Analytics, Turnstile integration, edit-profile, auto-logout, filament-logger)
+- Admin: Filament 4 (+ beberapa plugin terpasang seperti Filament Shield, edit-profile, spatie-health)
 - Frontend interactivity: Livewire 3.5
-- Assets: Vite, Tailwind CSS (Tailwind v3.x)
-- Beberapa paket penting (lihat `composer.json`): `filament/filament`, `bezhansalleh/filament-shield`, `bezhansalleh/filament-google-analytics`, `afatmustafa/filamentv3-turnstile`, `livewire/livewire` dan lain-lain.
+- Assets: Vite, Tailwind CSS
+- Beberapa paket penting (lihat `composer.json`): `filament/filament`, `bezhansalleh/filament-shield`, `livewire/livewire` dan lain-lain.
 - Node tooling: `vite`, `tailwindcss`, `postcss` (lihat `package.json`).
 
 ## Fitur Utama
@@ -137,14 +137,12 @@ DB_HOST=
 DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
-TURNSTILE_SITE_KEY=    # optional
-TURNSTILE_SECRET_KEY=  # optional
 IPAPI_KEY=             # optional (geo-lookup)
 ```
 
 ## Troubleshooting Singkat
 
-- Jika tidak bisa login di panel: cek `AdminPanelDocs.md` (guard, permission cache, Turnstile).
+- Jika tidak bisa login di panel: cek `AdminPanelDocs.md` (guard, permission cache).
 - Jika upload gagal: cek permission folder `storage/app/public`.
 - Jika mendapat 429: rate-limit tercapai (tunggu 1 menit).
 
