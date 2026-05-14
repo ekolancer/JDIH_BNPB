@@ -26,6 +26,8 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static \UnitEnum|string|null $navigationGroup = 'User Management';
+
     public static function getPermissionPrefixes(): array
     {
         return [

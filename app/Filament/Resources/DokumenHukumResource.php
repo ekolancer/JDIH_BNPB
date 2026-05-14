@@ -421,14 +421,7 @@ class DokumenHukumResource extends Resource
                         ->label('Detail')
                         ->icon('heroicon-o-eye')
                         ->color('warning')
-                        ->slideover()
-                        ->modalWidth('5xl')
-                        ->modalHeading(fn(DokumenHukum $record) => "{$record->judul}")
-                        ->modalContent(fn(DokumenHukum $record) => view(
-                            'filament.pages.action.dokumen-view',
-                            ['record' => $record]
-                        ))
-                        ->modalSubmitAction(false),
+                        ->url(fn(DokumenHukum $record) => DokumenHukumResource::getUrl('view', ['record' => $record])),
                     \Filament\Actions\EditAction::make()
                         ->modalHeading('Edit Data'),
                     \Filament\Actions\DeleteAction::make(),
@@ -465,6 +458,7 @@ class DokumenHukumResource extends Resource
         return [
             'index' => Pages\ListDokumenHukums::route('/'),
             'create' => Pages\CreateDokumenHukum::route('/create'),
+            'view' => Pages\ViewDokumenHukum::route('/{record}'),
             'edit' => Pages\EditDokumenHukum::route('/{record}/edit'),
         ];
     }

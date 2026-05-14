@@ -1,108 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\RefJenisDokumen;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RefJenisDokumenPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_ref::jenis::dokumen');
+        return $authUser->can('ViewAny:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function view(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('view_ref::jenis::dokumen');
+        return $authUser->can('View:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_ref::jenis::dokumen');
+        return $authUser->can('Create:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function update(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('update_ref::jenis::dokumen');
+        return $authUser->can('Update:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function delete(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('delete_ref::jenis::dokumen');
+        return $authUser->can('Delete:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_ref::jenis::dokumen');
+        return $authUser->can('DeleteAny:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function restore(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('force_delete_ref::jenis::dokumen');
+        return $authUser->can('Restore:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('force_delete_any_ref::jenis::dokumen');
+        return $authUser->can('ForceDelete:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_ref::jenis::dokumen');
+        return $authUser->can('ForceDeleteAny:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_ref::jenis::dokumen');
+        return $authUser->can('RestoreAny:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, RefJenisDokumen $refJenisDokumen): bool
+    public function replicate(AuthUser $authUser, RefJenisDokumen $refJenisDokumen): bool
     {
-        return $user->can('replicate_ref::jenis::dokumen');
+        return $authUser->can('Replicate:RefJenisDokumen');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('reorder_ref::jenis::dokumen');
+        return $authUser->can('Reorder:RefJenisDokumen');
     }
+
 }

@@ -1,108 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\RefBidangHukum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RefBidangHukumPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_ref::bidang::hukum');
+        return $authUser->can('ViewAny:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, RefBidangHukum $refBidangHukum): bool
+    public function view(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('view_ref::bidang::hukum');
+        return $authUser->can('View:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_ref::bidang::hukum');
+        return $authUser->can('Create:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, RefBidangHukum $refBidangHukum): bool
+    public function update(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('update_ref::bidang::hukum');
+        return $authUser->can('Update:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, RefBidangHukum $refBidangHukum): bool
+    public function delete(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('delete_ref::bidang::hukum');
+        return $authUser->can('Delete:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_ref::bidang::hukum');
+        return $authUser->can('DeleteAny:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, RefBidangHukum $refBidangHukum): bool
+    public function restore(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('force_delete_ref::bidang::hukum');
+        return $authUser->can('Restore:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('force_delete_any_ref::bidang::hukum');
+        return $authUser->can('ForceDelete:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, RefBidangHukum $refBidangHukum): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_ref::bidang::hukum');
+        return $authUser->can('ForceDeleteAny:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_ref::bidang::hukum');
+        return $authUser->can('RestoreAny:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, RefBidangHukum $refBidangHukum): bool
+    public function replicate(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $user->can('replicate_ref::bidang::hukum');
+        return $authUser->can('Replicate:RefBidangHukum');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('reorder_ref::bidang::hukum');
+        return $authUser->can('Reorder:RefBidangHukum');
     }
+
 }

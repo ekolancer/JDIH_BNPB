@@ -1,8 +1,25 @@
 @php
-    use hisorange\BrowserDetect\Parser as Browser;
+    $ua = $visitor->user_agent ?? '';
 
-    $browserName = Browser::browserFamily($visitor->user_agent);
-    $osName = Browser::platformFamily($visitor->user_agent);
+    // Detect browser
+    $browserName = match (true) {
+        str_contains($ua, 'Edg') => 'Edge',
+        str_contains($ua, 'OPR') || str_contains($ua, 'Opera') => 'Opera',
+        str_contains($ua, 'Chrome') && !str_contains($ua, 'Edg') => 'Chrome',
+        str_contains($ua, 'Firefox') => 'Firefox',
+        str_contains($ua, 'Safari') && !str_contains($ua, 'Chrome') => 'Safari',
+        default => 'Unknown',
+    };
+
+    // Detect OS
+    $osName = match (true) {
+        str_contains($ua, 'Windows') => 'Windows',
+        str_contains($ua, 'Macintosh') || str_contains($ua, 'Mac OS') => 'macOS',
+        str_contains($ua, 'Linux') && !str_contains($ua, 'Android') => 'Linux',
+        str_contains($ua, 'Android') => 'Android',
+        str_contains($ua, 'iPhone') || str_contains($ua, 'iPad') => 'iOS',
+        default => 'Unknown',
+    };
 
     $browserIcon = match (true) {
         str_contains(strtolower($browserName), 'chrome') => 'heroicon-o-globe-alt',
@@ -16,8 +33,11 @@
     function countryFlag($country) {
         if (!$country) return '🏳️';
         $countryCode = strtoupper(substr($country, 0, 2));
-        return mb_convert_encoding('&#' . (127397 + ord($countryCode[0])) . ';', 'UTF-8', 'HTML-ENTITIES')
-            . mb_convert_encoding('&#' . (127397 + ord($countryCode[1])) . ';', 'UTF-8', 'HTML-ENTITIES');
+        $flag = '';
+        for ($i = 0; $i < 2; $i++) {
+            $flag .= mb_chr(127397 + ord($countryCode[$i]));
+        }
+        return $flag;
     }
 @endphp
 
