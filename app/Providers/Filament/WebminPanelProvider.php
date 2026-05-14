@@ -5,6 +5,9 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\HtmlString;
 use App\Filament\Auth\Login;
 use App\Filament\Pages\HealthCheckResults;
 use App\Http\Middleware\RestrictIpMiddleware;
@@ -26,6 +29,29 @@ use Filament\Navigation\MenuItem;
 
 class WebminPanelProvider extends PanelProvider
 {
+    public function register(): void
+    {
+        parent::register();
+
+        $gaId = config('services.google_analytics.id');
+
+        if ($gaId) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::HEAD_END,
+                fn(): HtmlString => new HtmlString(<<<HTML
+                    <!-- Google Analytics -->
+                    <script async src="https://www.googletagmanager.com/gtag/js?id={$gaId}"></script>
+                    <script>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', '{$gaId}');
+                    </script>
+                HTML),
+            );
+        }
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel

@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'google_analytics' => [
+        'id'              => env('GOOGLE_ANALYTICS_ID'),
+        'property_id'     => env('GOOGLE_ANALYTICS_PROPERTY_ID'),
+        'credentials_path' => env('GOOGLE_ANALYTICS_CREDENTIALS_PATH', storage_path('app/private/google-analytics-credentials.json')),
+    ],
+
 ];
