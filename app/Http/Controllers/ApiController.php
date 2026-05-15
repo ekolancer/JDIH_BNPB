@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DokumenHukumResource;
 use App\Http\Requests\MetadataApiRequest;
 use App\Models\DokumenHukum;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
     /**
      * Endpoint API untuk sinkronisasi data ke sistem PUU.
-     * Mengembalikan array JSON langsung (tanpa wrapper "data").
      */
-    public function index(MetadataApiRequest $request)
+    public function index(MetadataApiRequest $request): JsonResponse
     {
         try {
             $validated = $request->validated();

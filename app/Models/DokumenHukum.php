@@ -433,6 +433,15 @@ class DokumenHukum extends Model
             'ref_bidang_hukum_id',
         ];
 
+        // Preload ref data sekali (menghindari N+1 query di dalam loop)
+        $jenisMap = DB::table('ref_jenis_dokumen')
+            ->pluck('nama', 'id')
+            ->toArray();
+
+        $bidangMap = DB::table('ref_bidang_hukum')
+            ->pluck('nama', 'id')
+            ->toArray();
+
         $data = [];
 
         foreach ($groupableColumns as $column) {
@@ -443,7 +452,7 @@ class DokumenHukum extends Model
 
                 $mapped = [];
                 foreach ($rows as $r) {
-                    $name = DB::table('ref_jenis_dokumen')->where('id', $r->ref_jenis_dokumen_id)->value('nama') ?? 'Tidak Diketahui';
+                    $name = $jenisMap[$r->ref_jenis_dokumen_id] ?? 'Tidak Diketahui';
                     $mapped[$name] = $r->count;
                 }
                 $data[$column] = $mapped;
@@ -454,7 +463,7 @@ class DokumenHukum extends Model
 
                 $mapped = [];
                 foreach ($rows as $r) {
-                    $name = DB::table('ref_bidang_hukum')->where('id', $r->ref_bidang_hukum_id)->value('nama') ?? 'Tidak Diketahui';
+                    $name = $bidangMap[$r->ref_bidang_hukum_id] ?? 'Tidak Diketahui';
                     $mapped[$name] = $r->count;
                 }
                 $data[$column] = $mapped;
