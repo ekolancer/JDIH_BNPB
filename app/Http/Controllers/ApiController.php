@@ -64,16 +64,25 @@ class ApiController extends Controller
             $query->orderBy($sortBy, $sortOrder);
 
             /* ============================
-         * EXECUTE
+         * EXECUTE (with pagination)
          * ============================*/
-            $dokumen = $query->get();
+            $perPage = min((int) ($validated['per_page'] ?? 50), 100);
+            $dokumen = $query->paginate($perPage);
 
-            $data = $dokumen->map(
+            $data = $dokumen->getCollection()->map(
                 fn($item) => (new DokumenHukumResource($item))->toArray($request)
             );
 
             return response()->json(
-                $data,
+                [
+                    'data' => $data,
+                    'meta' => [
+                        'current_page' => $dokumen->currentPage(),
+                        'last_page' => $dokumen->lastPage(),
+                        'per_page' => $dokumen->perPage(),
+                        'total' => $dokumen->total(),
+                    ],
+                ],
                 200,
                 [],
                 JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT

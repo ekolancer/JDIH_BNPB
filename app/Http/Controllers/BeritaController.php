@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\SeoHelper;
 
+use Illuminate\Support\Facades\Cache;
+
 class BeritaController extends Controller
 {
     /**
@@ -15,14 +17,13 @@ class BeritaController extends Controller
     public function index()
     {
         // Ambil semua data berita dengan pagination
-        $berita = Berita::where('status', 1)->latest()->paginate(10); // Mengambil 10 data per halaman
+        $berita = Berita::where('status', 1)->latest()->paginate(10);
 
-        // Ambil 5 berita terpopuler berdasarkan view terbanyak
-        $beritaTerpopuler = Berita::orderByDesc('view_count')
-            ->limit(5)
-            ->get();
+        // Ambil 5 berita terpopuler (cached 30 menit)
+        $beritaTerpopuler = Cache::remember('berita_terpopuler', 1800, function () {
+            return Berita::orderByDesc('view_count')->limit(5)->get();
+        });
 
-        // Kirim data ke view
         return view('berita.list', compact('berita', 'beritaTerpopuler'));
     }
 
@@ -34,17 +35,17 @@ class BeritaController extends Controller
             ->where('id', $berita->id)
             ->increment('view_count');
 
-        $beritaTerpopuler = Berita::orderByDesc('view_count')
-            ->limit(5)
-            ->get();
+        // Cached 30 menit
+        $beritaTerpopuler = Cache::remember('berita_terpopuler', 1800, function () {
+            return Berita::orderByDesc('view_count')->limit(5)->get();
+        });
 
-        // 🔥 TAMBAHKAN INI
         $seo = SeoHelper::meta($berita);
 
         return view('berita.detail', [
             'berita' => $berita,
             'beritaTerpopuler' => $beritaTerpopuler,
-            'seo' => $seo, // 🔥 WAJIB
+            'seo' => $seo,
         ]);
     }
 }

@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Visitor;
+use App\Jobs\ResolveVisitorGeo;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class VisitorCounter
@@ -32,55 +32,29 @@ class VisitorCounter
             return $response;
         }
 
-        // 🌐 Deteksi lokasi
+        // 🚨 Deteksi aktivitas mencurigakan
+        $suspicious = $this->isSuspicious($userAgent);
+
+        // 🌐 Deteksi lokasi — IP lokal langsung set Indonesia
         $isLocal = $this->isLocalIp($ip);
-        $country = 'Unknown';
-        $city = '-';
 
         if ($isLocal) {
             $country = 'Indonesia';
             $city = 'Local Network';
         } else {
-            try {
-                $apiResponse = Http::timeout(3)->get("https://ipapi.co/{$ip}/json/");
-                $data = $apiResponse->json();
-
-                // Jika rate-limited atau gagal, fallback ke ipwho.is
-                if (isset($data['error']) || empty($data['country'])) {
-                    Log::channel('visitor')->info("ipapi.co failed for {$ip}, using ipwho.is fallback.");
-                    $apiResponse = Http::timeout(3)->get("https://ipwho.is/{$ip}");
-                    $data = $apiResponse->json();
-                    Log::channel('visitor')->info("ipwho.is result for {$ip}", [
-                        'country' => $data['country'] ?? null,
-                        'city' => $data['city'] ?? null,
-                    ]);
-                }
-
-                $country = $data['country'] ?? 'Unknown';
-                $city = $data['city'] ?? '-';
-            } catch (\Throwable $e) {
-                Log::channel('visitor')->warning("Geo lookup failed for {$ip}: " . $e->getMessage());
-            }
+            // Non-local: simpan dulu dengan country pending, resolve via queue
+            $country = null;
+            $city = null;
         }
-
-        // 🚫 Abaikan pengunjung luar negeri (kecuali IP lokal)
-        if (!$isLocal && strtolower($country) !== 'indonesia') {
-            Log::channel('visitor')->info("Skipped non-Indonesian visitor {$ip} ({$country})");
-            return $response;
-        }
-
-        // 🚨 Deteksi aktivitas mencurigakan
-        $suspicious = $this->isSuspicious($userAgent);
 
         // ⚙️ Cegah duplikasi log harian
         $exists = Visitor::whereDate('visited_at', now()->toDateString())
             ->where('ip_address', $ip)
-            ->where('user_agent', substr($userAgent, 0, 255))
             ->exists();
 
         if (!$exists) {
             try {
-                Visitor::create([
+                $visitor = Visitor::create([
                     'ip_address' => $ip,
                     'user_agent' => substr($userAgent, 0, 255),
                     'path'       => $path,
@@ -91,11 +65,15 @@ class VisitorCounter
                     'visited_at' => now(),
                 ]);
 
+                // Dispatch geo-lookup ke queue (non-blocking) untuk IP non-lokal
+                if (!$isLocal) {
+                    ResolveVisitorGeo::dispatch($visitor->id, $ip);
+                }
+
                 Log::channel('visitor')->info("✅ Visitor recorded", [
                     'ip' => $ip,
                     'path' => $path,
-                    'country' => $country,
-                    'city' => $city,
+                    'country' => $country ?? 'pending-geo',
                     'suspicious' => $suspicious,
                 ]);
             } catch (\Throwable $e) {
