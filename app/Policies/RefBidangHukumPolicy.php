@@ -14,62 +14,62 @@ class RefBidangHukumPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:RefBidangHukum');
+        return $authUser->can('view_any_ref_bidang_hukum');
     }
 
     public function view(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('View:RefBidangHukum');
+        return $authUser->can('view_ref_bidang_hukum');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:RefBidangHukum');
+        return $authUser->can('create_ref_bidang_hukum');
     }
 
     public function update(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('Update:RefBidangHukum');
+        return $authUser->can('update_ref_bidang_hukum');
     }
 
     public function delete(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('Delete:RefBidangHukum');
+        return $authUser->can('delete_ref_bidang_hukum');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:RefBidangHukum');
+        return $authUser->can('delete_any_ref_bidang_hukum');
     }
 
     public function restore(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('Restore:RefBidangHukum');
+        return $authUser->can('restore_ref_bidang_hukum');
     }
 
     public function forceDelete(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('ForceDelete:RefBidangHukum');
+        return $authUser->can('force_delete_ref_bidang_hukum');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:RefBidangHukum');
+        return $authUser->can('force_delete_any_ref_bidang_hukum');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:RefBidangHukum');
+        return $authUser->can('restore_any_ref_bidang_hukum');
     }
 
     public function replicate(AuthUser $authUser, RefBidangHukum $refBidangHukum): bool
     {
-        return $authUser->can('Replicate:RefBidangHukum');
+        return $authUser->can('replicate_ref_bidang_hukum');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:RefBidangHukum');
+        return $authUser->can('reorder_ref_bidang_hukum');
     }
 
 }

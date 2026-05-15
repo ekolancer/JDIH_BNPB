@@ -14,62 +14,62 @@ class DokumenHukumPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:DokumenHukum');
+        return $authUser->can('view_any_dokumen_hukum');
     }
 
     public function view(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('View:DokumenHukum');
+        return $authUser->can('view_dokumen_hukum');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:DokumenHukum');
+        return $authUser->can('create_dokumen_hukum');
     }
 
     public function update(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('Update:DokumenHukum');
+        return $authUser->can('update_dokumen_hukum');
     }
 
     public function delete(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('Delete:DokumenHukum');
+        return $authUser->can('delete_dokumen_hukum');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:DokumenHukum');
+        return $authUser->can('delete_any_dokumen_hukum');
     }
 
     public function restore(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('Restore:DokumenHukum');
+        return $authUser->can('restore_dokumen_hukum');
     }
 
     public function forceDelete(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('ForceDelete:DokumenHukum');
+        return $authUser->can('force_delete_dokumen_hukum');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:DokumenHukum');
+        return $authUser->can('force_delete_any_dokumen_hukum');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:DokumenHukum');
+        return $authUser->can('restore_any_dokumen_hukum');
     }
 
     public function replicate(AuthUser $authUser, DokumenHukum $dokumenHukum): bool
     {
-        return $authUser->can('Replicate:DokumenHukum');
+        return $authUser->can('replicate_dokumen_hukum');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:DokumenHukum');
+        return $authUser->can('reorder_dokumen_hukum');
     }
 
 }

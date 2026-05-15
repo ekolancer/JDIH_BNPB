@@ -14,62 +14,62 @@ class InfografisPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Infografis');
+        return $authUser->can('view_any_infografis');
     }
 
     public function view(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('View:Infografis');
+        return $authUser->can('view_infografis');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Infografis');
+        return $authUser->can('create_infografis');
     }
 
     public function update(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('Update:Infografis');
+        return $authUser->can('update_infografis');
     }
 
     public function delete(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('Delete:Infografis');
+        return $authUser->can('delete_infografis');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:Infografis');
+        return $authUser->can('delete_any_infografis');
     }
 
     public function restore(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('Restore:Infografis');
+        return $authUser->can('restore_infografis');
     }
 
     public function forceDelete(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('ForceDelete:Infografis');
+        return $authUser->can('force_delete_infografis');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Infografis');
+        return $authUser->can('force_delete_any_infografis');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Infografis');
+        return $authUser->can('restore_any_infografis');
     }
 
     public function replicate(AuthUser $authUser, Infografis $infografis): bool
     {
-        return $authUser->can('Replicate:Infografis');
+        return $authUser->can('replicate_infografis');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Infografis');
+        return $authUser->can('reorder_infografis');
     }
 
 }

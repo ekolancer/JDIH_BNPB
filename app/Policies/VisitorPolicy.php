@@ -14,62 +14,62 @@ class VisitorPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Visitor');
+        return $authUser->can('view_any_visitor');
     }
 
     public function view(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('View:Visitor');
+        return $authUser->can('view_visitor');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Visitor');
+        return $authUser->can('create_visitor');
     }
 
     public function update(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('Update:Visitor');
+        return $authUser->can('update_visitor');
     }
 
     public function delete(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('Delete:Visitor');
+        return $authUser->can('delete_visitor');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:Visitor');
+        return $authUser->can('delete_any_visitor');
     }
 
     public function restore(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('Restore:Visitor');
+        return $authUser->can('restore_visitor');
     }
 
     public function forceDelete(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('ForceDelete:Visitor');
+        return $authUser->can('force_delete_visitor');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Visitor');
+        return $authUser->can('force_delete_any_visitor');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Visitor');
+        return $authUser->can('restore_any_visitor');
     }
 
     public function replicate(AuthUser $authUser, Visitor $visitor): bool
     {
-        return $authUser->can('Replicate:Visitor');
+        return $authUser->can('replicate_visitor');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Visitor');
+        return $authUser->can('reorder_visitor');
     }
 
 }
