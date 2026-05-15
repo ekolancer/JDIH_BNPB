@@ -15,3 +15,5 @@ Artisan::command('inspire', function () {
 */
 Schedule::command('visitors:cleanup --days=90')->daily()->at('02:00');
 Schedule::command('sitemap:generate')->daily()->at('03:00');
+Schedule::command('backup:run --only-db')->daily()->at('01:00');
+Schedule::command('backup:clean')->daily()->at('01:30');

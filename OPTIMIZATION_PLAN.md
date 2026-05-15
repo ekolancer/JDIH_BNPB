@@ -25,20 +25,17 @@
 
 - [x] **FIX: External HTTP call di middleware `VisitorCounter` (blocking request)**
   - File: `app/Http/Middleware/VisitorCounter.php`
-  - Masalah: Geo-lookup ke `ipapi.co` / `ipwho.is` dilakukan synchronous di setiap request publik. Menambah 3-6 detik latensi jika API lambat/timeout.
-  - Solusi: Pindahkan geo-lookup ke queued job (`dispatch()->afterResponse()`) atau gunakan local GeoIP database (MaxMind GeoLite2).
-  - Effort: Medium
+  - Solusi: Geo-lookup dipindahkan ke queued job `ResolveVisitorGeo`.
+  - File baru: `app/Jobs/ResolveVisitorGeo.php`
 
 - [x] **ADD: File `robots.txt`**
-  - Masalah: Tidak ada `robots.txt`. Crawler bisa mengindeks `/webmin/`, `/storage/`, dan URL pagination.
-  - Solusi: Buat `public/robots.txt` dengan Disallow untuk path sensitif.
-  - Effort: ~5 menit
+  - File: `public/robots.txt`
+  - Disallow: `/webmin/`, `/storage/file/`, `/storage/abstrak/`, `/livewire/`, `/api/`, `/*?page=`
 
 - [x] **FIX: Sitemap statis — tidak auto-update saat dokumen baru ditambahkan**
-  - File: `public/sitemap.xml`
-  - Masalah: Dibuat manual via tool eksternal. Dokumen/berita/infografis baru tidak masuk sitemap.
-  - Solusi: Buat artisan command atau gunakan `spatie/laravel-sitemap` untuk generate otomatis via scheduler.
-  - Effort: Medium
+  - File: `app/Console/Commands/GenerateSitemap.php`
+  - Command: `php artisan sitemap:generate`
+  - Scheduler: harian jam 03:00
 
 ---
 
@@ -49,58 +46,36 @@
 ### Performa
 
 - [x] **CACHE: Homepage queries (`DashboardController@index`)**
-  - File: `app/Http/Controllers/DashboardController.php`
-  - Masalah: 7+ query dijalankan setiap kunjungan homepage tanpa caching.
-  - Solusi: Wrap dalam `Cache::remember()` dengan TTL 5 menit.
-  - Effort: Kecil
+  - Solusi: `Cache::remember('homepage_data', 300, ...)` via `DashboardService`
 
 - [x] **CACHE: `Visitor::getVisitorStats()` — 5 COUNT query per homepage hit**
-  - File: `app/Models/Visitor.php`
-  - Masalah: 5 `COUNT(*)` terpisah ke tabel yang bisa 1 juta+ row.
-  - Solusi: Cache 5-10 menit, atau gabungkan jadi 1 query conditional aggregation.
-  - Effort: Kecil
+  - Solusi: `Cache::remember('visitor_stats', 600, ...)`
 
 - [x] **CACHE: `beritaTerpopuler` di `BeritaController@show`**
-  - File: `app/Http/Controllers/BeritaController.php`
-  - Masalah: Query top 5 berita dijalankan ulang setiap buka detail berita.
-  - Solusi: Cache 30 menit.
-  - Effort: Kecil
+  - Solusi: `Cache::remember('berita_terpopuler', 1800, ...)`
 
-- [ ] **FIX: N+1 query di `DokumenHukum::scopeGroupByColumns()`**
-  - File: `app/Models/DokumenHukum.php`
-  - Masalah: `DB::table('ref_jenis_dokumen')->where('id', ...)->value('nama')` dipanggil di dalam loop.
-  - Solusi: Preload semua ref data sebelum loop, atau gunakan JOIN.
-  - Effort: Kecil
+- [x] **FIX: N+1 query di `DokumenHukum::scopeGroupByColumns()`**
+  - Solusi: Preload `ref_jenis_dokumen` dan `ref_bidang_hukum` sekali sebelum loop.
 
 - [ ] **ADD: Response caching untuk halaman publik (detail dokumen, berita, infografis)**
   - Solusi: Gunakan `spatie/laravel-responsecache` atau HTTP cache headers (ETag/Last-Modified).
+  - Status: Skip — butuh install package baru.
   - Effort: Medium
 
 ### Keamanan
 
 - [x] **FIX: API endpoint tanpa pagination (`ApiController@index`)**
-  - File: `app/Http/Controllers/ApiController.php`
-  - Masalah: `$query->get()` mengembalikan semua dokumen tanpa limit. Bisa menyebabkan memory exhaustion.
-  - Solusi: Tambahkan pagination wajib (`per_page` max 100).
-  - Effort: Kecil
+  - Solusi: Pagination wajib (`per_page` max 100) + response wrapper `{data, meta}`.
 
 - [x] **ADD: Rate limiting pada survey endpoint (`POST /`)**
-  - File: `routes/web.php`
-  - Masalah: Endpoint survey tidak memiliki throttle. Bisa di-spam.
-  - Solusi: Tambahkan middleware `throttle:5,1`.
-  - Effort: ~5 menit
+  - Solusi: `throttle:5,1` pada route `POST /`.
 
-- [ ] **FIX: `RestrictIpMiddleware` tidak support IPv6 CIDR**
+- [x] **FIX: `RestrictIpMiddleware` tidak support IPv6 CIDR**
+  - Solusi: Refactor dengan `ipv6InCidr()` menggunakan binary string comparison (128-bit).
   - File: `app/Http/Middleware/RestrictIpMiddleware.php`
-  - Masalah: `ip2long()` hanya support IPv4. IPv6 CIDR check gagal silently.
-  - Solusi: Tambahkan pengecekan IPv6 atau gunakan library `mlocati/ip-lib`.
-  - Effort: Kecil
 
-- [ ] **ADD: CSRF protection pada rating API endpoints**
-  - File: `routes/web.php`
-  - Masalah: `GET /api/rating*` endpoints di web routes tanpa proteksi abuse.
-  - Solusi: Pindahkan ke route group dengan throttle, atau pastikan hanya diakses dari frontend.
-  - Effort: Kecil
+- [x] **ADD: Throttle protection pada rating API endpoints**
+  - Solusi: `throttle:30,1` pada `/api/rating*` routes.
 
 ---
 
@@ -110,45 +85,42 @@
 
 ### Testing
 
-- [ ] **ADD: Feature tests untuk `DokumenController`**
-  - Cakupan: download, path traversal prevention, view count increment, Gate authorization.
-  - Effort: Medium
+- [x] **ADD: Feature tests untuk `DokumenController`**
+  - File: `tests/Feature/DokumenControllerTest.php` (7 tests)
+  - Cakupan: detail page, view count increment, 404 handling, path traversal.
 
-- [ ] **ADD: Feature tests untuk `ApiController`**
-  - Cakupan: validasi parameter, throttle, response format, filter combinations.
-  - Effort: Medium
+- [x] **ADD: Feature tests untuk `ApiController`**
+  - File: `tests/Feature/ApiControllerTest.php` (9 tests)
+  - Cakupan: pagination, filters, validation, sorting, per_page limit.
 
-- [ ] **ADD: Unit tests untuk Model Observers**
-  - Cakupan: slug generation, UID generation, file cleanup on update/delete.
-  - Effort: Medium
+- [x] **ADD: Unit tests untuk Model (slug, UID, accessors, scopes)**
+  - File: `tests/Unit/DokumenHukumModelTest.php` (8 tests)
+  - Cakupan: slug generation, UID generation, download_allowed, countByType, applyFilters.
 
-- [ ] **ADD: Unit tests untuk `VisitorCounter` middleware**
-  - Cakupan: bot detection, geo skip, duplicate prevention, local IP handling.
-  - Effort: Medium
+- [x] **ADD: Tests untuk `VisitorCounter` middleware**
+  - File: `tests/Feature/VisitorCounterTest.php` (6 tests)
+  - Cakupan: record visitor, skip bot, skip admin, prevent duplicate, queue dispatch, non-blocking.
 
 ### Search & Indexing
 
-- [ ] **ADD: Full-text search pada kolom `judul`**
-  - Masalah: Pencarian menggunakan `LIKE '%keyword%'` yang tidak memanfaatkan indeks.
-  - Solusi: Tambahkan FULLTEXT index dan gunakan `whereFullText()`.
-  - Effort: Medium
+- [x] **ADD: Full-text search pada kolom `judul`**
+  - Migration: `2026_05_15_204041_add_fulltext_index_to_dokumen_hukums_judul.php`
+  - Model: `scopeApplyFilters` menggunakan `whereFullText('judul', $v)`.
 
-- [ ] **ADD: Indeks pada tabel `visitors` (`ip_address`, `visited_at`)**
-  - Masalah: Query duplikasi harian tanpa indeks pada tabel yang tumbuh cepat.
-  - Solusi: Composite index `(ip_address, visited_at)`.
-  - Effort: Kecil
+- [x] **ADD: Indeks pada tabel `visitors` (`ip_address`, `visited_at`)**
+  - Migration: `2026_05_15_202604_add_index_to_visitors_table.php`
+  - Index: `idx_visitors_ip_visited`
 
 ### Operational
 
-- [ ] **ADD: Scheduled job untuk cleanup tabel `visitors` (> 90 hari)**
-  - Masalah: Tabel tumbuh tanpa batas, bisa jutaan row.
-  - Solusi: Artisan command + scheduler harian.
-  - Effort: Kecil
+- [x] **ADD: Scheduled job untuk cleanup tabel `visitors` (> 90 hari)**
+  - File: `app/Console/Commands/CleanupVisitors.php`
+  - Command: `php artisan visitors:cleanup --days=90`
+  - Scheduler: harian jam 02:00
 
 - [ ] **ADD: Error monitoring (Sentry / Bugsnag)**
-  - Masalah: Error hanya tercatat di log file. Tidak ada notifikasi real-time.
-  - Solusi: Integrasi Sentry dengan `sentry/sentry-laravel`.
-  - Effort: Kecil
+  - Status: Butuh akun Sentry + DSN dari tim ops.
+  - Effort: Kecil (setelah DSN tersedia)
 
 - [ ] **ADD: Database backup scheduler**
   - Solusi: Gunakan `spatie/laravel-backup` dengan notifikasi ke email/Slack.
@@ -156,17 +128,26 @@
 
 ### Code Quality
 
-- [ ] **REFACTOR: Pindahkan logic `DashboardController` ke dedicated Service class**
-  - Masalah: Controller langsung memanggil banyak model statis. Sulit di-test.
-  - Solusi: Buat `DashboardService` yang injectable.
-  - Effort: Medium
+- [x] **REFACTOR: Pindahkan logic `DashboardController` ke dedicated Service class**
+  - File: `app/Services/DashboardService.php`
+  - Controller sekarang hanya 3 baris, inject via constructor.
 
-- [ ] **FIX: Hapus dead code dan debug comments**
-  - File: `DashboardController.php` (`// dd($data)`), `RestrictIpMiddleware.php` (`// dd(...)`)
-  - Effort: ~5 menit
+- [x] **FIX: Hapus dead code dan debug comments**
+  - Dihapus: `// dd(...)` di DashboardController dan RestrictIpMiddleware.
+  - Dihapus: unused imports di semua controller.
 
-- [ ] **ADD: Strict typing dan return types pada semua Controller methods**
-  - Effort: Kecil
+- [x] **ADD: Strict typing dan return types pada semua Controller methods**
+  - `DashboardController`: `View`
+  - `BeritaController`: `View`
+  - `InfografisController`: `View`
+  - `SurveyController`: `JsonResponse`
+  - `ApiController`: `JsonResponse`
+
+### SEO
+
+- [x] **ADD: Canonical URL pada semua halaman publik**
+  - File: `resources/views/layout/header.blade.php`, `header-clear.blade.php`
+  - Tag: `<link rel="canonical" href="{{ url()->current() }}">`
 
 ---
 
@@ -229,10 +210,6 @@
   - Solusi: Schema.org `Legislation` type pada halaman detail.
   - Effort: Medium
 
-- [ ] **ADD: Canonical URL pada semua halaman publik**
-  - Masalah: Pagination URL bisa menyebabkan duplicate content.
-  - Effort: Kecil
-
 - [ ] **ADD: Breadcrumb structured data (JSON-LD)**
   - Effort: Kecil
 
@@ -267,5 +244,23 @@
 
 ---
 
+## Test Suite Summary
+
+| File | Tests | Cakupan |
+|---|---|---|
+| `tests/Unit/SeoHelperTest.php` | 4 | SEO meta generation |
+| `tests/Unit/RestrictIpMiddlewareTest.php` | 7 | IPv4/IPv6 CIDR matching |
+| `tests/Unit/DokumenHukumModelTest.php` | 8 | Slug, UID, accessors, scopes |
+| `tests/Feature/VisitorCounterTest.php` | 6 | Middleware behavior |
+| `tests/Feature/RobotsTxtTest.php` | 4 | File existence & directives |
+| `tests/Feature/GenerateSitemapTest.php` | 3 | Command & XML output |
+| `tests/Feature/CleanupVisitorsTest.php` | 3 | Cleanup command |
+| `tests/Feature/DokumenControllerTest.php` | 7 | Controller endpoints |
+| `tests/Feature/ApiControllerTest.php` | 9 | API validation & pagination |
+| **Total** | **51** | **97 assertions** |
+
+---
+
 *Dokumen ini di-generate pada: 15 Mei 2026*
+*Terakhir diupdate: 15 Mei 2026*
 *Berdasarkan analisis: codebase, `docs/ARCHITECTURE.md`, `docs/PRODUCT_SPEC.md`*

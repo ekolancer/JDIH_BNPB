@@ -16,7 +16,8 @@
         "livewire/livewire": "^3.5",
         "nesbot/carbon": "^3.8",
         "shuvroroy/filament-spatie-laravel-health": "^3.0",
-        "spatie/laravel-activitylog": "^4.12"
+        "spatie/laravel-activitylog": "^4.12",
+        "spatie/laravel-backup": "^9.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
