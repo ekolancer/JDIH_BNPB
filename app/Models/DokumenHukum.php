@@ -483,7 +483,7 @@ class DokumenHukum extends Model
     {
         $query->when(
             $filters['judul'] ?? null,
-            fn($q, $v) => $q->where('judul', 'like', "%{$v}%")
+            fn($q, $v) => $q->whereFullText('judul', $v)
         );
 
         $query->when(
