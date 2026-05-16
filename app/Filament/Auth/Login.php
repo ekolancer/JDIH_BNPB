@@ -10,6 +10,7 @@ use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Throwable;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
@@ -67,6 +68,9 @@ class Login extends AuthLogin
         $username = $this->data['login'] ?? '(kosong)';
         $ip = request()->ip();
         $key = "login_attempts:{$username}:{$ip}";
+
+        // Step 0️⃣: Verifikasi Turnstile
+        $this->verifyTurnstile();
 
         // Step 1️⃣: Cek rate limiter
         if (RateLimiter::tooManyAttempts($key, 3)) {
@@ -144,6 +148,54 @@ class Login extends AuthLogin
             throw ValidationException::withMessages([
                 'data.login' => 'Terjadi kesalahan internal. Silakan coba lagi nanti.',
             ]);
+        }
+    }
+
+    /**
+     * Verifikasi Cloudflare Turnstile token.
+     * Skip jika belum dikonfigurasi (development).
+     */
+    protected function verifyTurnstile(): void
+    {
+        $secretKey = config('turnstile.secret_key');
+
+        // Skip jika belum dikonfigurasi
+        if (empty($secretKey)) {
+            return;
+        }
+
+        $token = request()->input('cf-turnstile-response');
+
+        if (empty($token)) {
+            throw ValidationException::withMessages([
+                'data.login' => 'Verifikasi keamanan diperlukan. Silakan selesaikan challenge.',
+            ]);
+        }
+
+        try {
+            $response = Http::asForm()->post(config('turnstile.verify_url'), [
+                'secret' => $secretKey,
+                'response' => $token,
+                'remoteip' => request()->ip(),
+            ]);
+
+            $result = $response->json();
+
+            if (!($result['success'] ?? false)) {
+                Log::warning('Turnstile login verification failed', [
+                    'ip' => request()->ip(),
+                    'errors' => $result['error-codes'] ?? [],
+                ]);
+
+                throw ValidationException::withMessages([
+                    'data.login' => 'Verifikasi keamanan gagal. Silakan coba lagi.',
+                ]);
+            }
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // Graceful degradation: jika Cloudflare down, izinkan login
+            Log::error('Turnstile API unreachable', ['error' => $e->getMessage()]);
         }
     }
 }

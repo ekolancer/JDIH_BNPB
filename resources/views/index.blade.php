@@ -314,6 +314,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    {{-- Cloudflare Turnstile (invisible mode untuk survey) --}}
+                    <x-turnstile mode="invisible" />
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Kirim</button>
                 </div>

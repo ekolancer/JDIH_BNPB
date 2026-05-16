@@ -20,7 +20,7 @@ use App\Models\ProfilPage;
 */
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
-Route::post('/', [SurveyController::class, 'store'])->middleware('throttle:5,1')->name('survey.store');
+Route::post('/', [SurveyController::class, 'store'])->middleware(['throttle:5,1', 'turnstile'])->name('survey.store');
 
 /*
 |--------------------------------------------------------------------------
