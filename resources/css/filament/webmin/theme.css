@@ -5,7 +5,7 @@
 /* Import Modular Custom Styles */
 @import '../../glass-admin.css';
 @import '../../filament-login.css';
-/* @import '../../filament-dashboard-widgets.css'; */
+@import '../../filament-dashboard-widgets.css';
 /* @import '../../filament-stats-overview.css'; */
 
 @source '../../../../app/Filament/**/*';
