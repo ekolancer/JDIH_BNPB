@@ -14,6 +14,7 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            \App\Filament\Widgets\WelcomeBannerWidget::class,
             \App\Filament\Widgets\StatsOverviewWidget::class,
             \App\Filament\Widgets\DokumenDistribusiWidget::class,
             \App\Filament\Widgets\TopViewedDokumenWidget::class,

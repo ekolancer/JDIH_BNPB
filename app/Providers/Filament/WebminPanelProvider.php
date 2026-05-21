@@ -71,6 +71,7 @@ class WebminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 \Filament\Widgets\AccountWidget::class,
+                \App\Filament\Widgets\WelcomeBannerWidget::class,
                 \App\Filament\Widgets\StatsOverviewWidget::class,
                 \App\Filament\Widgets\DokumenDistribusiWidget::class,
                 \App\Filament\Widgets\TopViewedDokumenWidget::class,

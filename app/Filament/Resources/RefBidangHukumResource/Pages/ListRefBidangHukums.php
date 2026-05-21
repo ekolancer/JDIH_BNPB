@@ -14,7 +14,7 @@ class ListRefBidangHukums extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Add'),
+                ->label('Tambah'),
         ];
     }
 
