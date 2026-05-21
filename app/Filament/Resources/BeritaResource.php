@@ -87,8 +87,7 @@ class BeritaResource extends Resource
                                     'underline',
                                     'undo',
                                 ])
-                                ->validationMessages(['required' => 'Judul tidak boleh kosong !'])
-                                ->disableGrammarly(),
+                                ->validationMessages(['required' => 'Judul tidak boleh kosong !']),
                             TextInput::make('penulis')
                                 ->validationMessages(['required' => 'Penulis tidak boleh kosong !'])
                                 ->label('Penulis')
