@@ -14,62 +14,62 @@ class BeritaPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Berita');
+        return $authUser->can('view_any_berita');
     }
 
     public function view(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('View:Berita');
+        return $authUser->can('view_berita');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Berita');
+        return $authUser->can('create_berita');
     }
 
     public function update(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('Update:Berita');
+        return $authUser->can('update_berita');
     }
 
     public function delete(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('Delete:Berita');
+        return $authUser->can('delete_berita');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:Berita');
+        return $authUser->can('delete_any_berita');
     }
 
     public function restore(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('Restore:Berita');
+        return $authUser->can('restore_berita');
     }
 
     public function forceDelete(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('ForceDelete:Berita');
+        return $authUser->can('force_delete_berita');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Berita');
+        return $authUser->can('force_delete_any_berita');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Berita');
+        return $authUser->can('restore_any_berita');
     }
 
     public function replicate(AuthUser $authUser, Berita $berita): bool
     {
-        return $authUser->can('Replicate:Berita');
+        return $authUser->can('replicate_berita');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Berita');
+        return $authUser->can('reorder_berita');
     }
 
 }

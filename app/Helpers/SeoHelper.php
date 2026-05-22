@@ -54,12 +54,12 @@ class SeoHelper
     {
         return [
             'title' => "{$berita->judul} - JDIH BNPB",
-            'description' => Str::limit(strip_tags($berita->isi), 160),
+            'description' => Str::limit(strip_tags($berita->konten), 160),
             'image' => $berita->gambar
                 ? asset('storage/' . $berita->gambar)
                 : asset('images/og_image.png'),
             'url' => url()->current(),
-            'type' => 'article', // 🔥 tambahkan
+            'type' => 'article',
         ];
     }
 

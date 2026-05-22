@@ -91,6 +91,57 @@ class DokumenHukum extends Model
         return $this->subjekRef();
     }
 
+    /**
+     * Relasi keluar — dokumen ini sebagai sumber relasi.
+     */
+    public function relasiKeluar()
+    {
+        return $this->hasMany(DokumenRelasi::class, 'dokumen_id');
+    }
+
+    /**
+     * Relasi masuk — dokumen ini sebagai target relasi.
+     */
+    public function relasiMasuk()
+    {
+        return $this->hasMany(DokumenRelasi::class, 'related_dokumen_id');
+    }
+
+    /**
+     * Gabungkan semua relasi (keluar + masuk) dengan label yang benar.
+     * Relasi masuk di-inverse label-nya, tapi skip jika sudah ada di keluar (cegah duplikat).
+     */
+    public function semuaRelasi(): \Illuminate\Support\Collection
+    {
+        $keluar = $this->relasiKeluar()->with('relatedDokumen.jenisDokumen')->get();
+
+        // Kumpulkan pasangan yang sudah ada dari relasi keluar
+        $existingPairs = $keluar->map(fn ($r) => $r->related_dokumen_id . '-' . $r->jenis_relasi)->toArray();
+
+        $keluarMapped = $keluar->map(fn ($r) => [
+                'dokumen'      => $r->relatedDokumen,
+                'jenis_relasi' => $r->jenis_relasi,
+                'label'        => DokumenRelasi::getAllRelasiLabels()[$r->jenis_relasi] ?? $r->jenis_relasi,
+                'catatan'      => $r->catatan,
+            ]);
+
+        $masuk = $this->relasiMasuk()->with('dokumen.jenisDokumen')->get()
+            ->filter(function ($r) use ($existingPairs) {
+                // Skip jika inverse-nya sudah tercatat di keluar
+                $inverseJenis = DokumenRelasi::getInverseRelasi($r->jenis_relasi);
+                $pairKey = $r->dokumen_id . '-' . $inverseJenis;
+                return !in_array($pairKey, $existingPairs);
+            })
+            ->map(fn ($r) => [
+                'dokumen'      => $r->dokumen,
+                'jenis_relasi' => DokumenRelasi::getInverseRelasi($r->jenis_relasi),
+                'label'        => DokumenRelasi::getAllRelasiLabels()[DokumenRelasi::getInverseRelasi($r->jenis_relasi)] ?? $r->jenis_relasi,
+                'catatan'      => $r->catatan,
+            ]);
+
+        return collect($keluarMapped->toArray())->merge($masuk->toArray());
+    }
+
     /***************************************************************
      *  EVENT MODEL (CREATING + UPDATING + DELETED)
      ***************************************************************/
@@ -226,7 +277,6 @@ class DokumenHukum extends Model
         $t ? \Carbon\Carbon::parse($t)->locale('id')->translatedFormat('d F Y') : '-';
 
         $base = [
-            'Jenis Dokumen'     => $jenisNama,
             'Judul'             => $this->judul ?? '-',
             'Nomor'             => $this->nomor ?? '-',
             'Tahun Terbit'      => $this->tahun ?? '-',
@@ -433,6 +483,15 @@ class DokumenHukum extends Model
             'ref_bidang_hukum_id',
         ];
 
+        // Preload ref data sekali (menghindari N+1 query di dalam loop)
+        $jenisMap = DB::table('ref_jenis_dokumen')
+            ->pluck('nama', 'id')
+            ->toArray();
+
+        $bidangMap = DB::table('ref_bidang_hukum')
+            ->pluck('nama', 'id')
+            ->toArray();
+
         $data = [];
 
         foreach ($groupableColumns as $column) {
@@ -443,7 +502,7 @@ class DokumenHukum extends Model
 
                 $mapped = [];
                 foreach ($rows as $r) {
-                    $name = DB::table('ref_jenis_dokumen')->where('id', $r->ref_jenis_dokumen_id)->value('nama') ?? 'Tidak Diketahui';
+                    $name = $jenisMap[$r->ref_jenis_dokumen_id] ?? 'Tidak Diketahui';
                     $mapped[$name] = $r->count;
                 }
                 $data[$column] = $mapped;
@@ -454,7 +513,7 @@ class DokumenHukum extends Model
 
                 $mapped = [];
                 foreach ($rows as $r) {
-                    $name = DB::table('ref_bidang_hukum')->where('id', $r->ref_bidang_hukum_id)->value('nama') ?? 'Tidak Diketahui';
+                    $name = $bidangMap[$r->ref_bidang_hukum_id] ?? 'Tidak Diketahui';
                     $mapped[$name] = $r->count;
                 }
                 $data[$column] = $mapped;
@@ -474,7 +533,7 @@ class DokumenHukum extends Model
     {
         $query->when(
             $filters['judul'] ?? null,
-            fn($q, $v) => $q->where('judul', 'like', "%{$v}%")
+            fn($q, $v) => $q->whereFullText('judul', $v)
         );
 
         $query->when(

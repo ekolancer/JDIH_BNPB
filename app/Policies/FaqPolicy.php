@@ -14,62 +14,62 @@ class FaqPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Faq');
+        return $authUser->can('view_any_faq');
     }
 
     public function view(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('View:Faq');
+        return $authUser->can('view_faq');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:Faq');
+        return $authUser->can('create_faq');
     }
 
     public function update(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('Update:Faq');
+        return $authUser->can('update_faq');
     }
 
     public function delete(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('Delete:Faq');
+        return $authUser->can('delete_faq');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:Faq');
+        return $authUser->can('delete_any_faq');
     }
 
     public function restore(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('Restore:Faq');
+        return $authUser->can('restore_faq');
     }
 
     public function forceDelete(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('ForceDelete:Faq');
+        return $authUser->can('force_delete_faq');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:Faq');
+        return $authUser->can('force_delete_any_faq');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:Faq');
+        return $authUser->can('restore_any_faq');
     }
 
     public function replicate(AuthUser $authUser, Faq $faq): bool
     {
-        return $authUser->can('Replicate:Faq');
+        return $authUser->can('replicate_faq');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:Faq');
+        return $authUser->can('reorder_faq');
     }
 
 }

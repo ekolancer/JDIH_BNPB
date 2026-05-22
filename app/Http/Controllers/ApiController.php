@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DokumenHukumResource;
 use App\Http\Requests\MetadataApiRequest;
 use App\Models\DokumenHukum;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
     /**
      * Endpoint API untuk sinkronisasi data ke sistem PUU.
-     * Mengembalikan array JSON langsung (tanpa wrapper "data").
      */
-    public function index(MetadataApiRequest $request)
+    public function index(MetadataApiRequest $request): JsonResponse
     {
         try {
             $validated = $request->validated();
@@ -64,16 +64,25 @@ class ApiController extends Controller
             $query->orderBy($sortBy, $sortOrder);
 
             /* ============================
-         * EXECUTE
+         * EXECUTE (with pagination)
          * ============================*/
-            $dokumen = $query->get();
+            $perPage = min((int) ($validated['per_page'] ?? 50), 100);
+            $dokumen = $query->paginate($perPage);
 
-            $data = $dokumen->map(
+            $data = $dokumen->getCollection()->map(
                 fn($item) => (new DokumenHukumResource($item))->toArray($request)
             );
 
             return response()->json(
-                $data,
+                [
+                    'data' => $data,
+                    'meta' => [
+                        'current_page' => $dokumen->currentPage(),
+                        'last_page' => $dokumen->lastPage(),
+                        'per_page' => $dokumen->perPage(),
+                        'total' => $dokumen->total(),
+                    ],
+                ],
                 200,
                 [],
                 JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT

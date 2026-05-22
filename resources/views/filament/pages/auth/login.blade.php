@@ -18,6 +18,9 @@
                 <form id="form" wire:submit="authenticate" class="fi-login-form fi-sc-form">
                     {{ $this->form }}
 
+                    {{-- Cloudflare Turnstile (visible mode untuk login) --}}
+                    <x-turnstile mode="visible" />
+
                     <x-filament::actions
                         :actions="$this->getFormActions()"
                         :full-width="$this->hasFullWidthFormActions()"

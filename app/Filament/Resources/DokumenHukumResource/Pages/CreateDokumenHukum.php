@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\DokumenHukumResource\Pages;
 
-use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\DokumenHukumResource;
-use Filament\Actions\Action;
 
 class CreateDokumenHukum extends CreateRecord
 {
@@ -16,7 +14,7 @@ class CreateDokumenHukum extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index'); // Mengarahkan ke halaman list setelah create
+        return $this->getResource()::getUrl('index');
     }
 
     protected function getCreatedNotification(): ?Notification

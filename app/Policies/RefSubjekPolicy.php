@@ -14,62 +14,62 @@ class RefSubjekPolicy
     
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:RefSubjek');
+        return $authUser->can('view_any_ref_subjek');
     }
 
     public function view(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('View:RefSubjek');
+        return $authUser->can('view_ref_subjek');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('Create:RefSubjek');
+        return $authUser->can('create_ref_subjek');
     }
 
     public function update(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('Update:RefSubjek');
+        return $authUser->can('update_ref_subjek');
     }
 
     public function delete(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('Delete:RefSubjek');
+        return $authUser->can('delete_ref_subjek');
     }
 
     public function deleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('DeleteAny:RefSubjek');
+        return $authUser->can('delete_any_ref_subjek');
     }
 
     public function restore(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('Restore:RefSubjek');
+        return $authUser->can('restore_ref_subjek');
     }
 
     public function forceDelete(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('ForceDelete:RefSubjek');
+        return $authUser->can('force_delete_ref_subjek');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ForceDeleteAny:RefSubjek');
+        return $authUser->can('force_delete_any_ref_subjek');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('RestoreAny:RefSubjek');
+        return $authUser->can('restore_any_ref_subjek');
     }
 
     public function replicate(AuthUser $authUser, RefSubjek $refSubjek): bool
     {
-        return $authUser->can('Replicate:RefSubjek');
+        return $authUser->can('replicate_ref_subjek');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('Reorder:RefSubjek');
+        return $authUser->can('reorder_ref_subjek');
     }
 
 }

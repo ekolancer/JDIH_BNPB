@@ -379,6 +379,24 @@ class DokumenList extends Component
 
         $results = $query->paginate(10);
 
+        // Bangun query params untuk pagination (pertahankan filter aktif)
+        $paginationParams = collect($this->filters)
+            ->filter(fn($v) => is_array($v) ? count($v) : filled($v))
+            ->mapWithKeys(function ($value, $key) {
+                $alias = $this->filterAliases[$key] ?? $key;
+                return [
+                    $alias => is_array($value)
+                        ? implode(',', $this->toUrlFilterValues($key, $value))
+                        : $this->toUrlFilterValue($key, $value),
+                ];
+            })
+            ->toArray();
+
+        $paginationParams['sort'] = $this->sortBy;
+
+        $results->withPath('/dokumen');
+        $results->appends($paginationParams);
+
         $this->numResults = $results->total();
 
         $this->queryTime = round(microtime(true) - $start, 3);

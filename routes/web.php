@@ -20,7 +20,7 @@ use App\Models\ProfilPage;
 */
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
-Route::post('/', [SurveyController::class, 'store'])->name('survey.store');
+Route::post('/', [SurveyController::class, 'store'])->middleware(['throttle:5,1', 'turnstile'])->name('survey.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -128,9 +128,9 @@ Route::get('/infografis/{slug}', [InfografisController::class, 'show'])->name('i
 | GET /api/rating-average mengembalikan rata-rata rating.
 | GET /api/rating-summary mengembalikan rata-rata dan total rating.
 */
-Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->name('rating.distribution');
-Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->name('rating.average');
-Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->name('rating.summary');
+Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->middleware('throttle:30,1')->name('rating.distribution');
+Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->middleware('throttle:30,1')->name('rating.average');
+Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->middleware('throttle:30,1')->name('rating.summary');
 
 /*
 |--------------------------------------------------------------------------

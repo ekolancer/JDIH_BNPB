@@ -514,3 +514,250 @@
         font-size: 1.1rem;
     }
 }
+
+/* ============================================================
+
+/* ============================================================
+   RELASI DOKUMEN — STEPPER (single direction, top-down)
+   ============================================================ */
+
+.relasi-stepper-card {
+    padding: 20px;
+}
+
+/* Header */
+.relasi-stepper-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--doc-background);
+}
+
+.relasi-stepper-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    color: var(--doc-accent);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.relasi-stepper-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--doc-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.relasi-stepper-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--doc-accent);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+/* Body */
+.relasi-stepper-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ── Individual step ── */
+.relasi-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+}
+
+/* Vertical connector line between steps */
+.relasi-step--has-line .relasi-step-node::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 16px;
+    background: var(--doc-border);
+}
+
+/* Spacing between steps */
+.relasi-step--has-line {
+    padding-bottom: 16px;
+}
+
+/* Node */
+.relasi-step-node {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    margin-top: 4px;
+    border: 2px solid;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.relasi-step:hover .relasi-step-node {
+    transform: scale(1.12);
+}
+
+.relasi-step-node--inverse {
+    background: #fffbeb;
+    color: #d97706;
+    border-color: #fde68a;
+}
+
+.relasi-step-node--forward {
+    background: #eff6ff;
+    color: var(--doc-accent);
+    border-color: #bfdbfe;
+}
+
+/* Content card */
+.relasi-step-content {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--doc-border);
+    background: #fafbfc;
+    transition: all 0.2s ease;
+}
+
+.relasi-step:hover .relasi-step-content {
+    border-color: var(--doc-accent);
+    background: #f0f7ff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+/* Badge */
+.relasi-step-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+}
+
+.relasi-step-badge--inverse {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.relasi-step-badge--forward {
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+/* Doc link */
+.relasi-step-doc {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    gap: 2px;
+}
+
+.relasi-step-doc-ref {
+    font-size: 0.77rem;
+    font-weight: 700;
+    color: var(--doc-accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.relasi-step-doc-title {
+    font-size: 0.79rem;
+    color: var(--doc-text-main);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Note */
+.relasi-step-note {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.7rem;
+    color: var(--doc-text-muted);
+    font-style: italic;
+}
+
+/* Vertical spine gradient line */
+.relasi-stepper-body {
+    position: relative;
+}
+
+.relasi-stepper-body::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(to bottom, #fde68a 0%, #bfdbfe 100%);
+    border-radius: 2px;
+    z-index: 0;
+}
+
+.relasi-step-node {
+    z-index: 1;
+}
+
+/* Legend */
+.relasi-stepper-legend {
+    display: flex;
+    gap: 14px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--doc-border);
+    flex-wrap: wrap;
+}
+
+.relasi-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    color: var(--doc-text-muted);
+    font-weight: 500;
+}
+
+.relasi-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.relasi-legend-dot--inverse { background: #d97706; }
+.relasi-legend-dot--forward { background: var(--doc-accent); }
