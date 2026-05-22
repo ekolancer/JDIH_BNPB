@@ -8,17 +8,41 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
 
 class EditRole extends EditRecord
 {
     protected static string $resource = RoleResource::class;
 
+    protected string $view = 'filament.resources.role-resource.pages.edit-role';
+
     public Collection $permissions;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
-            //Actions\DeleteAction::make(),
+            Actions\Action::make('generate_permissions')
+                ->label('Generate Permissions')
+                ->icon('heroicon-o-arrow-path')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->action(function () {
+                    Artisan::call('shield:generate', [
+                        '--all' => true,
+                        '--option' => Utils::getGeneratorOption(),
+                        '--panel' => filament()->getCurrentPanel()->getId(),
+                    ]);
+                    
+                    Notification::make()
+                        ->title('Permissions berhasil diperbarui')
+                        ->body('Semua permissions telah di-generate ulang. Form akan di-refresh.')
+                        ->success()
+                        ->send();
+                        
+                    return redirect(request()->header('referer'));
+                }),
+            // Actions\DeleteAction::make(),
         ];
     }
 

@@ -44,7 +44,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     {
         return $schema
             ->schema([
-                Grid::make()
+                Grid::make(1)
                     ->schema([
                         Section::make()
                             ->schema([

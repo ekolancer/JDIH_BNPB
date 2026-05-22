@@ -12,11 +12,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 #[ObservedBy([DokumenHukumObserver::class])]
 class DokumenHukum extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, LogsActivity;
 
     // Legacy fields hidden (keberadaannya tetap aman bila ada dalam DB lama)
     protected $hidden = ['jenisDok', 'singkatan'];
@@ -724,5 +727,13 @@ class DokumenHukum extends Model
     public function getIsImageAttribute(): bool
     {
         return in_array($this->file_extension, ['jpg', 'jpeg', 'png', 'webp']);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

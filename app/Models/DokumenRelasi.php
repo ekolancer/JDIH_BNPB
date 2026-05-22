@@ -4,9 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class DokumenRelasi extends Model
 {
+    use LogsActivity;
+
     protected $table = 'dokumen_relasi';
 
     protected $fillable = [
@@ -99,5 +104,13 @@ class DokumenRelasi extends Model
     public function getLabelAttribute(): string
     {
         return self::getAllRelasiLabels()[$this->jenis_relasi] ?? $this->jenis_relasi;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class Visitor extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
    protected $fillable = [
         'ip_address',
@@ -37,5 +40,13 @@ class Visitor extends Model
                 'year' => self::whereYear('visited_at', now()->year)->count(),
             ];
         });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }
