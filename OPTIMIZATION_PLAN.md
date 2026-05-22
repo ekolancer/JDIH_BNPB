@@ -157,9 +157,15 @@
 
 ### Konten & UX
 
-- [ ] **ADD: Relasi antar dokumen (mencabut / mengubah / melengkapi)**
-  - Masalah: Tidak ada cara menghubungkan dokumen yang saling merujuk.
-  - Solusi: Tabel pivot `dokumen_relasi` + UI di panel admin dan detail publik.
+- [x] **ADD: Relasi antar dokumen (mencabut / mengubah / melengkapi)**
+  - Solusi: Tabel pivot `dokumen_relasi` + UI di panel admin (Filament Relation Manager) dan stepper di detail publik.
+  - File: `database/migrations/2026_05_22_092550_create_dokumen_relasi_table.php`
+  - Model: `app/Models/DokumenRelasi.php` (dengan `getInverseRelasi()`, `getRelasiOptions()`)
+  - Relation Manager: `app/Filament/Resources/DokumenHukumResource/RelationManagers/DokumenRelasiRelationManager.php`
+  - View publik: stepper sidebar di `resources/views/dokumen/detail.blade.php`
+  - CSS: `public/css/detail-page/dokumen.css` (spine gradient + legend)
+  - Tests: `tests/Unit/DokumenRelasiTest.php` (5 tests), `tests/Feature/DokumenRelasiFeatureTest.php` (6 tests)
+  - Fitur: inverse otomatis saat tambah/hapus, dedup `semuaRelasi()`, badge warna per jenis
   - Effort: Besar
 
 - [ ] **ADD: Fitur "Dokumen Terkait" di halaman detail**
@@ -185,9 +191,9 @@
 - [ ] **ADD: Dashboard notifikasi (dokumen baru, error, visitor anomaly)**
   - Effort: Medium
 
-- [ ] **ADD: Audit log viewer yang lebih detail di panel admin**
-  - Masalah: `spatie/laravel-activitylog` sudah terinstall tapi belum ada UI viewer di Filament.
-  - Effort: Kecil
+- [x] **ADD: Audit log viewer yang lebih detail di panel admin**
+  - Solusi: `ActivityResource` Filament dengan custom glass-morphism view, filter log/event/subject/tanggal, diff old vs new values.
+  - File: `app/Filament/Resources/ActivityResource.php`, `resources/views/filament/resources/activity-resource/pages/view-activity.blade.php`
 
 ### API & Integrasi
 
@@ -251,16 +257,18 @@
 | `tests/Unit/SeoHelperTest.php` | 4 | SEO meta generation |
 | `tests/Unit/RestrictIpMiddlewareTest.php` | 7 | IPv4/IPv6 CIDR matching |
 | `tests/Unit/DokumenHukumModelTest.php` | 8 | Slug, UID, accessors, scopes |
+| `tests/Unit/DokumenRelasiTest.php` | 5 | Inverse mapping, labels, options |
 | `tests/Feature/VisitorCounterTest.php` | 6 | Middleware behavior |
 | `tests/Feature/RobotsTxtTest.php` | 4 | File existence & directives |
 | `tests/Feature/GenerateSitemapTest.php` | 3 | Command & XML output |
 | `tests/Feature/CleanupVisitorsTest.php` | 3 | Cleanup command |
 | `tests/Feature/DokumenControllerTest.php` | 7 | Controller endpoints |
 | `tests/Feature/ApiControllerTest.php` | 9 | API validation & pagination |
-| **Total** | **51** | **97 assertions** |
+| `tests/Feature/DokumenRelasiFeatureTest.php` | 6 | Relasi CRUD, inverse, dedup, view |
+| **Total** | **62** | **110+ assertions** |
 
 ---
 
 *Dokumen ini di-generate pada: 15 Mei 2026*
-*Terakhir diupdate: 15 Mei 2026*
+*Terakhir diupdate: 22 Mei 2026*
 *Berdasarkan analisis: codebase, `docs/ARCHITECTURE.md`, `docs/PRODUCT_SPEC.md`*

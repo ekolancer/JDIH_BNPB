@@ -91,6 +91,8 @@
                     </section>
                 </article>
 
+                {{-- Section Relasi Dokumen dipindah ke sidebar --}}
+
                 <div class="mt-2">
                     @livewire('media-file', ['dokumenId' => $dokumen->id])
                 </div>
@@ -98,6 +100,82 @@
 
             <!-- sidebar action -->
             <aside class="col-lg-4">
+
+                {{-- ── Relasi Dokumen Stepper ── --}}
+                @php
+                    $relasiDokumen = $dokumen->semuaRelasi();
+
+                    // Relasi "forward" = aksi yang dilakukan dokumen ini
+                    $forwardTypes = ['mencabut','mengubah','melaksanakan','melengkapi','dasar_hukum','terkait'];
+                    // Relasi "inverse" = dokumen ini sebagai objek
+                    $inverseTypes = ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar'];
+
+                    $forwardRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $forwardTypes));
+                    $inverseRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $inverseTypes));
+                @endphp
+
+                @if($relasiDokumen->isNotEmpty())
+                <div class="doc-detail-card relasi-stepper-card shadow-sm mb-4">
+                    <div class="relasi-stepper-header">
+                        <span class="relasi-stepper-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </span>
+                        <h3 class="relasi-stepper-title">Relasi Dokumen</h3>
+                        <span class="relasi-stepper-count">{{ $relasiDokumen->count() }}</span>
+                    </div>
+
+                    <div class="relasi-stepper-body">
+                        @foreach($relasiDokumen as $item)
+                            @php
+                                $relDoc  = $item['dokumen'];
+                                $isInverse = in_array($item['jenis_relasi'], ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar']);
+                            @endphp
+                            @if($relDoc)
+                            <div class="relasi-step {{ !$loop->last ? 'relasi-step--has-line' : '' }}">
+                                {{-- Arrow node --}}
+                                <div class="relasi-step-node {{ $isInverse ? 'relasi-step-node--inverse' : 'relasi-step-node--forward' }}">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+
+                                {{-- Content --}}
+                                <div class="relasi-step-content">
+                                    <span class="relasi-step-badge {{ $isInverse ? 'relasi-step-badge--inverse' : 'relasi-step-badge--forward' }}">
+                                        {{ $item['label'] }}
+                                    </span>
+                                    <a href="{{ route('dokumen.detail', ['tipeDok' => $relDoc->tipeDok, 'slug' => $relDoc->slug]) }}"
+                                       class="relasi-step-doc">
+                                        <span class="relasi-step-doc-ref">
+                                            {{ $relDoc->jenisDokumen?->singkatan }}
+                                            {{ $relDoc->nomor ? 'No. '.$relDoc->nomor : '' }}
+                                            Tahun {{ $relDoc->tahun }}
+                                        </span>
+                                        <span class="relasi-step-doc-title">{{ \Illuminate\Support\Str::limit($relDoc->judul, 70) }}</span>
+                                    </a>
+                                    @if($item['catatan'])
+                                        <span class="relasi-step-note">
+                                            <i class="fas fa-info-circle me-1"></i>{{ $item['catatan'] }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>{{-- /relasi-stepper-body --}}
+
+                    {{-- Legend --}}
+                    <div class="relasi-stepper-legend">
+                        <span class="relasi-legend-item">
+                            <span class="relasi-legend-dot relasi-legend-dot--inverse"></span>
+                            Mempengaruhi dokumen ini
+                        </span>
+                        <span class="relasi-legend-item">
+                            <span class="relasi-legend-dot relasi-legend-dot--forward"></span>
+                            Dipengaruhi dokumen ini
+                        </span>
+                    </div>
+                </div>
+                @endif
+
                 <div class="doc-detail-card sticky-sidebar shadow-sm">
                     <h3 class="sidebar-title">Aksi Dokumen</h3>
 

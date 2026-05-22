@@ -26,6 +26,7 @@ use Filament\Actions\CreateAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\VerticalAlignment;
 use App\Filament\Resources\DokumenHukumResource\Pages;
+use App\Filament\Resources\DokumenHukumResource\RelationManagers;
 
 class DokumenHukumResource extends Resource
 {
@@ -489,7 +490,7 @@ class DokumenHukumResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DokumenRelasiRelationManager::class,
         ];
     }
 

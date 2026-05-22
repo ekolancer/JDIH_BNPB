@@ -91,6 +91,57 @@ class DokumenHukum extends Model
         return $this->subjekRef();
     }
 
+    /**
+     * Relasi keluar — dokumen ini sebagai sumber relasi.
+     */
+    public function relasiKeluar()
+    {
+        return $this->hasMany(DokumenRelasi::class, 'dokumen_id');
+    }
+
+    /**
+     * Relasi masuk — dokumen ini sebagai target relasi.
+     */
+    public function relasiMasuk()
+    {
+        return $this->hasMany(DokumenRelasi::class, 'related_dokumen_id');
+    }
+
+    /**
+     * Gabungkan semua relasi (keluar + masuk) dengan label yang benar.
+     * Relasi masuk di-inverse label-nya, tapi skip jika sudah ada di keluar (cegah duplikat).
+     */
+    public function semuaRelasi(): \Illuminate\Support\Collection
+    {
+        $keluar = $this->relasiKeluar()->with('relatedDokumen.jenisDokumen')->get();
+
+        // Kumpulkan pasangan yang sudah ada dari relasi keluar
+        $existingPairs = $keluar->map(fn ($r) => $r->related_dokumen_id . '-' . $r->jenis_relasi)->toArray();
+
+        $keluarMapped = $keluar->map(fn ($r) => [
+                'dokumen'      => $r->relatedDokumen,
+                'jenis_relasi' => $r->jenis_relasi,
+                'label'        => DokumenRelasi::getAllRelasiLabels()[$r->jenis_relasi] ?? $r->jenis_relasi,
+                'catatan'      => $r->catatan,
+            ]);
+
+        $masuk = $this->relasiMasuk()->with('dokumen.jenisDokumen')->get()
+            ->filter(function ($r) use ($existingPairs) {
+                // Skip jika inverse-nya sudah tercatat di keluar
+                $inverseJenis = DokumenRelasi::getInverseRelasi($r->jenis_relasi);
+                $pairKey = $r->dokumen_id . '-' . $inverseJenis;
+                return !in_array($pairKey, $existingPairs);
+            })
+            ->map(fn ($r) => [
+                'dokumen'      => $r->dokumen,
+                'jenis_relasi' => DokumenRelasi::getInverseRelasi($r->jenis_relasi),
+                'label'        => DokumenRelasi::getAllRelasiLabels()[DokumenRelasi::getInverseRelasi($r->jenis_relasi)] ?? $r->jenis_relasi,
+                'catatan'      => $r->catatan,
+            ]);
+
+        return collect($keluarMapped->toArray())->merge($masuk->toArray());
+    }
+
     /***************************************************************
      *  EVENT MODEL (CREATING + UPDATING + DELETED)
      ***************************************************************/
@@ -226,7 +277,6 @@ class DokumenHukum extends Model
         $t ? \Carbon\Carbon::parse($t)->locale('id')->translatedFormat('d F Y') : '-';
 
         $base = [
-            'Jenis Dokumen'     => $jenisNama,
             'Judul'             => $this->judul ?? '-',
             'Nomor'             => $this->nomor ?? '-',
             'Tahun Terbit'      => $this->tahun ?? '-',
