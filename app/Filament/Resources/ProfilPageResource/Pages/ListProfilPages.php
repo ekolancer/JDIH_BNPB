@@ -14,7 +14,7 @@ class ListProfilPages extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Add'),
+                ->label('Tambah'),
         ];
     }
 

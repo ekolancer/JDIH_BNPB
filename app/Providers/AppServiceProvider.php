@@ -13,6 +13,9 @@ use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use App\View\Composers\BreadcrumbComposer;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
+use App\Listeners\RecordLastLogin;
 
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
@@ -33,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Record last login timestamp
+        Event::listen(Login::class, RecordLastLogin::class);
+
         Health::checks([
             EnvironmentCheck::new(),
             DebugModeCheck::new(),
