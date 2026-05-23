@@ -22,7 +22,9 @@ class RefSubjekResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Metadata Referensi';
 
-    protected static ?string $navigationLabel = 'Subjek';
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationLabel = 'Data Subjek Hukum';
 
     protected static ?string $pluralLabel = 'Subjek';
 

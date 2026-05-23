@@ -22,7 +22,9 @@ class RefBidangHukumResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Metadata Referensi';
 
-    protected static ?string $navigationLabel = 'Bidang Hukum';
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationLabel = 'Data Bidang Hukum';
 
     protected static ?string $pluralLabel = 'Bidang Hukum';
 

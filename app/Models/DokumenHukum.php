@@ -33,6 +33,7 @@ class DokumenHukum extends Model
     ];
 
     protected $fillable = [
+        'tipe_dokumen_id',
         'tipeDok',
         'judul',
         'ref_jenis_dokumen_id',
@@ -66,6 +67,11 @@ class DokumenHukum extends Model
     /***************************************************************
      *  RELATIONS
      ***************************************************************/
+    public function tipeDokumen()
+    {
+        return $this->belongsTo(RefTipeDokumen::class, 'tipe_dokumen_id');
+    }
+
     public function jenisDokumen()
     {
         return $this->belongsTo(RefJenisDokumen::class, 'ref_jenis_dokumen_id');
@@ -153,6 +159,11 @@ class DokumenHukum extends Model
         parent::boot();
 
         static::creating(function ($model) {
+            // Sync tipeDok legacy column
+            if ($model->tipe_dokumen_id && !$model->tipeDok) {
+                $model->tipeDok = RefTipeDokumen::find($model->tipe_dokumen_id)?->kode;
+            }
+
             $model->generateDocumentUid();
             if (empty($model->slug)) {
                 $model->slug = $model->generateSlug();
@@ -160,6 +171,10 @@ class DokumenHukum extends Model
         });
 
         static::updating(function ($model) {
+            // Sync tipeDok legacy column
+            if ($model->isDirty('tipe_dokumen_id') && $model->tipe_dokumen_id) {
+                $model->tipeDok = RefTipeDokumen::find($model->tipe_dokumen_id)?->kode;
+            }
 
             // Trigger slug regeneration if relevant fields changed
             $slugTriggers = [
@@ -264,6 +279,15 @@ class DokumenHukum extends Model
     /***************************************************************
      *  HELPERS / METADATA
      ***************************************************************/
+
+    /**
+     * Kode tipe dokumen (dari relasi atau fallback ke tipeDok legacy).
+     */
+    public function getTipeKodeAttribute(): ?string
+    {
+        return $this->tipeDokumen?->kode ?? $this->tipeDok;
+    }
+
     /**
      * Metadata dokumen berdasarkan tipeDok,
      * sudah di-refactor untuk memakai relasi ref_jenis_dokumen.

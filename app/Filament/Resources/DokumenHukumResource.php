@@ -48,9 +48,20 @@ class DokumenHukumResource extends Resource
 
     protected static function getYearsOptions(): array
     {
-        // Menghasilkan daftar tahun secara dinamis
-        $years = range(date('Y'), 2000); // Ubah rentang tahun sesuai kebutuhan
-        return array_combine($years, $years); // Membuat opsi array untuk dropdown
+        $years = range(date('Y'), 2000);
+        return array_combine($years, $years);
+    }
+
+    /**
+     * Resolve kode tipe dokumen dari tipe_dokumen_id field.
+     */
+    protected static function resolveTipeKode(Get $get): ?string
+    {
+        $tipeId = $get('tipe_dokumen_id');
+        if (!$tipeId) {
+            return null;
+        }
+        return \App\Models\RefTipeDokumen::find($tipeId)?->kode;
     }
 
     public static function form(Schema $schema): Schema
@@ -79,28 +90,36 @@ class DokumenHukumResource extends Resource
                 ->icon('heroicon-m-document-text')
                 ->description('Pilih tipe dan jenis dokumen')
                 ->schema([
-                    Select::make('tipeDok')
+                    Select::make('tipe_dokumen_id')
                         ->label('Tipe Dokumen')
-                        ->options([
-                            'Peraturan' => 'Peraturan Perundang-undangan',
-                            'Monografi' => 'Monografi',
-                            'Artikel' => 'Artikel',
-                            'Putusan' => 'Putusan Pengadilan',
-                        ])
+                        ->relationship(
+                            name: 'tipeDokumen',
+                            titleAttribute: 'nama',
+                            modifyQueryUsing: fn($query) => $query->where('is_active', true)->orderBy('urutan')
+                        )
+                        ->preload()
                         ->validationMessages([
                             'required' => 'Tipe Dokumen harus diisi',
                         ])
-                        ->helperText('Pilih tipe dokumen yang sesuai. Field pada langkah berikutnya akan menyesuaikan tipe yang dipilih.')
+                        ->helperText('Pilih tipe dokumen yang sesuai. Jenis dokumen akan menyesuaikan tipe yang dipilih.')
                         ->reactive()
-                        ->required(),
+                        ->required()
+                        ->afterStateUpdated(function (callable $set) {
+                            $set('ref_jenis_dokumen_id', null);
+                            $set('singkatan', null);
+                        }),
                     Select::make('ref_jenis_dokumen_id')
                         ->label('Jenis Dokumen')
                         ->required()
-                        ->relationship(
-                            name: 'jenisDokumen',
-                            titleAttribute: 'nama',
-                            modifyQueryUsing: fn($query) => $query->where('is_active', true)
-                        )
+                        ->options(function (Get $get) {
+                            $tipeId = $get('tipe_dokumen_id');
+                            if (!$tipeId) {
+                                return [];
+                            }
+                            return \App\Models\RefJenisDokumen::where('tipe_dokumen_id', $tipeId)
+                                ->where('is_active', true)
+                                ->pluck('nama', 'id');
+                        })
                         ->preload()
                         ->live()
                         ->afterStateUpdated(function (callable $set, $state) {
@@ -112,6 +131,15 @@ class DokumenHukumResource extends Resource
                             }
                         })
                         ->createOptionForm([
+                            Forms\Components\Select::make('tipe_dokumen_id')
+                                ->label('Tipe Dokumen')
+                                ->relationship(
+                                    name: 'tipeDokumen',
+                                    titleAttribute: 'nama',
+                                    modifyQueryUsing: fn($query) => $query->where('is_active', true)
+                                )
+                                ->required()
+                                ->preload(),
                             Forms\Components\TextInput::make('nama')
                                 ->label('Nama Jenis Dokumen')
                                 ->required()
@@ -136,7 +164,7 @@ class DokumenHukumResource extends Resource
                                 $set('singkatan', \App\Models\RefJenisDokumen::find($id)?->singkatan);
                             }
                         })
-                        ->visible(fn(Get $get) => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                        ->visible(fn(Get $get) => in_array(static::resolveTipeKode($get), ['Peraturan', 'Putusan'])),
                 ])
                 ->columns(2),
 
@@ -144,7 +172,7 @@ class DokumenHukumResource extends Resource
                 ->icon('heroicon-m-information-circle')
                 ->description('Isi informasi dasar dokumen')
                 ->afterValidation(function (callable $get, callable $set) {
-                    $tipeDok = $get('tipeDok');
+                    $tipeKode = \App\Models\RefTipeDokumen::find($get('tipe_dokumen_id'))?->kode;
                     $jenisId = $get('ref_jenis_dokumen_id');
                     $nomor = $get('nomor');
                     $tahun = $get('tahun');
@@ -152,7 +180,7 @@ class DokumenHukumResource extends Resource
 
                     $singkatan = $jenisId ? (\App\Models\RefJenisDokumen::find($jenisId)?->singkatan ?? '') : '';
 
-                    if (in_array($tipeDok, ['Putusan', 'Peraturan']) && $nomor && $tahun) {
+                    if (in_array($tipeKode, ['Putusan', 'Peraturan']) && $nomor && $tahun) {
                         $slug = \Illuminate\Support\Str::slug("{$singkatan}-nomor-{$nomor}-tahun-{$tahun}");
                     } else {
                         $slug = \Illuminate\Support\Str::slug($judul ?? 'dokumen');
@@ -173,8 +201,8 @@ class DokumenHukumResource extends Resource
                         ->integer()
                         ->minValue(1)
                         ->maxValue(1000)
-                        ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan']))
-                        ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                        ->visible(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Peraturan', 'Putusan']))
+                        ->required(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Peraturan', 'Putusan'])),
                     TextInput::make('tahun')
                         ->validationMessages(['required' => 'Tahun tidak boleh kosong !'])
                         ->label('Tahun')
@@ -193,8 +221,8 @@ class DokumenHukumResource extends Resource
                             'TIDAK BERLAKU' => 'Tidak Berlaku',
                         ])
                         ->validationMessages(['required' => 'Status tidak boleh kosong !'])
-                        ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan')
-                        ->required(fn(Get $get): bool => $get('tipeDok') === 'Peraturan'),
+                        ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan')
+                        ->required(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan'),
                 ])
                 ->columns(2),
 
@@ -226,7 +254,7 @@ class DokumenHukumResource extends Resource
                                 ->validationMessages(['required' => 'Cetakan Edisi tidak boleh kosong !'])
                                 ->required(),
                         ])
-                        ->visible(fn(Get $get): bool => $get('tipeDok') === 'Monografi')
+                        ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Monografi')
                         ->columnSpanFull(),
                     Fieldset::make('Tanggal dan Tempat Terbit')
                         ->schema([
@@ -234,25 +262,25 @@ class DokumenHukumResource extends Resource
                                 ->label('Tanggal Penetapan')
                                 ->validationMessages(['required' => 'Tanggal Penetapan tidak boleh kosong !'])
                                 ->format('Y/m/d')
-                                ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan')
-                                ->required(fn(Get $get): bool => $get('tipeDok') === 'Peraturan'),
+                                ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan')
+                                ->required(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan'),
                             DatePicker::make('tglPengundangan')
                                 ->label('Tanggal Pengundangan')
                                 ->validationMessages(['required' => 'Tanggal Pengundangan tidak boleh kosong !'])
                                 ->format('Y/m/d')
-                                ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan')
-                                ->required(fn(Get $get): bool => $get('tipeDok') === 'Peraturan'),
+                                ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan')
+                                ->required(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan'),
                             DatePicker::make('tglDiBacakan')
                                 ->label('Tanggal Dibacakan')
                                 ->validationMessages(['required' => 'Tanggal Dibacakan tidak boleh kosong !'])
                                 ->format('Y/m/d')
-                                ->visible(fn(Get $get): bool => $get('tipeDok') === 'Putusan')
-                                ->required(fn(Get $get): bool => $get('tipeDok') === 'Putusan'),
+                                ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Putusan')
+                                ->required(fn(Get $get): bool => static::resolveTipeKode($get) === 'Putusan'),
                             TextInput::make('penerbit')
                                 ->label('Penerbit')
                                 ->validationMessages(['required' => 'Penerbit tidak boleh kosong !'])
-                                ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan']))
-                                ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Monografi', 'Artikel', 'Putusan'])),
+                                ->visible(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Monografi', 'Artikel', 'Putusan']))
+                                ->required(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Monografi', 'Artikel', 'Putusan'])),
                             TextInput::make('tempat')
                                 ->label('Tempat Terbit')
                                 ->validationMessages(['required' => 'Tempat Penetapan tidak boleh kosong !'])
@@ -304,8 +332,8 @@ class DokumenHukumResource extends Resource
                     TextInput::make('sumber')
                         ->label('Sumber')
                         ->validationMessages(['required' => 'Sumber tidak boleh kosong !'])
-                        ->hidden(fn(Get $get): bool => $get('tipeDok') === 'Monografi')
-                        ->required(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Artikel', 'Putusan'])),
+                        ->hidden(fn(Get $get): bool => static::resolveTipeKode($get) === 'Monografi')
+                        ->required(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Peraturan', 'Artikel', 'Putusan'])),
                     TextInput::make('bahasa')
                         ->validationMessages(['required' => 'Bahasa tidak boleh kosong !'])
                         ->label('Bahasa')
@@ -316,7 +344,7 @@ class DokumenHukumResource extends Resource
                         ->required(),
                     TextInput::make('penandatangan')
                         ->label('Penandatangan')
-                        ->visible(fn(Get $get): bool => in_array($get('tipeDok'), ['Peraturan', 'Putusan'])),
+                        ->visible(fn(Get $get): bool => in_array(static::resolveTipeKode($get), ['Peraturan', 'Putusan'])),
                 ])
                 ->columns(2),
 
@@ -349,7 +377,7 @@ class DokumenHukumResource extends Resource
                         ->visibility('public')
                         ->preserveFilenames()
                         ->acceptedFileTypes(['application/pdf'])
-                        ->visible(fn(Get $get): bool => $get('tipeDok') === 'Peraturan')
+                        ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan')
                         ->maxSize(25600)
                         ->columnSpanFull(),
                 ]),

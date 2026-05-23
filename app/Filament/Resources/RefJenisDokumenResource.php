@@ -24,7 +24,9 @@ class RefJenisDokumenResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Metadata Referensi';
 
-    protected static ?string $navigationLabel = 'Jenis Dokumen';
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationLabel = 'Data Jenis Dokumen';
 
     protected static ?string $pluralLabel = 'Jenis Dokumen';
 
@@ -34,6 +36,17 @@ class RefJenisDokumenResource extends Resource
     {
         return $schema
             ->schema([
+                Forms\Components\Select::make('tipe_dokumen_id')
+                    ->label('Tipe Dokumen')
+                    ->relationship(
+                        name: 'tipeDokumen',
+                        titleAttribute: 'nama',
+                        modifyQueryUsing: fn($query) => $query->where('is_active', true)->orderBy('urutan')
+                    )
+                    ->required()
+                    ->preload()
+                    ->helperText('Pilih tipe dokumen induk'),
+
                 TextInput::make('nama')
                     ->label('Nama Jenis Dokumen')
                     ->required()
@@ -64,32 +77,39 @@ class RefJenisDokumenResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('tipeDokumen.nama')
+                    ->label('TIPE DOKUMEN')
+                    ->badge()
+                    ->color('primary')
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->disabledClick(),
+
                 Tables\Columns\TextColumn::make('nama')
                     ->label('JENIS DOKUMEN')
                     ->searchable()
                     ->alignment(Alignment::Start)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disabledClick(), // Menonaktifkan clickable pada list table,
+                    ->disabledClick(),
 
                 Tables\Columns\TextColumn::make('singkatan')
                     ->label('SINGKATAN')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disabledClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(),
 
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('AKTIF / TIDAK AKTIF')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->onColor('success') // Hijau untuk "Publikasi"
-                    ->offColor('danger') // Merah untuk "Draft"
-                    ->onIcon('heroicon-o-check-circle') // Ikon untuk Published
-                    ->offIcon('heroicon-o-x-circle') // Ikon untuk Draft
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
                     ->afterStateUpdated(function ($state, $record) {
-                        // Simpan perubahan ke database setelah konversi
                         $record->save();
                     })
-                    ->disabledClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('UPDATE')
@@ -97,15 +117,25 @@ class RefJenisDokumenResource extends Resource
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)
-                    ->disabledClick(), // Menonaktifkan clickable pada list table
+                    ->disabledClick(),
 
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('tipe_dokumen_id')
+                    ->label('Tipe Dokumen')
+                    ->relationship('tipeDokumen', 'nama')
+                    ->preload(),
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Aktif / Tidak Aktif')
                     ->trueLabel('Aktif')
                     ->falseLabel('Tidak Aktif')
                     ->nullable(),
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('tipeDokumen.nama')
+                    ->label('Tipe Dokumen')
+                    ->collapsible(),
             ])
             ->actions([
                 ActionGroup::make([
