@@ -70,6 +70,15 @@ class User extends Authenticatable implements FilamentUser
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $name = $this->name ?? '-';
+                return match ($eventName) {
+                    'created' => "Data User \"{$name}\" berhasil ditambahkan",
+                    'updated' => "Data User \"{$name}\" berhasil diperbarui",
+                    'deleted' => "Data User \"{$name}\" berhasil dihapus",
+                    default   => "Data User \"{$name}\" telah di-{$eventName}",
+                };
+            });
     }
 }

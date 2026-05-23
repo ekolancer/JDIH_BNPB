@@ -22,9 +22,9 @@ class CreateRefBidangHukum extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Bidang hukum berhasil ditambah.');
+            ->body("Data Bidang Hukum \"{$this->record->nama}\" berhasil ditambahkan.");
     }
 }

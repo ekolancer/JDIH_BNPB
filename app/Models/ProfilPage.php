@@ -27,6 +27,15 @@ class ProfilPage extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $title = $this->title ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Halaman Profil \"{$title}\" berhasil ditambahkan",
+                    'updated' => "Data Halaman Profil \"{$title}\" berhasil diperbarui",
+                    'deleted' => "Data Halaman Profil \"{$title}\" berhasil dihapus",
+                    default   => "Data Halaman Profil \"{$title}\" telah di-{$eventName}",
+                };
+            });
     }
 }

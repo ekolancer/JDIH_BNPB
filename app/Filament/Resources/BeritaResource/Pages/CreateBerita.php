@@ -27,9 +27,9 @@ class CreateBerita extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Berita berhasil ditambah.');
+            ->body("Data Berita \"{$this->record->judul}\" berhasil ditambahkan.");
     }
 }

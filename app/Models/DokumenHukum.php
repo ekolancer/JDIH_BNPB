@@ -758,6 +758,15 @@ class DokumenHukum extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $judul = $this->judul ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Dokumen Hukum \"{$judul}\" berhasil ditambahkan",
+                    'updated' => "Data Dokumen Hukum \"{$judul}\" berhasil diperbarui",
+                    'deleted' => "Data Dokumen Hukum \"{$judul}\" berhasil dihapus",
+                    default   => "Data Dokumen Hukum \"{$judul}\" telah di-{$eventName}",
+                };
+            });
     }
 }

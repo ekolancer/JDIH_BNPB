@@ -22,10 +22,10 @@ class CreateRefJenisDokumen extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Jenis Dokumen berhasil ditambah.');
+            ->body("Data Jenis Dokumen \"{$this->record->nama}\" berhasil ditambahkan.");
     }
 
 }

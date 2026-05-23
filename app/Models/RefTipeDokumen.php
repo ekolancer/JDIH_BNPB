@@ -56,6 +56,15 @@ class RefTipeDokumen extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $nama = $this->nama ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Tipe Dokumen \"{$nama}\" berhasil ditambahkan",
+                    'updated' => "Data Tipe Dokumen \"{$nama}\" berhasil diperbarui",
+                    'deleted' => "Data Tipe Dokumen \"{$nama}\" berhasil dihapus",
+                    default   => "Data Tipe Dokumen \"{$nama}\" telah di-{$eventName}",
+                };
+            });
     }
 }

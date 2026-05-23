@@ -125,8 +125,8 @@ class WebminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Main Menu',
                 'Metadata Referensi',
-                'User Management',
                 'Features',
+                'User Management',
                 'Systems',
             ])
             ->resources([]);

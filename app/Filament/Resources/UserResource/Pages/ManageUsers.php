@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageUsers extends ManageRecords
@@ -14,7 +15,15 @@ class ManageUsers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Add'),
+                ->label('Add')
+                ->successNotification(
+                    Notification::make()
+                        ->success()
+                        ->title('Berhasil Ditambahkan')
+                        ->icon('heroicon-o-check-badge')
+                        ->iconColor('success')
+                        ->body('Data User berhasil ditambahkan.')
+                ),
         ];
     }
 

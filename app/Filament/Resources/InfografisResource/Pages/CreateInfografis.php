@@ -27,9 +27,9 @@ class CreateInfografis extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Infografis berhasil ditambah.');
+            ->body("Data Infografis \"{$this->record->judul}\" berhasil ditambahkan.");
     }
 }

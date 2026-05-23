@@ -27,9 +27,9 @@ class EditProfilPage extends EditRecord
     {
         return Notification::make()
             ->success()
-            ->title('Edit successfully')
+            ->title('Berhasil Diperbarui')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Profil berhasil diupdate.');
+            ->body("Data Halaman Profil \"{$this->record->title}\" berhasil diperbarui.");
     }
 }

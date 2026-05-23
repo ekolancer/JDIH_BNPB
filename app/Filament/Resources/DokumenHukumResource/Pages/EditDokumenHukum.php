@@ -27,9 +27,14 @@ class EditDokumenHukum extends EditRecord
     {
         return Notification::make()
             ->success()
-            ->title('Edit successfully')
+            ->title('Berhasil Diperbarui')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Data berhasil diupdate.');
+            ->body("Data Dokumen Hukum \"{$this->record->judul}\" berhasil diperbarui.");
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
     }
 }

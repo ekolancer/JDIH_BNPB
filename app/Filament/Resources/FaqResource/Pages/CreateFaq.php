@@ -22,9 +22,9 @@ class CreateFaq extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('FAQ berhasil ditambah.');
+            ->body("Data FAQ \"{$this->record->question}\" berhasil ditambahkan.");
     }
 }

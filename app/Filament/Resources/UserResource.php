@@ -103,8 +103,24 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                \Filament\Actions\EditAction::make()
+                    ->successNotification(
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('Berhasil Diperbarui')
+                            ->icon('heroicon-o-check-badge')
+                            ->iconColor('success')
+                            ->body('Data User berhasil diperbarui.')
+                    ),
+                \Filament\Actions\DeleteAction::make()
+                    ->successNotification(
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('Berhasil Dihapus')
+                            ->icon('heroicon-o-check-badge')
+                            ->iconColor('success')
+                            ->body('Data User berhasil dihapus.')
+                    ),
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([

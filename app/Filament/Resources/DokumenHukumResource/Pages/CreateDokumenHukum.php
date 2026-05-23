@@ -21,9 +21,9 @@ class CreateDokumenHukum extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Dokumen hukum berhasil ditambah.');
+            ->body("Data Dokumen Hukum \"{$this->record->judul}\" berhasil ditambahkan.");
     }
 }

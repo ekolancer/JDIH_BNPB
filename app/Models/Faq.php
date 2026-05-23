@@ -26,6 +26,15 @@ class Faq extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $question = $this->question ?? '-';
+                return match ($eventName) {
+                    'created' => "Data FAQ \"{$question}\" berhasil ditambahkan",
+                    'updated' => "Data FAQ \"{$question}\" berhasil diperbarui",
+                    'deleted' => "Data FAQ \"{$question}\" berhasil dihapus",
+                    default   => "Data FAQ \"{$question}\" telah di-{$eventName}",
+                };
+            });
     }
 }

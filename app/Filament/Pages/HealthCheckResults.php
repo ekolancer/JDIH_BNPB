@@ -14,7 +14,7 @@ class HealthCheckResults extends BaseHealthCheckResults
  
     public static function getNavigationGroup(): ?string
     {
-        return 'Features';
+        return 'Systems';
     }
 
     public static function getNavigationSort(): ?int

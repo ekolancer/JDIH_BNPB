@@ -30,6 +30,15 @@ class RefSubjek extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $nama = $this->nama ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Subjek \"{$nama}\" berhasil ditambahkan",
+                    'updated' => "Data Subjek \"{$nama}\" berhasil diperbarui",
+                    'deleted' => "Data Subjek \"{$nama}\" berhasil dihapus",
+                    default   => "Data Subjek \"{$nama}\" telah di-{$eventName}",
+                };
+            });
     }
 }

@@ -22,9 +22,9 @@ class CreateProfilPage extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Profil berhasil ditambah.');
+            ->body("Data Halaman Profil \"{$this->record->title}\" berhasil ditambahkan.");
     }
 }

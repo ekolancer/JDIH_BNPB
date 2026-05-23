@@ -22,9 +22,9 @@ class CreateRefSubjek extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Add successfully')
+            ->title('Berhasil Ditambahkan')
             ->icon('heroicon-o-check-badge')
             ->iconColor('success')
-            ->body('Subjek berhasil ditambah.');
+            ->body("Data Subjek \"{$this->record->nama}\" berhasil ditambahkan.");
     }
 }

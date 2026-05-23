@@ -125,6 +125,15 @@ class Berita extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $judul = $this->judul ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Berita \"{$judul}\" berhasil ditambahkan",
+                    'updated' => "Data Berita \"{$judul}\" berhasil diperbarui",
+                    'deleted' => "Data Berita \"{$judul}\" berhasil dihapus",
+                    default   => "Data Berita \"{$judul}\" telah di-{$eventName}",
+                };
+            });
     }
 }

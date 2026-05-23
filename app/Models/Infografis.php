@@ -110,6 +110,15 @@ class Infografis extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $judul = $this->judul ?? '-';
+                return match ($eventName) {
+                    'created' => "Data Infografis \"{$judul}\" berhasil ditambahkan",
+                    'updated' => "Data Infografis \"{$judul}\" berhasil diperbarui",
+                    'deleted' => "Data Infografis \"{$judul}\" berhasil dihapus",
+                    default   => "Data Infografis \"{$judul}\" telah di-{$eventName}",
+                };
+            });
     }
 }

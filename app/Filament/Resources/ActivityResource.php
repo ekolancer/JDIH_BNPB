@@ -60,15 +60,6 @@ class ActivityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('log_name')
-                    ->label('Log')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'default' => 'gray',
-                        default => 'primary',
-                    })
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('event')
                     ->label('Event')
                     ->badge()
