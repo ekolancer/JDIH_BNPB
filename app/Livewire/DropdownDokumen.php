@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use App\Models\RefTipeDokumen;
 
 class DropdownDokumen extends Component
 {
@@ -14,6 +15,7 @@ class DropdownDokumen extends Component
 
     public function render()
     {
-        return view('livewire.dropdown-dokumen');
+        $tipes = RefTipeDokumen::active()->ordered()->get();
+        return view('livewire.dropdown-dokumen', compact('tipes'));
     }
 }

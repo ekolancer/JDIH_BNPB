@@ -16,34 +16,22 @@
         <div id="projectFacts" class="sectionClass">
             <div class="fullWidth eight columns">
                 <div class="projectFactsWrap">
-                    <!-- Peraturan -->
+                    @php
+                        $icons = [
+                            'Peraturan' => 'fa-balance-scale',
+                            'Monografi' => 'fa-book-open',
+                            'Artikel'   => 'fa-newspaper',
+                            'Putusan'   => 'fa-gavel',
+                        ];
+                    @endphp
+                    @foreach($data['jumlahDokumen'] as $kode => $stat)
                     <div class="item wow fadeInUpBig animated animated" style="visibility: visible;">
-                        <i class="fa fa-balance-scale mb-3"></i>
-                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Peraturan'] }}" data-purecounter-duration="1"></p>
+                        <i class="fa {{ $icons[$kode] ?? 'fa-file-alt' }} mb-3"></i>
+                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $stat['total'] }}" data-purecounter-duration="1"></p>
                         <span></span>
-                        <p>Peraturan</p>
+                        <p>{{ $stat['nama'] }}</p>
                     </div>
-                    <!-- Monografi -->
-                    <div class="item wow fadeInUpBig animated animated" style="visibility: visible;">
-                        <i class="fa fa-book-open mb-3"></i>
-                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Monografi'] }}" data-purecounter-duration="1"></p>
-                        <span></span>
-                        <p>Monografi</p>
-                    </div>
-                    <!-- Artikel -->
-                    <div class="item wow fadeInUpBig animated animated" data-number="359" style="visibility: visible;">
-                        <i class="fa fa-newspaper mb-3"></i>
-                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Artikel'] }}" data-purecounter-duration="1"></p>
-                        <span></span>
-                        <p>Artikel</p>
-                    </div>
-                    <!-- Putusan -->
-                    <div class="item wow fadeInUpBig animated animated" data-number="246" style="visibility: visible;">
-                        <i class="fa fa-gavel mb-3"></i>
-                        <p class="purecounter" data-purecounter-start="0" data-purecounter-end="{{ $data['jumlahDokumen']['Putusan'] }}" data-purecounter-duration="1"></p>
-                        <span></span>
-                        <p>Putusan</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

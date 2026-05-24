@@ -359,7 +359,7 @@ class DokumenHukum extends Model
             ],
         ];
 
-        return $templates[$this->tipeDok] ?? $base;
+        return $templates[$this->tipe_kode] ?? $base;
     }
 
     public function getTglPenetapanFormattedAttribute()
@@ -459,8 +459,18 @@ class DokumenHukum extends Model
             ->pluck('total', 'tipeDok')
             ->toArray();
 
-        $types = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-        return array_merge(array_fill_keys($types, 0), $result);
+        $types = \App\Models\RefTipeDokumen::active()->ordered()->get();
+        
+        $mapped = [];
+        foreach ($types as $type) {
+            $mapped[$type->kode] = [
+                'nama' => $type->nama,
+                'kode' => $type->kode,
+                'total' => $result[$type->kode] ?? 0,
+            ];
+        }
+        
+        return $mapped;
     }
 
     /**
@@ -667,8 +677,8 @@ class DokumenHukum extends Model
 
     public function getTipeDokLabelAttribute()
     {
-        return match ($this->tipeDok) {
-            'Peraturan' => 'Peraturan Perundang-Undangan',
+        return $this->tipeDokumen?->nama ?? match ($this->tipeDok) {
+            'Peraturan' => 'Peraturan Perundang-undangan',
             'Monografi' => 'Monografi Hukum',
             'Artikel'   => 'Artikel Hukum',
             'Putusan'   => 'Putusan Pengadilan',

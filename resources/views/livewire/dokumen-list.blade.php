@@ -148,19 +148,12 @@
                         {{-- Badge row: tipe + status --}}
                         <div class="list-doc__badge-row">
                             @php
-                            $tipeLabel = match($result->tipeDok) {
-                            'Peraturan' => 'Peraturan Perundang-Undangan',
-                            'Putusan' => 'Putusan',
-                            'Monografi' => 'Monografi',
-                            'Artikel' => 'Artikel',
-                            default => $result->tipeDok,
-                            };
                             $statusVal = strtoupper($result->status ?? '');
                             $isBerlaku = $statusVal === 'BERLAKU';
                             @endphp
 
                             <span class="list-doc__badge-type">
-                                {{ $tipeLabel }}
+                                {{ $result->tipe_dok_label }}
                             </span>
 
                             @if($statusVal)

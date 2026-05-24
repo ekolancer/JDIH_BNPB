@@ -2,13 +2,7 @@
 @php
     $record = $this->record;
 
-    $tipeDokLabel = match($record->tipeDok) {
-        'Peraturan' => 'Peraturan Perundang-Undangan',
-        'Monografi'  => 'Monografi Hukum',
-        'Artikel'    => 'Artikel Hukum',
-        'Putusan'    => 'Putusan Hukum',
-        default      => $record->tipeDok
-    };
+    $tipeDokLabel = $record->tipe_dok_label;
 
     $tipeDokColor = match($record->tipeDok) {
         'Peraturan' => ['bg' => 'bg-blue-500/15', 'text' => 'text-blue-400', 'border' => 'border-blue-500/30', 'dot' => 'bg-blue-400'],

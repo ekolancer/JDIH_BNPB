@@ -146,8 +146,8 @@
                                     <div class="col-md-4">
                                         <select class="form-select" name="bentuk">
                                             <option value="">Bentuk Dokumen</option>
-                                            @foreach($data['dokumenAttributes']['ref_jenis_dokumen_id'] as $id => $nama)
-                                            <option value="{{ \Illuminate\Support\Str::slug($nama) }}">{{ $nama }}</option>
+                                            @foreach($data['jenisDokumen'] as $jenis)
+                                            <option value="{{ \Illuminate\Support\Str::slug($jenis->singkatan ?: $jenis->nama) }}">{{ $jenis->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
