@@ -14,14 +14,18 @@ class WelcomeBannerWidget extends Widget
 
     protected int | string | array $columnSpan = 'full';
 
-    public function getUser(): object
+    public function getUser(): ?\App\Models\User
     {
-        return Auth::user();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        return $user;
     }
 
     public function getGreeting(): string
     {
-        $hour = Carbon::now()->hour;
+        $timezone = config('app.timezone', 'Asia/Jakarta');
+        $hour = Carbon::now($timezone)->hour;
 
         return match (true) {
             $hour >= 5  && $hour < 12 => 'Selamat Pagi',
@@ -31,21 +35,15 @@ class WelcomeBannerWidget extends Widget
         };
     }
 
-    public function getGreetingIcon(): string
-    {
-        $hour = Carbon::now()->hour;
-
-        return match (true) {
-            $hour >= 5  && $hour < 12 => '🌤️',
-            $hour >= 12 && $hour < 15 => '☀️',
-            $hour >= 15 && $hour < 18 => '🌇',
-            default                   => '🌙',
-        };
-    }
-
     public function getRole(): string
     {
-        $user  = Auth::user();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if (! $user) {
+            return 'User';
+        }
+
         $roles = $user->getRoleNames();
 
         if ($roles->isEmpty()) {
@@ -61,24 +59,14 @@ class WelcomeBannerWidget extends Widget
 
     public function getDateTime(): array
     {
-        $now = Carbon::now()->locale('id');
+        $timezone = config('app.timezone', 'Asia/Jakarta');
+        $now = Carbon::now($timezone)->locale('id');
 
         return [
             'day'  => $now->translatedFormat('l'),
             'date' => $now->translatedFormat('d F Y'),
             'time' => $now->format('H:i'),
         ];
-    }
-
-    public function getLastLogin(): string
-    {
-        $user = Auth::user();
-
-        if (empty($user->last_login_at)) {
-            return 'Pertama kali login';
-        }
-
-        return $user->last_login_at->locale('id')->diffForHumans();
     }
 
     public function getMotivation(): string
@@ -91,6 +79,7 @@ class WelcomeBannerWidget extends Widget
             'Kerja keras hari ini adalah warisan hukum untuk generasi mendatang.',
         ];
 
-        return $quotes[Carbon::now()->dayOfYear % count($quotes)];
+        $timezone = config('app.timezone', 'Asia/Jakarta');
+        return $quotes[Carbon::now($timezone)->dayOfYear % count($quotes)];
     }
 }
