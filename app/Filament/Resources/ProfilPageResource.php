@@ -6,12 +6,12 @@ use App\Filament\Resources\ProfilPageResource\Pages;
 use App\Models\ProfilPage;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Support\Enums\VerticalAlignment;
 use Filament\Support\Enums\Alignment;
 use Filament\Actions\ActionGroup;
@@ -44,19 +44,32 @@ class ProfilPageResource extends Resource
                     ->maxLength(255),
 
                 TextInput::make('slug')
-                    ->label('Slug (Identifier)'),
+                    ->label('Slug (Identifier)')
+                    ->required()
+                    ->unique(ProfilPage::class, 'slug', ignoreRecord: true)
+                    ->disabled(fn (?ProfilPage $record) => $record !== null)
+                    ->dehydrated()
+                    ->helperText(fn (?ProfilPage $record) => $record
+                        ? 'Slug tidak dapat diubah setelah dibuat.'
+                        : 'Masukkan slug unik untuk halaman ini.'),
 
                 RichEditor::make('content')
                     ->label('Isi Konten')
                     ->columnSpan('full'),
 
+                Toggle::make('has_image')
+                    ->label('Aktifkan Gambar')
+                    ->helperText('Aktifkan untuk menampilkan field upload gambar.')
+                    ->live()
+                    ->columnSpan('full'),
+
                 FileUpload::make('image')
-                    ->label('Gambar Struktur Organisasi')
+                    ->label('Gambar')
                     ->image()
-                    ->directory('struktur-organisasi')
+                    ->directory(fn (?ProfilPage $record) => 'profil/' . ($record?->slug ?? 'temp'))
                     ->visibility('public')
                     ->columnSpan('full')
-                    ->hidden(fn($record) => $record?->slug !== 'struktur-organisasi'),
+                    ->visible(fn ($get) => (bool) $get('has_image')),
             ]);
     }
 
@@ -77,7 +90,7 @@ class ProfilPageResource extends Resource
                     ->disabledClick(),
                 TextColumn::make('updated_at')
                     ->label('UPDATE')
-                    ->timezone('Asia/Jakarta')
+                    ->timezone(config('app.timezone', 'Asia/Jakarta'))
                     ->date('j M Y')
                     ->alignment(Alignment::Center)
                     ->verticalAlignment(VerticalAlignment::Center)

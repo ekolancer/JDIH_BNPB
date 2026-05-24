@@ -19,7 +19,12 @@ class ProfilPage extends Model
         'slug',
         'title',
         'content',
+        'has_image',
         'image',
+    ];
+
+    protected $casts = [
+        'has_image' => 'boolean',
     ];
 
     public function getActivitylogOptions(): LogOptions

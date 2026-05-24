@@ -22,11 +22,11 @@ class ProfilPageObserver
 
     /**
      * Penerima notifikasi.
-     * Default: semua user
+     * Hanya user dengan role super_admin atau Admin.
      */
     private function recipients()
     {
-        return User::all();
+        return User::role(['super_admin', 'Admin'])->get();
     }
 
     /**

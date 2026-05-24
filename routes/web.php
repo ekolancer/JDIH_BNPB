@@ -7,8 +7,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfografisController;
-use App\Models\Faq;
-use App\Models\ProfilPage;
+use App\Http\Controllers\ProfilPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,30 +45,7 @@ Route::get('/dokumen/{tipeDok?}', function ($tipeDok = null) {
 | profil_pages. Slug "faq" diperlakukan khusus untuk menampilkan daftar FAQ
 | dari tabel faqs pada view overview yang sama.
 */
-Route::get('/profil/{slug}', function ($slug) {
-
-    // Jika halaman FAQ
-    if ($slug === 'faq') {
-        return view('components.overview.page', [
-            'slug' => $slug,
-            'page' => (object)[
-                'title' => 'FAQ',
-                'content' => null,
-                'image' => null,
-            ],
-            'faqs' => Faq::orderBy('sort_order')->get(),
-        ]);
-    }
-
-    // Halaman biasa dari tabel profil_pages
-    $page = ProfilPage::where('slug', $slug)->firstOrFail();
-
-    return view('components.overview.page', [
-        'page' => $page,
-        'slug' => $slug,
-        'faqs' => [],
-    ]);
-});
+Route::get('/profil/{slug}', [ProfilPageController::class, 'show'])->name('profil.show');
 
 /*
 |--------------------------------------------------------------------------
