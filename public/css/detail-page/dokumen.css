@@ -33,8 +33,10 @@
     border: 2px solid;
     padding: 32px;
     transition: box-shadow 0.3s ease;
-    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06); /* Shadow yang lebih lembut dan modern */
-    border-color: rgba(37, 99, 235, 0.3); /* Border dengan warna utama yang lebih terang */
+    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+    /* Shadow yang lebih lembut dan modern */
+    border-color: rgba(37, 99, 235, 0.3);
+    /* Border dengan warna utama yang lebih terang */
 }
 
 .doc-detail-card.sticky-sidebar {
@@ -58,74 +60,135 @@
     color: var(--doc-primary);
 }
 
-/* --- Header & Stats --- */
+
+/* ── Document Header (dh-*) ── */
 .doc-detail-header {
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--doc-border);
-    padding-bottom: 24px;
 }
 
-.doc-detail-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--doc-primary);
-    line-height: 1.3;
-    margin: 12px 0 0 0;
-}
-
-.doc-detail-stats {
+/* Badge row */
+.dh-badge-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
-}
-
-.stat-item {
-    display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+    margin-bottom: 12px;
 }
 
-.stat-item i {
-    font-size: 1.2rem;
-    color: var(--doc-text-muted);
-}
-
-.stat-value {
-    display: block;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--doc-primary);
-    line-height: 1.2;
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--doc-text-muted);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-/* --- Badges --- */
-.doc-detail-badge-type {
-    background-color: var(--doc-background);
-    color: var(--doc-primary);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+.dh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+
+.dh-badge i { font-size: 0.68rem; }
+
+/* Tipe badge — neutral dark */
+.dh-badge--type {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: none;
+}
+
+/* Jenis badge — outline slate */
+.dh-badge--jenis {
+    background: transparent;
+    color: var(--doc-text-muted);
     border: 1px solid var(--doc-border);
 }
 
-.doc-detail-badge-status {
-    padding: 6px 12px;
+/* Status badges */
+.dh-badge--berlaku {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+.dh-badge--dicabut {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.dh-badge--warning {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
     border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 4px 10px;
+}
+
+.dh-badge--muted {
+    background: var(--doc-background);
+    color: var(--doc-text-muted);
+    border: 1px solid var(--doc-border);
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+
+.dh-badge-status {
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+
+/* Title */
+.dh-title {
+    font-size: 2.15rem;
+    font-weight: 700;
+    color: var(--doc-primary);
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.01em;
+}
+
+/* Footer meta row */
+.dh-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.dh-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.76rem;
+    color: var(--doc-text-muted);
+    font-weight: 500;
+}
+
+.dh-meta-item i {
+    font-size: 0.7rem;
+    color: var(--doc-accent);
+    opacity: 0.7;
+}
+
+.dh-meta-sep {
+    color: var(--doc-border);
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+/* Keep old badge/chip classes intact for backwards compat */
+.doc-detail-badge-type {
+    background-color: var(--doc-background);
+    color: var(--doc-primary);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
+    border: 1px solid var(--doc-border);
 }
 
 .status-success {
@@ -139,6 +202,8 @@
     color: var(--doc-danger);
     border: 1px solid #fecaca;
 }
+
+
 
 /* --- Metadata Grid --- */
 .doc-detail-metadata .section-title {
@@ -759,5 +824,10 @@
     flex-shrink: 0;
 }
 
-.relasi-legend-dot--inverse { background: #d97706; }
-.relasi-legend-dot--forward { background: var(--doc-accent); }
+.relasi-legend-dot--inverse {
+    background: #d97706;
+}
+
+.relasi-legend-dot--forward {
+    background: var(--doc-accent);
+}

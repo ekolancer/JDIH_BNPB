@@ -10,8 +10,8 @@ use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Actions\ActionGroup;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Hash;
@@ -103,24 +103,13 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                \Filament\Actions\EditAction::make()
-                    ->successNotification(
-                        \Filament\Notifications\Notification::make()
-                            ->success()
-                            ->title('Berhasil Diperbarui')
-                            ->icon('heroicon-o-check-badge')
-                            ->iconColor('success')
-                            ->body('Data User berhasil diperbarui.')
-                    ),
-                \Filament\Actions\DeleteAction::make()
-                    ->successNotification(
-                        \Filament\Notifications\Notification::make()
-                            ->success()
-                            ->title('Berhasil Dihapus')
-                            ->icon('heroicon-o-check-badge')
-                            ->iconColor('success')
-                            ->body('Data User berhasil dihapus.')
-                    ),
+                ActionGroup::make([
+                    \Filament\Actions\EditAction::make()
+                        ->modalHeading('Edit User'),
+                    \Filament\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([

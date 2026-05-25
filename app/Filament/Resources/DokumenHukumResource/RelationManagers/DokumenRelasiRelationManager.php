@@ -30,11 +30,10 @@ class DokumenRelasiRelationManager extends RelationManager
                         $currentId = $this->getOwnerRecord()->id;
 
                         return DokumenHukum::where('id', '!=', $currentId)
-                            ->orderByDesc('tahun')
-                            ->limit(200)
+                            ->orderByDesc('created_at')
                             ->get()
-                            ->mapWithKeys(fn ($doc) => [
-                                $doc->id => "[{$doc->tahun}] {$doc->jenisDokumen?->singkatan} No. {$doc->nomor} — " . \Illuminate\Support\Str::limit($doc->judul, 60),
+                            ->mapWithKeys(fn($doc) => [
+                                $doc->id => "{$doc->jenisDokumen?->singkatan} No. {$doc->nomor} Tahun {$doc->tahun}",
                             ])
                             ->toArray();
                     })
@@ -61,20 +60,11 @@ class DokumenRelasiRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('relatedDokumen.judul')
-                    ->label('Dokumen Terkait')
-                    ->limit(60)
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('relatedDokumen.tahun')
-                    ->label('Tahun')
-                    ->sortable(),
-
                 Tables\Columns\TextColumn::make('jenis_relasi')
-                    ->label('Jenis Relasi')
+                    ->label('History')
                     ->badge()
-                    ->formatStateUsing(fn (string $state) => DokumenRelasi::getAllRelasiLabels()[$state] ?? $state)
-                    ->color(fn (string $state) => match ($state) {
+                    ->formatStateUsing(fn(string $state) => DokumenRelasi::getAllRelasiLabels()[$state] ?? $state)
+                    ->color(fn(string $state) => match ($state) {
                         'mencabut', 'dicabut_oleh'             => 'danger',
                         'mengubah', 'diubah_oleh'              => 'warning',
                         'melaksanakan', 'dilaksanakan_oleh'    => 'info',
@@ -82,17 +72,28 @@ class DokumenRelasiRelationManager extends RelationManager
                         'dasar_hukum', 'menjadi_dasar'         => 'primary',
                         'terkait'                              => 'gray',
                         default                                => 'gray',
-                    }),
+                    })
+                    ->description(function (DokumenRelasi $record): string {
+                        $related = $record->relatedDokumen;
+                        if (! $related) {
+                            return '-';
+                        }
+                        $singkatan = $related->jenisDokumen?->singkatan ?? '';
+                        $nomor = $related->nomor ?? '';
+                        $tahun = $related->tahun ?? '';
+                        return "{$singkatan} No. {$nomor} Tahun {$tahun}";
+                    })
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('catatan')
                     ->label('Catatan')
-                    ->limit(40)
-                    ->placeholder('-'),
+                    ->limit(50)
+                    ->placeholder('-')
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Ditambahkan')
-                    ->dateTime('d M Y')
-                    ->sortable(),
+                    ->label('Waktu')
+                    ->dateTime('d M Y'),
             ])
             ->defaultSort('created_at', 'desc')
             ->headerActions([
@@ -103,11 +104,15 @@ class DokumenRelasiRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make()
-                    ->after(function (DokumenRelasi $record) {
-                        $this->deleteInverseRelasi($record);
-                    }),
+                \Filament\Actions\ActionGroup::make([
+                    \Filament\Actions\EditAction::make(),
+                    \Filament\Actions\DeleteAction::make()
+                        ->after(function (DokumenRelasi $record) {
+                            $this->deleteInverseRelasi($record);
+                        }),
+                ])
+                    ->button()
+                    ->label('Aksi'),
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([

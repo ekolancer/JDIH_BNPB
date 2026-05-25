@@ -22,43 +22,48 @@
             <main class="col-lg-8">
                 <article class="doc-detail-card main-content shadow-sm mb-4">
                     <header class="doc-detail-header">
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <span class="doc-detail-badge-type">{{ $tipeDokLabel }}</span>
+
+                        {{-- Title --}}
+                        <h1 class="dh-title">
                             @if(!$dokumen->is_monografi && !$dokumen->is_artikel)
-                            <span class="doc-detail-badge-type">{{ $dokumen->jenis_dokumen_singkatan }}</span>
+                                {{ $dokumen->jenis_dokumen_singkatan }} 
+                                {{ $dokumen->nomor }} 
+                                TAHUN {{ $dokumen->tahun }}
+                            @else
+                                {{ $dokumen->judul }}
                             @endif
+                        </h1>
+
+                        {{-- Footer meta --}}
+                        <div class="dh-meta-row">
+
+                            <span class="dh-badge dh-badge--muted">
+                                <i class="fas fa-calendar-alt"></i>
+                                {{ $dokumen->created_at_formatted }}
+                            </span>
+                            
                             @if(!$dokumen->is_monografi && !$dokumen->is_artikel)
-                            <span class="doc-detail-badge-status {{ $dokumen->status === 'TIDAK BERLAKU' ? 'status-danger' : 'status-success' }}">
-                                {{ $dokumen->status }}
+                            @php
+                                $statusVal  = strtoupper($dokumen->status ?? '');
+                                $isActive   = in_array($statusVal, ['BERLAKU', 'DIUBAH']);
+                                $statusDisplay = $isActive ? 'Berlaku' : 'Tidak Berlaku';
+                            @endphp
+                            <span class="dh-badge dh-badge-status {{ $isActive ? 'dh-badge--berlaku' : 'dh-badge--dicabut' }}">
+                                <i class="fas {{ $isActive ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
+                                {{ $statusDisplay }}
+                            </span>
+                            
+                            @if($statusVal === 'DIUBAH')
+                            <span class="dh-badge dh-badge--warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Tersedia peraturan yang lebih baru
                             </span>
                             @endif
+                            @endif
                         </div>
-                        <h1 class="doc-detail-title">Detail Metadata Dokumen Hukum</h1>
 
-                        <div class="doc-detail-stats mt-4">
-                            <div class="stat-item">
-                                <i class="fas fa-eye text-muted"></i>
-                                <div>
-                                    <span class="stat-value">{{ number_format($dokumen->view_count) }}</span>
-                                    <span class="stat-label">Kunjungan</span>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-download text-muted"></i>
-                                <div>
-                                    <span class="stat-value">{{ number_format($dokumen->download_count) }}</span>
-                                    <span class="stat-label">Unduhan</span>
-                                </div>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-calendar-alt text-muted"></i>
-                                <div>
-                                    <span class="stat-value">{{ $dokumen->created_at_formatted }}</span>
-                                    <span class="stat-label">Terakhir Diperbarui</span>
-                                </div>
-                            </div>
-                        </div>
                     </header>
+
 
                     <section class="doc-detail-metadata mt-4">
                         <!-- <h3 class="section-title">Informasi Dokumen</h3> -->
@@ -103,15 +108,15 @@
 
                 {{-- ── Relasi Dokumen Stepper ── --}}
                 @php
-                    $relasiDokumen = $dokumen->semuaRelasi();
+                $relasiDokumen = $dokumen->semuaRelasi();
 
-                    // Relasi "forward" = aksi yang dilakukan dokumen ini
-                    $forwardTypes = ['mencabut','mengubah','melaksanakan','melengkapi','dasar_hukum','terkait'];
-                    // Relasi "inverse" = dokumen ini sebagai objek
-                    $inverseTypes = ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar'];
+                // Relasi "forward" = aksi yang dilakukan dokumen ini
+                $forwardTypes = ['mencabut','mengubah','melaksanakan','melengkapi','dasar_hukum','terkait'];
+                // Relasi "inverse" = dokumen ini sebagai objek
+                $inverseTypes = ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar'];
 
-                    $forwardRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $forwardTypes));
-                    $inverseRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $inverseTypes));
+                $forwardRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $forwardTypes));
+                $inverseRelasi = $relasiDokumen->filter(fn($r) => in_array($r['jenis_relasi'], $inverseTypes));
                 @endphp
 
                 @if($relasiDokumen->isNotEmpty())
@@ -120,45 +125,45 @@
                         <span class="relasi-stepper-icon">
                             <i class="fas fa-project-diagram"></i>
                         </span>
-                        <h3 class="relasi-stepper-title">Relasi Dokumen</h3>
+                        <h3 class="relasi-stepper-title">Riwayat Dokumen</h3>
                         <span class="relasi-stepper-count">{{ $relasiDokumen->count() }}</span>
                     </div>
 
                     <div class="relasi-stepper-body">
                         @foreach($relasiDokumen as $item)
-                            @php
-                                $relDoc  = $item['dokumen'];
-                                $isInverse = in_array($item['jenis_relasi'], ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar']);
-                            @endphp
-                            @if($relDoc)
-                            <div class="relasi-step {{ !$loop->last ? 'relasi-step--has-line' : '' }}">
-                                {{-- Arrow node --}}
-                                <div class="relasi-step-node {{ $isInverse ? 'relasi-step-node--inverse' : 'relasi-step-node--forward' }}">
-                                    <i class="fas fa-arrow-down"></i>
-                                </div>
-
-                                {{-- Content --}}
-                                <div class="relasi-step-content">
-                                    <span class="relasi-step-badge {{ $isInverse ? 'relasi-step-badge--inverse' : 'relasi-step-badge--forward' }}">
-                                        {{ $item['label'] }}
-                                    </span>
-                                    <a href="{{ route('dokumen.detail', ['tipeDok' => $relDoc->tipeDok, 'slug' => $relDoc->slug]) }}"
-                                       class="relasi-step-doc">
-                                        <span class="relasi-step-doc-ref">
-                                            {{ $relDoc->jenisDokumen?->singkatan }}
-                                            {{ $relDoc->nomor ? 'No. '.$relDoc->nomor : '' }}
-                                            Tahun {{ $relDoc->tahun }}
-                                        </span>
-                                        <span class="relasi-step-doc-title">{{ \Illuminate\Support\Str::limit($relDoc->judul, 70) }}</span>
-                                    </a>
-                                    @if($item['catatan'])
-                                        <span class="relasi-step-note">
-                                            <i class="fas fa-info-circle me-1"></i>{{ $item['catatan'] }}
-                                        </span>
-                                    @endif
-                                </div>
+                        @php
+                        $relDoc = $item['dokumen'];
+                        $isInverse = in_array($item['jenis_relasi'], ['dicabut_oleh','diubah_oleh','dilaksanakan_oleh','dilengkapi_oleh','menjadi_dasar']);
+                        @endphp
+                        @if($relDoc)
+                        <div class="relasi-step {{ !$loop->last ? 'relasi-step--has-line' : '' }}">
+                            {{-- Arrow node --}}
+                            <div class="relasi-step-node {{ $isInverse ? 'relasi-step-node--inverse' : 'relasi-step-node--forward' }}">
+                                <i class="fas fa-arrow-down"></i>
                             </div>
-                            @endif
+
+                            {{-- Content --}}
+                            <div class="relasi-step-content">
+                                <span class="relasi-step-badge {{ $isInverse ? 'relasi-step-badge--inverse' : 'relasi-step-badge--forward' }}">
+                                    {{ $item['label'] }}
+                                </span>
+                                <a href="{{ route('dokumen.detail', ['tipeDok' => $relDoc->tipeDok, 'slug' => $relDoc->slug]) }}"
+                                    class="relasi-step-doc">
+                                    <span class="relasi-step-doc-ref">
+                                        {{ $relDoc->jenisDokumen?->singkatan }}
+                                        {{ $relDoc->nomor ? 'No. '.$relDoc->nomor : '' }}
+                                        Tahun {{ $relDoc->tahun }}
+                                    </span>
+                                    <span class="relasi-step-doc-title">{{ \Illuminate\Support\Str::limit($relDoc->judul, 70) }}</span>
+                                </a>
+                                @if($item['catatan'])
+                                <span class="relasi-step-note">
+                                    <i class="fas fa-info-circle me-1"></i>{{ $item['catatan'] }}
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
                         @endforeach
                     </div>{{-- /relasi-stepper-body --}}
 

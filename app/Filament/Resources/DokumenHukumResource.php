@@ -102,7 +102,7 @@ class DokumenHukumResource extends Resource
                             'required' => 'Tipe Dokumen harus diisi',
                         ])
                         ->helperText('Pilih tipe dokumen yang sesuai. Jenis dokumen akan menyesuaikan tipe yang dipilih.')
-                        ->reactive()
+                        ->live()
                         ->required()
                         ->afterStateUpdated(function (callable $set) {
                             $set('ref_jenis_dokumen_id', null);
@@ -219,6 +219,8 @@ class DokumenHukumResource extends Resource
                         ->options([
                             'BERLAKU'   => 'Berlaku',
                             'TIDAK BERLAKU' => 'Tidak Berlaku',
+                            'DICABUT'   => 'Dicabut',
+                            'DIUBAH'    => 'Diubah',
                         ])
                         ->validationMessages(['required' => 'Status tidak boleh kosong !'])
                         ->visible(fn(Get $get): bool => static::resolveTipeKode($get) === 'Peraturan')
@@ -434,6 +436,9 @@ class DokumenHukumResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'BERLAKU' => 'info',
                         'TIDAK BERLAKU' => 'danger',
+                        'DICABUT' => 'danger',
+                        'DIUBAH' => 'warning',
+                        default => 'gray',
                     })
                     ->disabledClick(), // Menonaktifkan clickable pada list table
                 TextColumn::make('updated_at')
@@ -482,6 +487,8 @@ class DokumenHukumResource extends Resource
                     ->options([
                         'BERLAKU' => 'Berlaku',
                         'TIDAK BERLAKU' => 'Tidak Berlaku',
+                        'DICABUT' => 'Dicabut',
+                        'DIUBAH' => 'Diubah',
                     ]),
             ])
             ->actions([

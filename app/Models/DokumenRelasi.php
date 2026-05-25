@@ -21,6 +21,64 @@ class DokumenRelasi extends Model
         'catatan',
     ];
 
+    protected static function booted()
+    {
+        static::saved(function ($relasi) {
+            $relasi->updateRelatedDokumenStatus();
+        });
+
+        static::deleted(function ($relasi) {
+            $relasi->updateRelatedDokumenStatus(true);
+        });
+    }
+
+    public function updateRelatedDokumenStatus(bool $isDeleted = false)
+    {
+        if (!in_array($this->jenis_relasi, ['mencabut', 'mengubah'])) {
+            return;
+        }
+
+        $targetDokumen = $this->relatedDokumen;
+        if (!$targetDokumen) {
+            return;
+        }
+
+        if ($isDeleted) {
+            $hasOtherMencabut = self::where('related_dokumen_id', $this->related_dokumen_id)
+                ->where('jenis_relasi', 'mencabut')
+                ->where('id', '!=', $this->id)
+                ->exists();
+                
+            $hasOtherMengubah = self::where('related_dokumen_id', $this->related_dokumen_id)
+                ->where('jenis_relasi', 'mengubah')
+                ->where('id', '!=', $this->id)
+                ->exists();
+
+            if ($hasOtherMencabut) {
+                $status = 'DICABUT';
+            } elseif ($hasOtherMengubah) {
+                $status = 'DIUBAH';
+            } else {
+                $status = 'BERLAKU';
+            }
+        } else {
+            $status = $this->jenis_relasi === 'mencabut' ? 'DICABUT' : 'DIUBAH';
+            
+            if ($this->jenis_relasi === 'mengubah') {
+                $hasOtherMencabut = self::where('related_dokumen_id', $this->related_dokumen_id)
+                    ->where('jenis_relasi', 'mencabut')
+                    ->exists();
+                if ($hasOtherMencabut) {
+                    $status = 'DICABUT';
+                }
+            }
+        }
+
+        if ($targetDokumen->status !== $status) {
+            $targetDokumen->update(['status' => $status]);
+        }
+    }
+
     /***************************************************************
      *  RELATIONS
      ***************************************************************/

@@ -301,12 +301,15 @@ class DokumenHukum extends Model
 
         // Helper aman untuk tanggal
         $fmt = fn($t) =>
-        $t ? \Carbon\Carbon::parse($t)->locale('id')->translatedFormat('d F Y') : '-';
+        $t ? Carbon::parse($t)->locale('id')->translatedFormat('d F Y') : '-';
 
         $base = [
+            'Tipe Dokumen'      => $this->tipeDokumen?->nama ?? '-',
             'Judul'             => $this->judul ?? '-',
             'Nomor'             => $this->nomor ?? '-',
             'Tahun Terbit'      => $this->tahun ?? '-',
+            'Jenis Peraturan'   => $jenisNama,
+            'Singkatan'         => $singkatan,
             'Tajuk Entri Utama' => $this->teuBadan ?? '-',
             'Bidang Hukum'      => $this->bidangHukumRef,
             'Subjek'            => $subjekHukum ?? '-',
@@ -316,7 +319,6 @@ class DokumenHukum extends Model
             'Sumber'            => $this->sumber ?? '-',
             'Bahasa'            => $this->bahasa ?? '-',
             'Lokasi'            => $this->lokasi ?? '-',
-            'Penandatangan'     => $this->penandatangan ?? '-',
         ];
 
         // Template per-tipe
@@ -502,7 +504,7 @@ class DokumenHukum extends Model
     /**
      * Scope untuk mencari dokumen berdasarkan tipe dan slug
      */
-    public function scopeFindBySlug(Builder $query, $tipeDok, $slug)
+    public function scopeFindBySlug(Builder $query, ?string $tipeDok, ?string $slug)
     {
         return $query->where('tipeDok', $tipeDok)->where('slug', $slug);
     }

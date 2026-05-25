@@ -14,8 +14,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\ActionGroup;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Filament\Support\Enums\VerticalAlignment;
 use Filament\Support\Enums\Alignment;
@@ -126,8 +126,13 @@ class RoleResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    \Filament\Actions\EditAction::make()
+                        ->modalHeading('Edit Role'),
+                    \Filament\Actions\DeleteAction::make(),
+                ])
+                    ->button()
+                    ->label('Aksi')
             ])
             ->bulkActions([
                 \Filament\Actions\DeleteBulkAction::make(),

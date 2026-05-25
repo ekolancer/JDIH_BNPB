@@ -149,7 +149,8 @@
                         <div class="list-doc__badge-row">
                             @php
                             $statusVal = strtoupper($result->status ?? '');
-                            $isBerlaku = $statusVal === 'BERLAKU';
+                            $isBerlaku = in_array($statusVal, ['BERLAKU', 'DIUBAH']);
+                            $statusDisplay = $isBerlaku ? 'Berlaku' : 'Tidak Berlaku';
                             @endphp
 
                             <span class="list-doc__badge-type">
@@ -160,7 +161,7 @@
                             <span class="list-doc__badge-status
                                 {{ $isBerlaku ? 'list-doc__badge-status--berlaku' : 'list-doc__badge-status--tidak' }}">
                                 <span class="list-doc__badge-dot"></span>
-                                {{ $isBerlaku ? 'Berlaku' : 'Tidak Berlaku' }}
+                                {{ $statusDisplay }}
                             </span>
                             @endif
                         </div>

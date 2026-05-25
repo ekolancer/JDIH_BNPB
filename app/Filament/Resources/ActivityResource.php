@@ -13,6 +13,10 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Spatie\Activitylog\Models\Activity;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Support\Enums\VerticalAlignment;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\FontWeight;
+
 
 class ActivityResource extends Resource
 {
@@ -63,36 +67,38 @@ class ActivityResource extends Resource
                 Tables\Columns\TextColumn::make('event')
                     ->label('Event')
                     ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
+                    ->color(fn(?string $state): string => match ($state) {
                         'created' => 'success',
                         'updated' => 'warning',
                         'deleted' => 'danger',
                         default => 'gray',
                     }),
 
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Deskripsi')
-                    ->limit(50)
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('subject_type')
                     ->label('Subject')
-                    ->formatStateUsing(fn (?string $state): string => $state ? class_basename($state) : '-'),
+                    ->weight(FontWeight::Bold)
+                    ->alignment(Alignment::Start)
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->wrap()
+                    ->formatStateUsing(fn(?string $state): string => $state ? class_basename($state) : '-')
+                    ->description(fn(Activity $record): string => $record->description),
 
                 Tables\Columns\TextColumn::make('causer.name')
-                    ->label('User')
+                    ->label('Actor')
                     ->default('-')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu')
-                    ->dateTime('d M Y H:i'),
+                    ->dateTime('d M Y')
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->alignment(Alignment::Center),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('log_name')
                     ->label('Log Name')
-                    ->options(fn () => Activity::distinct()->pluck('log_name', 'log_name')->toArray()),
+                    ->options(fn() => Activity::distinct()->pluck('log_name', 'log_name')->toArray()),
 
                 SelectFilter::make('event')
                     ->label('Event')
@@ -104,10 +110,10 @@ class ActivityResource extends Resource
 
                 SelectFilter::make('subject_type')
                     ->label('Subject Type')
-                    ->options(fn () => Activity::distinct()
+                    ->options(fn() => Activity::distinct()
                         ->whereNotNull('subject_type')
                         ->pluck('subject_type', 'subject_type')
-                        ->mapWithKeys(fn ($v, $k) => [$k => class_basename($k)])
+                        ->mapWithKeys(fn($v, $k) => [$k => class_basename($k)])
                         ->toArray()),
 
                 Filter::make('created_at')
@@ -119,15 +125,16 @@ class ActivityResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
-                            ->when($data['from'] ?? null, fn (Builder $q, $date) => $q->whereDate('created_at', '>=', $date))
-                            ->when($data['until'] ?? null, fn (Builder $q, $date) => $q->whereDate('created_at', '<=', $date));
+                            ->when($data['from'] ?? null, fn(Builder $q, $date) => $q->whereDate('created_at', '>=', $date))
+                            ->when($data['until'] ?? null, fn(Builder $q, $date) => $q->whereDate('created_at', '<=', $date));
                     }),
             ])
             ->actions([
                 \Filament\Actions\ViewAction::make()
                     ->label('Detail')
                     ->modalHeading('Detail Activity')
-                    ->color('info'),
+                    ->icon('heroicon-o-eye'),
+
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([
