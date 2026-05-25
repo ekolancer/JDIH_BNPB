@@ -135,7 +135,23 @@
     .fi-fo-text-input,
     .fi-fo-select,
     .fi-fo-textarea {
-        @apply !bg-white/40 dark:!bg-black/20 !backdrop-blur-sm !border-white/20 focus:!ring-primary-500/50 transition-all rounded-xl;
+        @apply !bg-white/40 dark:!bg-black/20 !border-white/20 focus:!ring-primary-500/50 transition-all rounded-xl;
+        /* Removed backdrop-blur to prevent stacking context traps that hide dropdowns */
+    }
+
+    /* Fix Dropdown Z-Index Stacking */
+    .fi-fo-field-wrp {
+        position: relative;
+    }
+    .fi-fo-field-wrp:focus-within,
+    .fi-fo-field-wrp:hover {
+        z-index: 99;
+    }
+    
+    .fi-select-panel,
+    .fi-dropdown-panel,
+    .fi-popover {
+        z-index: 9999 !important;
     }
 
     /* Buttons */

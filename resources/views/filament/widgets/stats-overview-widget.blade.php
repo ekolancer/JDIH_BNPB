@@ -84,7 +84,7 @@
                     @if(!is_null($stat['progress']))
                         <div>
                             <div class="mb-1.5 flex items-center justify-between">
-                                <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Kelengkapan</span>
+                                <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Presentase</span>
                                 <span class="text-[11px] font-bold" style="color: {{ $g['from'] }}">{{ $stat['progress'] }}%</span>
                             </div>
                             <div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-200/50 dark:bg-gray-700/40">

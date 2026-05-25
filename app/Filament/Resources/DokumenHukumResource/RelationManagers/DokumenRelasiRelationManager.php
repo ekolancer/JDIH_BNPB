@@ -9,12 +9,14 @@ use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Support\Enums\VerticalAlignment;
+use Filament\Support\Enums\Alignment;
 
 class DokumenRelasiRelationManager extends RelationManager
 {
     protected static string $relationship = 'relasiKeluar';
 
-    protected static ?string $title = 'Relasi Dokumen';
+    protected static ?string $title = 'Riwayat Dokumen';
 
     protected static ?string $recordTitleAttribute = 'jenis_relasi';
 
@@ -61,7 +63,7 @@ class DokumenRelasiRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('jenis_relasi')
-                    ->label('History')
+                    ->label('Riwayat')
                     ->badge()
                     ->formatStateUsing(fn(string $state) => DokumenRelasi::getAllRelasiLabels()[$state] ?? $state)
                     ->color(fn(string $state) => match ($state) {
@@ -73,7 +75,7 @@ class DokumenRelasiRelationManager extends RelationManager
                         'terkait'                              => 'gray',
                         default                                => 'gray',
                     })
-                    ->description(function (DokumenRelasi $record): string {
+                    ->description(function (DokumenRelasi $record) {
                         $related = $record->relatedDokumen;
                         if (! $related) {
                             return '-';
@@ -81,7 +83,12 @@ class DokumenRelasiRelationManager extends RelationManager
                         $singkatan = $related->jenisDokumen?->singkatan ?? '';
                         $nomor = $related->nomor ?? '';
                         $tahun = $related->tahun ?? '';
-                        return "{$singkatan} No. {$nomor} Tahun {$tahun}";
+                        
+                        $url = \App\Filament\Resources\DokumenHukumResource::getUrl('edit', ['record' => $related]);
+                        
+                        return new \Illuminate\Support\HtmlString(
+                            "<a href=\"{$url}\" class=\"text-primary-600 dark:text-primary-400 hover:underline font-medium\">{$singkatan} No. {$nomor} Tahun {$tahun}</a>"
+                        );
                     })
                     ->wrap(),
 
@@ -89,30 +96,33 @@ class DokumenRelasiRelationManager extends RelationManager
                     ->label('Catatan')
                     ->limit(50)
                     ->placeholder('-')
-                    ->wrap(),
+                    ->wrap()
+                    ->verticalAlignment(VerticalAlignment::Center),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu')
-                    ->dateTime('d M Y'),
+                    ->dateTime('d M Y')
+                    ->verticalAlignment(VerticalAlignment::Center)
+                    ->alignment(Alignment::Center),
             ])
             ->defaultSort('created_at', 'desc')
             ->headerActions([
                 \Filament\Actions\CreateAction::make()
-                    ->label('Tambah Relasi')
+                    ->label('Tambah Riwayat')
                     ->after(function (DokumenRelasi $record) {
                         $this->createInverseRelasi($record);
                     }),
             ])
             ->actions([
-                \Filament\Actions\ActionGroup::make([
-                    \Filament\Actions\EditAction::make(),
-                    \Filament\Actions\DeleteAction::make()
-                        ->after(function (DokumenRelasi $record) {
-                            $this->deleteInverseRelasi($record);
-                        }),
-                ])
-                    ->button()
-                    ->label('Aksi'),
+                // \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make()
+                    ->iconButton()
+                    ->visible(fn (DokumenRelasi $record): bool =>
+                        array_key_exists($record->jenis_relasi, DokumenRelasi::getRelasiOptions())
+                    )
+                    ->after(function (DokumenRelasi $record) {
+                        $this->deleteInverseRelasi($record);
+                    }),
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([

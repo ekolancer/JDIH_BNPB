@@ -53,7 +53,7 @@ class StatsOverviewWidget extends Widget
                 'raw'         => $dokumenLengkap,
                 'icon'        => 'document-check',
                 'color'       => 'emerald',
-                'description' => "{$pctLengkap}% file tersedia di storage",
+                'description' => "Total dokumen yang memiliki lampiran",
                 'trend'       => null,
                 'progress'    => $pctLengkap,
             ],
