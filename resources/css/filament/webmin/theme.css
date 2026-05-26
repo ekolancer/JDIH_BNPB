@@ -113,9 +113,8 @@
     .fi-section, 
     .fi-card,
     .fi-ta-content,
-    .fi-modal-window,
-    .fi-wi-stats-modern-container {
-        @apply glass-effect rounded-[var(--radius-glass)] transition-all duration-300 !bg-transparent !border-white/10;
+    .fi-modal-window {
+        @apply glass-effect rounded-[var(--radius-glass)] transition-all duration-300 !border-white/10 shadow-2xl;
         background-color: var(--glass-bg) !important;
         backdrop-filter: blur(var(--glass-blur)) !important;
     }
@@ -123,7 +122,11 @@
     .fi-modal-header,
     .fi-modal-content,
     .fi-modal-footer {
-        @apply !bg-white dark:!bg-black;
+        @apply !bg-transparent;
+    }
+
+    .fi-modal-close-btn {
+        @apply hover:bg-white/10 dark:hover:bg-white/10 rounded-full transition-colors duration-200;
     }
 
     .fi-section:hover,

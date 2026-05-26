@@ -50,6 +50,11 @@ class WebminPanelProvider extends PanelProvider
                 HTML),
             );
         }
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_END,
+            fn (): \Illuminate\Contracts\View\View => view('filament.hooks.session-timeout-modal'),
+        );
     }
 
     public function panel(Panel $panel): Panel
