@@ -1,226 +1,365 @@
 @extends('layout.app-clear')
 
-@section('content')
-
+@push('styles')
 <style>
     :root {
-        --primary-blue: #0d6efd;
-        --accent-gold: #f0ad00;
-        --soft-bg: #f8f9fa;
-        --text-dark: #2d3436;
-        --text-muted: #636e72;
+        --blue: #1a56db;
+        --blue-light: #eff6ff;
+        --gold: #f59e0b;
+        --gold-light: #fffbeb;
+        --dark: #111827;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --bg: #f9fafb;
     }
 
-    /* Sidebar Styling */
-    .sidebar-wrapper {
+    /* ── Layout ── */
+    .profil-wrap {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    @media (max-width: 991px) {
+        .profil-wrap { grid-template-columns: 1fr; }
+        .profil-sidebar { position: static !important; }
+    }
+
+    /* ── Sidebar ── */
+    .profil-sidebar {
         position: sticky;
-        top: 2rem;
+        top: 5.5rem;
     }
 
-    .sidebar-menu {
-        border: 1px solid rgba(0, 0, 0, 0.05);
+    .sidebar-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
     }
 
-    .sidebar-menu a {
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: var(--text-muted);
+    .sidebar-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 1.25rem 1.25rem 0.5rem;
+    }
+
+    .sidebar-nav { padding: 0.5rem; }
+
+    .sidebar-nav a {
         display: flex;
         align-items: center;
-        padding: 12px 20px;
-        margin-bottom: 5px;
-        border-radius: 12px;
+        gap: 0.75rem;
+        padding: 0.65rem 1rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--muted);
         text-decoration: none;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background 0.2s, color 0.2s, transform 0.2s;
     }
 
-    .sidebar-menu a i {
-        margin-right: 12px;
-        font-size: 1.1rem;
+    .sidebar-nav a .nav-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        flex-shrink: 0;
+        transition: background 0.2s, color 0.2s;
     }
 
-    .sidebar-menu a:hover {
-        background: var(--soft-bg);
-        color: var(--primary-blue);
-        transform: translateX(5px);
+    .sidebar-nav a:hover {
+        background: var(--bg);
+        color: var(--dark);
+        transform: translateX(3px);
     }
 
-    .sidebar-menu .active {
-        background: linear-gradient(135deg, #fff7e1 0%, #fff 100%);
-        color: var(--primary-blue) !important;
-        font-weight: 700;
-        box-shadow: inset 4px 0 0 var(--accent-gold);
+    .sidebar-nav a.active {
+        background: var(--blue-light);
+        color: var(--blue);
+        font-weight: 600;
     }
 
-    /* Content Area */
+    .sidebar-nav a.active .nav-icon {
+        background: var(--blue);
+        color: #fff;
+    }
+
+    .help-card {
+        margin: 0.75rem;
+        padding: 1.25rem;
+        background: linear-gradient(135deg, var(--blue) 0%, #1e40af 100%);
+        border-radius: 12px;
+        color: #fff;
+    }
+
+    .help-card h6 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .help-card p  { font-size: 0.78rem; opacity: 0.8; margin: 0; line-height: 1.5; }
+
+    /* ── Content Card ── */
     .content-card {
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        transition: box-shadow 0.3s ease;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        min-height: 600px;
     }
 
-    .content-header {
-        border-bottom: 2px solid var(--soft-bg);
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
+    .content-top-bar {
+        padding: 2rem 2.5rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
 
-    .page-title {
-        color: var(--text-dark);
-        letter-spacing: -0.5px;
+    .content-top-bar h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0 0 0.35rem;
+        letter-spacing: -0.3px;
     }
 
-    /* FAQ Customization */
+    .content-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+    }
+
+    .content-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+
+    .page-badge {
+        padding: 0.35rem 0.85rem;
+        background: var(--blue-light);
+        color: var(--blue);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .content-body-wrap {
+        padding: 2rem 2.5rem;
+    }
+
+    /* ── Prose ── */
+    .prose {
+        color: #374151;
+        font-size: 1rem;
+        line-height: 1.85;
+    }
+
+    .prose p { margin-bottom: 1.25rem; }
+    .prose h1, .prose h2, .prose h3 { color: var(--dark); font-weight: 700; margin: 1.5rem 0 0.75rem; }
+    .prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .prose li { margin-bottom: 0.4rem; }
+    .prose img { border-radius: 12px; max-width: 100%; }
+    .prose a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Image Block ── */
+    .content-image-block {
+        margin: 0 2.5rem 2.5rem;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+    }
+
+    .content-image-block img {
+        width: 100%;
+        max-height: 480px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .content-image-block figcaption {
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        background: var(--bg);
+        text-align: center;
+        font-style: italic;
+    }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
     .faq-item {
-        border: 1px solid #edf2f7 !important;
-        transition: all 0.3s ease;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .faq-item:hover {
-        border-color: var(--primary-blue) !important;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    .faq-item:hover { border-color: #93c5fd; box-shadow: 0 4px 12px rgba(26,86,219,0.06); }
+
+    .faq-item.open { border-color: var(--blue); }
+
+    .faq-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        text-align: left;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--dark);
+        transition: background 0.2s;
     }
 
-    .accordion-button:not(.collapsed) {
-        background-color: transparent;
-        color: var(--primary-blue);
-        box-shadow: none;
+    .faq-btn:hover { background: var(--bg); }
+    .faq-item.open .faq-btn { background: var(--blue-light); color: var(--blue); }
+
+    .faq-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        transition: transform 0.3s, background 0.2s, color 0.2s;
     }
 
-    .accordion-button:focus {
-        box-shadow: none;
-        border-color: rgba(13, 110, 253, 0.25);
+    .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+        background: var(--blue);
+        color: #fff;
     }
 
-    /* Typography */
-    .content-body {
-        color: var(--text-dark);
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    .faq-answer {
+        display: none;
+        padding: 0 1.25rem 1.25rem;
+        font-size: 0.9rem;
+        color: #4b5563;
+        line-height: 1.8;
+        border-top: 1px solid var(--border);
     }
 
-    .content-body p {
-        margin-bottom: 1.5rem;
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ── Animations ── */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(18px);
+        animation: fadeUp 0.5s ease forwards;
     }
 
-    /* Skeleton Loading Effect (Optional) */
-    .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
+    @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    @media (max-width: 575px) {
+        .content-top-bar, .content-body-wrap { padding: 1.25rem; }
+        .content-image-block { margin: 0 1.25rem 1.25rem; }
+        .content-top-bar h2 { font-size: 1.2rem; }
     }
 </style>
+@endpush
 
-<div class="container py-5 fade-in-up">
+@section('content')
+<div class="container py-5 fade-up">
+    <div class="profil-wrap">
 
-    <div class="row g-4">
-
-        {{-- SIDEBAR --}}
-        <div class="col-lg-3 col-md-4">
-            <div class="sidebar-wrapper">
-                <div class="p-3 bg-white rounded-4 shadow-sm sidebar-menu">
-                    <p class="text-uppercase small fw-bold text-muted px-3 mb-3" style="letter-spacing: 1px;">Menu Profil</p>
-
-                    <a href="/profil/tentang-kami" class="{{ request()->is('profil/tentang-kami') ? 'active' : '' }}">
-                        Tentang Kami
+        {{-- ── SIDEBAR ── --}}
+        <aside class="profil-sidebar">
+            <div class="sidebar-card">
+                <p class="sidebar-label">Menu Profil</p>
+                <nav class="sidebar-nav">
+                    @foreach ($menus as $menu)
+                    <a href="/profil/{{ $menu['slug'] }}" class="{{ request()->is('profil/'.$menu['slug']) ? 'active' : '' }}">
+                        <span class="nav-icon"><i class="bi bi-layers"></i></span>
+                        {{ $menu['title'] }}
                     </a>
+                    @endforeach
+                </nav>
 
-                    <a href="/profil/visi-misi" class="{{ request()->is('profil/visi-misi') ? 'active' : '' }}">
-                        Visi dan Misi
-                    </a>
-
-                    <a href="/profil/struktur-organisasi" class="{{ request()->is('profil/struktur-organisasi') ? 'active' : '' }}">
-                        Struktur Organisasi
-                    </a>
-
-                    <a href="/profil/prasyarat" class="{{ request()->is('profil/prasyarat') ? 'active' : '' }}">
-                        Prasyarat
-                    </a>
-
-                    <a href="/profil/faq" class="{{ request()->is('profil/faq') ? 'active' : '' }}">
-                        FAQ
-                    </a>
-                </div>
-
-                {{-- INFO BOX (Optional) --}}
-                <div class="mt-4 p-4 bg-primary rounded-4 text-white shadow-sm position-relative overflow-hidden">
-                    <h6 class="fw-bold mb-2">Butuh Bantuan?</h6>
-                    <p class="small mb-0 opacity-75">Hubungi kami melalui pusat layanan informasi terpadu.</p>
+                <div class="help-card">
+                    <h6><i class="bi bi-headset me-1"></i> Butuh Bantuan?</h6>
+                    <p>Hubungi kami melalui pusat layanan informasi terpadu BNPB.</p>
                 </div>
             </div>
-        </div>
+        </aside>
 
-        {{-- CONTENT --}}
-        <div class="col-lg-9 col-md-8">
-            <div class="content-card p-4 p-md-5 bg-white rounded-4 shadow-sm" style="min-height: 650px;">
+        {{-- ── CONTENT ── --}}
+        <main>
+            <div class="content-card">
 
                 @if ($slug === 'faq')
-                <div class="content-header">
-                    <h3 class="fw-bold page-title">FAQ</h3>
-                    <p class="text-muted">Temukan jawaban atas pertanyaan yang paling sering diajukan mengenai layanan kami.</p>
-                </div>
+                {{-- ── FAQ ── --}}
 
-                <div class="accordion" id="faqAccordion">
-                    @foreach ($faqs as $faq)
-                    <div class="accordion-item faq-item mb-3 rounded-3 overflow-hidden">
-                        <h2 class="accordion-header" id="heading{{ $faq->id }}">
-                            <button class="accordion-button collapsed fw-bold py-3 px-4"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ $faq->id }}"
-                                aria-expanded="false">
-                                {{ $faq->question }}
+                <div class="content-body-wrap">
+                    <div class="faq-list">
+                        @foreach ($faqs as $i => $faq)
+                        <div class="faq-item" id="faq-{{ $faq->id }}">
+                            <button class="faq-btn" type="button" data-faq-id="{{ $faq->id }}">
+                                <span>{{ $faq->question }}</span>
+                                <span class="faq-icon"><i class="bi bi-plus"></i></span>
                             </button>
-                        </h2>
-
-                        <div id="collapse{{ $faq->id }}"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#faqAccordion">
-                            <div class="accordion-body px-4 pb-4 pt-1 text-muted" style="line-height: 1.8;">
+                            <div class="faq-answer prose">
                                 {!! $faq->answer !!}
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
 
                 @else
-                <div class="content-header">
-                    <h3 class="fw-bold page-title">{{ $page->title }}</h3>
-                    <div class="d-flex align-items-center mt-2 text-muted small">
-                        <span class="me-3"><i class="bi bi-clock me-1"></i> Terakhir diperbarui: {{ $page->updated_at->format('d M Y') }}</span>
+                {{-- ── PAGE ── --}}
+
+                <div class="content-body-wrap">
+                    <div class="prose">
+                        {!! $page->content !!}
                     </div>
                 </div>
 
-                <div class="content-body mt-3" style="font-size: 1.08rem; line-height: 1.9;">
-                    {!! $page->content !!}
-                </div>
-
                 @if ($page->image)
-                <div class="mt-5 text-center">
-                    <img src="{{ asset('storage/' . $page->image) }}"
-                        class="img-fluid rounded-4 shadow-lg"
-                        style="max-height: 500px; object-fit: cover;"
-                        alt="{{ $page->title }}">
+                <figure class="content-image-block">
+                    <img src="{{ asset('storage/' . $page->image) }}" alt="{{ $page->title }}">
                     @if($page->image_caption)
-                    <p class="small text-muted mt-2 italic">{{ $page->image_caption }}</p>
+                    <figcaption>{{ $page->image_caption }}</figcaption>
                     @endif
-                </div>
-                @endif
+                </figure>
                 @endif
 
+                @endif
             </div>
-        </div>
+        </main>
 
     </div>
 </div>
 
+<script>
+    function toggleFaq(id) {
+        const item = document.getElementById('faq-' + id);
+        if (!item) return;
+
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+    }
+
+    document.querySelectorAll('[data-faq-id]').forEach(button => {
+        button.addEventListener('click', () => toggleFaq(button.dataset.faqId));
+    });
+</script>
 @endsection
