@@ -21,8 +21,7 @@ class DokumenHukum extends Model
 {
     use HasFactory, Notifiable, LogsActivity;
 
-    // Legacy fields hidden (keberadaannya tetap aman bila ada dalam DB lama)
-    protected $hidden = ['jenisDok', 'singkatan'];
+    protected $hidden = [];
 
     protected $appends = [
         'jenis_dokumen_label',
@@ -34,7 +33,6 @@ class DokumenHukum extends Model
 
     protected $fillable = [
         'tipe_dokumen_id',
-        'tipeDok',
         'judul',
         'ref_jenis_dokumen_id',
         'slug',
@@ -49,7 +47,6 @@ class DokumenHukum extends Model
         'nomorPanggil',
         'cetakanEdisi',
         'deskripsiFisik',
-        'subjek',
         'sumber',
         'isbn',
         'status',
@@ -159,11 +156,6 @@ class DokumenHukum extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            // Sync tipeDok legacy column
-            if ($model->tipe_dokumen_id && !$model->tipeDok) {
-                $model->tipeDok = RefTipeDokumen::find($model->tipe_dokumen_id)?->kode;
-            }
-
             $model->generateDocumentUid();
             if (empty($model->slug)) {
                 $model->slug = $model->generateSlug();
@@ -171,18 +163,13 @@ class DokumenHukum extends Model
         });
 
         static::updating(function ($model) {
-            // Sync tipeDok legacy column
-            if ($model->isDirty('tipe_dokumen_id') && $model->tipe_dokumen_id) {
-                $model->tipeDok = RefTipeDokumen::find($model->tipe_dokumen_id)?->kode;
-            }
-
             // Trigger slug regeneration if relevant fields changed
             $slugTriggers = [
                 'ref_jenis_dokumen_id',
                 'nomor',
                 'tahun',
                 'judul',
-                'tipeDok'
+                'tipe_dokumen_id',
             ];
 
             foreach ($slugTriggers as $column) {
@@ -200,9 +187,9 @@ class DokumenHukum extends Model
             // File deletion logic (lampiran)
             if ($model->isDirty('lampiran')) {
                 $old = $model->getOriginal('lampiran');
-                if ($old && Storage::disk('public')->exists($old)) {
+                if ($old && Storage::disk('public')->exists($old)) 
                     Storage::disk('public')->delete($old);
-                }
+                
             }
 
             // File deletion logic (abstrak)
@@ -231,8 +218,9 @@ class DokumenHukum extends Model
     public function generateSlug(): string
     {
         $singkatan = $this->jenisDokumen->singkatan ?? '';
+        $tipeKode = $this->tipeDokumen?->kode ?? RefTipeDokumen::find($this->tipe_dokumen_id)?->kode;
 
-        if (in_array($this->tipeDok, ['Putusan', 'Peraturan'])) {
+        if (in_array($tipeKode, ['Putusan', 'Peraturan'])) {
             return Str::slug("{$singkatan}-nomor-{$this->nomor}-tahun-{$this->tahun}");
         }
 
@@ -281,11 +269,11 @@ class DokumenHukum extends Model
      ***************************************************************/
 
     /**
-     * Kode tipe dokumen (dari relasi atau fallback ke tipeDok legacy).
+     * Kode tipe dokumen (dari relasi ref_tipe_dokumen).
      */
     public function getTipeKodeAttribute(): ?string
     {
-        return $this->tipeDokumen?->kode ?? $this->tipeDok;
+        return $this->tipeDokumen?->kode;
     }
 
     /**
@@ -404,7 +392,7 @@ class DokumenHukum extends Model
 
     public function getButtonTextAttribute(): string
     {
-        return $this->tipeDok === 'Monografi' ? 'Cover' : 'Baca';
+        return $this->tipe_kode === 'Monografi' ? 'Cover' : 'Baca';
     }
 
     /**
@@ -456,22 +444,23 @@ class DokumenHukum extends Model
      */
     public static function countByType(): array
     {
-        $result = self::select('tipeDok', DB::raw('COUNT(*) as total'))
-            ->groupBy('tipeDok')
-            ->pluck('total', 'tipeDok')
+        $result = self::select('tipe_dokumen_id', DB::raw('COUNT(*) as total'))
+            ->whereNotNull('tipe_dokumen_id')
+            ->groupBy('tipe_dokumen_id')
+            ->pluck('total', 'tipe_dokumen_id')
             ->toArray();
 
         $types = \App\Models\RefTipeDokumen::active()->ordered()->get();
-        
+
         $mapped = [];
         foreach ($types as $type) {
             $mapped[$type->kode] = [
                 'nama' => $type->nama,
                 'kode' => $type->kode,
-                'total' => $result[$type->kode] ?? 0,
+                'total' => $result[$type->id] ?? 0,
             ];
         }
-        
+
         return $mapped;
     }
 
@@ -481,9 +470,9 @@ class DokumenHukum extends Model
     public function scopeLatestPeraturan(Builder $query, int $limit = 4)
     {
         return $query
-            ->where('tipeDok', 'Peraturan')
+            ->whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))
             ->where('status', 'BERLAKU')
-            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->with(['jenisDokumen', 'bidangHukumRef', 'tipeDokumen'])
             ->orderByDesc('tglPengundangan')
             ->limit($limit);
     }
@@ -494,19 +483,21 @@ class DokumenHukum extends Model
     public function scopeMostViewedPeraturan(Builder $query, int $limit = 8)
     {
         return $query
-            ->where('tipeDok', 'Peraturan')
+            ->whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))
             ->where('status', 'BERLAKU')
-            ->with(['jenisDokumen', 'bidangHukumRef'])
+            ->with(['jenisDokumen', 'bidangHukumRef', 'tipeDokumen'])
             ->orderByDesc('view_count')
             ->limit($limit);
     }
 
     /**
-     * Scope untuk mencari dokumen berdasarkan tipe dan slug
+     * Scope untuk mencari dokumen berdasarkan tipe (kode) dan slug
      */
-    public function scopeFindBySlug(Builder $query, ?string $tipeDok, ?string $slug)
+    public function scopeFindBySlug(Builder $query, ?string $tipeKode, ?string $slug)
     {
-        return $query->where('tipeDok', $tipeDok)->where('slug', $slug);
+        return $query
+            ->whereHas('tipeDokumen', fn ($q) => $q->where('kode', $tipeKode))
+            ->where('slug', $slug);
     }
 
     /**
@@ -586,8 +577,8 @@ class DokumenHukum extends Model
         );
 
         $query->when(
-            $filters['tipeDok'] ?? null,
-            fn($q, $v) => $q->where('tipeDok', $v)
+            $filters['tipe_dokumen_id'] ?? null,
+            fn($q, $v) => $q->where('tipe_dokumen_id', $v)
         );
 
         $query->when(
@@ -679,13 +670,7 @@ class DokumenHukum extends Model
 
     public function getTipeDokLabelAttribute()
     {
-        return $this->tipeDokumen?->nama ?? match ($this->tipeDok) {
-            'Peraturan' => 'Peraturan Perundang-undangan',
-            'Monografi' => 'Monografi Hukum',
-            'Artikel'   => 'Artikel Hukum',
-            'Putusan'   => 'Putusan Pengadilan',
-            default     => $this->tipeDok,
-        };
+        return $this->tipeDokumen?->nama ?? '-';
     }
 
     public function getDownloadAllowedAttribute(): bool
@@ -733,12 +718,12 @@ class DokumenHukum extends Model
 
     public function getIsMonografiAttribute(): bool
     {
-        return $this->tipeDok === 'Monografi';
+        return $this->tipe_kode === 'Monografi';
     }
 
     public function getIsArtikelAttribute(): bool
     {
-        return $this->tipeDok === 'Artikel';
+        return $this->tipe_kode === 'Artikel';
     }
     public function getCoverImageUrlAttribute(): string
     {

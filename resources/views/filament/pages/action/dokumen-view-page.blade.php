@@ -4,7 +4,7 @@
 
     $tipeDokLabel = $record->tipe_dok_label;
 
-    $tipeDokColor = match($record->tipeDok) {
+    $tipeDokColor = match($record->tipe_kode) {
     'Peraturan' => ['bg' => 'bg-blue-500/15', 'text' => 'text-blue-400', 'border' => 'border-blue-500/30', 'dot' => 'bg-blue-400'],
     'Monografi' => ['bg' => 'bg-purple-500/15', 'text' => 'text-purple-400', 'border' => 'border-purple-500/30', 'dot' => 'bg-purple-400'],
     'Artikel' => ['bg' => 'bg-emerald-500/15', 'text' => 'text-emerald-400', 'border' => 'border-emerald-500/30', 'dot' => 'bg-emerald-400'],

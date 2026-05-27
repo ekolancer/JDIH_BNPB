@@ -147,7 +147,7 @@
                                 <span class="relasi-step-badge {{ $isInverse ? 'relasi-step-badge--inverse' : 'relasi-step-badge--forward' }}">
                                     {{ $item['label'] }}
                                 </span>
-                                <a href="{{ route('dokumen.detail', ['tipeDok' => $relDoc->tipeDok, 'slug' => $relDoc->slug]) }}"
+                                <a href="{{ route('dokumen.detail', ['tipeDok' => $relDoc->tipe_kode, 'slug' => $relDoc->slug]) }}"
                                     class="relasi-step-doc">
                                     <span class="relasi-step-doc-ref">
                                         {{ $relDoc->jenisDokumen?->singkatan }}

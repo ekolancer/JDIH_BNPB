@@ -30,7 +30,7 @@ class ApiController extends Controller
          * ============================*/
 
             if (!empty($validated['tipeDok'])) {
-                $query->where('tipeDok', $validated['tipeDok']);
+                $query->whereHas('tipeDokumen', fn ($q) => $q->where('kode', $validated['tipeDok']));
             }
 
             if (!empty($validated['tahun'])) {

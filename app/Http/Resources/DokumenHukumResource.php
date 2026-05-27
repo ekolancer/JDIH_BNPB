@@ -42,7 +42,7 @@ class DokumenHukumResource extends JsonResource
             'urlDownload' => $this->lampiran ? $baseUrl . "/download-lampiran/" . $this->slug : null,
             'abstrak' => $this->abstrak,
             'urlabstrak' => $this->abstrak ? $baseUrl . "/download-abstrak/" . $this->slug : null,
-            'urlDetailPeraturan' => $baseUrl . "/dokumen/" . $this->tipeDok . "/" . $this->slug,
+            'urlDetailPeraturan' => $baseUrl . "/dokumen/" . $this->tipe_kode . "/" . $this->slug,
 
             // FLAG PUU
             'operasi' => "4",

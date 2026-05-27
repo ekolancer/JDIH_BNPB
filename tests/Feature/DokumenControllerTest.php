@@ -13,7 +13,7 @@ class DokumenControllerTest extends TestCase
     /** @test */
     public function it_shows_dokumen_detail_page(): void
     {
-        $dokumen = DokumenHukum::where('tipeDok', 'Peraturan')->first();
+        $dokumen = DokumenHukum::whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))->first();
 
         if (!$dokumen) {
             $this->markTestSkipped('No Peraturan dokumen in database');
@@ -28,7 +28,7 @@ class DokumenControllerTest extends TestCase
     /** @test */
     public function it_increments_view_count_on_detail(): void
     {
-        $dokumen = DokumenHukum::where('tipeDok', 'Peraturan')->first();
+        $dokumen = DokumenHukum::whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))->first();
 
         if (!$dokumen) {
             $this->markTestSkipped('No Peraturan dokumen in database');

@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('dokumen_hukums', function (Blueprint $table) {
+            $table->dropColumn('tipeDok');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('dokumen_hukums', function (Blueprint $table) {
+            $table->enum('tipeDok', ['Peraturan', 'Monografi', 'Artikel', 'Putusan'])
+                ->nullable()
+                ->after('document_uid');
+        });
+    }
+};

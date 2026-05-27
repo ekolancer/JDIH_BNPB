@@ -61,7 +61,7 @@ class DokumenHukumObserver
         ) {
             foreach ($recipients as $recipient) {
                 Notification::make()
-                    ->title("{$dokumen->tipeDok} {$actionText} oleh {$actor->name}")
+                    ->title("{$dokumen->tipe_kode} {$actionText} oleh {$actor->name}")
                     ->body("Judul: {$dokumen->judul}")
                     ->{$type}()
                     ->sendToDatabase($recipient);

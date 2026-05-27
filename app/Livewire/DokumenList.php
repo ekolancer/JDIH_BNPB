@@ -27,7 +27,7 @@ class DokumenList extends Component
     public array $filters = [
         'judul' => '',
         'tahun' => null,
-        'tipeDok' => '',
+        'tipe_dokumen_id' => null,
         'ref_jenis_dokumen_id' => [],
         'ref_bidang_hukum_id' => [],
         'subjek' => [],
@@ -41,7 +41,7 @@ class DokumenList extends Component
     protected array $filterAliases = [
         'judul'                => 'judul',
         'tahun'                => 'tahun',
-        'tipeDok'              => 'type',
+        'tipe_dokumen_id'      => 'type',
         'ref_jenis_dokumen_id' => 'bentuk',
         'ref_bidang_hukum_id'  => 'bidang',
         'subjek'               => 'subjek',
@@ -62,7 +62,7 @@ class DokumenList extends Component
         $this->loadAvailableFilters();
 
         $query = $this->mapAliasToFilters(request()->query());
-        $query['tipeDok'] = $query['tipeDok'] ?? $tipeDok;
+        $query['tipe_dokumen_id'] = $query['tipe_dokumen_id'] ?? $tipeDok;
 
         $this->filters = array_merge($this->filters, $query);
         $this->sortBy  = request()->query('sort', request()->query('sortBy', 'latest'));
@@ -76,7 +76,7 @@ class DokumenList extends Component
         }
 
         $this->normalizeSlugFiltersToIds();
-        $this->filters['tipeDok'] = $this->resolveTipeDok($this->filters['tipeDok']);
+        $this->filters['tipe_dokumen_id'] = $this->resolveTipeDokumenId($this->filters['tipe_dokumen_id']);
 
         if (!is_numeric($this->filters['tahun'])) {
             $this->filters['tahun'] = null;
@@ -184,14 +184,22 @@ class DokumenList extends Component
             ->all();
     }
 
-    private function resolveTipeDok(?string $value): string
+    private function resolveTipeDokumenId($value): ?int
     {
         if (!filled($value)) {
-            return '';
+            return null;
         }
 
-        return collect(['Peraturan', 'Monografi', 'Artikel', 'Putusan'])
-            ->first(fn($type) => Str::slug($type) === Str::slug($value), $value);
+        // Already an ID
+        if (is_numeric($value)) {
+            return (int) $value;
+        }
+
+        // Resolve slug/kode to ID
+        return \App\Models\RefTipeDokumen::query()
+            ->where('kode', $value)
+            ->orWhereRaw('LOWER(kode) = ?', [Str::lower($value)])
+            ->value('id');
     }
 
     /* ==========================================================
@@ -231,13 +239,20 @@ class DokumenList extends Component
     private function toUrlFilterValue(string $key, $value): string
     {
         return match ($key) {
-            'tipeDok' => Str::slug((string) $value),
+            'tipe_dokumen_id' => $this->urlSlugForTipeDokumen($value),
             'ref_jenis_dokumen_id' => $this->urlSlugById('jenis_dokumen', $value),
             'ref_bidang_hukum_id' => $this->urlSlugById('bidang_hukum', $value),
             'subjek' => $this->urlSlugById('subjek', $value),
             'status' => Str::slug((string) $value),
             default => (string) $value,
         };
+    }
+
+    private function urlSlugForTipeDokumen($id): string
+    {
+        if (!$id) return '';
+        $tipe = \App\Models\RefTipeDokumen::find($id);
+        return $tipe ? Str::slug($tipe->kode) : '';
     }
 
     private function urlSlugById(string $filterKey, $id): string

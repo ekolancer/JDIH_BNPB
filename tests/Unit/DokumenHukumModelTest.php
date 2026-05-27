@@ -17,15 +17,21 @@ class DokumenHukumModelTest extends TestCase
             $this->markTestSkipped('No RefJenisDokumen in database');
         }
 
+        $tipePeraturan = \App\Models\RefTipeDokumen::where('kode', 'Peraturan')->first();
+        if (!$tipePeraturan) {
+            $this->markTestSkipped('No RefTipeDokumen Peraturan in database');
+        }
+
         $dokumen = new DokumenHukum();
-        $dokumen->tipeDok = 'Peraturan';
+        $dokumen->tipe_dokumen_id = $tipePeraturan->id;
         $dokumen->ref_jenis_dokumen_id = $jenis->id;
         $dokumen->nomor = 5;
         $dokumen->tahun = 2024;
         $dokumen->judul = 'Test Dokumen';
 
-        // Load relation for slug generation
+        // Load relations for slug generation
         $dokumen->setRelation('jenisDokumen', $jenis);
+        $dokumen->setRelation('tipeDokumen', $tipePeraturan);
 
         $slug = $dokumen->generateSlug();
 
@@ -37,9 +43,15 @@ class DokumenHukumModelTest extends TestCase
     /** @test */
     public function it_generates_slug_for_monografi_using_judul(): void
     {
+        $tipeMonografi = \App\Models\RefTipeDokumen::where('kode', 'Monografi')->first();
+        if (!$tipeMonografi) {
+            $this->markTestSkipped('No RefTipeDokumen Monografi in database');
+        }
+
         $dokumen = new DokumenHukum();
-        $dokumen->tipeDok = 'Monografi';
+        $dokumen->tipe_dokumen_id = $tipeMonografi->id;
         $dokumen->judul = 'Panduan Penanggulangan Bencana';
+        $dokumen->setRelation('tipeDokumen', $tipeMonografi);
 
         $slug = $dokumen->generateSlug();
 

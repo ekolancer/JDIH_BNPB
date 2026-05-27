@@ -21,7 +21,7 @@
                     {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d M Y') }}
                 </small>
 
-                <a href="{{ route('dokumen.detail', ['tipeDok' => $item->tipeDok, 'slug' => $item->slug]) }}"
+                <a href="{{ route('dokumen.detail', ['tipeDok' => $item->tipe_kode, 'slug' => $item->slug]) }}"
                     class="btn-view-modern text-decoration-none">
                     Lihat <i class="fas fa-arrow-right ms-1"></i>
                 </a>

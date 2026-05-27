@@ -167,7 +167,7 @@
                         </div>
 
                         <div class="list-doc__card-title">
-                            @if(in_array($result->tipeDok, ['Peraturan', 'Putusan']))
+                            @if(in_array($result->tipe_kode, ['Peraturan', 'Putusan']))
                             {{ $result->jenis_dokumen_singkatan }}
                             Nomor {{ $result->nomor }}
                             Tahun {{ $result->tahun }}
@@ -196,7 +196,7 @@
                                 </span>
                             </div>
 
-                            <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipeDok, 'slug' => $result->slug]) }}"
+                            <a href="{{ route('dokumen.detail', ['tipeDok' => $result->tipe_kode, 'slug' => $result->slug]) }}"
                                 class="list-doc__btn-detail">
                                 Detail <i class="fas fa-arrow-right"></i>
                             </a>

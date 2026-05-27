@@ -22,21 +22,17 @@ class ListDokumenHukums extends ListRecords
 
     public function getTabs(): array
     {
-        return [
-            'ALL' => Tab::make('All'),
-            'Peraturan' => Tab::make('Peraturan')
-                ->badge(DokumenHukum::query()->where('tipeDok', 'Peraturan')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Peraturan')),
-            'Monografi' => Tab::make('Monografi')
-                ->badge(DokumenHukum::query()->where('tipeDok', 'Monografi')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Monografi')),
-            'Artikel' => Tab::make('Artikel')
-                ->badge(DokumenHukum::query()->where('tipeDok', 'Artikel')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Artikel')),
-            'Putusan' => Tab::make('Putusan')
-                ->badge(DokumenHukum::query()->where('tipeDok', 'Putusan')->count())
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipeDok', 'Putusan')),
-        ];
+        $tipes = \App\Models\RefTipeDokumen::active()->ordered()->get();
+
+        $tabs = ['ALL' => Tab::make('All')];
+
+        foreach ($tipes as $tipe) {
+            $tabs[$tipe->kode] = Tab::make($tipe->kode)
+                ->badge(DokumenHukum::query()->where('tipe_dokumen_id', $tipe->id)->count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('tipe_dokumen_id', $tipe->id));
+        }
+
+        return $tabs;
     }
 
     public function setPage($page, $pageName = 'page'): void

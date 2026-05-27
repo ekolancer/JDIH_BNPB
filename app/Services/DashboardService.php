@@ -21,7 +21,7 @@ class DashboardService
                 'visitorStats' => Visitor::getVisitorStats(),
                 'peraturanTerbaru' => DokumenHukum::latestPeraturan(4)->get(),
                 'peraturanPopuler' => DokumenHukum::mostViewedPeraturan(8)->get(),
-                'dokumenAttributes' => DokumenHukum::getUniqueValues(['tipeDok']),
+                'tipeDokumen' => \App\Models\RefTipeDokumen::active()->ordered()->pluck('nama', 'kode'),
                 'jenisDokumen' => \App\Models\RefJenisDokumen::where('is_active', true)->orderBy('nama')->get(),
                 'berita' => Berita::getBeritaActive(),
                 'infografis' => Infografis::getInfografisActive(),

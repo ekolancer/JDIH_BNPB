@@ -33,17 +33,18 @@ class GenerateSitemap extends Command
         }
 
         // Dokumen per tipe
-        $tipeDoks = ['Peraturan', 'Monografi', 'Artikel', 'Putusan'];
-        foreach ($tipeDoks as $tipe) {
+        $tipes = \App\Models\RefTipeDokumen::active()->ordered()->pluck('kode');
+        foreach ($tipes as $kode) {
             $urls[] = $this->urlEntry(
-                $baseUrl . '/dokumen?tipeDok=' . strtolower($tipe),
+                $baseUrl . '/dokumen?type=' . strtolower($kode),
                 now()->toIso8601String(),
                 '0.70'
             );
         }
 
         // Semua dokumen hukum
-        $dokumen = DokumenHukum::select('slug', 'tipeDok', 'updated_at')
+        $dokumen = DokumenHukum::select('slug', 'tipe_dokumen_id', 'updated_at')
+            ->with('tipeDokumen:id,kode')
             ->orderByDesc('updated_at')
             ->get();
 
@@ -51,7 +52,7 @@ class GenerateSitemap extends Command
 
         foreach ($dokumen as $doc) {
             $urls[] = $this->urlEntry(
-                $baseUrl . '/dokumen/' . $doc->tipeDok . '/' . $doc->slug,
+                $baseUrl . '/dokumen/' . $doc->tipe_kode . '/' . $doc->slug,
                 $doc->updated_at->toIso8601String(),
                 '0.70'
             );

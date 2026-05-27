@@ -418,7 +418,7 @@ class DokumenHukumResource extends Resource
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
                     ->hidden(fn($record): bool =>
-                    $record?->tipeDok !== 'Monografi'),
+                    $record?->tipe_kode !== 'Monografi'),
                 TextColumn::make('penerbit')
                     ->label('PENERBIT')
                     ->alignment(Alignment::Center)
@@ -426,7 +426,7 @@ class DokumenHukumResource extends Resource
                     ->wrap()
                     ->disabledClick() // Menonaktifkan clickable pada list table
                     ->hidden(fn($record): bool =>
-                    $record?->tipeDok !== 'Monografi'),
+                    $record?->tipe_kode !== 'Monografi'),
                 TextColumn::make('status')
                     ->label('STATUS')
                     ->alignment(Alignment::Center)

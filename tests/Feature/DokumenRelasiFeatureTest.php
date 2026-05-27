@@ -136,8 +136,8 @@ class DokumenRelasiFeatureTest extends TestCase
         [$docA, $docB] = $this->getTwoDokumen();
 
         // Only test if docA is Peraturan (has a public route)
-        if ($docA->tipeDok !== 'Peraturan') {
-            $docA = DokumenHukum::where('tipeDok', 'Peraturan')->first();
+        if ($docA->tipe_kode !== 'Peraturan') {
+            $docA = DokumenHukum::whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))->first();
             if (!$docA) {
                 $this->markTestSkipped('No Peraturan dokumen available');
             }
@@ -151,7 +151,7 @@ class DokumenRelasiFeatureTest extends TestCase
             'jenis_relasi'       => 'mencabut',
         ]);
 
-        $response = $this->get("/dokumen/{$docA->tipeDok}/{$docA->slug}");
+        $response = $this->get("/dokumen/{$docA->tipe_kode}/{$docA->slug}");
 
         $response->assertStatus(200);
         $response->assertSee('Relasi Dokumen');
@@ -161,7 +161,7 @@ class DokumenRelasiFeatureTest extends TestCase
     /** @test */
     public function detail_page_hides_relasi_section_when_no_relations(): void
     {
-        $dokumen = DokumenHukum::where('tipeDok', 'Peraturan')->first();
+        $dokumen = DokumenHukum::whereHas('tipeDokumen', fn ($q) => $q->where('kode', 'Peraturan'))->first();
 
         if (!$dokumen) {
             $this->markTestSkipped('No Peraturan dokumen available');
@@ -172,7 +172,7 @@ class DokumenRelasiFeatureTest extends TestCase
             ->orWhere('related_dokumen_id', $dokumen->id)
             ->delete();
 
-        $response = $this->get("/dokumen/{$dokumen->tipeDok}/{$dokumen->slug}");
+        $response = $this->get("/dokumen/{$dokumen->tipe_kode}/{$dokumen->slug}");
 
         $response->assertStatus(200);
         $response->assertDontSee('Relasi Dokumen');
