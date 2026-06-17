@@ -2,10 +2,10 @@
 
 namespace App\Observers;
 
+use App\Jobs\SendContentNotification;
 use App\Models\Berita;
 use App\Models\User;
 use App\Services\DashboardService;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,15 +19,6 @@ class BeritaObserver
     private function actor(): ?User
     {
         return Auth::user();
-    }
-
-    /**
-     * Penerima notifikasi.
-     * Default: semua user
-     */
-    private function recipients()
-    {
-        return User::all();
     }
 
     /**
@@ -58,29 +49,30 @@ class BeritaObserver
             return;
         }
 
-        $recipients = $this->recipients();
-
         DB::afterCommit(function () use (
             $berita,
             $actor,
-            $recipients,
             $actionText,
             $type,
             $extraLog
         ) {
-            foreach ($recipients as $recipient) {
-                Notification::make()
-                    ->title("Berita {$actionText} oleh {$actor->name}")
-                    ->body("Judul: {$berita->judul}")
-                    ->{$type}()
-                    ->sendToDatabase($recipient);
-            }
+            SendContentNotification::dispatch(
+                "Berita {$actionText} oleh {$actor->name}",
+                "Judul: {$berita->judul}",
+                $type,
+                array_merge([
+                    'content_type' => 'berita',
+                    'berita_id' => $berita->id,
+                    'actor_id' => $actor->id,
+                    'actor_name' => $actor->name,
+                    'action' => $actionText,
+                ], $extraLog)
+            );
 
-            Log::info('Notifikasi berita terkirim', array_merge([
+            Log::info('Notifikasi berita masuk antrian', array_merge([
                 'berita_id' => $berita->id,
                 'actor_id' => $actor->id,
                 'actor_name' => $actor->name,
-                'recipients' => $recipients->pluck('id')->toArray(),
                 'action' => $actionText,
             ], $extraLog));
         });

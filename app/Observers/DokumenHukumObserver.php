@@ -2,10 +2,10 @@
 
 namespace App\Observers;
 
+use App\Jobs\SendContentNotification;
 use App\Models\DokumenHukum;
 use App\Models\User;
 use App\Services\DashboardService;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,16 +19,6 @@ class DokumenHukumObserver
     private function actor(): ?User
     {
         return Auth::user();
-    }
-
-    /**
-     * Ambil penerima notifikasi.
-     * Default: semua user
-     * (mudah difilter ke role tertentu)
-     */
-    private function recipients()
-    {
-        return User::query()->get();
     }
 
     /**
@@ -59,29 +49,30 @@ class DokumenHukumObserver
             return;
         }
 
-        $recipients = $this->recipients();
-
         DB::afterCommit(function () use (
             $dokumen,
             $actor,
-            $recipients,
             $actionText,
             $type,
             $extraLog
         ) {
-            foreach ($recipients as $recipient) {
-                Notification::make()
-                    ->title("{$dokumen->tipe_kode} {$actionText} oleh {$actor->name}")
-                    ->body("Judul: {$dokumen->judul}")
-                    ->{$type}()
-                    ->sendToDatabase($recipient);
-            }
+            SendContentNotification::dispatch(
+                "{$dokumen->tipe_kode} {$actionText} oleh {$actor->name}",
+                "Judul: {$dokumen->judul}",
+                $type,
+                array_merge([
+                    'content_type' => 'dokumen_hukum',
+                    'dokumen_id' => $dokumen->id,
+                    'actor_id' => $actor->id,
+                    'actor_name' => $actor->name,
+                    'action' => $actionText,
+                ], $extraLog)
+            );
 
-            Log::info('Notifikasi dokumen terkirim', array_merge([
+            Log::info('Notifikasi dokumen masuk antrian', array_merge([
                 'dokumen_id' => $dokumen->id,
                 'actor_id' => $actor->id,
                 'actor_name' => $actor->name,
-                'recipients' => $recipients->pluck('id')->toArray(),
                 'action' => $actionText,
             ], $extraLog));
         });

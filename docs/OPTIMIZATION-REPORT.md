@@ -258,6 +258,8 @@ Log::error('Turnstile API unreachable', ['error' => $e->getMessage()]);
 **Recommendation:**
 In production, fail closed for survey spam protection and either fail closed for admin login or allow login only with stricter rate limits and high-severity alerting.
 
+**Sprint 3 status:** Completed. `TURNSTILE_FAIL_OPEN` now controls degradation behavior and defaults to fail-closed in production. Survey and admin login verification now reject requests when Cloudflare verification is unavailable unless fail-open is explicitly enabled.
+
 ---
 
 ## Medium Priority (Next Sprint)
@@ -286,6 +288,8 @@ private function recipients()
 **Recommendation:**
 Queue notification fan-out and restrict recipients to roles that need the notification. Reuse the role-filtered approach already used by `ProfilPageObserver`.
 
+**Sprint 3 status:** Completed for document, news, and infographic observers. Notification fan-out now runs through `SendContentNotification` queue job and targets `super_admin` / `Admin` users.
+
 ---
 
 ### OPT-008 Sitemap Generation Loads All Rows Into Memory
@@ -311,6 +315,8 @@ $dokumen = DokumenHukum::select('slug', 'tipe_dokumen_id', 'updated_at')
 
 **Recommendation:**
 Use `chunkById()` or `cursor()` and stream/write incrementally when catalog size grows.
+
+**Sprint 3 status:** Completed. `sitemap:generate` now writes incrementally and processes documents, news, and infographics with `chunkById()`.
 
 ---
 
@@ -360,7 +366,7 @@ Use `whereFullText('judul', $validated['judul'])` for title search where compati
 - [x] Add reverse pivot index for subject filters - `database/migrations/2026_06_17_000001_add_reverse_index_to_dokumen_subjek_table.php`
 - [x] Configure explicit MySQL testing settings in `phpunit.xml` - `phpunit.xml:25`
 - [x] Call `DashboardService::clearCache()` after document/news/infographic mutations - `app/Services/DashboardService.php:35`
-- [ ] Make Turnstile fail-open behavior environment-controlled - `app/Http/Middleware/VerifyTurnstile.php:50`
+- [x] Make Turnstile fail-open behavior environment-controlled - `app/Http/Middleware/VerifyTurnstile.php:50`
 - [x] Add named Composer scripts for formatting/testing - `composer.json:43`
 
 ---
@@ -416,10 +422,19 @@ Validation completed:
 
 ### Sprint 3 - Scalability And Operations
 
-- [ ] OPT-006: Make Turnstile degradation policy production-safe
-- [ ] OPT-007: Queue notification fan-out and restrict recipients
-- [ ] OPT-008: Stream or chunk sitemap generation
+- [x] OPT-006: Make Turnstile degradation policy production-safe
+- [x] OPT-007: Queue notification fan-out and restrict recipients
+- [x] OPT-008: Stream or chunk sitemap generation
 - [ ] Decide whether Redis should replace database cache/queue/session in production
+
+Validation completed:
+
+- [x] PHP syntax check passed for Sprint 3 files
+- [x] Pint formatting check passed for Sprint 3 files
+- [x] Turnstile fail-open behavior is configurable through `TURNSTILE_FAIL_OPEN`
+- [x] Observer notification fan-out no longer loads all users synchronously in content save requests
+- [x] Sitemap generation no longer uses `get()` for all documents, news, and infographics
+- [x] `php artisan sitemap:generate` completed successfully and generated 236 URLs
 
 ---
 

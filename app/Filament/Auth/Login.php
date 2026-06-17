@@ -2,23 +2,22 @@
 
 namespace App\Filament\Auth;
 
-use Filament\Schemas\Components\Component;
-use Filament\Forms\Components\TextInput;
-use Filament\Auth\Pages\Login as AuthLogin;
-use Illuminate\Validation\ValidationException;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Throwable;
+use Filament\Auth\Pages\Login as AuthLogin;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Component;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class Login extends AuthLogin
 {
-   /**
+    /**
      * @var view-string
      */
     protected string $view = 'filament.pages.auth.login';
@@ -29,7 +28,7 @@ class Login extends AuthLogin
         'class' => 'fi-login-page',
     ];
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return 'Login Admin';
     }
@@ -51,7 +50,7 @@ class Login extends AuthLogin
     protected function getCredentialsFromFormData(array $data): array
     {
         return [
-            'name'     => $data['login'],
+            'name' => $data['login'],
             'password' => $data['password'],
         ];
     }
@@ -79,12 +78,12 @@ class Login extends AuthLogin
             Log::warning($message);
 
             throw ValidationException::withMessages([
-                'data.login' => "Terlalu banyak percobaan gagal. Silakan coba lagi dalam " . ceil($seconds / 60) . " menit.",
+                'data.login' => 'Terlalu banyak percobaan gagal. Silakan coba lagi dalam '.ceil($seconds / 60).' menit.',
             ]);
         }
 
         try {
-            Log::info("Percobaan login", ['username' => $username, 'ip' => $ip, 'panel' => filament()->getCurrentPanel()?->getId()]);
+            Log::info('Percobaan login', ['username' => $username, 'ip' => $ip, 'panel' => filament()->getCurrentPanel()?->getId()]);
 
             $response = parent::authenticate();
 
@@ -122,6 +121,7 @@ class Login extends AuthLogin
             }
 
             RateLimiter::clear($key); // Reset hitungan percobaan
+
             return $response;
         } catch (ValidationException $e) {
             RateLimiter::hit($key, 300); // 5 menit lockout
@@ -181,7 +181,7 @@ class Login extends AuthLogin
 
             $result = $response->json();
 
-            if (!($result['success'] ?? false)) {
+            if (! ($result['success'] ?? false)) {
                 Log::warning('Turnstile login verification failed', [
                     'ip' => request()->ip(),
                     'errors' => $result['error-codes'] ?? [],
@@ -193,9 +193,16 @@ class Login extends AuthLogin
             }
         } catch (ValidationException $e) {
             throw $e;
-        } catch (\Throwable $e) {
-            // Graceful degradation: jika Cloudflare down, izinkan login
+        } catch (Throwable $e) {
             Log::error('Turnstile API unreachable', ['error' => $e->getMessage()]);
+
+            if (config('turnstile.fail_open')) {
+                return;
+            }
+
+            throw ValidationException::withMessages([
+                'data.login' => 'Verifikasi keamanan sedang tidak tersedia. Silakan coba lagi nanti.',
+            ]);
         }
     }
 }

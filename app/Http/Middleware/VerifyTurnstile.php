@@ -34,7 +34,7 @@ class VerifyTurnstile
 
             $result = $response->json();
 
-            if (!($result['success'] ?? false)) {
+            if (! ($result['success'] ?? false)) {
                 Log::channel('single')->warning('Turnstile verification failed', [
                     'ip' => $request->ip(),
                     'errors' => $result['error-codes'] ?? [],
@@ -47,8 +47,11 @@ class VerifyTurnstile
                 'error' => $e->getMessage(),
             ]);
 
-            // Jika API Cloudflare down, izinkan request (graceful degradation)
-            return $next($request);
+            if (config('turnstile.fail_open')) {
+                return $next($request);
+            }
+
+            return $this->failResponse($request, 'Verifikasi keamanan sedang tidak tersedia. Silakan coba lagi nanti.');
         }
 
         return $next($request);

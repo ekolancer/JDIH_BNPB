@@ -2,192 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost/</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>http://localhost/berita</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>http://localhost/infografis</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>http://localhost/dokumen</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>http://localhost/profil/about</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
     <loc>http://localhost/profil/visi-misi</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
     <loc>http://localhost/profil/SOTK</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
     <loc>http://localhost/profil/faq</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>http://localhost/dokumen?tipeDok=peraturan</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <loc>http://localhost/dokumen?type=peraturan</loc>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>http://localhost/dokumen?tipeDok=monografi</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <loc>http://localhost/dokumen?type=monografi</loc>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>http://localhost/dokumen?tipeDok=artikel</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
+    <loc>http://localhost/dokumen?type=artikel</loc>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>http://localhost/dokumen?tipeDok=putusan</loc>
-    <lastmod>2026-05-16T09:02:54+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Monografi/test</loc>
-    <lastmod>2026-03-25T14:10:27+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juknis-nomor-19-tahun-2026</loc>
-    <lastmod>2026-03-14T05:12:19+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/keputusan-kepala-nomor-327-tahun-2025</loc>
-    <lastmod>2026-03-14T04:44:33+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Monografi/monografi-aja</loc>
-    <lastmod>2026-02-22T08:39:03+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-17-tahun-2025</loc>
-    <lastmod>2026-02-11T17:11:50+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/pedoman-nomor-2-tahun-2024</loc>
-    <lastmod>2026-01-08T20:59:21+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/pedoman-nomor-1-tahun-2024</loc>
-    <lastmod>2026-01-08T20:57:39+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-16-tahun-2025</loc>
-    <lastmod>2026-01-08T20:01:43+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-5-tahun-2025</loc>
-    <lastmod>2025-12-31T11:33:30+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-4-tahun-2025</loc>
-    <lastmod>2025-12-31T11:29:44+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-2-tahun-2022</loc>
-    <lastmod>2025-12-31T11:19:15+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-3-tahun-2023</loc>
-    <lastmod>2025-12-31T11:16:15+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-11-tahun-2025</loc>
-    <lastmod>2025-12-31T09:16:51+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-10-tahun-2025</loc>
-    <lastmod>2025-12-31T09:06:25+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-9-tahun-2025</loc>
-    <lastmod>2025-12-31T08:58:17+07:00</lastmod>
+    <loc>http://localhost/dokumen?type=putusan</loc>
+    <lastmod>2026-06-17T13:21:43+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>http://localhost/dokumen/Peraturan/perban-nomor-1-tahun-2025</loc>
     <lastmod>2025-11-20T17:04:55+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-3-tahun-2025</loc>
-    <lastmod>2025-11-07T10:16:30+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-2-tahun-2025</loc>
-    <lastmod>2025-11-07T10:11:02+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-1-tahun-2025</loc>
-    <lastmod>2025-11-07T10:05:43+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-8-tahun-2025</loc>
-    <lastmod>2025-11-06T10:10:19+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-7-tahun-2025</loc>
-    <lastmod>2025-11-03T11:22:47+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-6-tahun-2025</loc>
-    <lastmod>2025-11-03T11:20:30+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-5-tahun-2025</loc>
-    <lastmod>2025-11-03T11:16:26+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-4-tahun-2025</loc>
-    <lastmod>2025-11-03T11:11:58+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-3-tahun-2025</loc>
-    <lastmod>2025-11-03T11:06:24+07:00</lastmod>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>http://localhost/dokumen/Peraturan/perban-nomor-2-tahun-2025</loc>
-    <lastmod>2025-11-03T10:56:46+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
@@ -1066,6 +941,16 @@
     <priority>0.70</priority>
   </url>
   <url>
+    <loc>http://localhost/dokumen/Peraturan/pedoman-nomor-2-tahun-2024</loc>
+    <lastmod>2026-01-08T20:59:21+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/pedoman-nomor-1-tahun-2024</loc>
+    <lastmod>2026-01-08T20:57:39+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>http://localhost/dokumen/Peraturan/juklak-nomor-8-tahun-2024</loc>
     <lastmod>2025-11-01T21:47:52+07:00</lastmod>
     <priority>0.70</priority>
@@ -1136,6 +1021,11 @@
     <priority>0.70</priority>
   </url>
   <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-3-tahun-2023</loc>
+    <lastmod>2025-12-31T11:16:15+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>http://localhost/dokumen/Peraturan/juknis-nomor-2-tahun-2023</loc>
     <lastmod>2025-11-01T21:47:52+07:00</lastmod>
     <priority>0.70</priority>
@@ -1146,23 +1036,108 @@
     <priority>0.70</priority>
   </url>
   <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-2-tahun-2022</loc>
+    <lastmod>2025-12-31T11:19:15+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>http://localhost/dokumen/Peraturan/juklak-nomor-1-tahun-2019</loc>
     <lastmod>2025-11-01T21:47:52+07:00</lastmod>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>http://localhost/berita/bisakah-jabodetabek-bebas-banjir</loc>
-    <lastmod>2026-03-17T15:32:48+07:00</lastmod>
-    <priority>0.60</priority>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-2-tahun-2025</loc>
+    <lastmod>2025-11-03T10:56:46+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-3-tahun-2025</loc>
+    <lastmod>2025-11-03T11:06:24+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-4-tahun-2025</loc>
+    <lastmod>2025-11-03T11:11:58+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-5-tahun-2025</loc>
+    <lastmod>2025-11-03T11:16:26+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-6-tahun-2025</loc>
+    <lastmod>2025-11-03T11:20:30+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-7-tahun-2025</loc>
+    <lastmod>2025-11-03T11:22:47+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-8-tahun-2025</loc>
+    <lastmod>2025-11-06T10:10:19+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-1-tahun-2025</loc>
+    <lastmod>2025-11-07T10:05:43+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-2-tahun-2025</loc>
+    <lastmod>2025-11-07T10:11:02+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-3-tahun-2025</loc>
+    <lastmod>2025-11-07T10:16:30+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-9-tahun-2025</loc>
+    <lastmod>2025-12-31T08:58:17+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-10-tahun-2025</loc>
+    <lastmod>2025-12-31T09:06:25+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/perban-nomor-11-tahun-2025</loc>
+    <lastmod>2025-12-31T09:16:51+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-16-tahun-2025</loc>
+    <lastmod>2026-01-08T20:01:43+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-4-tahun-2025</loc>
+    <lastmod>2025-12-31T11:29:44+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-5-tahun-2025</loc>
+    <lastmod>2026-06-17T11:37:28+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/juklak-nomor-17-tahun-2025</loc>
+    <lastmod>2026-05-26T13:05:47+07:00</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>http://localhost/dokumen/Peraturan/keputusan-kepala-nomor-327-tahun-2025</loc>
+    <lastmod>2026-05-23T23:02:32+07:00</lastmod>
+    <priority>0.70</priority>
   </url>
   <url>
     <loc>http://localhost/berita/cuaca-ekstrem-di-kabupaten-sukabumi-picu-banjir-longsor-dan-pergerakan-tanah</loc>
     <lastmod>2026-03-17T04:02:57+07:00</lastmod>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>http://localhost/berita/tiga-kecamatan-di-kabupaten-karawang-terendam-banjir-hingga-dua-meter</loc>
-    <lastmod>2025-03-06T04:21:34+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
@@ -1171,8 +1146,13 @@
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>http://localhost/infografis/hukumnya-presiden-mendukung-paslon-pilkada</loc>
-    <lastmod>2026-03-26T04:10:03+07:00</lastmod>
+    <loc>http://localhost/berita/tiga-kecamatan-di-kabupaten-karawang-terendam-banjir-hingga-dua-meter</loc>
+    <lastmod>2025-03-06T04:21:34+07:00</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>http://localhost/berita/bisakah-jabodetabek-bebas-banjir</loc>
+    <lastmod>2026-03-17T15:32:48+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
@@ -1181,8 +1161,13 @@
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>http://localhost/infografis/etika-konsumen-dalam-me-review-produk</loc>
-    <lastmod>2025-03-06T03:59:30+07:00</lastmod>
+    <loc>http://localhost/infografis/hukumnya-presiden-mendukung-paslon-pilkada</loc>
+    <lastmod>2026-03-26T04:10:03+07:00</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>http://localhost/infografis/5-jenis-alat-bukti-dalam-perkara-perdata</loc>
+    <lastmod>2025-03-06T03:56:38+07:00</lastmod>
     <priority>0.60</priority>
   </url>
   <url>
@@ -1191,8 +1176,8 @@
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>http://localhost/infografis/5-jenis-alat-bukti-dalam-perkara-perdata</loc>
-    <lastmod>2025-03-06T03:56:38+07:00</lastmod>
+    <loc>http://localhost/infografis/etika-konsumen-dalam-me-review-produk</loc>
+    <lastmod>2025-03-06T03:59:30+07:00</lastmod>
     <priority>0.60</priority>
   </url>
 </urlset>
