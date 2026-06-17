@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\DokumenHukum;
 use App\Models\User;
+use App\Services\DashboardService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,14 @@ class DokumenHukumObserver
     }
 
     /**
+     * Bersihkan cache homepage setelah data publik berubah.
+     */
+    private function clearHomepageCache(): void
+    {
+        DB::afterCommit(fn () => app(DashboardService::class)->clearCache());
+    }
+
+    /**
      * Helper kirim notifikasi + logging
      */
     private function notify(
@@ -41,11 +50,12 @@ class DokumenHukumObserver
     ): void {
         $actor = $this->actor();
 
-        if (!$actor) {
+        if (! $actor) {
             Log::info('Dokumen event tanpa user (CLI/Seeder)', [
                 'dokumen_id' => $dokumen->id,
-                'action'     => $actionText,
+                'action' => $actionText,
             ]);
+
             return;
         }
 
@@ -68,11 +78,11 @@ class DokumenHukumObserver
             }
 
             Log::info('Notifikasi dokumen terkirim', array_merge([
-                'dokumen_id'   => $dokumen->id,
-                'actor_id'     => $actor->id,
-                'actor_name'   => $actor->name,
-                'recipients'   => $recipients->pluck('id')->toArray(),
-                'action'       => $actionText,
+                'dokumen_id' => $dokumen->id,
+                'actor_id' => $actor->id,
+                'actor_name' => $actor->name,
+                'recipients' => $recipients->pluck('id')->toArray(),
+                'action' => $actionText,
             ], $extraLog));
         });
     }
@@ -82,6 +92,8 @@ class DokumenHukumObserver
      */
     public function created(DokumenHukum $dokumen): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $dokumen,
             'berhasil ditambahkan'
@@ -97,6 +109,8 @@ class DokumenHukumObserver
             return;
         }
 
+        $this->clearHomepageCache();
+
         $this->notify(
             $dokumen,
             'berhasil diperbarui',
@@ -110,6 +124,8 @@ class DokumenHukumObserver
      */
     public function deleted(DokumenHukum $dokumen): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $dokumen,
             'berhasil dihapus',

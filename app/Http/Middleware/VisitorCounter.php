@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use App\Models\Visitor;
 use App\Jobs\ResolveVisitorGeo;
+use App\Models\Visitor;
+use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Illuminate\Support\Facades\Log;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use Symfony\Component\HttpFoundation\Response;
 
 class VisitorCounter
 {
@@ -48,29 +48,29 @@ class VisitorCounter
         }
 
         // ⚙️ Cegah duplikasi log harian
-        $exists = Visitor::whereDate('visited_at', now()->toDateString())
-            ->where('ip_address', $ip)
+        $exists = Visitor::where('ip_address', $ip)
+            ->whereBetween('visited_at', [now()->startOfDay(), now()->endOfDay()])
             ->exists();
 
-        if (!$exists) {
+        if (! $exists) {
             try {
                 $visitor = Visitor::create([
                     'ip_address' => $ip,
                     'user_agent' => substr($userAgent, 0, 255),
-                    'path'       => $path,
-                    'referrer'   => $referrer,
-                    'country'    => $country,
-                    'city'       => $city,
+                    'path' => $path,
+                    'referrer' => $referrer,
+                    'country' => $country,
+                    'city' => $city,
                     'suspicious' => $suspicious,
                     'visited_at' => now(),
                 ]);
 
                 // Dispatch geo-lookup ke queue (non-blocking) untuk IP non-lokal
-                if (!$isLocal) {
+                if (! $isLocal) {
                     ResolveVisitorGeo::dispatch($visitor->id, $ip);
                 }
 
-                Log::channel('visitor')->info("✅ Visitor recorded", [
+                Log::channel('visitor')->info('✅ Visitor recorded', [
                     'ip' => $ip,
                     'path' => $path,
                     'country' => $country ?? 'pending-geo',

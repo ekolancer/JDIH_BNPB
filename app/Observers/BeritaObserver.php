@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Berita;
 use App\Models\User;
+use App\Services\DashboardService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,14 @@ class BeritaObserver
     }
 
     /**
+     * Bersihkan cache homepage setelah data publik berubah.
+     */
+    private function clearHomepageCache(): void
+    {
+        DB::afterCommit(fn () => app(DashboardService::class)->clearCache());
+    }
+
+    /**
      * Helper kirim notifikasi + logging
      */
     private function notify(
@@ -40,11 +49,12 @@ class BeritaObserver
     ): void {
         $actor = $this->actor();
 
-        if (!$actor) {
+        if (! $actor) {
             Log::info('Berita event tanpa user (CLI/Seeder)', [
                 'berita_id' => $berita->id,
-                'action'    => $actionText,
+                'action' => $actionText,
             ]);
+
             return;
         }
 
@@ -67,11 +77,11 @@ class BeritaObserver
             }
 
             Log::info('Notifikasi berita terkirim', array_merge([
-                'berita_id'   => $berita->id,
-                'actor_id'    => $actor->id,
-                'actor_name'  => $actor->name,
-                'recipients'  => $recipients->pluck('id')->toArray(),
-                'action'      => $actionText,
+                'berita_id' => $berita->id,
+                'actor_id' => $actor->id,
+                'actor_name' => $actor->name,
+                'recipients' => $recipients->pluck('id')->toArray(),
+                'action' => $actionText,
             ], $extraLog));
         });
     }
@@ -81,6 +91,8 @@ class BeritaObserver
      */
     public function created(Berita $berita): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $berita,
             'berhasil ditambahkan'
@@ -96,6 +108,8 @@ class BeritaObserver
             return;
         }
 
+        $this->clearHomepageCache();
+
         $this->notify(
             $berita,
             'berhasil diperbarui',
@@ -109,6 +123,8 @@ class BeritaObserver
      */
     public function deleted(Berita $berita): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $berita,
             'berhasil dihapus',

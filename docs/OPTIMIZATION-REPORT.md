@@ -151,6 +151,8 @@ $exists = Visitor::where('ip_address', $ip)
 
 Apply the same idea to visitor stats by replacing `whereDate`, `whereMonth`, and `whereYear` with explicit date ranges.
 
+**Sprint 2 status:** Completed. `VisitorCounter` and `Visitor::getVisitorStats()` now use indexed date ranges instead of `whereDate`, `whereMonth`, and `whereYear`.
+
 ---
 
 ### OPT-004 Missing Reverse Index For Subject Filtering
@@ -187,6 +189,8 @@ $table->index(['subjek_id', 'dokumen_hukum_id'], 'idx_dokumen_subjek_subjek_doku
 
 Run `EXPLAIN` before and after on a representative subject filter and on the dynamic filter count query.
 
+**Sprint 2 status:** Completed via new migration `database/migrations/2026_06_17_000001_add_reverse_index_to_dokumen_subjek_table.php`. Existing migration history was not modified.
+
 ---
 
 ### OPT-005 Homepage Cache Is Not Invalidated By Content Changes
@@ -222,6 +226,8 @@ DB::afterCommit(fn() => app(DashboardService::class)->clearCache());
 ```
 
 Also consider invalidating `berita_terpopuler` when `view_count` changes or when news is created/deleted.
+
+**Sprint 2 status:** Completed for `homepage_data`. `DokumenHukumObserver`, `BeritaObserver`, and `InfografisObserver` now clear homepage cache after committed create/update/delete events.
 
 ---
 
@@ -339,7 +345,6 @@ Use `whereFullText('judul', $validated['judul'])` for title search where compati
 ## Low Priority / Technical Debt (Backlog)
 
 - Replace PHPUnit doc-comment metadata with attributes before PHPUnit 12 removes support. The test run emitted many deprecation warnings.
-- Add CI configuration. No `.github`, GitLab CI, Jenkins, CircleCI, Dockerfile, or Makefile was found in this scan. **Deferred by project decision; CI will be revisited after the team is ready to adopt it.**
 - Add a Composer script for Pint, for example `composer lint` or `composer format`, so formatting is discoverable. **Sprint 1 update: `composer lint` and `composer format` have been added.**
 - Avoid shipping `.env.example` with `APP_DEBUG=true` and `APP_ENV=local` as the first visible defaults unless deployment docs clearly override them.
 - Consider caching sidebar menu pages in `ProfilPageController::sidebarMenus()` if profile traffic becomes high.
@@ -351,10 +356,10 @@ Use `whereFullText('judul', $validated['judul'])` for title search where compati
 
 - [x] Env-ize `config/api.php` credentials using existing `DB_*` variables - `config/api.php:27`
 - [ ] Rotate the previously exposed database password outside the codebase
-- [ ] Change visitor duplicate check from `whereDate` to `whereBetween` - `app/Http/Middleware/VisitorCounter.php:51`
-- [ ] Add reverse pivot index for subject filters - `database/migrations/2025_11_20_040023_dokumen_subjek_table.php:24`
+- [x] Change visitor duplicate check from `whereDate` to `whereBetween` - `app/Http/Middleware/VisitorCounter.php:51`
+- [x] Add reverse pivot index for subject filters - `database/migrations/2026_06_17_000001_add_reverse_index_to_dokumen_subjek_table.php`
 - [x] Configure explicit MySQL testing settings in `phpunit.xml` - `phpunit.xml:25`
-- [ ] Call `DashboardService::clearCache()` after document/news/infographic mutations - `app/Services/DashboardService.php:35`
+- [x] Call `DashboardService::clearCache()` after document/news/infographic mutations - `app/Services/DashboardService.php:35`
 - [ ] Make Turnstile fail-open behavior environment-controlled - `app/Http/Middleware/VerifyTurnstile.php:50`
 - [x] Add named Composer scripts for formatting/testing - `composer.json:43`
 
@@ -378,7 +383,6 @@ Verification note: `composer audit` could not run because `composer` is not reco
 
 | Tool | Purpose | Priority |
 |---|---|---|
-| CI pipeline | Run tests, npm audit, Composer audit, Pint on every change | Deferred |
 | Laravel Pint script | Standardize PHP formatting | High |
 | MySQL slow query log / `EXPLAIN` checklist | Validate query/index improvements with real plans | High |
 | Laravel Telescope or Clockwork in staging | Observe request query counts and timing | Medium |
@@ -394,14 +398,21 @@ Verification note: `composer audit` could not run because `composer` is not reco
 - [x] OPT-001: Remove hardcoded database credential from source
 - [ ] OPT-001 follow-up: Rotate the previously exposed database password outside the codebase
 - [x] OPT-002: Add explicit MySQL testing configuration for local/manual validation
-- [ ] Deferred: Add CI with test, npm audit, Composer audit, build, and Pint jobs when the team is ready
 
 ### Sprint 2 - Query And Cache Performance
 
-- [ ] OPT-003: Replace visitor date functions with indexed range queries
-- [ ] OPT-004: Add reverse index for `dokumen_subjek`
-- [ ] OPT-005: Wire homepage cache invalidation into content observers
+- [x] OPT-003: Replace visitor date functions with indexed range queries
+- [x] OPT-004: Add reverse index for `dokumen_subjek`
+- [x] OPT-005: Wire homepage cache invalidation into content observers
 - [ ] Measure `/dokumen` and `/metadata/api` with `EXPLAIN` before and after
+
+Validation completed:
+
+- [x] PHP syntax check passed for Sprint 2 files
+- [x] Pint formatting check passed for Sprint 2 files
+- [x] Visitor date query scan confirmed no remaining `whereDate`, `whereMonth`, or `whereYear` usage on `visited_at`
+- [x] New migration preview generated the expected `dokumen_subjek` reverse index SQL
+- [ ] Runtime visitor test requires local MySQL test credentials that match `phpunit.xml`
 
 ### Sprint 3 - Scalability And Operations
 

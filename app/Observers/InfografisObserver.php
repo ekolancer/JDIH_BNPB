@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Infografis;
 use App\Models\User;
+use App\Services\DashboardService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,14 @@ class InfografisObserver
     }
 
     /**
+     * Bersihkan cache homepage setelah data publik berubah.
+     */
+    private function clearHomepageCache(): void
+    {
+        DB::afterCommit(fn () => app(DashboardService::class)->clearCache());
+    }
+
+    /**
      * Helper kirim notifikasi + logging
      */
     private function notify(
@@ -40,11 +49,12 @@ class InfografisObserver
     ): void {
         $actor = $this->actor();
 
-        if (!$actor) {
+        if (! $actor) {
             Log::info('Infografis event tanpa user (CLI/Seeder)', [
                 'infografis_id' => $infografis->id,
-                'action'        => $actionText,
+                'action' => $actionText,
             ]);
+
             return;
         }
 
@@ -68,10 +78,10 @@ class InfografisObserver
 
             Log::info('Notifikasi infografis terkirim', array_merge([
                 'infografis_id' => $infografis->id,
-                'actor_id'      => $actor->id,
-                'actor_name'    => $actor->name,
-                'recipients'    => $recipients->pluck('id')->toArray(),
-                'action'        => $actionText,
+                'actor_id' => $actor->id,
+                'actor_name' => $actor->name,
+                'recipients' => $recipients->pluck('id')->toArray(),
+                'action' => $actionText,
             ], $extraLog));
         });
     }
@@ -81,6 +91,8 @@ class InfografisObserver
      */
     public function created(Infografis $infografis): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $infografis,
             'berhasil ditambahkan'
@@ -96,6 +108,8 @@ class InfografisObserver
             return;
         }
 
+        $this->clearHomepageCache();
+
         $this->notify(
             $infografis,
             'berhasil diperbarui',
@@ -109,6 +123,8 @@ class InfografisObserver
      */
     public function deleted(Infografis $infografis): void
     {
+        $this->clearHomepageCache();
+
         $this->notify(
             $infografis,
             'berhasil dihapus',
