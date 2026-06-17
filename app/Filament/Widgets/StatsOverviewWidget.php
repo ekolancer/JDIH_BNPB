@@ -3,8 +3,10 @@
 namespace App\Filament\Widgets;
 
 use App\Models\DokumenHukum;
+use App\Models\RefJenisDokumen;
 use App\Models\RefSubjek;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Storage;
 
 class StatsOverviewWidget extends Widget
 {
@@ -12,14 +14,14 @@ class StatsOverviewWidget extends Widget
 
     protected static ?int $sort = 1;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     public function getStats(): array
     {
-        $totalDokumen   = DokumenHukum::count();
-        $totalSubjek    = RefSubjek::count();
+        $totalDokumen = DokumenHukum::count();
+        $totalSubjek = RefSubjek::count();
         $dokumenLengkap = $this->countDokumenWithFile();
-        $totalDownload  = (int) DokumenHukum::sum('download_count');
+        $totalJenis = RefJenisDokumen::count();
 
         // Persentase kelengkapan lampiran
         $pctLengkap = $totalDokumen > 0
@@ -28,44 +30,44 @@ class StatsOverviewWidget extends Widget
 
         return [
             [
-                'label'       => 'Total Dokumen',
-                'value'       => number_format($totalDokumen),
-                'raw'         => $totalDokumen,
-                'icon'        => 'document-text',
-                'color'       => 'blue',
-                'description' => 'Seluruh dokumen hukum',
-                'trend'       => null,
-                'progress'    => null,
+                'label' => 'Dokumen Hukum',
+                'value' => number_format($totalDokumen),
+                'raw' => $totalDokumen,
+                'icon' => 'document-text',
+                'color' => 'blue',
+                'description' => 'Total dokumen hukum terdaftar',
+                'trend' => null,
+                'progress' => null,
             ],
             [
-                'label'       => 'Subjek Hukum',
-                'value'       => number_format($totalSubjek),
-                'raw'         => $totalSubjek,
-                'icon'        => 'tag',
-                'color'       => 'amber',
+                'label' => 'Jenis Dokumen',
+                'value' => number_format($totalJenis),
+                'raw' => $totalJenis,
+                'icon' => 'tag',
+                'color' => 'violet',
+                'description' => 'Total jenis dokumen terdaftar',
+                'trend' => null,
+                'progress' => null,
+            ],
+            [
+                'label' => 'Subjek Hukum',
+                'value' => number_format($totalSubjek),
+                'raw' => $totalSubjek,
+                'icon' => 'tag',
+                'color' => 'amber',
                 'description' => 'Total subjek terdaftar',
-                'trend'       => null,
-                'progress'    => null,
+                'trend' => null,
+                'progress' => null,
             ],
             [
-                'label'       => 'Lampiran Lengkap',
-                'value'       => number_format($dokumenLengkap),
-                'raw'         => $dokumenLengkap,
-                'icon'        => 'document-check',
-                'color'       => 'emerald',
-                'description' => "Total dokumen yang memiliki lampiran",
-                'trend'       => null,
-                'progress'    => $pctLengkap,
-            ],
-            [
-                'label'       => 'Total Download',
-                'value'       => $this->formatNumber($totalDownload),
-                'raw'         => $totalDownload,
-                'icon'        => 'arrow-down-tray',
-                'color'       => 'violet',
-                'description' => 'Unduhan keseluruhan',
-                'trend'       => null,
-                'progress'    => null,
+                'label' => 'Lampiran Dokumen',
+                'value' => number_format($dokumenLengkap),
+                'raw' => $dokumenLengkap,
+                'icon' => 'document-check',
+                'color' => 'emerald',
+                'description' => 'Total dokumen yang memiliki lampiran',
+                'trend' => null,
+                'progress' => $pctLengkap,
             ],
         ];
     }
@@ -83,7 +85,7 @@ class StatsOverviewWidget extends Widget
                 ->pluck('lampiran');
 
             $count = 0;
-            $disk = \Illuminate\Support\Facades\Storage::disk('public');
+            $disk = Storage::disk('public');
 
             foreach ($docs as $path) {
                 if ($disk->exists($path)) {
@@ -93,16 +95,5 @@ class StatsOverviewWidget extends Widget
 
             return $count;
         });
-    }
-
-    private function formatNumber(int $number): string
-    {
-        if ($number >= 1000000) {
-            return number_format($number / 1000000, 1) . 'M';
-        }
-        if ($number >= 1000) {
-            return number_format($number / 1000, 1) . 'K';
-        }
-        return number_format($number);
     }
 }

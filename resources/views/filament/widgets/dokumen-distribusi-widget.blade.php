@@ -19,43 +19,62 @@
                 </div>
             </div>
 
-            {{-- Chart Bars --}}
+            {{-- Pie Chart --}}
             @php
                 $jenisData = $this->getDistribusiJenis();
-                $maxJenis = collect($jenisData)->max('value') ?: 1;
-                $jenisColors = ['bg-blue-500', 'bg-cyan-500', 'bg-indigo-500', 'bg-sky-500', 'bg-teal-500', 'bg-violet-500'];
+                $totalJenis = collect($jenisData)->sum('value');
+                $jenisColors = ['#3b82f6', '#06b6d4', '#6366f1', '#0ea5e9', '#14b8a6', '#8b5cf6'];
+                $jenisStart = 0;
+                $jenisSegments = [];
+
+                foreach ($jenisData as $index => $item) {
+                    $percentage = $totalJenis > 0 ? ($item['value'] / $totalJenis) * 100 : 0;
+                    $jenisEnd = $jenisStart + $percentage;
+                    $jenisSegments[] = "{$jenisColors[$index % count($jenisColors)]} {$jenisStart}% {$jenisEnd}%";
+                    $jenisStart = $jenisEnd;
+                }
             @endphp
 
-            <div class="space-y-3">
-                @forelse($jenisData as $index => $item)
-                    <div class="group">
-                        <div class="mb-1.5 flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[70%]">
-                                {{ $item['label'] }}
-                            </span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">
-                                {{ number_format($item['value']) }}
-                            </span>
-                        </div>
-                        <div class="h-2.5 w-full overflow-hidden rounded-full bg-gray-200/50 dark:bg-gray-700/50">
-                            <div class="h-full rounded-full transition-all duration-700 ease-out {{ $jenisColors[$index % count($jenisColors)] }}"
-                                 style="width: {{ ($item['value'] / $maxJenis) * 100 }}%">
-                            </div>
+            @if($totalJenis > 0)
+                <div class="flex flex-col gap-6 md:flex-row md:items-center">
+                    <div class="relative mx-auto h-48 w-48 shrink-0 rounded-full shadow-lg"
+                         style="background: conic-gradient({{ implode(', ', $jenisSegments) }});">
+                        <div class="absolute inset-10 flex flex-col items-center justify-center rounded-full bg-white/90 text-center shadow-inner dark:bg-gray-900/90">
+                            <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Total</span>
+                            <span class="text-xl font-bold text-gray-900 dark:text-white">{{ number_format($totalJenis) }}</span>
                         </div>
                     </div>
-                @empty
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada data distribusi.</p>
-                @endforelse
-            </div>
+
+                    <div class="min-w-0 flex-1 space-y-3">
+                        @foreach($jenisData as $index => $item)
+                            @php
+                                $percentage = $totalJenis > 0 ? round(($item['value'] / $totalJenis) * 100, 1) : 0;
+                            @endphp
+                            <div class="flex items-center gap-3">
+                                <span class="h-3 w-3 shrink-0 rounded-full"
+                                      style="background: {{ $jenisColors[$index % count($jenisColors)] }}"></span>
+                                <span class="min-w-0 flex-1 truncate text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    {{ $item['label'] }}
+                                </span>
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ number_format($item['value']) }}
+                                </span>
+                                <span class="w-12 text-right text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {{ $percentage }}%
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada data distribusi.</p>
+            @endif
 
             {{-- Total footer --}}
             <div class="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/20 px-4 py-2.5 dark:bg-black/20">
                 <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Dokumen</span>
                 <span class="text-sm font-bold text-gray-900 dark:text-white">{{ number_format($this->getTotalDokumen()) }}</span>
             </div>
-
-            {{-- Decorative --}}
-            <div class="pointer-events-none absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-blue-500 opacity-10 blur-3xl"></div>
         </div>
 
         {{-- Distribusi per Bidang Hukum --}}
@@ -77,43 +96,62 @@
                 </div>
             </div>
 
-            {{-- Chart Bars --}}
+            {{-- Pie Chart --}}
             @php
                 $bidangData = $this->getDistribusiBidang();
-                $maxBidang = collect($bidangData)->max('value') ?: 1;
-                $bidangColors = ['bg-emerald-500', 'bg-green-500', 'bg-lime-500', 'bg-teal-500', 'bg-cyan-500', 'bg-emerald-400'];
+                $totalBidang = collect($bidangData)->sum('value');
+                $bidangColors = ['#10b981', '#22c55e', '#84cc16', '#14b8a6', '#06b6d4', '#34d399', '#0f766e', '#65a30d'];
+                $bidangStart = 0;
+                $bidangSegments = [];
+
+                foreach ($bidangData as $index => $item) {
+                    $percentage = $totalBidang > 0 ? ($item['value'] / $totalBidang) * 100 : 0;
+                    $bidangEnd = $bidangStart + $percentage;
+                    $bidangSegments[] = "{$bidangColors[$index % count($bidangColors)]} {$bidangStart}% {$bidangEnd}%";
+                    $bidangStart = $bidangEnd;
+                }
             @endphp
 
-            <div class="space-y-3 max-h-[280px] overflow-y-auto pr-1" style="scrollbar-width: thin;">
-                @forelse($bidangData as $index => $item)
-                    <div class="group">
-                        <div class="mb-1.5 flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[70%]">
-                                {{ $item['label'] }}
-                            </span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">
-                                {{ number_format($item['value']) }}
-                            </span>
-                        </div>
-                        <div class="h-2.5 w-full overflow-hidden rounded-full bg-gray-200/50 dark:bg-gray-700/50">
-                            <div class="h-full rounded-full transition-all duration-700 ease-out {{ $bidangColors[$index % count($bidangColors)] }}"
-                                 style="width: {{ ($item['value'] / $maxBidang) * 100 }}%">
-                            </div>
+            @if($totalBidang > 0)
+                <div class="flex flex-col gap-6 md:flex-row md:items-center">
+                    <div class="relative mx-auto h-48 w-48 shrink-0 rounded-full shadow-lg"
+                         style="background: conic-gradient({{ implode(', ', $bidangSegments) }});">
+                        <div class="absolute inset-10 flex flex-col items-center justify-center rounded-full bg-white/90 text-center shadow-inner dark:bg-gray-900/90">
+                            <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Total</span>
+                            <span class="text-xl font-bold text-gray-900 dark:text-white">{{ number_format($totalBidang) }}</span>
                         </div>
                     </div>
-                @empty
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada data distribusi.</p>
-                @endforelse
-            </div>
+
+                    <div class="max-h-60 min-w-0 flex-1 space-y-3 overflow-y-auto pr-1" style="scrollbar-width: thin;">
+                        @foreach($bidangData as $index => $item)
+                            @php
+                                $percentage = $totalBidang > 0 ? round(($item['value'] / $totalBidang) * 100, 1) : 0;
+                            @endphp
+                            <div class="flex items-center gap-3">
+                                <span class="h-3 w-3 shrink-0 rounded-full"
+                                      style="background: {{ $bidangColors[$index % count($bidangColors)] }}"></span>
+                                <span class="min-w-0 flex-1 truncate text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    {{ $item['label'] }}
+                                </span>
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ number_format($item['value']) }}
+                                </span>
+                                <span class="w-12 text-right text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {{ $percentage }}%
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada data distribusi.</p>
+            @endif
 
             {{-- Total footer --}}
             <div class="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/20 px-4 py-2.5 dark:bg-black/20">
                 <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Bidang Hukum</span>
                 <span class="text-sm font-bold text-gray-900 dark:text-white">{{ count($bidangData) }} bidang</span>
             </div>
-
-            {{-- Decorative --}}
-            <div class="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-emerald-500 opacity-10 blur-3xl"></div>
         </div>
     </div>
 </x-filament-widgets::widget>

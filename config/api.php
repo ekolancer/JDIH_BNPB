@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configuration file for API database connection.
  *
@@ -24,8 +25,8 @@
  * of sensitive credentials.
  */
 return [
-    'servername' => 'localhost',
-    'username' => 'root',
-    'password' => 'jdih_T@n99uH@@#!',
-    'dbname' => 'jdih_bnpb_fix',
+    'servername' => env('DB_HOST', '127.0.0.1'),
+    'username' => env('DB_USERNAME'),
+    'password' => env('DB_PASSWORD'),
+    'dbname' => env('DB_DATABASE'),
 ];
