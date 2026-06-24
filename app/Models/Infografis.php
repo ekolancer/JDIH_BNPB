@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Observers\InfografisObserver;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy([InfografisObserver::class])]
 class Infografis extends Model
 {
-    use HasFactory, Notifiable, LogsActivity;
+    use HasFactory, LogsActivity, Notifiable;
 
     protected $table = 'infografis';
 
@@ -75,17 +74,22 @@ class Infografis extends Model
     // ✅ View count format
     public function getViewCountFormattedAttribute()
     {
-        return number_format($this->view_count) . ' Dilihat';
+        return number_format($this->view_count).' Dilihat';
     }
 
     // ✅ Image URL + validasi file
     public function getImageUrlAttribute()
     {
         if ($this->gambar && Storage::disk('public')->exists($this->gambar)) {
-            return asset('storage/' . $this->gambar);
+            return asset('storage/'.$this->gambar);
         }
 
-        return null;
+        return asset('img/noimage.png');
+    }
+
+    public function getGambarUrlAttribute()
+    {
+        return $this->image_url;
     }
 
     // ✅ Alt image
@@ -113,11 +117,12 @@ class Infografis extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $judul = $this->judul ?? '-';
+
                 return match ($eventName) {
                     'created' => "Data Infografis \"{$judul}\" berhasil ditambahkan",
                     'updated' => "Data Infografis \"{$judul}\" berhasil diperbarui",
                     'deleted' => "Data Infografis \"{$judul}\" berhasil dihapus",
-                    default   => "Data Infografis \"{$judul}\" telah di-{$eventName}",
+                    default => "Data Infografis \"{$judul}\" telah di-{$eventName}",
                 };
             });
     }

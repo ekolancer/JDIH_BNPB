@@ -532,8 +532,8 @@ Pertimbangkan menambahkan field `page_type` (enum: `static`, `faq`, dll.) di tab
 - [x] **Fix 5 dead links** (`href="#"`) di footer — 10 menit
 - [x] **Ganti 4 hardcoded URLs** di navbar dropdown ke `route()` — 10 menit
 - [x] **Pindahkan route closure** `/dokumen/{tipeDok?}` ke controller method — 10 menit
-- [ ] **Cache rating API responses** — 20 menit
-- [ ] **Ganti `file_exists()` di view loop** dengan accessor — 15 menit
+- [x] **Cache rating API responses** — 20 menit
+- [x] **Ganti `file_exists()` di view loop** dengan accessor — 15 menit
 
 ---
 
@@ -586,11 +586,21 @@ Pertimbangkan menambahkan field `page_type` (enum: `static`, `faq`, dll.) di tab
 - [ ] Full suite belum hijau: `php artisan test` berjalan dengan 55 passed / 9 failed; kegagalan berada pada feature response 500/302 yang tidak terkait langsung dengan perubahan Sprint 1 dan perlu investigasi terpisah.
 
 ### Sprint 2 — Route & API Optimization
-- [ ] OPT-002: Pindahkan API endpoints ke `routes/api.php`
-- [ ] OPT-007: Gabung & cache rating API
-- [ ] OPT-008: Fix `file_exists()` di view loop
-- [ ] OPT-011: Deduplicate berita terpopuler query
+- [x] OPT-002: Pindahkan API endpoints ke `routes/api.php`
+- [x] OPT-007: Gabung & cache rating API
+- [x] OPT-008: Fix `file_exists()` di view loop
+- [x] OPT-011: Deduplicate berita terpopuler query
 
+#### Validasi Sprint 2 — 2026-06-24
+- [x] OPT-002 valid: endpoint `/api/rating`, `/api/rating-average`, `/api/rating-summary`, dan `/metadata/api` berada di `routes/api.php` dengan middleware `api`; URL publik tetap kompatibel memakai `apiPrefix: ''`.
+- [x] OPT-007 valid: homepage hanya melakukan 1 fetch ke `/api/rating-summary`; response endpoint berisi `average`, `total`, dan `distribution`; data rating memakai `Cache::remember('survey.summary', 600, ...)` dan cache dihapus setelah survey baru.
+- [x] OPT-008 valid: loop infografis homepage tidak lagi memanggil `file_exists()`; view memakai accessor `$item->gambar_url` dengan fallback `img/noimage.png`.
+- [x] OPT-011 valid: query `berita_terpopuler` hanya berada di `BeritaController::getPopularBerita()` dan dipakai oleh `index()` serta `show()`.
+- [x] Format valid: `./vendor/bin/pint --test bootstrap/app.php routes/web.php routes/api.php app/Http/Controllers/SurveyController.php app/Http/Controllers/BeritaController.php app/Models/Infografis.php` passed.
+- [x] Route cache valid: `php artisan route:cache` berhasil dengan `APP_ROUTES_CACHE=bootstrap/cache/routes-validation.php`, lalu artefak cache validasi dibersihkan.
+- [x] API metadata valid: `php artisan test tests/Feature/ApiControllerTest.php` passed, 9 tests / 18 assertions.
+- [x] Endpoint smoke test valid: `/api/rating-summary` mengembalikan HTTP 200 dengan JSON gabungan; `/metadata/api` tetap HTTP 200.
+- [ ] Full suite belum hijau: `php artisan test` berjalan dengan 56 passed / 8 failed; kegagalan tersisa berada pada feature halaman dokumen/homepage 500 dan invalid tipe dokumen 302 yang perlu investigasi terpisah.
 ### Sprint 3 — Architecture & Frontend Refactor
 - [ ] OPT-003: Modularisasi inline JS ke file terpisah
 - [ ] OPT-009: Konsolidasi layout templates

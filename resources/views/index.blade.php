@@ -108,13 +108,9 @@
                         <div class="card border-0">
                             <div class="position-relative">
                                 <!-- Gambar dengan hyperlink -->
-                                @if(!empty($item->gambar) && file_exists(public_path('storage/' . $item->gambar)))
-                                <a href="{{ route('infografis.show', $item->slug) }}"> <!-- Ubah dengan URL tujuan -->
-                                    <img src="{{ asset('storage/' . $item->gambar) }}" class="img-fluid w-100 rounded" alt="Image">
+                                <a href="{{ route('infografis.show', $item->slug) }}">
+                                    <img src="{{ $item->gambar_url }}" class="img-fluid w-100 rounded" alt="{{ $item->image_alt }}">
                                 </a>
-                                @else
-                                <img src="{{ asset('img/noimage.png') }}" class="img-fluid w-100 rounded" alt="No Image">
-                                @endif
                             </div>
                         </div>
                     </div>

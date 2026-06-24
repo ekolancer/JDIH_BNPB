@@ -218,14 +218,20 @@
     new PureCounter();
 </script>
 
-<!-- Script untuk Doughnut Chart -->
+<!-- Script untuk Rating Website -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Elemen Canvas
-        const averageRatingCtx = document.getElementById('averageRatingChart').getContext('2d');
+        const averageRatingCanvas = document.getElementById('averageRatingChart');
+        const ratingDistributionCanvas = document.getElementById('ratingDistributionChart');
+        const averageRatingElement = document.getElementById('averageRating');
+        const totalRatingsElement = document.getElementById('totalRatings');
+        const starContainer = document.getElementById('starRating');
 
-        // Fetch data dari API
-        fetch('/api/rating-average')
+        if (!averageRatingCanvas || !ratingDistributionCanvas || !averageRatingElement || !totalRatingsElement || !starContainer) {
+            return;
+        }
+
+        fetch('/api/rating-summary')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('HTTP error! status: ' + response.status);
@@ -233,30 +239,30 @@
                 return response.json();
             })
             .then(data => {
-                const averageRating = data.average; // Rata-rata dari API
-                const remaining = 5 - averageRating; // Sisa dari skala 5
+                const averageRating = data.average;
+                const totalRatings = data.total;
+                const ratingData = data.distribution;
+                const remaining = Math.max(5 - averageRating, 0);
 
-                // Inisialisasi Chart.js
-                new Chart(averageRatingCtx, {
+                new Chart(averageRatingCanvas.getContext('2d'), {
                     type: 'doughnut',
                     data: {
                         datasets: [{
-                            data: [averageRating, remaining], // Data dinamis
-                            backgroundColor: ['#13357B', '#E0E0E0'], // Warna grafik
-                            borderWidth: 0 // Tidak ada border
+                            data: [averageRating, remaining],
+                            backgroundColor: ['#13357B', '#E0E0E0'],
+                            borderWidth: 0
                         }]
                     },
                     options: {
                         responsive: true,
-                        cutout: '75%', // Membuat lingkaran bagian tengah lebih besar
+                        cutout: '75%',
                         plugins: {
                             legend: {
-                                display: false // Menyembunyikan legend
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        // Menampilkan nilai rata-rata atau sisa
                                         return context.raw === averageRating ?
                                             `Rata-rata: ${averageRating}` :
                                             `Sisa: ${remaining.toFixed(1)}`;
@@ -266,65 +272,37 @@
                         }
                     }
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching average rating:', error);
-            });
-    });
-</script>
 
-<!-- Script untuk Grafik Batang Horizontal -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch data dari API
-        fetch('/api/rating')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(ratingData => {
-                const ratingLabels = [
-                    '★★★★★', // Label untuk rating 5
-                    '★★★★', // Label untuk rating 4
-                    '★★★', // Label untuk rating 3
-                    '★★', // Label untuk rating 2
-                    '★' // Label untuk rating 1
-                ];
-
-                // Membuat grafik Chart.js
-                const ratingDistributionCtx = document.getElementById('ratingDistributionChart').getContext('2d');
-                new Chart(ratingDistributionCtx, {
+                new Chart(ratingDistributionCanvas.getContext('2d'), {
                     type: 'bar',
                     data: {
-                        labels: ratingLabels, // Label berupa bintang
+                        labels: ['★★★★★', '★★★★', '★★★', '★★', '★'],
                         datasets: [{
                             label: 'Jumlah Penilaian',
-                            data: ratingData, // Data dari API
+                            data: ratingData,
                             backgroundColor: [
-                                '#13357B', // Warna untuk 5
-                                '#0056B3', // Warna untuk 4
-                                '#007BFF', // Warna untuk 3
-                                '#6EB5FF', // Warna untuk 2
-                                '#B3D9FF' // Warna untuk 1
+                                '#13357B',
+                                '#0056B3',
+                                '#007BFF',
+                                '#6EB5FF',
+                                '#B3D9FF'
                             ],
                             borderRadius: 1,
                             barThickness: 25
                         }]
                     },
                     options: {
-                        indexAxis: 'y', // Membuat grafik horizontal
+                        indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: false // Menyembunyikan legenda
+                                display: false
                             },
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        return context.raw + ' Penilaian'; // Tampilkan jumlah penilaian di tooltip
+                                        return context.raw + ' Penilaian';
                                     }
                                 }
                             }
@@ -333,7 +311,7 @@
                             x: {
                                 beginAtZero: true,
                                 ticks: {
-                                    stepSize: 1 // Skala angka pada sumbu X
+                                    stepSize: 1
                                 },
                                 grid: {
                                     drawOnChartArea: false
@@ -347,54 +325,25 @@
                         }
                     }
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching rating distribution:', error);
-            });
-    });
-</script>
 
-<!-- Fetch API summary rating -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch data dari API
-        fetch('/api/rating-summary')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const averageRating = data.average;
-                const totalRatings = data.total;
+                averageRatingElement.textContent = averageRating;
+                totalRatingsElement.textContent = `${totalRatings} Penilaian`;
+                starContainer.innerHTML = '';
 
-                // Update nilai rata-rata dan jumlah penilaian
-                document.getElementById('averageRating').textContent = averageRating;
-                document.getElementById('totalRatings').textContent = `${totalRatings} Penilaian`;
+                const fullStars = Math.floor(averageRating);
+                const halfStar = averageRating % 1 >= 0.5 ? 1 : 0;
+                const emptyStars = 5 - fullStars - halfStar;
 
-                // Update bintang
-                const starContainer = document.getElementById('starRating');
-                starContainer.innerHTML = ''; // Kosongkan kontainer bintang sebelumnya
-
-                // Menampilkan bintang penuh, setengah, dan kosong
-                const fullStars = Math.floor(averageRating); // Bintang penuh
-                const halfStar = averageRating % 1 >= 0.5 ? 1 : 0; // Bintang setengah
-                const emptyStars = 5 - fullStars - halfStar; // Bintang kosong
-
-                // Tambahkan bintang penuh
                 for (let i = 0; i < fullStars; i++) {
-                    starContainer.innerHTML += '<span>&#9733;</span>'; // Bintang penuh
+                    starContainer.innerHTML += '<span>&#9733;</span>';
                 }
 
-                // Tambahkan bintang setengah (jika ada)
                 if (halfStar) {
-                    starContainer.innerHTML += '<span>&#9734;</span>'; // Bintang setengah
+                    starContainer.innerHTML += '<span>&#9734;</span>';
                 }
 
-                // Tambahkan bintang kosong
                 for (let i = 0; i < emptyStars; i++) {
-                    starContainer.innerHTML += '<span>&#9734;</span>'; // Bintang kosong
+                    starContainer.innerHTML += '<span>&#9734;</span>';
                 }
             })
             .catch(error => {
@@ -402,7 +351,6 @@
             });
     });
 </script>
-
 <!-- Script untuk Autoslider -->
 <script>
     $(document).ready(function() {

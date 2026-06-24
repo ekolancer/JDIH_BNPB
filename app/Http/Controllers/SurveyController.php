@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSurveyRequest;
 use App\Models\Survey;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class SurveyController extends Controller
 {
     public function store(StoreSurveyRequest $request): JsonResponse
     {
         Survey::create($request->validated());
+        Cache::forget('survey.summary');
 
         return response()->json([
             'status' => 'success',
@@ -21,33 +23,43 @@ class SurveyController extends Controller
 
     public function getRatingDistribution(): JsonResponse
     {
-        $ratingCounts = Survey::selectRaw('rating, COUNT(*) as count')
-            ->groupBy('rating')
-            ->pluck('count', 'rating');
+        $data = $this->getCachedRatingSummary();
 
-        $data = [];
-        for ($i = 5; $i >= 1; $i--) {
-            $data[] = $ratingCounts[$i] ?? 0;
-        }
-
-        return response()->json($data);
+        return response()->json($data['distribution']);
     }
 
     public function getAverageRating(): JsonResponse
     {
-        $averageRating = Survey::average('rating');
+        $data = $this->getCachedRatingSummary();
 
-        return response()->json(['average' => round($averageRating ?? 0, 1)]);
+        return response()->json(['average' => $data['average']]);
     }
 
     public function getRatingSummary(): JsonResponse
     {
-        $averageRating = Survey::average('rating');
-        $totalRatings = Survey::count();
+        return response()->json($this->getCachedRatingSummary());
+    }
 
-        return response()->json([
-            'average' => round($averageRating ?? 0, 1),
-            'total' => $totalRatings,
-        ]);
+    private function getCachedRatingSummary(): array
+    {
+        return Cache::remember('survey.summary', 600, function () {
+            $ratingCounts = Survey::selectRaw('rating, COUNT(*) as count')
+                ->groupBy('rating')
+                ->pluck('count', 'rating');
+
+            $distribution = [];
+            for ($i = 5; $i >= 1; $i--) {
+                $distribution[] = $ratingCounts[$i] ?? 0;
+            }
+
+            $averageRating = Survey::average('rating');
+            $totalRatings = Survey::count();
+
+            return [
+                'average' => round($averageRating ?? 0, 1),
+                'total' => $totalRatings,
+                'distribution' => $distribution,
+            ];
+        });
     }
 }

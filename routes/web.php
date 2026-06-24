@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokumenController;
@@ -90,32 +89,3 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.sh
 */
 Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
 Route::get('/infografis/{slug}', [InfografisController::class, 'show'])->name('infografis.show');
-
-/*
-|--------------------------------------------------------------------------
-| Endpoint Rating Website
-|--------------------------------------------------------------------------
-| Endpoint JSON untuk grafik/distribusi rating pada halaman utama.
-| GET /api/rating mengembalikan jumlah rating per nilai 1-5.
-| GET /api/rating-average mengembalikan rata-rata rating.
-| GET /api/rating-summary mengembalikan rata-rata dan total rating.
-*/
-Route::get('/api/rating', [SurveyController::class, 'getRatingDistribution'])->middleware('throttle:30,1')->name('rating.distribution');
-Route::get('/api/rating-average', [SurveyController::class, 'getAverageRating'])->middleware('throttle:30,1')->name('rating.average');
-Route::get('/api/rating-summary', [SurveyController::class, 'getRatingSummary'])->middleware('throttle:30,1')->name('rating.summary');
-
-/*
-|--------------------------------------------------------------------------
-| Endpoint Metadata Dokumen
-|--------------------------------------------------------------------------
-| GET /metadata/api mengembalikan metadata dokumen hukum untuk sinkronisasi
-| eksternal. Dibatasi throttle 60 request per menit.
-|
-| Catatan audit:
-| - Target ApiController@index tersedia.
-| - Route ini sebelumnya belum memiliki nama; ditambahkan metadata.api agar
-|   mudah dirujuk oleh kode atau dokumentasi.
-*/
-Route::middleware(['throttle:60,1'])->group(function () {
-    Route::get('/metadata/api', [ApiController::class, 'index'])->name('metadata.api');
-});

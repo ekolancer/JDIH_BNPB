@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Berita;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\View\View;
 use App\Helpers\SeoHelper;
+use App\Models\Berita;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class BeritaController extends Controller
 {
@@ -14,9 +14,7 @@ class BeritaController extends Controller
     {
         $berita = Berita::where('status', 1)->latest()->paginate(10);
 
-        $beritaTerpopuler = Cache::remember('berita_terpopuler', 1800, function () {
-            return Berita::orderByDesc('view_count')->limit(5)->get();
-        });
+        $beritaTerpopuler = $this->getPopularBerita();
 
         return view('berita.list', compact('berita', 'beritaTerpopuler'));
     }
@@ -29,9 +27,7 @@ class BeritaController extends Controller
             ->where('id', $berita->id)
             ->increment('view_count');
 
-        $beritaTerpopuler = Cache::remember('berita_terpopuler', 1800, function () {
-            return Berita::orderByDesc('view_count')->limit(5)->get();
-        });
+        $beritaTerpopuler = $this->getPopularBerita();
 
         $seo = SeoHelper::meta($berita);
 
@@ -40,5 +36,12 @@ class BeritaController extends Controller
             'beritaTerpopuler' => $beritaTerpopuler,
             'seo' => $seo,
         ]);
+    }
+
+    private function getPopularBerita()
+    {
+        return Cache::remember('berita_terpopuler', 1800, function () {
+            return Berita::orderByDesc('view_count')->limit(5)->get();
+        });
     }
 }
