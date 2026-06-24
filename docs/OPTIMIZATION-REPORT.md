@@ -9,26 +9,28 @@
 
 | Dimension | Score | Status |
 |---|---:|---|
-| Performance | 6/10 | Needs Work |
-| Security | 4/10 | Needs Work |
-| Code Quality | 6/10 | Needs Work |
-| Scalability | 5/10 | Needs Work |
-| Testing | 4/10 | Needs Work |
-| Developer Experience | 6/10 | Needs Work |
+| Performance | 7/10 | Good |
+| Security | 6/10 | Needs Work |
+| Code Quality | 6.5/10 | Needs Work |
+| Scalability | 6.5/10 | Needs Work |
+| Testing | 5/10 | Needs Work |
+| Developer Experience | 6.5/10 | Needs Work |
 | Feature Gaps | 6/10 | Needs Work |
-| **Overall** | **5.3/10** | **Needs Work** |
+| **Overall** | **6.2/10** | **Needs Work** |
+
+**Reassessment after Sprint 1-3:** The score improves from **5.3/10** to **6.2/10** after secrets were removed from source, local/manual test configuration was clarified, visitor/date queries were aligned with indexes, homepage cache invalidation was wired, Turnstile degradation was made production-safe, notification fan-out was queued, and sitemap generation was chunked.
 
 ---
 
 ## Executive Summary
 
-The application has a solid Laravel foundation: public routes are separated cleanly, request validation exists for sensitive public inputs, document file paths are normalized before access, visitor geo lookup is queued, and several recent migrations show active work on indexing and search performance. The codebase is not in a crisis, but it has a few release-blocking hygiene issues that should be fixed before treating it as production-ready.
+The application has a solid Laravel foundation: public routes are separated cleanly, request validation exists for sensitive public inputs, document file paths are normalized before access, visitor geo lookup is queued, and recent work has improved indexing, cache invalidation, Turnstile behavior, notification fan-out, and sitemap memory usage. The codebase is healthier than the initial scan, but it still has several production-readiness gaps that should be closed before treating it as fully stable.
 
-The most important issue is a hardcoded database password in `config/api.php`. Even if this file is unused, it is still a credential exposure pattern and should be rotated, removed from source, and replaced with environment-driven config. The second most important issue is test reliability: the test suite depends on MySQL, so it needs an explicit test database setup instead of relying on each developer machine to already have a matching local database.
+The hardcoded database credential has been removed from `config/api.php`, but the previously exposed password still needs to be rotated outside the codebase. Test reliability has improved through explicit MySQL test configuration, but full runtime test validation still depends on a local MySQL user/password that matches `phpunit.xml`.
 
-Performance risks are mostly database-shape issues rather than inefficient PHP loops. The public document list has good pagination and fulltext search for the main UI, but dynamic facet counts and visitor stats have query/index mismatches that will get worse as data grows. These should be measured with `EXPLAIN` on production-like data before claiming gains.
+Performance risks are now more focused. Visitor stats and duplicate visitor checks use indexed date ranges, subject filtering has a reverse pivot index migration, and sitemap generation no longer loads all public content rows into memory. The remaining performance claims should still be measured with `EXPLAIN` on production-like data, especially `/dokumen` filter counts and `/metadata/api` search behavior.
 
-Recommended sprint focus: first remove secrets and make tests portable, then align the main hot-path queries with indexes, then clean up cache invalidation and observer fan-out. These are high impact, bounded changes.
+Recommended next focus: complete operational follow-ups rather than broad refactors. Rotate the exposed database password, fix local test credentials so the suite can run end-to-end, measure the indexed query changes with `EXPLAIN`, and then continue with the remaining API/search and infrastructure backlog.
 
 ---
 

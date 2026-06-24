@@ -38,7 +38,7 @@ class ApiController extends Controller
             }
 
             if (!empty($validated['judul'])) {
-                $query->where('judul', 'like', '%' . $validated['judul'] . '%');
+                $query->whereFullText('judul', $validated['judul']);
             }
 
             // 🔹 SUBJEK (via relasi)
