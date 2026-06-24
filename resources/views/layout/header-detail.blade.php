@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     {{-- BASIC SEO --}}
@@ -99,11 +99,11 @@
                         <div class="nav-item dropdown hover-dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                             <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
-                                <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
-                                <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
-                                <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                                <a href="{{ route('profil.show', 'tentang-kami') }}" class="dropdown-item">Tentang Kami</a>
+                                <a href="{{ route('profil.show', 'visi-misi') }}" class="dropdown-item">Visi Misi</a>
+                                <a href="{{ route('profil.show', 'struktur-organisasi') }}" class="dropdown-item">Struktur Organisasi</a>
                                 <div class="dropdown-divider"></div>
-                                <a href="/profil/faq" class="dropdown-item">FAQ</a>
+                                <a href="{{ route('profil.show', 'faq') }}" class="dropdown-item">FAQ</a>
                             </div>
                         </div>
                     </div>
@@ -124,30 +124,3 @@
                     </div>
                 </div>
             </div>
-
-            <script>
-                document.getElementById('advanced-search-toggle').addEventListener('click', function() {
-                    var filters = document.querySelector('.advanced-filters');
-                    if (filters.classList.contains('show')) {
-                        filters.classList.remove('show');
-                        setTimeout(() => {
-                            filters.style.display = 'none'; // Set display none after transition
-                        }, 500); // Waktu yang sama dengan durasi transisi
-                    } else {
-                        filters.style.display = 'block'; // Set display block before adding class
-                        setTimeout(() => {
-                            filters.classList.add('show');
-                        }, 200); // Delay singkat untuk memicu transisi
-                    }
-                });
-
-                // Remove empty inputs from form submission
-                document.querySelector('.search-form').addEventListener('submit', function(e) {
-                    const inputs = this.querySelectorAll('input, select');
-                    inputs.forEach(input => {
-                        if (!input.value || input.value === '') {
-                            input.name = ''; // Remove name attribute so it's not sent
-                        }
-                    });
-                });
-            </script>

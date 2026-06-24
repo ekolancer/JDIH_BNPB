@@ -160,31 +160,4 @@
         <!-- Hero Image End -->
     </div>
     <!-- Navbar & Hero End -->
-    <script>
-        document.getElementById('advanced-search-toggle').addEventListener('click', function() {
-            var filters = document.querySelector('.advanced-filters');
-            if (filters.classList.contains('show')) {
-                filters.classList.remove('show');
-                setTimeout(() => {
-                    filters.style.display = 'none'; // Set display none after transition
-                }, 500); // Waktu yang sama dengan durasi transisi
-            } else {
-                filters.style.display = 'block'; // Set display block before adding class
-                setTimeout(() => {
-                    filters.classList.add('show');
-                }, 200); // Delay singkat untuk memicu transisi
-            }
-        });
-
-        // Remove empty inputs from form submission
-        document.querySelector('.search-form').addEventListener('submit', function(e) {
-            const inputs = this.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                if (!input.value || input.value === '') {
-                    input.name = ''; // Remove name attribute so it's not sent
-                }
-            });
-        });
-    </script>
-
     <!-- Navbar & Hero End -->

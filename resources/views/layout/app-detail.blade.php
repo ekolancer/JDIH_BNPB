@@ -1,7 +1,1 @@
-@include('layout.header-detail')
-
-        <!-- Main Content -->
-        @yield('content')
-        <!-- End Content -->
-
-@include('layout.footer-clear')
+@extends('layout.master', ['header' => 'layout.header-detail', 'footer' => 'layout.footer-clear'])

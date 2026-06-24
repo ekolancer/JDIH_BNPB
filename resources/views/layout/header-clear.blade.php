@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
@@ -79,11 +79,11 @@
                         <div class="nav-item dropdown hover-dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                             <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
-                                <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
-                                <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
-                                <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                                <a href="{{ route('profil.show', 'tentang-kami') }}" class="dropdown-item">Tentang Kami</a>
+                                <a href="{{ route('profil.show', 'visi-misi') }}" class="dropdown-item">Visi Misi</a>
+                                <a href="{{ route('profil.show', 'struktur-organisasi') }}" class="dropdown-item">Struktur Organisasi</a>
                                 <div class="dropdown-divider"></div>
-                                <a href="/profil/faq" class="dropdown-item">FAQ</a>
+                                <a href="{{ route('profil.show', 'faq') }}" class="dropdown-item">FAQ</a>
                             </div>
                         </div>
                     </div>

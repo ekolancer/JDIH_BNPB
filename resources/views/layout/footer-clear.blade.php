@@ -28,11 +28,11 @@
                             <h3>JDIH BNPB</h3>
                         </div>
                         <ul class="list-unstyled">
-                            <li><a href="#">Profil</a></li>
-                            <li><a href="#">Struktur Organisasi</a></li>
-                            <li><a href="#">Berita</a></li>
-                            <li><a href="#">Statistik</a></li>
-                            <li><a href="#">Visi dan Misi</a></li>
+                            <li><a href="{{ route('profil.show', 'tentang-kami') }}">Profil</a></li>
+                            <li><a href="{{ route('profil.show', 'struktur-organisasi') }}">Struktur Organisasi</a></li>
+                            <li><a href="{{ route('berita.index') }}">Berita</a></li>
+                            <li><a href="{{ url('/#dokumen-stats') }}">Statistik</a></li>
+                            <li><a href="{{ route('profil.show', 'visi-misi') }}">Visi dan Misi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-xl-12 text-center">
                     <div class="copyright-text">
-                        <p>Copyright &copy; 2024, All Right Reserved <a href="https://bnpb.go.id/">Badan Nasional Penanggulangan Bencana</a></p>
+                        <p>Copyright &copy; {{ date('Y') }}, All Right Reserved <a href="https://bnpb.go.id/">Badan Nasional Penanggulangan Bencana</a></p>
                     </div>
                 </div>
             </div>
@@ -185,286 +185,21 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
         class="fa fa-arrow-up"></i></a>
-</body>
-
-<!-- Accessibility Toggle Script -->
-<script>
-    const panel = document.getElementById("a11y-panel");
-    const trigger = document.getElementById("a11y-trigger");
-    const closeBtn = document.getElementById("a11y-close");
-
-    trigger.onclick = () => panel.classList.add("active");
-    closeBtn.onclick = () => panel.classList.remove("active");
-
-    let fontSize = 100;
-
-    document.querySelectorAll("[data-action]").forEach(item => {
-        item.addEventListener("click", () => {
-            const action = item.dataset.action;
-
-            if (action === "increase") {
-                fontSize += 10;
-                document.documentElement.style.fontSize = fontSize + "%";
-            }
-
-            if (action === "decrease") {
-                fontSize -= 10;
-                document.documentElement.style.fontSize = fontSize + "%";
-            }
-
-            if (action === "reset") {
-                document.documentElement.className = "";
-                document.documentElement.style.fontSize = "100%";
-            }
-        });
-    });
-
-    document.querySelectorAll("[data-toggle]").forEach(item => {
-        item.addEventListener("click", () => {
-            const toggle = item.dataset.toggle;
-
-            if (toggle === "dark")
-                document.documentElement.classList.toggle("theme-dark");
-
-            if (toggle === "contrast")
-                document.documentElement.classList.toggle("theme-contrast");
-
-            if (toggle === "light")
-                document.documentElement.classList.remove("theme-dark");
-
-            if (toggle === "grayscale")
-                document.documentElement.classList.toggle("grayscale");
-
-            if (toggle === "readable")
-                document.documentElement.classList.toggle("readable");
-
-            if (toggle === "align")
-                document.documentElement.classList.toggle("align");
-        });
-    });
-</script>
-
-<!-- Script untuk Bahasa Toggle -->
-<script>
-    document.querySelectorAll('.a11y-language button').forEach(btn => {
-
-        btn.addEventListener('click', function() {
-
-            // Toggle active state
-            document.querySelectorAll('.a11y-language button')
-                .forEach(b => b.classList.remove('active'));
-
-            this.classList.add('active');
-
-            const lang = this.classList.contains('lang-en') ? 'en' : 'id';
-
-            // Toggle menu items
-            document.querySelectorAll('.a11y-menu li').forEach(item => {
-                const label = item.querySelector('.label');
-                label.textContent = item.dataset[lang];
-            });
-
-            // Toggle title
-            const title = document.querySelector('.a11y-title');
-            title.textContent = title.dataset[lang];
-
-        });
-
-    });
-</script>
-
-<!-- text to speech -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-
-        if (!("speechSynthesis" in window)) {
-            console.log("Speech API tidak didukung browser.");
-            return;
-        }
-
-        const voiceItem = document.querySelector('[data-action="voice"]');
-        if (!voiceItem) return;
-
-        const voiceText = voiceItem.querySelector('.voice-text');
-
-        let voiceEnabled = false;
-        let voicesReady = false;
-        let hoverTimeout = null;
-        let currentElement = null;
-
-        /* ================================
-           STATUS HANDLER
-        ================================= */
-
-        function setLoading() {
-            voiceItem.classList.add("loading");
-            voiceItem.classList.remove("ready", "active");
-            voiceText.textContent = "Loading";
-        }
-
-        function setReady() {
-            voiceItem.classList.remove("loading");
-            voiceItem.classList.add("ready");
-            voiceText.textContent = "Ready";
-            voicesReady = true;
-        }
-
-        function setActive() {
-            voiceItem.classList.add("active");
-            voiceText.textContent = "On";
-        }
-
-        function setInactive() {
-            voiceItem.classList.remove("active");
-            voiceText.textContent = "Ready";
-        }
-
-        /* ================================
-           CHECK VOICES READY
-        ================================= */
-
-        function checkVoices() {
-            const voices = speechSynthesis.getVoices();
-            if (voices.length > 0) {
-                setReady();
-            } else {
-                setLoading();
-            }
-        }
-
-        speechSynthesis.onvoiceschanged = checkVoices;
-
-        // initial check (Chrome sometimes delayed)
-        setTimeout(checkVoices, 500);
-
-        /* ================================
-           WARM UP ENGINE (IMPORTANT)
-        ================================= */
-
-        function warmUp() {
-            const dummy = new SpeechSynthesisUtterance("");
-            speechSynthesis.speak(dummy);
-            speechSynthesis.cancel();
-        }
-
-        /* ================================
-           TOGGLE VOICE MODE
-        ================================= */
-
-        voiceItem.addEventListener("click", function() {
-
-            if (!voicesReady) return;
-
-            voiceEnabled = !voiceEnabled;
-
-            speechSynthesis.cancel();
-            speechSynthesis.resume();
-
-            if (voiceEnabled) {
-                setActive();
-                warmUp();
-            } else {
-                setInactive();
-                stopSpeaking();
-            }
-        });
-
-        /* ================================
-           SPEAK FUNCTION (STABLE)
-        ================================= */
-
-        function speakText(text) {
-
-            speechSynthesis.cancel();
-            speechSynthesis.resume();
-
-            const utterance = new SpeechSynthesisUtterance(text);
-
-            const voices = speechSynthesis.getVoices();
-            const indoVoice = voices.find(v =>
-                v.lang && v.lang.toLowerCase().includes("id")
-            );
-
-            if (indoVoice) {
-                utterance.voice = indoVoice;
-                utterance.lang = indoVoice.lang;
-            } else {
-                utterance.lang = "id-ID";
-            }
-
-            utterance.rate = 1;
-            utterance.pitch = 1;
-
-            speechSynthesis.speak(utterance);
-        }
-
-        function stopSpeaking() {
-            speechSynthesis.cancel();
-
-            if (currentElement) {
-                currentElement.classList.remove("voice-reading");
-                currentElement = null;
-            }
-        }
-
-        /* ================================
-           HOVER LISTENER (SMOOTH MODE)
-        ================================= */
-
-        document.body.addEventListener("mouseover", function(e) {
-
-            if (!voiceEnabled) return;
-
-            const target = e.target;
-
-            if (!target) return;
-
-            // Jangan baca panel accessibility
-            if (target.closest("#a11y-panel")) return;
-
-            const text = target.innerText?.trim();
-
-            if (!text || text.length < 5) return;
-
-            clearTimeout(hoverTimeout);
-
-            hoverTimeout = setTimeout(() => {
-
-                currentElement = target;
-                currentElement.classList.add("voice-reading");
-
-                speakText(text);
-
-            }, 400);
-        });
-
-        document.body.addEventListener("mouseout", function() {
-            clearTimeout(hoverTimeout);
-            stopSpeaking();
-        });
-
-    });
-</script>
-
-<script>
-    window.addEventListener('show-lampiran-modal', event => {
-        var myModal = new bootstrap.Modal(document.getElementById('mediaFile'));
-        myModal.show();
-    });
-</script>
 
 <!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('lib/easing/easing.min.js') }}"></script>
-<script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
-<script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="{{ asset('lib/easing/easing.min.js') }}" defer></script>
+<script src="{{ asset('lib/waypoints/waypoints.min.js') }}" defer></script>
+<script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}" defer></script>
+<script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}" defer></script>
 
 <!-- Template Javascript -->
-<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/main.js') }}" defer></script>
 <script src="https://static.elfsight.com/platform/platform.js" async></script>
+<script src="{{ asset('js/layout-interactions.js') }}?v={{ filemtime(public_path('js/layout-interactions.js')) }}" defer></script>
+<script src="{{ asset('js/accessibility.js') }}?v={{ filemtime(public_path('js/accessibility.js')) }}" defer></script>
+@stack('scripts')
 
 </body>
 

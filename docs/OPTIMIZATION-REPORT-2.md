@@ -601,11 +601,23 @@ Pertimbangkan menambahkan field `page_type` (enum: `static`, `faq`, dll.) di tab
 - [x] API metadata valid: `php artisan test tests/Feature/ApiControllerTest.php` passed, 9 tests / 18 assertions.
 - [x] Endpoint smoke test valid: `/api/rating-summary` mengembalikan HTTP 200 dengan JSON gabungan; `/metadata/api` tetap HTTP 200.
 - [ ] Full suite belum hijau: `php artisan test` berjalan dengan 56 passed / 8 failed; kegagalan tersisa berada pada feature halaman dokumen/homepage 500 dan invalid tipe dokumen 302 yang perlu investigasi terpisah.
+
 ### Sprint 3 — Architecture & Frontend Refactor
-- [ ] OPT-003: Modularisasi inline JS ke file terpisah
-- [ ] OPT-009: Konsolidasi layout templates
-- [ ] OPT-012: Refactor ProfilPageController
-- [ ] Evaluasi drop jQuery, migrasi ke Vite bundling
+- [x] OPT-003: Modularisasi inline JS ke file terpisah
+- [x] OPT-009: Konsolidasi layout templates
+- [x] OPT-012: Refactor ProfilPageController
+- [x] Evaluasi drop jQuery, migrasi ke Vite bundling
+
+#### Validasi Sprint 3 — 2026-06-24
+- [x] OPT-003 valid: inline JavaScript footer/header dipindahkan ke `public/js/layout-interactions.js`, `public/js/carousel.js`, `public/js/survey.js`, dan `public/js/accessibility.js`; script layout dimuat dengan `defer` dan cache-busting `filemtime()`.
+- [x] OPT-009 valid: wrapper `layout.app`, `layout.app-clear`, dan `layout.app-detail` dikonsolidasikan lewat `resources/views/layout/master.blade.php`; varian header/footer tetap dipertahankan untuk kebutuhan tampilan, tetapi drift penting disinkronkan (`lang="id"`, route profil, footer links, copyright).
+- [x] OPT-012 valid: `ProfilPageController` memakai `SPECIAL_PAGE_HANDLERS`, return type `View`, dan handler `faqPage()` terpisah sehingga special page baru tidak perlu ditanam langsung di alur `show()`.
+- [x] Evaluasi jQuery/Vite valid: jQuery belum aman di-drop karena `public/js/main.js`, OwlCarousel, Lightbox, Easing, dan Waypoints masih bergantung pada jQuery; migrasi Vite tersedia melalui `vite.config.js` (`resources/js/app.js`) tetapi bundling penuh CDN/public scripts sebaiknya menjadi sprint lanjutan.
+- [x] Syntax JS valid: `node --check public/js/survey.js`, `public/js/carousel.js`, `public/js/layout-interactions.js`, dan `public/js/accessibility.js` passed.
+- [x] Format PHP valid: `./vendor/bin/pint --test app/Http/Controllers/ProfilPageController.php` passed.
+- [x] Blade cache valid: `php artisan view:cache` passed setelah `php artisan view:clear`; validasi dijalankan di luar sandbox karena `storage/framework/views` sebelumnya terkena `Access is denied` dari Windows sandbox.
+- [x] Smoke test valid: request `/profil/faq` mengembalikan HTTP 200 setelah cache Blade bersih.
+- [ ] Full suite belum hijau: `php artisan test` gagal karena koneksi database test `jdih_test` ditolak untuk user `root` (`SQLSTATE[HY000] [1045]`), sehingga belum bisa dipakai sebagai validasi regresi Sprint 3 sampai credential DB test diperbaiki.
 
 ---
 
