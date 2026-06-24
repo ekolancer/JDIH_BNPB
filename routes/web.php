@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\ApiController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\SurveyController;
-use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\InfografisController;
 use App\Http\Controllers\ProfilPageController;
+use App\Http\Controllers\SurveyController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +33,7 @@ Route::post('/', [SurveyController::class, 'store'])->middleware(['throttle:5,1'
 |   Keduanya digabung agar tidak double dan agar route('list-doc', ['tipeDok' => ...])
 |   menghasilkan path /dokumen/{tipeDok}, bukan query string.
 */
-Route::get('/dokumen/{tipeDok?}', function ($tipeDok = null) {
-    return view('dokumen.list-doc', compact('tipeDok'));
-})->name('list-doc');
+Route::get('/dokumen/{tipeDok?}', [DokumenController::class, 'index'])->name('list-doc');
 
 /*
 |--------------------------------------------------------------------------

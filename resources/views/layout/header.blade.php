@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <!-- Google tag (gtag.js) -->
@@ -30,20 +30,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Removed duplicate Font Awesome script -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 
     <!-- Libraries Stylesheet -->
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <!-- AOS Library Stylesheet -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <!-- Swiper Stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
-
-    <!-- Sweetalert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('css/bootstrap.min.css') }}?v={{ filemtime(public_path('css/bootstrap.min.css')) }}" rel="stylesheet">
@@ -109,11 +106,11 @@
                     <div class="nav-item dropdown hover-dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perihal</a>
                         <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
-                            <a href="/profil/tentang-kami" class="dropdown-item">Tentang Kami</a>
-                            <a href="/profil/visi-misi" class="dropdown-item">Visi Misi</a>
-                            <a href="/profil/struktur-organisasi" class="dropdown-item">Struktur Organisasi</a>
+                            <a href="{{ route('profil.show', 'tentang-kami') }}" class="dropdown-item">Tentang Kami</a>
+                            <a href="{{ route('profil.show', 'visi-misi') }}" class="dropdown-item">Visi Misi</a>
+                            <a href="{{ route('profil.show', 'struktur-organisasi') }}" class="dropdown-item">Struktur Organisasi</a>
                             <div class="dropdown-divider"></div>
-                            <a href="/profil/faq" class="dropdown-item">FAQ</a>
+                            <a href="{{ route('profil.show', 'faq') }}" class="dropdown-item">FAQ</a>
                         </div>
                     </div>
                 </div>

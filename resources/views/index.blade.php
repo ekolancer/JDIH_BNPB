@@ -7,7 +7,7 @@
 </section>
 
 <!-- Stats Section -->
-<section id="stats" class="stats section light-background py-5">
+<section id="dokumen-stats" class="stats section light-background py-5">
     <div class="container">
         <div class="mx-auto text-center mb-4" style="max-width: 800px;">
             <p class="text-muted" data-aos="zoom-in" data-aos-duration="800">Produk Hukum</p>
@@ -89,7 +89,7 @@
 </div>
 
 <!-- Infografis Berita -->
-<section id="stats" class="stats section light-background py-5">
+<section id="infografis-section" class="stats section light-background py-5">
     <div class="container-fluid py-5">
         <div class="container">
             <div class="text-center mb-5">
@@ -239,7 +239,7 @@
             <div class="col-lg-5">
                 <div class="h-100"
                     style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
-                    <img src="{{ asset('img/survey.webp') }}" class="img-fluid w-100 h-100" alt="">
+                    <img src="{{ asset('img/survey.webp') }}" class="img-fluid w-100 h-100" alt="Ilustrasi survey kepuasan layanan JDIH BNPB">
                 </div>
             </div>
             <div class="col-lg-7">

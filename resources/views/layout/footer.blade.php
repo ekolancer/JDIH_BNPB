@@ -28,11 +28,11 @@
                             <h3>JDIH BNPB</h3>
                         </div>
                         <ul class="list-unstyled">
-                            <li><a href="#">Profil</a></li>
-                            <li><a href="#">Struktur Organisasi</a></li>
-                            <li><a href="#">Berita</a></li>
-                            <li><a href="#">Statistik</a></li>
-                            <li><a href="#">Visi dan Misi</a></li>
+                            <li><a href="{{ route('profil.show', 'tentang-kami') }}">Profil</a></li>
+                            <li><a href="{{ route('profil.show', 'struktur-organisasi') }}">Struktur Organisasi</a></li>
+                            <li><a href="{{ route('berita.index') }}">Berita</a></li>
+                            <li><a href="{{ url('/#dokumen-stats') }}">Statistik</a></li>
+                            <li><a href="{{ route('profil.show', 'visi-misi') }}">Visi dan Misi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-xl-12 text-center">
                     <div class="copyright-text">
-                        <p>Copyright &copy; 2024, All Right Reserved <a href="https://bnpb.go.id/">Badan Nasional Penanggulangan Bencana</a></p>
+                        <p>Copyright &copy; {{ date('Y') }}, All Right Reserved <a href="https://bnpb.go.id/">Badan Nasional Penanggulangan Bencana</a></p>
                     </div>
                 </div>
             </div>
@@ -508,7 +508,7 @@
 </script>
 
 <!-- Sweetalert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <script>
     function submitSurveyForm(event) {
         event.preventDefault(); // Mencegah form submit secara default
@@ -559,12 +559,13 @@
 
 <!-- AOS Library -->
 <script>
-    AOS.init({
-        // ... your other initialisation options here ...
-        once: true,
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            // ... your other initialisation options here ...
+            once: true,
+        });
     });
 </script>
-
 <!-- Accessibility Toggle Script -->
 <script>
     const panel = document.getElementById("a11y-panel");

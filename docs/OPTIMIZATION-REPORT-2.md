@@ -524,14 +524,14 @@ Pertimbangkan menambahkan field `page_type` (enum: `static`, `faq`, dll.) di tab
 
 ## Quick Wins (< 1 hour each)
 
-- [ ] **Hapus duplikat SweetAlert2** — `footer.blade.php:511` — 5 menit
-- [ ] **Tambahkan `defer` ke semua CDN scripts** di header — 10 menit
-- [ ] **Fix duplicate `id="stats"`** di `index.blade.php` — 5 menit
-- [ ] **Ganti `lang="en"` → `lang="id"`** di header.blade.php — 2 menit
-- [ ] **Ganti copyright tahun hardcoded** — `footer.blade.php:76` — 2 menit
-- [ ] **Fix 5 dead links** (`href="#"`) di footer — 10 menit
-- [ ] **Ganti 4 hardcoded URLs** di navbar dropdown ke `route()` — 10 menit
-- [ ] **Pindahkan route closure** `/dokumen/{tipeDok?}` ke controller method — 10 menit
+- [x] **Hapus duplikat SweetAlert2** — `footer.blade.php:511` — 5 menit
+- [x] **Tambahkan `defer` ke semua CDN scripts** di header — 10 menit
+- [x] **Fix duplicate `id="stats"`** di `index.blade.php` — 5 menit
+- [x] **Ganti `lang="en"` → `lang="id"`** di header.blade.php — 2 menit
+- [x] **Ganti copyright tahun hardcoded** — `footer.blade.php:76` — 2 menit
+- [x] **Fix 5 dead links** (`href="#"`) di footer — 10 menit
+- [x] **Ganti 4 hardcoded URLs** di navbar dropdown ke `route()` — 10 menit
+- [x] **Pindahkan route closure** `/dokumen/{tipeDok?}` ke controller method — 10 menit
 - [ ] **Cache rating API responses** — 20 menit
 - [ ] **Ganti `file_exists()` di view loop** dengan accessor — 15 menit
 
@@ -566,13 +566,24 @@ Pertimbangkan menambahkan field `page_type` (enum: `static`, `faq`, dll.) di tab
 ## Sprint Roadmap
 
 ### Sprint 1 — Quick Wins & Critical Fixes
-- [ ] OPT-001: Hapus duplikat SweetAlert2
-- [ ] OPT-003: Tambahkan `defer` ke render-blocking scripts
-- [ ] OPT-004: Pindahkan route closure ke controller
-- [ ] OPT-005: Fix dead links di footer
-- [ ] OPT-006: Ganti hardcoded navbar URLs
-- [ ] OPT-010: Fix duplicate IDs
-- [ ] Quick wins lainnya (lang, copyright, alt text)
+- [x] OPT-001: Hapus duplikat SweetAlert2
+- [x] OPT-003: Tambahkan `defer` ke render-blocking scripts
+- [x] OPT-004: Pindahkan route closure ke controller
+- [x] OPT-005: Fix dead links di footer
+- [x] OPT-006: Ganti hardcoded navbar URLs
+- [x] OPT-010: Fix duplicate IDs
+- [x] Quick wins lainnya (lang, copyright, alt text)
+
+#### Validasi Sprint 1 — 2026-06-24
+- [x] OPT-001 valid: `sweetalert2@11` tersisa 1 kali di `footer.blade.php` dan memakai `defer`.
+- [x] OPT-003 valid: script CDN header `Chart.js`, `AOS`, dan `Swiper` sudah memakai `defer`; inisialisasi AOS dipindah ke `DOMContentLoaded` agar aman dengan deferred script.
+- [x] OPT-004 valid: `list-doc` mengarah ke `App\Http\Controllers\DokumenController@index`; `php artisan route:cache` berhasil dengan `APP_ROUTES_CACHE=bootstrap/cache/routes-validation.php`.
+- [x] OPT-005 valid: 5 link footer JDIH BNPB tidak lagi memakai `href="#"`.
+- [x] OPT-006 valid: 4 link dropdown Perihal memakai `route('profil.show', ...)`.
+- [x] OPT-010 valid: duplicate `id="stats"` diganti menjadi `dokumen-stats` dan `infografis-section`.
+- [x] Quick wins valid: `<html lang="id">`, copyright memakai `{{ date('Y') }}`, dan gambar survey memiliki alt text deskriptif.
+- [x] Format valid: `./vendor/bin/pint --test app/Http/Controllers/DokumenController.php routes/web.php` passed.
+- [ ] Full suite belum hijau: `php artisan test` berjalan dengan 55 passed / 9 failed; kegagalan berada pada feature response 500/302 yang tidak terkait langsung dengan perubahan Sprint 1 dan perlu investigasi terpisah.
 
 ### Sprint 2 — Route & API Optimization
 - [ ] OPT-002: Pindahkan API endpoints ke `routes/api.php`

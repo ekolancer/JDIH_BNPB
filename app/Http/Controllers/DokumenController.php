@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SeoHelper;
 use App\Http\Requests\Dokumen\DownloadDokumenRequest;
 use App\Http\Requests\Dokumen\ShowDokumenRequest;
 use App\Http\Requests\Dokumen\ViewDokumenFileRequest;
 use App\Models\DokumenHukum;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Helpers\SeoHelper;
 
 class DokumenController extends Controller
 {
+    /**
+     * Menampilkan daftar dokumen hukum
+     */
+    public function index($tipeDok = null)
+    {
+        return view('dokumen.list-doc', compact('tipeDok'));
+    }
+
     /**
      * Menampilkan detail dokumen hukum
      */
@@ -26,14 +34,14 @@ class DokumenController extends Controller
         // 3. Increment view tanpa trigger event observer / updated_at (Best Practice)
         DB::table('dokumen_hukums')->where('id', $dokumen->id)->increment('view_count');
 
-        // 4. Return ke view. 
-        // Variabel yang dikirim jauh lebih sedikit karena Blade dapat langsung memanggil 
+        // 4. Return ke view.
+        // Variabel yang dikirim jauh lebih sedikit karena Blade dapat langsung memanggil
         // accessor dari Model (misal: $dokumen->tipe_dok_label, $dokumen->metadata)
         return view('dokumen.detail', [
-            'dokumen'  => $dokumen,
+            'dokumen' => $dokumen,
             'metadata' => $dokumen->metadata, // Memanggil getMetadataAttribute() dari Model
             'tipeDokLabel' => $dokumen->tipe_dok_label,
-            'seo'      => SeoHelper::meta($dokumen),
+            'seo' => SeoHelper::meta($dokumen),
         ]);
     }
 
@@ -79,12 +87,12 @@ class DokumenController extends Controller
 
         // 3. Format nama file
         $extension = pathinfo($dokumen->abstrak, PATHINFO_EXTENSION);
-        $filename = 'Abstrak-' . Str::slug($dokumen->judul) . '.' . $extension;
+        $filename = 'Abstrak-'.Str::slug($dokumen->judul).'.'.$extension;
 
         return Storage::disk('public')->download($dokumen->abstrak, $filename, [
             'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            'Pragma'        => 'no-cache',
-            'Expires'       => '0'
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
         ]);
     }
 
@@ -105,13 +113,13 @@ class DokumenController extends Controller
 
     private function isSafePublicStoragePath(?string $path): bool
     {
-        if (!$path) {
+        if (! $path) {
             return false;
         }
 
         $normalized = str_replace('\\', '/', $path);
 
-        return !str_starts_with($normalized, '/')
-            && !preg_match('/(^|\/)\.\.(\/|$)/', $normalized);
+        return ! str_starts_with($normalized, '/')
+            && ! preg_match('/(^|\/)\.\.(\/|$)/', $normalized);
     }
 }
